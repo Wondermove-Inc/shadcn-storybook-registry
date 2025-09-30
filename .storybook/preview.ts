@@ -2,9 +2,20 @@ import type { Preview } from "@storybook/nextjs-vite";
 import { withThemeByClassName } from "@storybook/addon-themes";
 
 import "../app/globals.css";
+import "./preview.css";
 
 const preview: Preview = {
   parameters: {
+    options: {
+      storySort: {
+        order: [
+          "design",
+          "ui",
+          "*",
+        ],
+        method: "alphabetical",
+      },
+    },
     controls: {
       matchers: {
         color: /(background|color)$/i,
@@ -18,13 +29,16 @@ const preview: Preview = {
       // 'off' - skip a11y checks entirely
       test: "todo",
     },
+    backgrounds: {
+      disable: true,
+    },
   },
 
   tags: ["autodocs"],
   decorators: [
     withThemeByClassName({
       themes: {
-        light: "light",
+        light: "",
         dark: "dark",
       },
       defaultTheme: "light",
@@ -33,16 +47,3 @@ const preview: Preview = {
 };
 
 export default preview;
-
-// Set default theme
-export const globalTypes = {
-  theme: {
-    defaultValue: "light",
-    toolbar: {
-      title: "Theme",
-      icon: "paintbrush",
-      items: ["light", "dark"],
-      dynamicTitle: true,
-    },
-  },
-};

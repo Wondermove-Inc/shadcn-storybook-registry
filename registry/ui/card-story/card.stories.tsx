@@ -82,7 +82,7 @@ export const Default: Story = {};
  */
 export const LoginCard: Story = {
   render: () => (
-    <Card className="w-full max-w-sm">
+    <Card className="w-96">
       <CardHeader>
         <CardTitle>Login to your account</CardTitle>
         <CardDescription>

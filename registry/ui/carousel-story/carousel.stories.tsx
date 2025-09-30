@@ -2,6 +2,7 @@ import { expect, userEvent } from "storybook/test";
 // Replace nextjs-vite with the name of your framework
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 
+import { Card, CardContent } from "@/components/ui/card";
 import {
   Carousel,
   CarouselContent,
@@ -26,8 +27,12 @@ const meta: Meta<typeof Carousel> = {
       <CarouselContent>
         {Array.from({ length: 5 }).map((_, index) => (
           <CarouselItem key={index}>
-            <div className="bg-card flex aspect-square items-center justify-center rounded border p-6">
-              <span className="text-4xl font-semibold">{index + 1}</span>
+            <div className="p-1">
+              <Card>
+                <CardContent className="flex aspect-square items-center justify-center p-6">
+                  <span className="text-4xl font-semibold">{index + 1}</span>
+                </CardContent>
+              </Card>
             </div>
           </CarouselItem>
         ))}
@@ -59,8 +64,12 @@ export const Size: Story = {
       <CarouselContent>
         {Array.from({ length: 5 }).map((_, index) => (
           <CarouselItem key={index} className="basis-1/3">
-            <div className="bg-card flex aspect-square items-center justify-center rounded border p-6">
-              <span className="text-4xl font-semibold">{index + 1}</span>
+            <div className="p-1">
+              <Card>
+                <CardContent className="flex aspect-square items-center justify-center p-6">
+                  <span className="text-4xl font-semibold">{index + 1}</span>
+                </CardContent>
+              </Card>
             </div>
           </CarouselItem>
         ))}
