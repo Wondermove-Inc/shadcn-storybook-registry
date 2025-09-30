@@ -182,3 +182,14 @@ export const Disabled: Story = {
     disabled: true,
   },
 };
+
+/**
+ * Simple button example from shadcn/ui documentation
+ */
+export const Simple: Story = {
+  render: () => (
+    <div className="flex flex-wrap items-center gap-2 md:flex-row">
+      <Button>Button</Button>
+    </div>
+  ),
+};

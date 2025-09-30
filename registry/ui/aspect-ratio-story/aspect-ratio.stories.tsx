@@ -13,12 +13,12 @@ const meta: Meta<typeof AspectRatio> = {
   tags: ["autodocs"],
   argTypes: {},
   render: (args) => (
-    <AspectRatio {...args} className="bg-slate-50 dark:bg-slate-800">
+    <AspectRatio {...args} className="bg-muted rounded-lg">
       <Image
-        src="https://images.unsplash.com/photo-1576075796033-848c2a5f3696?w=800&dpr=2&q=80"
-        alt="Photo by Alvaro Pinot"
+        src="https://images.unsplash.com/photo-1588345921523-c2dcdb7f1dcd?w=800&dpr=2&q=80"
+        alt="Photo by Drew Beamer"
         fill
-        className="rounded-md object-cover"
+        className="h-full w-full rounded-lg object-cover dark:brightness-[0.2] dark:grayscale"
       />
     </AspectRatio>
   ),
@@ -69,4 +69,23 @@ export const Cinemascope: Story = {
   args: {
     ratio: 2.35 / 1,
   },
+};
+
+/**
+ * Example from shadcn/ui documentation
+ */
+export const ShadcnExample: Story = {
+  args: {
+    ratio: 16 / 9,
+  },
+  render: () => (
+    <AspectRatio ratio={16 / 9} className="bg-muted rounded-lg">
+      <Image
+        src="https://images.unsplash.com/photo-1588345921523-c2dcdb7f1dcd?w=800&dpr=2&q=80"
+        alt="Photo by Drew Beamer"
+        fill
+        className="h-full w-full rounded-lg object-cover dark:brightness-[0.2] dark:grayscale"
+      />
+    </AspectRatio>
+  ),
 };

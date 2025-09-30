@@ -1,4 +1,3 @@
-import { action } from "storybook/actions";
 import { expect, userEvent, waitFor, within } from "storybook/test";
 // Replace nextjs-vite with the name of your framework
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
@@ -29,7 +28,7 @@ const meta: Meta<typeof Toaster> = {
             description: new Date().toLocaleString(),
             action: {
               label: "Undo",
-              onClick: action("Undo clicked"),
+              onClick: () => console.log("Undo clicked"),
             },
           })
         }

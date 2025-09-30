@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 import { addDays } from "date-fns";
-import { action } from "storybook/actions";
-import { expect, userEvent } from "storybook/test";
+import { expect, userEvent, fn } from "storybook/test";
+import * as React from "react";
 
 import { Calendar } from "@/components/ui/calendar";
 
@@ -33,8 +33,8 @@ const meta = {
   args: {
     mode: "single",
     selected: new Date(),
-    onSelect: action("onDayClick"),
-    className: "rounded-md border w-fit",
+    onSelect: fn(),
+    className: "rounded-md border shadow-sm",
     disabled: false,
     numberOfMonths: 1,
     showOutsideDays: true,
@@ -98,6 +98,80 @@ export const MultipleMonths: Story = {
   args: {
     numberOfMonths: 2,
     showOutsideDays: false,
+  },
+};
+
+/**
+ * Example from shadcn/ui documentation with dropdown caption
+ */
+export const WithDropdownCaption: Story = {
+  render: () => {
+    const [date, setDate] = React.useState<Date | undefined>(new Date());
+
+    return (
+      <Calendar
+        mode="single"
+        selected={date}
+        onSelect={setDate}
+        className="rounded-md border shadow-sm"
+        captionLayout="dropdown"
+      />
+    );
+  },
+};
+
+/**
+ * Calendar with custom date restrictions
+ */
+export const WithDateRestrictions: Story = {
+  render: () => {
+    const [date, setDate] = React.useState<Date | undefined>(new Date());
+    const disabledDays = [
+      { dayOfWeek: [0, 6] }, // 주말 비활성화
+      { from: new Date(2024, 11, 25), to: new Date(2024, 11, 31) }, // 크리스마스 주간
+    ];
+
+    return (
+      <Calendar
+        mode="single"
+        selected={date}
+        onSelect={setDate}
+        disabled={disabledDays}
+        className="rounded-md border shadow-sm"
+      />
+    );
+  },
+};
+
+/**
+ * Calendar with custom modifiers for special dates
+ */
+export const WithCustomModifiers: Story = {
+  render: () => {
+    const [date, setDate] = React.useState<Date | undefined>(new Date());
+    const bookedDays = [
+      new Date(2024, 11, 12),
+      new Date(2024, 11, 15),
+      new Date(2024, 11, 20),
+    ];
+
+    return (
+      <Calendar
+        mode="single"
+        selected={date}
+        onSelect={setDate}
+        modifiers={{
+          booked: bookedDays,
+        }}
+        modifiersStyles={{
+          booked: { 
+            backgroundColor: "hsl(var(--destructive))",
+            color: "hsl(var(--destructive-foreground))",
+          }
+        }}
+        className="rounded-md border shadow-sm"
+      />
+    );
   },
 };
 

@@ -13,7 +13,6 @@ import {
 } from "@/components/ui/popover";
 import { CalendarIcon, ChevronDownIcon } from "lucide-react";
 import { useState } from "react";
-import { action } from "storybook/actions";
 
 /**
  * A window overlaid on either the primary window or another dialog window,
@@ -68,7 +67,7 @@ export const WithPopover: Story = {
               onSelect={(date) => {
                 setDate(date);
                 setOpen(false);
-                action("date selected")(date);
+                console.log("date selected", date);
               }}
             />
           </PopoverContent>
@@ -147,7 +146,7 @@ export const WithInput: Story = {
               if (isValidDate(date)) {
                 setDate(date);
                 setMonth(date);
-                action("date input changed")(date);
+                console.log("date input changed", date);
               }
             }}
             onKeyDown={(e) => {
@@ -184,7 +183,7 @@ export const WithInput: Story = {
                   setDate(date);
                   setValue(formatDate(date));
                   setOpen(false);
-                  action("date selected")(date);
+                  console.log("date selected", date);
                 }}
               />
             </PopoverContent>
@@ -266,7 +265,7 @@ export const WithDateTime: Story = {
                 onSelect={(date) => {
                   setDate(date);
                   setOpen(false);
-                  action("date selected")(date);
+                  console.log("date selected", date);
                 }}
               />
             </PopoverContent>
@@ -291,7 +290,7 @@ export const WithDateTime: Story = {
                 .map(Number);
               date.setHours(hours, minutes, seconds);
               setDate(date);
-              action("time selected")(date);
+              console.log("time selected", date);
             }}
             className="bg-background appearance-none [&::-webkit-calendar-picker-indicator]:hidden [&::-webkit-calendar-picker-indicator]:appearance-none"
           />

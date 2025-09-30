@@ -1,6 +1,6 @@
 // Replace nextjs-vite with the name of your framework
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
-import { AlertCircle } from "lucide-react";
+import { AlertCircleIcon, CheckCircle2Icon, PopcornIcon } from "lucide-react";
 
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 
@@ -39,19 +39,85 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {};
 
 /**
- * Use the `destructive` alert to indicate a destructive action.
+ * Success alert with icon
  */
-export const Destructive: Story = {
-  render: (args) => (
-    <Alert {...args}>
-      <AlertCircle className="h-4 w-4" />
-      <AlertTitle>Error</AlertTitle>
+export const Success: Story = {
+  render: () => (
+    <Alert>
+      <CheckCircle2Icon />
+      <AlertTitle>Success! Your changes have been saved</AlertTitle>
       <AlertDescription>
-        Your session has expired. Please log in again.
+        This is an alert with icon, title and description.
       </AlertDescription>
     </Alert>
   ),
-  args: {
-    variant: "destructive",
-  },
+};
+
+/**
+ * Alert with only title and icon
+ */
+export const TitleOnly: Story = {
+  render: () => (
+    <Alert>
+      <PopcornIcon />
+      <AlertTitle>
+        This Alert has a title and an icon. No description.
+      </AlertTitle>
+    </Alert>
+  ),
+};
+
+/**
+ * Destructive alert with detailed information
+ */
+export const Destructive: Story = {
+  render: () => (
+    <Alert variant="destructive">
+      <AlertCircleIcon />
+      <AlertTitle>Unable to process your payment.</AlertTitle>
+      <AlertDescription>
+        <p>Please verify your billing information and try again.</p>
+        <ul className="list-inside list-disc text-sm">
+          <li>Check your card details</li>
+          <li>Ensure sufficient funds</li>
+          <li>Verify billing address</li>
+        </ul>
+      </AlertDescription>
+    </Alert>
+  ),
+};
+
+/**
+ * All alert variations from shadcn/ui documentation
+ */
+export const AllVariants: Story = {
+  render: () => (
+    <div className="grid w-full max-w-xl items-start gap-4">
+      <Alert>
+        <CheckCircle2Icon />
+        <AlertTitle>Success! Your changes have been saved</AlertTitle>
+        <AlertDescription>
+          This is an alert with icon, title and description.
+        </AlertDescription>
+      </Alert>
+      <Alert>
+        <PopcornIcon />
+        <AlertTitle>
+          This Alert has a title and an icon. No description.
+        </AlertTitle>
+      </Alert>
+      <Alert variant="destructive">
+        <AlertCircleIcon />
+        <AlertTitle>Unable to process your payment.</AlertTitle>
+        <AlertDescription>
+          <p>Please verify your billing information and try again.</p>
+          <ul className="list-inside list-disc text-sm">
+            <li>Check your card details</li>
+            <li>Ensure sufficient funds</li>
+            <li>Verify billing address</li>
+          </ul>
+        </AlertDescription>
+      </Alert>
+    </div>
+  ),
 };

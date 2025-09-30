@@ -1,7 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 import { useForm } from "react-hook-form";
-import { action } from "storybook/actions";
 import { expect, userEvent } from "storybook/test";
 import * as z from "zod";
 
@@ -45,7 +44,7 @@ const ProfileForm = (args: Story["args"]) => {
     },
   });
   function onSubmit(values: z.infer<typeof formSchema>) {
-    action("onSubmit")(values);
+    console.log("onSubmit", values);
   }
   return (
     <Form {...args} {...form}>

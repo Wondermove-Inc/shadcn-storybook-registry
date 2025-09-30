@@ -12,6 +12,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
+import { Button } from "@/components/ui/button";
 import { userEvent, within } from "storybook/test";
 
 /**
@@ -25,10 +26,12 @@ const meta = {
   argTypes: {},
   render: (args) => (
     <AlertDialog {...args}>
-      <AlertDialogTrigger>Open</AlertDialogTrigger>
+      <AlertDialogTrigger asChild>
+        <Button variant="outline">Show Dialog</Button>
+      </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>Are you sure absolutely sure?</AlertDialogTitle>
+          <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
           <AlertDialogDescription>
             This action cannot be undone. This will permanently delete your
             account and remove your data from our servers.
@@ -64,7 +67,7 @@ export const ShouldOpenClose: Story = {
     await step("open the alert dialog", async () => {
       await userEvent.click(
         await canvas.getByRole("button", {
-          name: /open/i,
+          name: /show dialog/i,
         }),
       );
     });

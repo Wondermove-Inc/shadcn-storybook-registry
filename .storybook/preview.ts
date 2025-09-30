@@ -1,4 +1,5 @@
 import type { Preview } from "@storybook/nextjs-vite";
+import { withThemeByClassName } from "@storybook/addon-themes";
 
 import "../app/globals.css";
 
@@ -20,6 +21,28 @@ const preview: Preview = {
   },
 
   tags: ["autodocs"],
+  decorators: [
+    withThemeByClassName({
+      themes: {
+        light: "light",
+        dark: "dark",
+      },
+      defaultTheme: "light",
+    }),
+  ],
 };
 
 export default preview;
+
+// Set default theme
+export const globalTypes = {
+  theme: {
+    defaultValue: "light",
+    toolbar: {
+      title: "Theme",
+      icon: "paintbrush",
+      items: ["light", "dark"],
+      dynamicTitle: true,
+    },
+  },
+};
