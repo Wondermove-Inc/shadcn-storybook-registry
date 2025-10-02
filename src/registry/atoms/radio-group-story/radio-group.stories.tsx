@@ -26,7 +26,7 @@ import {
  * the buttons can be checked at a time.
  */
 const meta = {
-  title: "atoms/RadioGroup",
+  title: "ui/RadioGroup",
   component: RadioGroup,
   tags: ["autodocs"],
   parameters: {

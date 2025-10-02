@@ -216,7 +216,7 @@ function ListItem({
  * A collection of links for navigating websites.
  */
 const meta = {
-  title: "atoms/NavigationMenu",
+  title: "ui/NavigationMenu",
   component: NavigationMenuDemo,
   tags: ["autodocs"],
   parameters: {

@@ -41,7 +41,7 @@ export function AlertDialogDemo() {
  * a response.
  */
 const meta = {
-  title: "atoms/AlertDialog",
+  title: "ui/AlertDialog",
   component: AlertDialog,
   tags: ["autodocs"],
   parameters: {

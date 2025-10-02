@@ -66,7 +66,7 @@ function PopoverDemo() {
  * Displays rich content in a portal, triggered by a button.
  */
 const meta = {
-  title: "atoms/Popover",
+  title: "ui/Popover",
   component: PopoverDemo,
   tags: ["autodocs"],
   parameters: {

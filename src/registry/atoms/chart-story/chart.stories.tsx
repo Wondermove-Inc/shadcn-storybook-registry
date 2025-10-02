@@ -75,14 +75,13 @@ export function ChartDemo() {
  * Recharts components built on top of the Chart component.
  */
 const meta = {
-  title: "atoms/Chart",
+  title: "ui/Chart",
   component: ChartContainer,
   tags: ["autodocs"],
   parameters: {
     layout: "centered",
   },
   excludeStories: /.*Demo$/,
-  render: () => <ChartDemo />
 } satisfies Meta<typeof ChartContainer>;
 
 export default meta;
@@ -92,5 +91,11 @@ type Story = StoryObj<typeof meta>;
 /**
  * The default form of the chart.
  */
-export const Default: Story = {};
+export const Default: Story = {
+  args: {
+    config: {},
+    children: <></>
+  },
+  render: () => <ChartDemo />
+};
 

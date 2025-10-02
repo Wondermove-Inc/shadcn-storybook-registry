@@ -62,7 +62,7 @@ export function ToggleDisabled() {
  * A two-state button that can be either on or off.
  */
 const meta: Meta<typeof Toggle> = {
-  title: "atoms/Toggle",
+  title: "ui/Toggle",
   component: Toggle,
   tags: ["autodocs"],
   parameters: {

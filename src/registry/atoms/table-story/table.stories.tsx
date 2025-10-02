@@ -94,7 +94,7 @@ export function TableDemo() {
  * A responsive table component.
  */
 const meta = {
-  title: "atoms/Table",
+  title: "ui/Table",
   component: Table,
   tags: ["autodocs"],
   parameters: {

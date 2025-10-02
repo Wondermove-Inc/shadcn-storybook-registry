@@ -17,7 +17,7 @@ function LabelDemo() {
  * Renders an accessible label associated with controls.
  */
 const meta = {
-  title: "atoms/Label",
+  title: "ui/Label",
   component: LabelDemo,
   tags: ["autodocs"],
   parameters: {

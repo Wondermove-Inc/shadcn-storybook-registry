@@ -15,7 +15,7 @@ import {
 } from "@/components/ui/popover";
 
 const meta: Meta = {
-  title: "atoms/Calendar/Blocks/Date and Time Picker",
+  title: "ui/Calendar/Blocks/Date and Time Picker",
   parameters: {
     layout: "centered",
   },

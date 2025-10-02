@@ -45,7 +45,7 @@ export function AvatarDemo() {
  * An image element with a fallback for representing the user.
  */
 const meta = {
-  title: "atoms/Avatar",
+  title: "ui/Avatar",
   component: Avatar,
   tags: ["autodocs"],
   parameters: {

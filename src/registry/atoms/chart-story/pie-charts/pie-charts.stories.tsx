@@ -15,7 +15,7 @@ import { ChartPieStacked } from "./pie-chart-stacked";
 import { ChartPieInteractive } from "./pie-chart-interactive";
 
 const meta = {
-  title: "atoms/Chart/Pie Charts",
+  title: "ui/Chart/Pie Charts",
   component: ChartContainer,
   tags: ["autodocs"],
 } satisfies Meta<typeof ChartContainer>;

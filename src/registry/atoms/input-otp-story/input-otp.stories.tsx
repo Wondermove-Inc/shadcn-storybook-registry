@@ -46,7 +46,7 @@ function InputOTPDemo() {
  * Accessible one-time password component with copy paste functionality.
  */
 const meta = {
-  title: "atoms/InputOTP",
+  title: "ui/InputOTP",
   component: InputOTPDemo,
   tags: ["autodocs"],
   parameters: {

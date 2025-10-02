@@ -33,7 +33,7 @@ const FormSchema = z.object({
 });
 
 const meta: Meta = {
-  title: "atoms/Calendar/Blocks/Form Integration",
+  title: "ui/Calendar/Blocks/Form Integration",
   parameters: {
     layout: "centered",
   },

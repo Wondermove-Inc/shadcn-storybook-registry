@@ -67,7 +67,7 @@ export function AccordionDemo() {
  * of content.
  */
 const meta = {
-  title: "atoms/Accordion",
+  title: "ui/Accordion",
   component: Accordion,
   tags: ["autodocs"],
   parameters: {
@@ -84,5 +84,9 @@ type Story = StoryObj<typeof meta>;
 /**
  * The default single accordion.
  */
-export const Default: Story = {};
+export const Default: Story = {
+  args: {
+    type: "single"
+  }
+};
 

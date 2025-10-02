@@ -9,7 +9,7 @@ import { Progress } from "@/components/ui/progress"
  * displayed as a progress bar.
  */
 const meta = {
-  title: "atoms/Progress",
+  title: "ui/Progress",
   component: Progress,
   tags: ["autodocs"],
   parameters: {

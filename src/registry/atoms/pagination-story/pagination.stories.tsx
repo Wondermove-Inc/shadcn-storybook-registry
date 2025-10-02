@@ -42,7 +42,7 @@ function PaginationDemo() {
  * Pagination with page navigation, next and previous links.
  */
 const meta = {
-  title: "atoms/Pagination",
+  title: "ui/Pagination",
   component: PaginationDemo,
   tags: ["autodocs"],
   parameters: {

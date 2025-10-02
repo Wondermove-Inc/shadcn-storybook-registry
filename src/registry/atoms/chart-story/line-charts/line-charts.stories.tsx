@@ -14,7 +14,7 @@ import { ChartLineLabel } from "./line-chart-label";
 import { ChartLineLabelCustom } from "./line-chart-label-custom";
 
 const meta = {
-  title: "atoms/Chart/Line Charts",
+  title: "ui/Chart/Line Charts",
   component: ChartContainer,
   tags: ["autodocs"],
 } satisfies Meta<typeof ChartContainer>;

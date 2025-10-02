@@ -28,7 +28,7 @@ export function SeparatorDemo() {
  * Visually or semantically separates content.
  */
 const meta = {
-  title: "atoms/Separator",
+  title: "ui/Separator",
   component: Separator,
   tags: ["autodocs"],
   parameters: {

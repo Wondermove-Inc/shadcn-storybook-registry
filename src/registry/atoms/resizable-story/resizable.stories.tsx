@@ -9,7 +9,7 @@ import {
  * Accessible resizable panel groups and layouts with keyboard support.
  */
 const meta = {
-  title: "atoms/Resizable",
+  title: "ui/Resizable",
   component: ResizablePanelGroup,
   tags: ["autodocs"],
   parameters: {

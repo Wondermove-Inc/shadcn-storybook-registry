@@ -14,7 +14,7 @@ import { ChartRadarMultiple } from "./radar-chart-multiple";
 import { ChartRadarLegend } from "./radar-chart-legend";
 
 const meta = {
-  title: "atoms/Chart/Radar Charts",
+  title: "ui/Chart/Radar Charts",
   component: ChartContainer,
   tags: ["autodocs"],
 } satisfies Meta<typeof ChartContainer>;

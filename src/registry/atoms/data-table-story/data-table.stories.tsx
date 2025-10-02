@@ -316,7 +316,7 @@ function DataTableDemo() {
  * A powerful data table component with sorting, filtering, and pagination.
  */
 const meta = {
-  title: "atoms/DataTable",
+  title: "ui/DataTable",
   component: DataTableDemo,
   tags: ["autodocs"],
   parameters: {

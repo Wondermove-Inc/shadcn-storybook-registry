@@ -24,7 +24,7 @@ export function SliderDemo({ className, ...props }: SliderProps) {
  * An input where the user selects a value from within a given range.
  */
 const meta = {
-  title: "atoms/Slider",
+  title: "ui/Slider",
   component: Slider,
   tags: ["autodocs"],
   parameters: {

@@ -22,7 +22,7 @@ import {
  * triggered by a button.
  */
 const meta = {
-  title: "atoms/ContextMenu",
+  title: "ui/ContextMenu",
   component: ContextMenu,
   tags: ["autodocs"],
   parameters: {

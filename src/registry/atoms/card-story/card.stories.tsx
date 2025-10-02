@@ -68,7 +68,7 @@ export function CardDemo() {
  * Displays a card with header, content, and footer.
  */
 const meta = {
-  title: "atoms/Card",
+  title: "ui/Card",
   component: Card,
   tags: ["autodocs"],
   parameters: {

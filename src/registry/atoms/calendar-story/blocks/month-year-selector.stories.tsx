@@ -14,7 +14,7 @@ import {
 } from "@/components/ui/select";
 
 const meta: Meta = {
-  title: "atoms/Calendar/Blocks/Month and Year Selector",
+  title: "ui/Calendar/Blocks/Month and Year Selector",
   parameters: {
     layout: "centered",
   },

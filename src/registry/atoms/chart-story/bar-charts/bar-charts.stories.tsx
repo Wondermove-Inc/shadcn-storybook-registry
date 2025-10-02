@@ -12,7 +12,7 @@ import { ChartBarActive } from "./bar-chart-active";
 import { ChartBarNegative } from "./bar-chart-negative";
 
 const meta = {
-  title: "atoms/Chart/Bar Charts",
+  title: "ui/Chart/Bar Charts",
   component: ChartContainer,
   tags: ["autodocs"],
 } satisfies Meta<typeof ChartContainer>;

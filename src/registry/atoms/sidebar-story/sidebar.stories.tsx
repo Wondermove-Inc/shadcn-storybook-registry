@@ -80,7 +80,7 @@ const items = [
  * A composable, themeable and customizable sidebar component.
  */
 const meta = {
-  title: "atoms/Sidebar",
+  title: "ui/Sidebar",
   component: Sidebar,
   tags: ["autodocs"],
   parameters: {

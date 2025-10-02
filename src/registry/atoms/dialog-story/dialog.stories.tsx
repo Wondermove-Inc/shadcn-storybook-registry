@@ -97,7 +97,7 @@ function CustomCloseButtonDemo() {
  * A dialog component for editing user profile information.
  */
 const meta = {
-  title: "atoms/Dialog",
+  title: "ui/Dialog",
   component: DialogDemo,
   tags: ["autodocs"],
   parameters: {

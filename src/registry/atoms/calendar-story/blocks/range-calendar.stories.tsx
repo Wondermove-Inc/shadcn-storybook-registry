@@ -6,7 +6,7 @@ import * as React from "react";
 import { Calendar } from "@/components/ui/calendar";
 
 const meta: Meta = {
-  title: "atoms/Calendar/Blocks/Range Calendar",
+  title: "ui/Calendar/Blocks/Range Calendar",
   parameters: {
     layout: "centered",
   },

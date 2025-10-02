@@ -110,7 +110,7 @@ export function ToggleGroupDisabled() {
  * A set of two-state buttons that can be toggled on or off.
  */
 const meta = {
-  title: "atoms/ToggleGroup",
+  title: "ui/ToggleGroup",
   component: ToggleGroup,
   tags: ["autodocs"],
   parameters: {

@@ -42,7 +42,7 @@ export function BreadcrumbDemo() {
  * Displays the path to the current resource using a hierarchy of links.
  */
 const meta = {
-  title: "atoms/Breadcrumb",
+  title: "ui/Breadcrumb",
   component: Breadcrumb,
   tags: ["autodocs"],
   parameters: {

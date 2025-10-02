@@ -44,7 +44,7 @@ function HoverCardDemo() {
  * A hover card with avatar and profile information.
  */
 const meta = {
-  title: "atoms/HoverCard",
+  title: "ui/HoverCard",
   component: HoverCardDemo,
   tags: ["autodocs"],
   parameters: {

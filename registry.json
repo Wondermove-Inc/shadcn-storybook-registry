@@ -14,7 +14,7 @@
       "registryDependencies": ["accordion"],
       "files": [
         {
-          "path": "registry/atoms/accordion-story/accordion.stories.tsx",
+          "path": "src/registry/atoms/accordion-story/accordion.stories.tsx",
           "type": "registry:component"
         }
       ]
@@ -30,7 +30,7 @@
       "dependencies": ["lucide-react"],
       "files": [
         {
-          "path": "registry/atoms/alert-story/alert.stories.tsx",
+          "path": "src/registry/atoms/alert-story/alert.stories.tsx",
           "type": "registry:component"
         }
       ]
@@ -45,7 +45,7 @@
       "registryDependencies": ["alert-dialog"],
       "files": [
         {
-          "path": "registry/atoms/alert-dialog-story/alert-dialog.stories.tsx",
+          "path": "src/registry/atoms/alert-dialog-story/alert-dialog.stories.tsx",
           "type": "registry:component"
         }
       ]
@@ -60,7 +60,7 @@
       "registryDependencies": ["aspect-ratio"],
       "files": [
         {
-          "path": "registry/atoms/aspect-ratio-story/aspect-ratio.stories.tsx",
+          "path": "src/registry/atoms/aspect-ratio-story/aspect-ratio.stories.tsx",
           "type": "registry:component"
         }
       ]
@@ -75,7 +75,7 @@
       "registryDependencies": ["avatar"],
       "files": [
         {
-          "path": "registry/atoms/avatar-story/avatar.stories.tsx",
+          "path": "src/registry/atoms/avatar-story/avatar.stories.tsx",
           "type": "registry:component"
         }
       ]
@@ -90,7 +90,7 @@
       "registryDependencies": ["badge"],
       "files": [
         {
-          "path": "registry/atoms/badge-story/badge.stories.tsx",
+          "path": "src/registry/atoms/badge-story/badge.stories.tsx",
           "type": "registry:component"
         }
       ]
@@ -106,7 +106,7 @@
       "dependencies": ["lucide-react"],
       "files": [
         {
-          "path": "registry/atoms/breadcrumb-story/breadcrumb.stories.tsx",
+          "path": "src/registry/atoms/breadcrumb-story/breadcrumb.stories.tsx",
           "type": "registry:component"
         }
       ]
@@ -122,7 +122,7 @@
       "dependencies": ["lucide-react"],
       "files": [
         {
-          "path": "registry/atoms/button-story/button.stories.tsx",
+          "path": "src/registry/atoms/button-story/button.stories.tsx",
           "type": "registry:component"
         }
       ]
@@ -138,7 +138,7 @@
       "dependencies": ["date-fns"],
       "files": [
         {
-          "path": "registry/atoms/calendar-story/calendar.stories.tsx",
+          "path": "src/registry/atoms/calendar-story/calendar.stories.tsx",
           "type": "registry:component"
         }
       ]
@@ -154,7 +154,7 @@
       "dependencies": ["lucide-react"],
       "files": [
         {
-          "path": "registry/atoms/card-story/card.stories.tsx",
+          "path": "src/registry/atoms/card-story/card.stories.tsx",
           "type": "registry:component"
         }
       ]
@@ -170,7 +170,7 @@
       "dependencies": ["embla-carousel-react"],
       "files": [
         {
-          "path": "registry/atoms/carousel-story/carousel.stories.tsx",
+          "path": "src/registry/atoms/carousel-story/carousel.stories.tsx",
           "type": "registry:component"
         }
       ]
@@ -186,7 +186,7 @@
       "dependencies": ["recharts"],
       "files": [
         {
-          "path": "registry/atoms/chart-story/chart.stories.tsx",
+          "path": "src/registry/atoms/chart-story/chart.stories.tsx",
           "type": "registry:component"
         }
       ]
@@ -201,7 +201,7 @@
       "registryDependencies": ["checkbox", "label"],
       "files": [
         {
-          "path": "registry/atoms/checkbox-story/checkbox.stories.tsx",
+          "path": "src/registry/atoms/checkbox-story/checkbox.stories.tsx",
           "type": "registry:component"
         }
       ]
@@ -217,7 +217,7 @@
       "dependencies": ["lucide-react"],
       "files": [
         {
-          "path": "registry/atoms/collapsible-story/collapsible.stories.tsx",
+          "path": "src/registry/atoms/collapsible-story/collapsible.stories.tsx",
           "type": "registry:component"
         }
       ]
@@ -233,7 +233,7 @@
       "dependencies": ["lucide-react"],
       "files": [
         {
-          "path": "registry/atoms/combobox-story/combobox.stories.tsx",
+          "path": "src/registry/atoms/combobox-story/combobox.stories.tsx",
           "type": "registry:component"
         }
       ]
@@ -248,7 +248,7 @@
       "registryDependencies": ["dialog", "command"],
       "files": [
         {
-          "path": "registry/atoms/command-story/command.stories.tsx",
+          "path": "src/registry/atoms/command-story/command.stories.tsx",
           "type": "registry:component"
         }
       ]
@@ -263,7 +263,7 @@
       "registryDependencies": ["context-menu"],
       "files": [
         {
-          "path": "registry/atoms/context-menu-story/context-menu.stories.tsx",
+          "path": "src/registry/atoms/context-menu-story/context-menu.stories.tsx",
           "type": "registry:component"
         }
       ]
@@ -285,7 +285,7 @@
       "dependencies": ["@tanstack/react-table", "lucide-react"],
       "files": [
         {
-          "path": "registry/atoms/data-table-story/data-table.stories.tsx",
+          "path": "src/registry/atoms/data-table-story/data-table.stories.tsx",
           "type": "registry:component"
         }
       ]
@@ -307,7 +307,7 @@
       "dependencies": ["lucide-react"],
       "files": [
         {
-          "path": "registry/atoms/date-picker-story/date-picker.stories.tsx",
+          "path": "src/registry/atoms/date-picker-story/date-picker.stories.tsx",
           "type": "registry:component"
         }
       ]
@@ -322,7 +322,7 @@
       "registryDependencies": ["dialog"],
       "files": [
         {
-          "path": "registry/atoms/dialog-story/dialog.stories.tsx",
+          "path": "src/registry/atoms/dialog-story/dialog.stories.tsx",
           "type": "registry:component"
         }
       ]
@@ -337,7 +337,7 @@
       "registryDependencies": ["drawer"],
       "files": [
         {
-          "path": "registry/atoms/drawer-story/drawer.stories.tsx",
+          "path": "src/registry/atoms/drawer-story/drawer.stories.tsx",
           "type": "registry:component"
         }
       ]
@@ -353,7 +353,7 @@
       "dependencies": ["lucide-react"],
       "files": [
         {
-          "path": "registry/atoms/dropdown-menu-story/dropdown-menu.stories.tsx",
+          "path": "src/registry/atoms/dropdown-menu-story/dropdown-menu.stories.tsx",
           "type": "registry:component"
         }
       ]
@@ -369,7 +369,7 @@
       "dependencies": ["@hookform/resolvers", "zod", "react-hook-form"],
       "files": [
         {
-          "path": "registry/atoms/form-story/form.stories.tsx",
+          "path": "src/registry/atoms/form-story/form.stories.tsx",
           "type": "registry:component"
         }
       ]
@@ -384,7 +384,7 @@
       "registryDependencies": ["hover-card"],
       "files": [
         {
-          "path": "registry/atoms/hover-card-story/hover-card.stories.tsx",
+          "path": "src/registry/atoms/hover-card-story/hover-card.stories.tsx",
           "type": "registry:component"
         }
       ]
@@ -399,7 +399,7 @@
       "registryDependencies": ["input", "label", "button"],
       "files": [
         {
-          "path": "registry/atoms/input-story/input.stories.tsx",
+          "path": "src/registry/atoms/input-story/input.stories.tsx",
           "type": "registry:component"
         }
       ]
@@ -415,7 +415,7 @@
       "dependencies": ["input-otp"],
       "files": [
         {
-          "path": "registry/atoms/input-otp-story/input-otp.stories.tsx",
+          "path": "src/registry/atoms/input-otp-story/input-otp.stories.tsx",
           "type": "registry:component"
         }
       ]
@@ -430,7 +430,7 @@
       "registryDependencies": ["label"],
       "files": [
         {
-          "path": "registry/atoms/label-story/label.stories.tsx",
+          "path": "src/registry/atoms/label-story/label.stories.tsx",
           "type": "registry:component"
         }
       ]
@@ -445,7 +445,7 @@
       "registryDependencies": ["menubar"],
       "files": [
         {
-          "path": "registry/atoms/menubar-story/menubar.stories.tsx",
+          "path": "src/registry/atoms/menubar-story/menubar.stories.tsx",
           "type": "registry:component"
         }
       ]
@@ -460,7 +460,7 @@
       "registryDependencies": ["navigation-menu"],
       "files": [
         {
-          "path": "registry/atoms/navigation-menu-story/navigation-menu.stories.tsx",
+          "path": "src/registry/atoms/navigation-menu-story/navigation-menu.stories.tsx",
           "type": "registry:component"
         }
       ]
@@ -475,7 +475,7 @@
       "registryDependencies": ["button"],
       "files": [
         {
-          "path": "registry/atoms/pagination-story/pagination.stories.tsx",
+          "path": "src/registry/atoms/pagination-story/pagination.stories.tsx",
           "type": "registry:component"
         }
       ]
@@ -490,7 +490,7 @@
       "registryDependencies": ["popover"],
       "files": [
         {
-          "path": "registry/atoms/popover-story/popover.stories.tsx",
+          "path": "src/registry/atoms/popover-story/popover.stories.tsx",
           "type": "registry:component"
         }
       ]
@@ -505,7 +505,7 @@
       "registryDependencies": ["progress"],
       "files": [
         {
-          "path": "registry/atoms/progress-story/progress.stories.tsx",
+          "path": "src/registry/atoms/progress-story/progress.stories.tsx",
           "type": "registry:component"
         }
       ]
@@ -520,7 +520,7 @@
       "registryDependencies": ["radio-group", "label"],
       "files": [
         {
-          "path": "registry/atoms/radio-group-story/radio-group.stories.tsx",
+          "path": "src/registry/atoms/radio-group-story/radio-group.stories.tsx",
           "type": "registry:component"
         }
       ]
@@ -535,7 +535,7 @@
       "registryDependencies": ["resizable"],
       "files": [
         {
-          "path": "registry/atoms/resizable-story/resizable.stories.tsx",
+          "path": "src/registry/atoms/resizable-story/resizable.stories.tsx",
           "type": "registry:component"
         }
       ]
@@ -550,7 +550,7 @@
       "registryDependencies": ["scroll-area"],
       "files": [
         {
-          "path": "registry/atoms/scroll-area-story/scroll-area.stories.tsx",
+          "path": "src/registry/atoms/scroll-area-story/scroll-area.stories.tsx",
           "type": "registry:component"
         }
       ]
@@ -565,7 +565,7 @@
       "registryDependencies": ["select"],
       "files": [
         {
-          "path": "registry/atoms/select-story/select.stories.tsx",
+          "path": "src/registry/atoms/select-story/select.stories.tsx",
           "type": "registry:component"
         }
       ]
@@ -580,7 +580,7 @@
       "registryDependencies": ["separator"],
       "files": [
         {
-          "path": "registry/atoms/separator-story/separator.stories.tsx",
+          "path": "src/registry/atoms/separator-story/separator.stories.tsx",
           "type": "registry:component"
         }
       ]
@@ -595,7 +595,7 @@
       "registryDependencies": ["sheet"],
       "files": [
         {
-          "path": "registry/atoms/sheet-story/sheet.stories.tsx",
+          "path": "src/registry/atoms/sheet-story/sheet.stories.tsx",
           "type": "registry:component"
         }
       ]
@@ -611,7 +611,7 @@
       "dependencies": ["lucide-react"],
       "files": [
         {
-          "path": "registry/atoms/sidebar-story/sidebar.stories.tsx",
+          "path": "src/registry/atoms/sidebar-story/sidebar.stories.tsx",
           "type": "registry:component"
         }
       ]
@@ -626,7 +626,7 @@
       "registryDependencies": ["skeleton"],
       "files": [
         {
-          "path": "registry/atoms/skeleton-story/skeleton.stories.tsx",
+          "path": "src/registry/atoms/skeleton-story/skeleton.stories.tsx",
           "type": "registry:component"
         }
       ]
@@ -641,7 +641,7 @@
       "registryDependencies": ["slider"],
       "files": [
         {
-          "path": "registry/atoms/slider-story/slider.stories.tsx",
+          "path": "src/registry/atoms/slider-story/slider.stories.tsx",
           "type": "registry:component"
         }
       ]
@@ -657,7 +657,7 @@
       "dependencies": ["sonner"],
       "files": [
         {
-          "path": "registry/atoms/sonner-story/sonner.stories.tsx",
+          "path": "src/registry/atoms/sonner-story/sonner.stories.tsx",
           "type": "registry:component"
         }
       ]
@@ -672,7 +672,7 @@
       "registryDependencies": ["switch", "label"],
       "files": [
         {
-          "path": "registry/atoms/switch-story/switch.stories.tsx",
+          "path": "src/registry/atoms/switch-story/switch.stories.tsx",
           "type": "registry:component"
         }
       ]
@@ -687,7 +687,7 @@
       "registryDependencies": ["table"],
       "files": [
         {
-          "path": "registry/atoms/table-story/table.stories.tsx",
+          "path": "src/registry/atoms/table-story/table.stories.tsx",
           "type": "registry:component"
         }
       ]
@@ -702,7 +702,7 @@
       "registryDependencies": ["tabs"],
       "files": [
         {
-          "path": "registry/atoms/tabs-story/tabs.stories.tsx",
+          "path": "src/registry/atoms/tabs-story/tabs.stories.tsx",
           "type": "registry:component"
         }
       ]
@@ -717,7 +717,7 @@
       "registryDependencies": ["textarea", "button", "label"],
       "files": [
         {
-          "path": "registry/atoms/textarea-story/textarea.stories.tsx",
+          "path": "src/registry/atoms/textarea-story/textarea.stories.tsx",
           "type": "registry:component"
         }
       ]
@@ -733,7 +733,7 @@
       "dependencies": ["lucide-react"],
       "files": [
         {
-          "path": "registry/atoms/toggle-story/toggle.stories.tsx",
+          "path": "src/registry/atoms/toggle-story/toggle.stories.tsx",
           "type": "registry:component"
         }
       ]
@@ -749,7 +749,7 @@
       "dependencies": ["lucide-react"],
       "files": [
         {
-          "path": "registry/atoms/toggle-group-story/toggle-group.stories.tsx",
+          "path": "src/registry/atoms/toggle-group-story/toggle-group.stories.tsx",
           "type": "registry:component"
         }
       ]
@@ -765,7 +765,7 @@
       "dependencies": ["lucide-react"],
       "files": [
         {
-          "path": "registry/atoms/tooltip-story/tooltip.stories.tsx",
+          "path": "src/registry/atoms/tooltip-story/tooltip.stories.tsx",
           "type": "registry:component"
         }
       ]
@@ -780,7 +780,7 @@
       "registryDependencies": ["table"],
       "files": [
         {
-          "path": "registry/tokens/color-story/color.stories.tsx",
+          "path": "src/registry/tokens/color-story/color.stories.tsx",
           "type": "registry:component"
         }
       ]
@@ -795,7 +795,7 @@
       "registryDependencies": ["table"],
       "files": [
         {
-          "path": "registry/tokens/radius-story/radius.stories.tsx",
+          "path": "src/registry/tokens/radius-story/radius.stories.tsx",
           "type": "registry:component"
         }
       ]
@@ -810,7 +810,7 @@
       "registryDependencies": ["table"],
       "files": [
         {
-          "path": "registry/tokens/shadow-story/shadow.stories.tsx",
+          "path": "src/registry/tokens/shadow-story/shadow.stories.tsx",
           "type": "registry:component"
         }
       ]
@@ -825,7 +825,7 @@
       "registryDependencies": ["table"],
       "files": [
         {
-          "path": "registry/tokens/spacing-story/spacing.stories.tsx",
+          "path": "src/registry/tokens/spacing-story/spacing.stories.tsx",
           "type": "registry:component"
         }
       ]
@@ -840,7 +840,7 @@
       "registryDependencies": ["table"],
       "files": [
         {
-          "path": "registry/tokens/typography-story/typography.stories.tsx",
+          "path": "src/registry/tokens/typography-story/typography.stories.tsx",
           "type": "registry:component"
         }
       ]
@@ -855,7 +855,7 @@
       "registryDependencies": ["typography"],
       "files": [
         {
-          "path": "registry/foundation/typography-components-story/typography.stories.tsx",
+          "path": "src/registry/foundation/typography-components-story/typography.stories.tsx",
           "type": "registry:component"
         }
       ]
@@ -878,11 +878,11 @@
       ],
       "files": [
         {
-          "path": "registry/templates/dashboard-template/dashboard-template.tsx",
+          "path": "src/registry/templates/dashboard-template/dashboard-template.tsx",
           "type": "registry:component"
         },
         {
-          "path": "registry/templates/dashboard-template/dashboard-template.stories.tsx",
+          "path": "src/registry/templates/dashboard-template/dashboard-template.stories.tsx",
           "type": "registry:component"
         }
       ]
@@ -941,211 +941,211 @@
       ],
       "files": [
         {
-          "path": "registry/atoms/accordion-story/accordion.stories.tsx",
+          "path": "src/registry/atoms/accordion-story/accordion.stories.tsx",
           "type": "registry:component"
         },
         {
-          "path": "registry/atoms/alert-story/alert.stories.tsx",
+          "path": "src/registry/atoms/alert-story/alert.stories.tsx",
           "type": "registry:component"
         },
         {
-          "path": "registry/atoms/alert-dialog-story/alert-dialog.stories.tsx",
+          "path": "src/registry/atoms/alert-dialog-story/alert-dialog.stories.tsx",
           "type": "registry:component"
         },
         {
-          "path": "registry/atoms/aspect-ratio-story/aspect-ratio.stories.tsx",
+          "path": "src/registry/atoms/aspect-ratio-story/aspect-ratio.stories.tsx",
           "type": "registry:component"
         },
         {
-          "path": "registry/atoms/avatar-story/avatar.stories.tsx",
+          "path": "src/registry/atoms/avatar-story/avatar.stories.tsx",
           "type": "registry:component"
         },
         {
-          "path": "registry/atoms/badge-story/badge.stories.tsx",
+          "path": "src/registry/atoms/badge-story/badge.stories.tsx",
           "type": "registry:component"
         },
         {
-          "path": "registry/atoms/breadcrumb-story/breadcrumb.stories.tsx",
+          "path": "src/registry/atoms/breadcrumb-story/breadcrumb.stories.tsx",
           "type": "registry:component"
         },
         {
-          "path": "registry/atoms/button-story/button.stories.tsx",
+          "path": "src/registry/atoms/button-story/button.stories.tsx",
           "type": "registry:component"
         },
         {
-          "path": "registry/atoms/calendar-story/calendar.stories.tsx",
+          "path": "src/registry/atoms/calendar-story/calendar.stories.tsx",
           "type": "registry:component"
         },
         {
-          "path": "registry/atoms/card-story/card.stories.tsx",
+          "path": "src/registry/atoms/card-story/card.stories.tsx",
           "type": "registry:component"
         },
         {
-          "path": "registry/atoms/carousel-story/carousel.stories.tsx",
+          "path": "src/registry/atoms/carousel-story/carousel.stories.tsx",
           "type": "registry:component"
         },
         {
-          "path": "registry/atoms/chart-story/chart.stories.tsx",
+          "path": "src/registry/atoms/chart-story/chart.stories.tsx",
           "type": "registry:component"
         },
         {
-          "path": "registry/atoms/checkbox-story/checkbox.stories.tsx",
+          "path": "src/registry/atoms/checkbox-story/checkbox.stories.tsx",
           "type": "registry:component"
         },
         {
-          "path": "registry/atoms/collapsible-story/collapsible.stories.tsx",
+          "path": "src/registry/atoms/collapsible-story/collapsible.stories.tsx",
           "type": "registry:component"
         },
         {
-          "path": "registry/atoms/command-story/command.stories.tsx",
+          "path": "src/registry/atoms/command-story/command.stories.tsx",
           "type": "registry:component"
         },
         {
-          "path": "registry/atoms/context-menu-story/context-menu.stories.tsx",
+          "path": "src/registry/atoms/context-menu-story/context-menu.stories.tsx",
           "type": "registry:component"
         },
         {
-          "path": "registry/atoms/date-picker-story/date-picker.stories.tsx",
+          "path": "src/registry/atoms/date-picker-story/date-picker.stories.tsx",
           "type": "registry:component"
         },
         {
-          "path": "registry/atoms/dialog-story/dialog.stories.tsx",
+          "path": "src/registry/atoms/dialog-story/dialog.stories.tsx",
           "type": "registry:component"
         },
         {
-          "path": "registry/atoms/drawer-story/drawer.stories.tsx",
+          "path": "src/registry/atoms/drawer-story/drawer.stories.tsx",
           "type": "registry:component"
         },
         {
-          "path": "registry/atoms/dropdown-menu-story/dropdown-menu.stories.tsx",
+          "path": "src/registry/atoms/dropdown-menu-story/dropdown-menu.stories.tsx",
           "type": "registry:component"
         },
         {
-          "path": "registry/atoms/form-story/form.stories.tsx",
+          "path": "src/registry/atoms/form-story/form.stories.tsx",
           "type": "registry:component"
         },
         {
-          "path": "registry/atoms/hover-card-story/hover-card.stories.tsx",
+          "path": "src/registry/atoms/hover-card-story/hover-card.stories.tsx",
           "type": "registry:component"
         },
         {
-          "path": "registry/atoms/input-story/input.stories.tsx",
+          "path": "src/registry/atoms/input-story/input.stories.tsx",
           "type": "registry:component"
         },
         {
-          "path": "registry/atoms/input-otp-story/input-otp.stories.tsx",
+          "path": "src/registry/atoms/input-otp-story/input-otp.stories.tsx",
           "type": "registry:component"
         },
         {
-          "path": "registry/atoms/label-story/label.stories.tsx",
+          "path": "src/registry/atoms/label-story/label.stories.tsx",
           "type": "registry:component"
         },
         {
-          "path": "registry/atoms/menubar-story/menubar.stories.tsx",
+          "path": "src/registry/atoms/menubar-story/menubar.stories.tsx",
           "type": "registry:component"
         },
         {
-          "path": "registry/atoms/navigation-menu-story/navigation-menu.stories.tsx",
+          "path": "src/registry/atoms/navigation-menu-story/navigation-menu.stories.tsx",
           "type": "registry:component"
         },
         {
-          "path": "registry/atoms/pagination-story/pagination.stories.tsx",
+          "path": "src/registry/atoms/pagination-story/pagination.stories.tsx",
           "type": "registry:component"
         },
         {
-          "path": "registry/atoms/popover-story/popover.stories.tsx",
+          "path": "src/registry/atoms/popover-story/popover.stories.tsx",
           "type": "registry:component"
         },
         {
-          "path": "registry/atoms/progress-story/progress.stories.tsx",
+          "path": "src/registry/atoms/progress-story/progress.stories.tsx",
           "type": "registry:component"
         },
         {
-          "path": "registry/atoms/radio-group-story/radio-group.stories.tsx",
+          "path": "src/registry/atoms/radio-group-story/radio-group.stories.tsx",
           "type": "registry:component"
         },
         {
-          "path": "registry/atoms/resizable-story/resizable.stories.tsx",
+          "path": "src/registry/atoms/resizable-story/resizable.stories.tsx",
           "type": "registry:component"
         },
         {
-          "path": "registry/atoms/scroll-area-story/scroll-area.stories.tsx",
+          "path": "src/registry/atoms/scroll-area-story/scroll-area.stories.tsx",
           "type": "registry:component"
         },
         {
-          "path": "registry/atoms/select-story/select.stories.tsx",
+          "path": "src/registry/atoms/select-story/select.stories.tsx",
           "type": "registry:component"
         },
         {
-          "path": "registry/atoms/separator-story/separator.stories.tsx",
+          "path": "src/registry/atoms/separator-story/separator.stories.tsx",
           "type": "registry:component"
         },
         {
-          "path": "registry/atoms/sheet-story/sheet.stories.tsx",
+          "path": "src/registry/atoms/sheet-story/sheet.stories.tsx",
           "type": "registry:component"
         },
         {
-          "path": "registry/atoms/sidebar-story/sidebar.stories.tsx",
+          "path": "src/registry/atoms/sidebar-story/sidebar.stories.tsx",
           "type": "registry:component"
         },
         {
-          "path": "registry/atoms/skeleton-story/skeleton.stories.tsx",
+          "path": "src/registry/atoms/skeleton-story/skeleton.stories.tsx",
           "type": "registry:component"
         },
         {
-          "path": "registry/atoms/slider-story/slider.stories.tsx",
+          "path": "src/registry/atoms/slider-story/slider.stories.tsx",
           "type": "registry:component"
         },
         {
-          "path": "registry/atoms/sonner-story/sonner.stories.tsx",
+          "path": "src/registry/atoms/sonner-story/sonner.stories.tsx",
           "type": "registry:component"
         },
         {
-          "path": "registry/atoms/switch-story/switch.stories.tsx",
+          "path": "src/registry/atoms/switch-story/switch.stories.tsx",
           "type": "registry:component"
         },
         {
-          "path": "registry/atoms/table-story/table.stories.tsx",
+          "path": "src/registry/atoms/table-story/table.stories.tsx",
           "type": "registry:component"
         },
         {
-          "path": "registry/atoms/tabs-story/tabs.stories.tsx",
+          "path": "src/registry/atoms/tabs-story/tabs.stories.tsx",
           "type": "registry:component"
         },
         {
-          "path": "registry/atoms/textarea-story/textarea.stories.tsx",
+          "path": "src/registry/atoms/textarea-story/textarea.stories.tsx",
           "type": "registry:component"
         },
         {
-          "path": "registry/atoms/toggle-story/toggle.stories.tsx",
+          "path": "src/registry/atoms/toggle-story/toggle.stories.tsx",
           "type": "registry:component"
         },
         {
-          "path": "registry/atoms/toggle-group-story/toggle-group.stories.tsx",
+          "path": "src/registry/atoms/toggle-group-story/toggle-group.stories.tsx",
           "type": "registry:component"
         },
         {
-          "path": "registry/atoms/tooltip-story/tooltip.stories.tsx",
+          "path": "src/registry/atoms/tooltip-story/tooltip.stories.tsx",
           "type": "registry:component"
         },
         {
-          "path": "registry/tokens/color-story/color.stories.tsx",
+          "path": "src/registry/tokens/color-story/color.stories.tsx",
           "type": "registry:component"
         },
         {
-          "path": "registry/tokens/radius-story/radius.stories.tsx",
+          "path": "src/registry/tokens/radius-story/radius.stories.tsx",
           "type": "registry:component"
         },
         {
-          "path": "registry/tokens/shadow-story/shadow.stories.tsx",
+          "path": "src/registry/tokens/shadow-story/shadow.stories.tsx",
           "type": "registry:component"
         },
         {
-          "path": "registry/tokens/spacing-story/spacing.stories.tsx",
+          "path": "src/registry/tokens/spacing-story/spacing.stories.tsx",
           "type": "registry:component"
         },
         {
-          "path": "registry/tokens/typography-story/typography.stories.tsx",
+          "path": "src/registry/tokens/typography-story/typography.stories.tsx",
           "type": "registry:component"
         }
       ]

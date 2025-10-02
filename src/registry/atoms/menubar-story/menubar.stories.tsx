@@ -112,7 +112,7 @@ function MenubarDemo() {
  * quick access to a consistent set of commands.
  */
 const meta = {
-  title: "atoms/Menubar",
+  title: "ui/Menubar",
   component: MenubarDemo,
   tags: ["autodocs"],
   parameters: {

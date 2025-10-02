@@ -22,7 +22,7 @@ export function AspectRatioDemo() {
  * Displays content within a desired ratio.
  */
 const meta: Meta<typeof AspectRatio> = {
-  title: "atoms/AspectRatio",
+  title: "ui/AspectRatio",
   component: AspectRatio,
   tags: ["autodocs"],
   parameters: {

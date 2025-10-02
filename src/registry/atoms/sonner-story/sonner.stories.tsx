@@ -30,7 +30,7 @@ export function SonnerDemo() {
  * An opinionated toast component for React.
  */
 const meta: Meta<typeof Toaster> = {
-  title: "atoms/Sonner",
+  title: "ui/Sonner",
   component: Toaster,
   tags: ["autodocs"],
   parameters: {

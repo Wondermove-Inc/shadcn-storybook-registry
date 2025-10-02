@@ -50,7 +50,7 @@ export function CollapsibleDemo() {
  * An interactive component which expands/collapses a panel.
  */
 const meta = {
-  title: "atoms/Collapsible",
+  title: "ui/Collapsible",
   component: Collapsible,
   tags: ["autodocs"],
   parameters: {

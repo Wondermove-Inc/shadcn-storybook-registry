@@ -124,7 +124,7 @@ export function ComboboxDemo() {
  * An autocomplete input that combines a button, dropdown menu, and command palette for selecting options.
  */
 const meta: Meta<typeof ComboboxDemo> = {
-  title: "atoms/Combobox",
+  title: "ui/Combobox",
   component: ComboboxDemo,
   tags: ["autodocs"],
   parameters: {

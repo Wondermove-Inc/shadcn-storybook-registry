@@ -71,7 +71,7 @@ export function CommandDemo() {
  * Fast, composable, unstyled command menu for React.
  */
 const meta = {
-  title: "atoms/Command",
+  title: "ui/Command",
   component: CommandDemo,
   tags: ["autodocs"],
   parameters: {

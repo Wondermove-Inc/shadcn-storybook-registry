@@ -12,7 +12,7 @@ import { ChartAreaGradient } from "./area-chart-gradient";
 import { ChartAreaAxes } from "./area-chart-axes";
 
 const meta = {
-  title: "atoms/Chart/Area Charts",
+  title: "ui/Chart/Area Charts",
   component: ChartContainer,
   tags: ["autodocs"],
 } satisfies Meta<typeof ChartContainer>;

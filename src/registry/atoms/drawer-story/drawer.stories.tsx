@@ -233,7 +233,7 @@ function ProfileForm({ className }: React.ComponentProps<"form">) {
  * A drawer component with interactive goal setting demo.
  */
 const meta = {
-  title: "atoms/Drawer",
+  title: "ui/Drawer",
   component: DrawerDemo,
   tags: ["autodocs"],
   parameters: {

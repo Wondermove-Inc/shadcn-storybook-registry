@@ -54,7 +54,7 @@ export function SheetDemo() {
  * content of the screen.
  */
 const meta: Meta<typeof Sheet> = {
-  title: "atoms/Sheet",
+  title: "ui/Sheet",
   component: Sheet,
   tags: ["autodocs"],
   parameters: {

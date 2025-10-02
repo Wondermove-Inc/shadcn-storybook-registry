@@ -43,7 +43,7 @@ export function AlertDemo() {
  * Displays a callout for user attention.
  */
 const meta = {
-  title: "atoms/Alert",
+  title: "ui/Alert",
   component: Alert,
   tags: ["autodocs"],
   parameters: {

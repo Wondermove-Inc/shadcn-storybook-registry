@@ -79,7 +79,7 @@ export function ScrollAreaHorizontalDemo() {
  * Augments native scroll functionality for custom, cross-browser styling.
  */
 const meta = {
-  title: "atoms/ScrollArea",
+  title: "ui/ScrollArea",
   component: ScrollArea,
   tags: ["autodocs"],
   parameters: {

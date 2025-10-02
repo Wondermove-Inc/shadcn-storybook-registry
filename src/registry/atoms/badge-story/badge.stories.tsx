@@ -44,7 +44,7 @@ export function BadgeDemo() {
  * Displays a badge or a component that looks like a badge.
  */
 const meta = {
-  title: "atoms/Badge",
+  title: "ui/Badge",
   component: Badge,
   tags: ["autodocs"],
   parameters: {

@@ -22,7 +22,7 @@ export function CalendarDemo() {
  * A date field component that allows users to enter and edit date.
  */
 const meta = {
-  title: "atoms/Calendar",
+  title: "ui/Calendar",
   component: Calendar,
   tags: ["autodocs"],
   parameters: {

@@ -51,7 +51,7 @@ export function SelectDemo() {
  * Displays a list of options for the user to pick from—triggered by a button.
  */
 const meta = {
-  title: "atoms/Select",
+  title: "ui/Select",
   component: Select,
   tags: ["autodocs"],
   parameters: {

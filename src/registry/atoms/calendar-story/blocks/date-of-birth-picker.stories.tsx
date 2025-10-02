@@ -14,7 +14,7 @@ import {
 } from "@/components/ui/popover";
 
 const meta: Meta = {
-  title: "atoms/Calendar/Blocks/Date of Birth Picker",
+  title: "ui/Calendar/Blocks/Date of Birth Picker",
   parameters: {
     layout: "centered",
   },

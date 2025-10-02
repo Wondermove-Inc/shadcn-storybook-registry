@@ -80,7 +80,7 @@ export function TabsDemo() {
  * A set of layered sections of content—known as tab panels—that are displayed one at a time.
  */
 const meta = {
-  title: "atoms/Tabs",
+  title: "ui/Tabs",
   component: Tabs,
   tags: ["autodocs"],
   parameters: {

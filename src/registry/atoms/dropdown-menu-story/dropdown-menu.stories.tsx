@@ -142,7 +142,7 @@ function DropdownMenuRadioGroupDemo() {
  * A comprehensive dropdown menu with shortcuts, submenus, and groups.
  */
 const meta = {
-  title: "atoms/DropdownMenu",
+  title: "ui/DropdownMenu",
   component: DropdownMenuDemo,
   tags: ["autodocs"],
   parameters: {

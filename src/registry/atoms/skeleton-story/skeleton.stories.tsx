@@ -32,7 +32,7 @@ export function SkeletonCard() {
  * Use to show a placeholder while content is loading.
  */
 const meta = {
-  title: "atoms/Skeleton",
+  title: "ui/Skeleton",
   component: Skeleton,
   tags: ["autodocs"],
   parameters: {

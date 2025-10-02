@@ -51,7 +51,7 @@ export function TextareaDisabled() {
  * Displays a form textarea or a component that looks like a textarea.
  */
 const meta = {
-  title: "atoms/Textarea",
+  title: "ui/Textarea",
   component: Textarea,
   tags: ["autodocs"],
   parameters: {

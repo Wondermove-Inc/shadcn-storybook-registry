@@ -28,7 +28,7 @@ function formatDate(date: Date | undefined) {
 }
 
 const meta: Meta = {
-  title: "atoms/Calendar/Blocks/Natural Language Picker",
+  title: "ui/Calendar/Blocks/Natural Language Picker",
   parameters: {
     layout: "centered",
   },

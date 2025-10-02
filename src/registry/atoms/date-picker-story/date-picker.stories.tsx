@@ -321,7 +321,7 @@ function FormDemo() {
  * A date picker component that combines a calendar with a popover.
  */
 const meta = {
-  title: "atoms/DatePicker",
+  title: "ui/DatePicker",
   component: DatePickerDemo,
   tags: ["autodocs"],
   parameters: {

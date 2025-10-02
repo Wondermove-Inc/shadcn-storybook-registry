@@ -113,7 +113,7 @@ export function SwitchForm() {
  * A control that allows the user to toggle between checked and not checked.
  */
 const meta = {
-  title: "atoms/Switch",
+  title: "ui/Switch",
   component: Switch,
   tags: ["autodocs"],
   parameters: {
