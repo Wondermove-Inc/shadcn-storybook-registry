@@ -6,7 +6,7 @@ import { Typography as TypographyComponent } from "@/components/ui/typography";
  * Typography components for consistent text styling across the application.
  */
 const meta: Meta<typeof TypographyComponent> = {
-  title: "foundation/Typography/Type",
+  title: "design/Typography",
   component: TypographyComponent,
   tags: ["autodocs"],
   parameters: {

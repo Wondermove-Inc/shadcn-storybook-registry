@@ -13,6 +13,7 @@ const preview: Preview = {
       storySort: {
         order: [
           "foundation",
+          "design",
           "ui",
           "templates",
           "*",
