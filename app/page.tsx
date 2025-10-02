@@ -7,7 +7,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { RegistryItemRow } from "../components/registry_item_row";
+import { RegistryItemRow } from "@/components/registry_item_row";
 
 const Home = async () => {
   const registryData = await import("@/registry.json");
@@ -36,25 +36,25 @@ const Home = async () => {
           <TableBody>
             <TableRow className="hover:bg-background border-b-0">
               <TableCell className="pt-8 text-xs uppercase">
-                Component <span className="text-muted-foreground">Stories</span>
+                Atoms <span className="text-muted-foreground">Stories</span>
               </TableCell>
             </TableRow>
             {registry.items
               .filter(
-                (item) => item.categories && item.categories.includes("ui"),
+                (item) => item.categories && item.categories.includes("atoms"),
               )
               .map((item) => (
                 <RegistryItemRow key={item.name} item={item} />
               ))}
             <TableRow className="hover:bg-background border-b-0">
               <TableCell className="pt-8 text-xs uppercase">
-                Design System{" "}
+                Foundation{" "}
                 <span className="text-muted-foreground">Stories</span>
               </TableCell>
             </TableRow>
             {registry.items
               .filter(
-                (item) => item.categories && item.categories.includes("design"),
+                (item) => item.categories && item.categories.includes("foundation"),
               )
               .map((item) => (
                 <RegistryItemRow key={item.name} item={item} />

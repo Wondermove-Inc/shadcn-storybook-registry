@@ -7,15 +7,15 @@
 /* 라이트 모드 (기본) */
 html:not(.dark) .sb-show-main,
 html:not(.dark) .sb-main-padded {
-  background-color: #ffffff;
-  color: oklch(0.145 0 0);
+  background-color: hsl(0 0% 100%);
+  color: hsl(240 10% 3.9%);
 }
 
 /* 다크 모드 */
 html.dark .sb-show-main,
 html.dark .sb-main-padded {
-  background-color: oklch(0.145 0 0);
-  color: oklch(0.985 0 0);
+  background-color: hsl(240 10% 3.9%);
+  color: hsl(0 0% 98%);
 }
 
 /* 스토리북 프리뷰 영역 */
@@ -24,13 +24,13 @@ html.dark .sb-main-padded {
 }
 
 html:not(.dark) #storybook-preview-wrapper {
-  background-color: #ffffff;
-  color: oklch(0.145 0 0);
+  background-color: hsl(0 0% 100%);
+  color: hsl(240 10% 3.9%);
 }
 
 html.dark #storybook-preview-wrapper {
-  background-color: oklch(0.145 0 0);
-  color: oklch(0.985 0 0);
+  background-color: hsl(240 10% 3.9%);
+  color: hsl(0 0% 98%);
 }
 
 /* 도큐멘트 모드에서도 배경색 적용 */
@@ -39,11 +39,11 @@ html.dark #storybook-preview-wrapper {
 }
 
 html:not(.dark) .docs-story {
-  background-color: #ffffff;
+  background-color: hsl(0 0% 100%);
 }
 
 html.dark .docs-story {
-  background-color: oklch(0.145 0 0);
+  background-color: hsl(240 10% 3.9%);
 }
 
 /* 테마 스위처를 라디오 버튼 스타일로 변경 */

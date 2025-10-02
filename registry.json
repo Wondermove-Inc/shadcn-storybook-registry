@@ -9,12 +9,12 @@
       "type": "registry:component",
       "title": "Accordion Story",
       "description": "Interactive Storybook stories demonstrating accordion component usage and variants",
-      "categories": ["ui", "storybook", "accordion", "layout"],
+      "categories": ["atoms", "storybook", "accordion", "layout"],
       "author": "Lloyd Richards <lloyd.d.richards@gmail.com>",
       "registryDependencies": ["accordion"],
       "files": [
         {
-          "path": "registry/ui/accordion-story/accordion.stories.tsx",
+          "path": "registry/atoms/accordion-story/accordion.stories.tsx",
           "type": "registry:component"
         }
       ]
@@ -24,13 +24,13 @@
       "type": "registry:component",
       "title": "Alert Story",
       "description": "Interactive Storybook stories demonstrating alert component usage and variants",
-      "categories": ["ui", "storybook", "alert", "feedback"],
+      "categories": ["atoms", "storybook", "alert", "feedback"],
       "author": "Lloyd Richards <lloyd.d.richards@gmail.com>",
       "registryDependencies": ["alert"],
       "dependencies": ["lucide-react"],
       "files": [
         {
-          "path": "registry/ui/alert-story/alert.stories.tsx",
+          "path": "registry/atoms/alert-story/alert.stories.tsx",
           "type": "registry:component"
         }
       ]
@@ -40,12 +40,12 @@
       "type": "registry:component",
       "title": "Alert Dialog Story",
       "description": "Interactive Storybook stories demonstrating alert dialog component usage and variants",
-      "categories": ["ui", "storybook", "dialog", "modal"],
+      "categories": ["atoms", "storybook", "dialog", "modal"],
       "author": "Lloyd Richards <lloyd.d.richards@gmail.com>",
       "registryDependencies": ["alert-dialog"],
       "files": [
         {
-          "path": "registry/ui/alert-dialog-story/alert-dialog.stories.tsx",
+          "path": "registry/atoms/alert-dialog-story/alert-dialog.stories.tsx",
           "type": "registry:component"
         }
       ]
@@ -55,12 +55,12 @@
       "type": "registry:component",
       "title": "Aspect Ratio Story",
       "description": "Interactive Storybook stories demonstrating aspect ratio component usage and variants",
-      "categories": ["ui", "storybook", "layout", "responsive"],
+      "categories": ["atoms", "storybook", "layout", "responsive"],
       "author": "Lloyd Richards <lloyd.d.richards@gmail.com>",
       "registryDependencies": ["aspect-ratio"],
       "files": [
         {
-          "path": "registry/ui/aspect-ratio-story/aspect-ratio.stories.tsx",
+          "path": "registry/atoms/aspect-ratio-story/aspect-ratio.stories.tsx",
           "type": "registry:component"
         }
       ]
@@ -70,12 +70,12 @@
       "type": "registry:component",
       "title": "Avatar Story",
       "description": "Interactive Storybook stories demonstrating avatar component usage and variants",
-      "categories": ["ui", "storybook", "avatar", "profile"],
+      "categories": ["atoms", "storybook", "avatar", "profile"],
       "author": "Lloyd Richards <lloyd.d.richards@gmail.com>",
       "registryDependencies": ["avatar"],
       "files": [
         {
-          "path": "registry/ui/avatar-story/avatar.stories.tsx",
+          "path": "registry/atoms/avatar-story/avatar.stories.tsx",
           "type": "registry:component"
         }
       ]
@@ -85,12 +85,12 @@
       "type": "registry:component",
       "title": "Badge Story",
       "description": "Interactive Storybook stories demonstrating badge component usage and variants",
-      "categories": ["ui", "storybook", "badge", "indicator"],
+      "categories": ["atoms", "storybook", "badge", "indicator"],
       "author": "Lloyd Richards <lloyd.d.richards@gmail.com>",
       "registryDependencies": ["badge"],
       "files": [
         {
-          "path": "registry/ui/badge-story/badge.stories.tsx",
+          "path": "registry/atoms/badge-story/badge.stories.tsx",
           "type": "registry:component"
         }
       ]
@@ -100,13 +100,13 @@
       "type": "registry:component",
       "title": "Breadcrumb Story",
       "description": "Interactive Storybook stories demonstrating breadcrumb component usage and variants",
-      "categories": ["ui", "storybook", "navigation", "breadcrumb"],
+      "categories": ["atoms", "storybook", "navigation", "breadcrumb"],
       "author": "Lloyd Richards <lloyd.d.richards@gmail.com>",
       "registryDependencies": ["breadcrumb"],
       "dependencies": ["lucide-react"],
       "files": [
         {
-          "path": "registry/ui/breadcrumb-story/breadcrumb.stories.tsx",
+          "path": "registry/atoms/breadcrumb-story/breadcrumb.stories.tsx",
           "type": "registry:component"
         }
       ]
@@ -116,13 +116,13 @@
       "type": "registry:file",
       "title": "Button Story",
       "description": "Interactive Storybook stories demonstrating button component usage and variants",
-      "categories": ["ui", "storybook", "button", "interaction"],
+      "categories": ["atoms", "storybook", "button", "interaction"],
       "author": "Lloyd Richards <lloyd.d.richards@gmail.com>",
       "registryDependencies": ["button"],
       "dependencies": ["lucide-react"],
       "files": [
         {
-          "path": "registry/ui/button-story/button.stories.tsx",
+          "path": "registry/atoms/button-story/button.stories.tsx",
           "type": "registry:component"
         }
       ]
@@ -132,13 +132,13 @@
       "type": "registry:component",
       "title": "Calendar Story",
       "description": "Interactive Storybook stories demonstrating calendar component usage and variants",
-      "categories": ["ui", "storybook", "calendar", "date"],
+      "categories": ["atoms", "storybook", "calendar", "date"],
       "author": "Lloyd Richards <lloyd.d.richards@gmail.com>",
       "registryDependencies": ["calendar"],
       "dependencies": ["date-fns"],
       "files": [
         {
-          "path": "registry/ui/calendar-story/calendar.stories.tsx",
+          "path": "registry/atoms/calendar-story/calendar.stories.tsx",
           "type": "registry:component"
         }
       ]
@@ -148,13 +148,13 @@
       "type": "registry:component",
       "title": "Card Story",
       "description": "Interactive Storybook stories demonstrating card component usage and variants",
-      "categories": ["ui", "storybook", "card", "container"],
+      "categories": ["atoms", "storybook", "card", "container"],
       "author": "Lloyd Richards <lloyd.d.richards@gmail.com>",
       "registryDependencies": ["card", "button"],
       "dependencies": ["lucide-react"],
       "files": [
         {
-          "path": "registry/ui/card-story/card.stories.tsx",
+          "path": "registry/atoms/card-story/card.stories.tsx",
           "type": "registry:component"
         }
       ]
@@ -164,13 +164,13 @@
       "type": "registry:component",
       "title": "Carousel Story",
       "description": "Interactive Storybook stories demonstrating carousel component usage and variants",
-      "categories": ["ui", "storybook", "carousel", "slider"],
+      "categories": ["atoms", "storybook", "carousel", "slider"],
       "author": "Lloyd Richards <lloyd.d.richards@gmail.com>",
       "registryDependencies": ["carousel"],
       "dependencies": ["embla-carousel-react"],
       "files": [
         {
-          "path": "registry/ui/carousel-story/carousel.stories.tsx",
+          "path": "registry/atoms/carousel-story/carousel.stories.tsx",
           "type": "registry:component"
         }
       ]
@@ -180,13 +180,13 @@
       "type": "registry:component",
       "title": "Chart Story",
       "description": "Interactive Storybook stories demonstrating chart component usage and variants",
-      "categories": ["ui", "storybook", "chart", "data-visualization"],
+      "categories": ["atoms", "storybook", "chart", "data-visualization"],
       "author": "Lloyd Richards <lloyd.d.richards@gmail.com>",
       "registryDependencies": ["chart"],
       "dependencies": ["recharts"],
       "files": [
         {
-          "path": "registry/ui/chart-story/chart.stories.tsx",
+          "path": "registry/atoms/chart-story/chart.stories.tsx",
           "type": "registry:component"
         }
       ]
@@ -196,12 +196,12 @@
       "type": "registry:component",
       "title": "Checkbox Story",
       "description": "Interactive Storybook stories demonstrating checkbox component usage and variants",
-      "categories": ["ui", "storybook", "checkbox", "form"],
+      "categories": ["atoms", "storybook", "checkbox", "form"],
       "author": "Lloyd Richards <lloyd.d.richards@gmail.com>",
       "registryDependencies": ["checkbox", "label"],
       "files": [
         {
-          "path": "registry/ui/checkbox-story/checkbox.stories.tsx",
+          "path": "registry/atoms/checkbox-story/checkbox.stories.tsx",
           "type": "registry:component"
         }
       ]
@@ -211,13 +211,29 @@
       "type": "registry:component",
       "title": "Collapsible Story",
       "description": "Interactive Storybook stories demonstrating collapsible component usage and variants",
-      "categories": ["ui", "storybook", "collapsible", "layout"],
+      "categories": ["atoms", "storybook", "collapsible", "layout"],
       "author": "Lloyd Richards <lloyd.d.richards@gmail.com>",
       "registryDependencies": ["collapsible"],
       "dependencies": ["lucide-react"],
       "files": [
         {
-          "path": "registry/ui/collapsible-story/collapsible.stories.tsx",
+          "path": "registry/atoms/collapsible-story/collapsible.stories.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "combobox-story",
+      "type": "registry:component",
+      "title": "Combobox Story",
+      "description": "Autocomplete input combining button, dropdown, and command palette for selecting options",
+      "categories": ["atoms", "storybook", "combobox", "input"],
+      "author": "Lloyd Richards <lloyd.d.richards@gmail.com>",
+      "registryDependencies": ["command", "popover", "button"],
+      "dependencies": ["lucide-react"],
+      "files": [
+        {
+          "path": "registry/atoms/combobox-story/combobox.stories.tsx",
           "type": "registry:component"
         }
       ]
@@ -227,12 +243,12 @@
       "type": "registry:component",
       "title": "Command Story",
       "description": "Interactive Storybook stories demonstrating command component usage and variants",
-      "categories": ["ui", "storybook", "command", "search"],
+      "categories": ["atoms", "storybook", "command", "search"],
       "author": "Lloyd Richards <lloyd.d.richards@gmail.com>",
       "registryDependencies": ["dialog", "command"],
       "files": [
         {
-          "path": "registry/ui/command-story/command.stories.tsx",
+          "path": "registry/atoms/command-story/command.stories.tsx",
           "type": "registry:component"
         }
       ]
@@ -242,12 +258,34 @@
       "type": "registry:component",
       "title": "Context Menu Story",
       "description": "Interactive Storybook stories demonstrating context menu component usage and variants",
-      "categories": ["ui", "storybook", "menu", "context"],
+      "categories": ["atoms", "storybook", "menu", "context"],
       "author": "Lloyd Richards <lloyd.d.richards@gmail.com>",
       "registryDependencies": ["context-menu"],
       "files": [
         {
-          "path": "registry/ui/context-menu-story/context-menu.stories.tsx",
+          "path": "registry/atoms/context-menu-story/context-menu.stories.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "data-table-story",
+      "type": "registry:component",
+      "title": "Data Table Story",
+      "description": "Interactive Storybook stories demonstrating data table component usage with sorting, filtering, and pagination",
+      "categories": ["atoms", "storybook", "table", "data"],
+      "author": "Lloyd Richards <lloyd.d.richards@gmail.com>",
+      "registryDependencies": [
+        "table",
+        "button",
+        "checkbox",
+        "dropdown-menu",
+        "input"
+      ],
+      "dependencies": ["@tanstack/react-table", "lucide-react"],
+      "files": [
+        {
+          "path": "registry/atoms/data-table-story/data-table.stories.tsx",
           "type": "registry:component"
         }
       ]
@@ -257,7 +295,7 @@
       "type": "registry:component",
       "title": "Date Picker Story",
       "description": "Interactive Storybook stories demonstrating date picker component usage and variants",
-      "categories": ["ui", "storybook", "date-picker", "form"],
+      "categories": ["atoms", "storybook", "date-picker", "form"],
       "author": "Lloyd Richards <lloyd.d.richards@gmail.com>",
       "registryDependencies": [
         "button",
@@ -269,7 +307,7 @@
       "dependencies": ["lucide-react"],
       "files": [
         {
-          "path": "registry/ui/date-picker-story/date-picker.stories.tsx",
+          "path": "registry/atoms/date-picker-story/date-picker.stories.tsx",
           "type": "registry:component"
         }
       ]
@@ -279,12 +317,12 @@
       "type": "registry:component",
       "title": "Dialog Story",
       "description": "Interactive Storybook stories demonstrating dialog component usage and variants",
-      "categories": ["ui", "storybook", "dialog", "modal"],
+      "categories": ["atoms", "storybook", "dialog", "modal"],
       "author": "Lloyd Richards <lloyd.d.richards@gmail.com>",
       "registryDependencies": ["dialog"],
       "files": [
         {
-          "path": "registry/ui/dialog-story/dialog.stories.tsx",
+          "path": "registry/atoms/dialog-story/dialog.stories.tsx",
           "type": "registry:component"
         }
       ]
@@ -294,12 +332,12 @@
       "type": "registry:component",
       "title": "Drawer Story",
       "description": "Interactive Storybook stories demonstrating drawer component usage and variants",
-      "categories": ["ui", "storybook", "drawer", "navigation"],
+      "categories": ["atoms", "storybook", "drawer", "navigation"],
       "author": "Lloyd Richards <lloyd.d.richards@gmail.com>",
       "registryDependencies": ["drawer"],
       "files": [
         {
-          "path": "registry/ui/drawer-story/drawer.stories.tsx",
+          "path": "registry/atoms/drawer-story/drawer.stories.tsx",
           "type": "registry:component"
         }
       ]
@@ -309,13 +347,13 @@
       "type": "registry:component",
       "title": "Dropdown Menu Story",
       "description": "Interactive Storybook stories demonstrating dropdown menu component usage and variants",
-      "categories": ["ui", "storybook", "dropdown", "menu"],
+      "categories": ["atoms", "storybook", "dropdown", "menu"],
       "author": "Lloyd Richards <lloyd.d.richards@gmail.com>",
       "registryDependencies": ["dropdown-menu"],
       "dependencies": ["lucide-react"],
       "files": [
         {
-          "path": "registry/ui/dropdown-menu-story/dropdown-menu.stories.tsx",
+          "path": "registry/atoms/dropdown-menu-story/dropdown-menu.stories.tsx",
           "type": "registry:component"
         }
       ]
@@ -325,13 +363,13 @@
       "type": "registry:component",
       "title": "Form Story",
       "description": "Interactive Storybook stories demonstrating form component usage and variants",
-      "categories": ["ui", "storybook", "form", "validation"],
+      "categories": ["atoms", "storybook", "form", "validation"],
       "author": "Lloyd Richards <lloyd.d.richards@gmail.com>",
       "registryDependencies": ["button", "form"],
       "dependencies": ["@hookform/resolvers", "zod", "react-hook-form"],
       "files": [
         {
-          "path": "registry/ui/form-story/form.stories.tsx",
+          "path": "registry/atoms/form-story/form.stories.tsx",
           "type": "registry:component"
         }
       ]
@@ -341,12 +379,12 @@
       "type": "registry:component",
       "title": "Hover Card Story",
       "description": "Interactive Storybook stories demonstrating hover card component usage and variants",
-      "categories": ["ui", "storybook", "hover", "popover"],
+      "categories": ["atoms", "storybook", "hover", "popover"],
       "author": "Lloyd Richards <lloyd.d.richards@gmail.com>",
       "registryDependencies": ["hover-card"],
       "files": [
         {
-          "path": "registry/ui/hover-card-story/hover-card.stories.tsx",
+          "path": "registry/atoms/hover-card-story/hover-card.stories.tsx",
           "type": "registry:component"
         }
       ]
@@ -356,12 +394,12 @@
       "type": "registry:component",
       "title": "Input Story",
       "description": "Interactive Storybook stories demonstrating input component usage and variants",
-      "categories": ["ui", "storybook", "input", "form"],
+      "categories": ["atoms", "storybook", "input", "form"],
       "author": "Lloyd Richards <lloyd.d.richards@gmail.com>",
       "registryDependencies": ["input", "label", "button"],
       "files": [
         {
-          "path": "registry/ui/input-story/input.stories.tsx",
+          "path": "registry/atoms/input-story/input.stories.tsx",
           "type": "registry:component"
         }
       ]
@@ -371,13 +409,13 @@
       "type": "registry:component",
       "title": "Input OTP Story",
       "description": "Interactive Storybook stories demonstrating OTP input component usage and variants",
-      "categories": ["ui", "storybook", "input", "otp", "form"],
+      "categories": ["atoms", "storybook", "input", "otp", "form"],
       "author": "Lloyd Richards <lloyd.d.richards@gmail.com>",
       "registryDependencies": ["input-otp"],
       "dependencies": ["input-otp"],
       "files": [
         {
-          "path": "registry/ui/input-otp-story/input-otp.stories.tsx",
+          "path": "registry/atoms/input-otp-story/input-otp.stories.tsx",
           "type": "registry:component"
         }
       ]
@@ -387,12 +425,12 @@
       "type": "registry:component",
       "title": "Label Story",
       "description": "Interactive Storybook stories demonstrating label component usage and variants",
-      "categories": ["ui", "storybook", "label", "form"],
+      "categories": ["atoms", "storybook", "label", "form"],
       "author": "Lloyd Richards <lloyd.d.richards@gmail.com>",
       "registryDependencies": ["label"],
       "files": [
         {
-          "path": "registry/ui/label-story/label.stories.tsx",
+          "path": "registry/atoms/label-story/label.stories.tsx",
           "type": "registry:component"
         }
       ]
@@ -402,12 +440,12 @@
       "type": "registry:component",
       "title": "Menubar Story",
       "description": "Interactive Storybook stories demonstrating menubar component usage and variants",
-      "categories": ["ui", "storybook", "menubar", "navigation"],
+      "categories": ["atoms", "storybook", "menubar", "navigation"],
       "author": "Lloyd Richards <lloyd.d.richards@gmail.com>",
       "registryDependencies": ["menubar"],
       "files": [
         {
-          "path": "registry/ui/menubar-story/menubar.stories.tsx",
+          "path": "registry/atoms/menubar-story/menubar.stories.tsx",
           "type": "registry:component"
         }
       ]
@@ -417,12 +455,12 @@
       "type": "registry:component",
       "title": "Navigation Menu Story",
       "description": "Interactive Storybook stories demonstrating navigation menu component usage and variants",
-      "categories": ["ui", "storybook", "navigation", "menu"],
+      "categories": ["atoms", "storybook", "navigation", "menu"],
       "author": "Lloyd Richards <lloyd.d.richards@gmail.com>",
       "registryDependencies": ["navigation-menu"],
       "files": [
         {
-          "path": "registry/ui/navigation-menu-story/navigation-menu.stories.tsx",
+          "path": "registry/atoms/navigation-menu-story/navigation-menu.stories.tsx",
           "type": "registry:component"
         }
       ]
@@ -432,12 +470,12 @@
       "type": "registry:component",
       "title": "Pagination Story",
       "description": "Interactive Storybook stories demonstrating pagination component usage and variants",
-      "categories": ["ui", "storybook", "pagination", "navigation"],
+      "categories": ["atoms", "storybook", "pagination", "navigation"],
       "author": "Lloyd Richards <lloyd.d.richards@gmail.com>",
       "registryDependencies": ["button"],
       "files": [
         {
-          "path": "registry/ui/pagination-story/pagination.stories.tsx",
+          "path": "registry/atoms/pagination-story/pagination.stories.tsx",
           "type": "registry:component"
         }
       ]
@@ -447,12 +485,12 @@
       "type": "registry:component",
       "title": "Popover Story",
       "description": "Interactive Storybook stories demonstrating popover component usage and variants",
-      "categories": ["ui", "storybook", "popover", "overlay"],
+      "categories": ["atoms", "storybook", "popover", "overlay"],
       "author": "Lloyd Richards <lloyd.d.richards@gmail.com>",
       "registryDependencies": ["popover"],
       "files": [
         {
-          "path": "registry/ui/popover-story/popover.stories.tsx",
+          "path": "registry/atoms/popover-story/popover.stories.tsx",
           "type": "registry:component"
         }
       ]
@@ -462,12 +500,12 @@
       "type": "registry:component",
       "title": "Progress Story",
       "description": "Interactive Storybook stories demonstrating progress component usage and variants",
-      "categories": ["ui", "storybook", "progress", "feedback"],
+      "categories": ["atoms", "storybook", "progress", "feedback"],
       "author": "Lloyd Richards <lloyd.d.richards@gmail.com>",
       "registryDependencies": ["progress"],
       "files": [
         {
-          "path": "registry/ui/progress-story/progress.stories.tsx",
+          "path": "registry/atoms/progress-story/progress.stories.tsx",
           "type": "registry:component"
         }
       ]
@@ -477,12 +515,12 @@
       "type": "registry:component",
       "title": "Radio Group Story",
       "description": "Interactive Storybook stories demonstrating radio group component usage and variants",
-      "categories": ["ui", "storybook", "radio", "form"],
+      "categories": ["atoms", "storybook", "radio", "form"],
       "author": "Lloyd Richards <lloyd.d.richards@gmail.com>",
       "registryDependencies": ["radio-group", "label"],
       "files": [
         {
-          "path": "registry/ui/radio-group-story/radio-group.stories.tsx",
+          "path": "registry/atoms/radio-group-story/radio-group.stories.tsx",
           "type": "registry:component"
         }
       ]
@@ -492,12 +530,12 @@
       "type": "registry:component",
       "title": "Resizable Story",
       "description": "Interactive Storybook stories demonstrating resizable component usage and variants",
-      "categories": ["ui", "storybook", "resizable", "layout"],
+      "categories": ["atoms", "storybook", "resizable", "layout"],
       "author": "Lloyd Richards <lloyd.d.richards@gmail.com>",
       "registryDependencies": ["resizable"],
       "files": [
         {
-          "path": "registry/ui/resizable-story/resizable.stories.tsx",
+          "path": "registry/atoms/resizable-story/resizable.stories.tsx",
           "type": "registry:component"
         }
       ]
@@ -507,12 +545,12 @@
       "type": "registry:component",
       "title": "Scroll Area Story",
       "description": "Interactive Storybook stories demonstrating scroll area component usage and variants",
-      "categories": ["ui", "storybook", "scroll", "layout"],
+      "categories": ["atoms", "storybook", "scroll", "layout"],
       "author": "Lloyd Richards <lloyd.d.richards@gmail.com>",
       "registryDependencies": ["scroll-area"],
       "files": [
         {
-          "path": "registry/ui/scroll-area-story/scroll-area.stories.tsx",
+          "path": "registry/atoms/scroll-area-story/scroll-area.stories.tsx",
           "type": "registry:component"
         }
       ]
@@ -522,12 +560,12 @@
       "type": "registry:component",
       "title": "Select Story",
       "description": "Interactive Storybook stories demonstrating select component usage and variants",
-      "categories": ["ui", "storybook", "select", "form"],
+      "categories": ["atoms", "storybook", "select", "form"],
       "author": "Lloyd Richards <lloyd.d.richards@gmail.com>",
       "registryDependencies": ["select"],
       "files": [
         {
-          "path": "registry/ui/select-story/select.stories.tsx",
+          "path": "registry/atoms/select-story/select.stories.tsx",
           "type": "registry:component"
         }
       ]
@@ -537,12 +575,12 @@
       "type": "registry:component",
       "title": "Separator Story",
       "description": "Interactive Storybook stories demonstrating separator component usage and variants",
-      "categories": ["ui", "storybook", "separator", "layout"],
+      "categories": ["atoms", "storybook", "separator", "layout"],
       "author": "Lloyd Richards <lloyd.d.richards@gmail.com>",
       "registryDependencies": ["separator"],
       "files": [
         {
-          "path": "registry/ui/separator-story/separator.stories.tsx",
+          "path": "registry/atoms/separator-story/separator.stories.tsx",
           "type": "registry:component"
         }
       ]
@@ -552,12 +590,12 @@
       "type": "registry:component",
       "title": "Sheet Story",
       "description": "Interactive Storybook stories demonstrating sheet component usage and variants",
-      "categories": ["ui", "storybook", "sheet", "overlay"],
+      "categories": ["atoms", "storybook", "sheet", "overlay"],
       "author": "Lloyd Richards <lloyd.d.richards@gmail.com>",
       "registryDependencies": ["sheet"],
       "files": [
         {
-          "path": "registry/ui/sheet-story/sheet.stories.tsx",
+          "path": "registry/atoms/sheet-story/sheet.stories.tsx",
           "type": "registry:component"
         }
       ]
@@ -567,13 +605,13 @@
       "type": "registry:component",
       "title": "Sidebar Story",
       "description": "Interactive Storybook stories demonstrating sidebar component usage and variants",
-      "categories": ["ui", "storybook", "sidebar", "navigation"],
+      "categories": ["atoms", "storybook", "sidebar", "navigation"],
       "author": "Lloyd Richards <lloyd.d.richards@gmail.com>",
       "registryDependencies": ["sidebar", "dropdown-menu"],
       "dependencies": ["lucide-react"],
       "files": [
         {
-          "path": "registry/ui/sidebar-story/sidebar.stories.tsx",
+          "path": "registry/atoms/sidebar-story/sidebar.stories.tsx",
           "type": "registry:component"
         }
       ]
@@ -583,12 +621,12 @@
       "type": "registry:component",
       "title": "Skeleton Story",
       "description": "Interactive Storybook stories demonstrating skeleton component usage and variants",
-      "categories": ["ui", "storybook", "skeleton", "loading"],
+      "categories": ["atoms", "storybook", "skeleton", "loading"],
       "author": "Lloyd Richards <lloyd.d.richards@gmail.com>",
       "registryDependencies": ["skeleton"],
       "files": [
         {
-          "path": "registry/ui/skeleton-story/skeleton.stories.tsx",
+          "path": "registry/atoms/skeleton-story/skeleton.stories.tsx",
           "type": "registry:component"
         }
       ]
@@ -598,12 +636,12 @@
       "type": "registry:component",
       "title": "Slider Story",
       "description": "Interactive Storybook stories demonstrating slider component usage and variants",
-      "categories": ["ui", "storybook", "slider", "form"],
+      "categories": ["atoms", "storybook", "slider", "form"],
       "author": "Lloyd Richards <lloyd.d.richards@gmail.com>",
       "registryDependencies": ["slider"],
       "files": [
         {
-          "path": "registry/ui/slider-story/slider.stories.tsx",
+          "path": "registry/atoms/slider-story/slider.stories.tsx",
           "type": "registry:component"
         }
       ]
@@ -613,13 +651,13 @@
       "type": "registry:component",
       "title": "Sonner Story",
       "description": "Interactive Storybook stories demonstrating toast notifications usage and variants",
-      "categories": ["ui", "storybook", "toast", "feedback"],
+      "categories": ["atoms", "storybook", "toast", "feedback"],
       "author": "Lloyd Richards <lloyd.d.richards@gmail.com>",
       "registryDependencies": ["sonner", "button"],
       "dependencies": ["sonner"],
       "files": [
         {
-          "path": "registry/ui/sonner-story/sonner.stories.tsx",
+          "path": "registry/atoms/sonner-story/sonner.stories.tsx",
           "type": "registry:component"
         }
       ]
@@ -629,12 +667,12 @@
       "type": "registry:component",
       "title": "Switch Story",
       "description": "Interactive Storybook stories demonstrating switch component usage and variants",
-      "categories": ["ui", "storybook", "switch", "form"],
+      "categories": ["atoms", "storybook", "switch", "form"],
       "author": "Lloyd Richards <lloyd.d.richards@gmail.com>",
       "registryDependencies": ["switch", "label"],
       "files": [
         {
-          "path": "registry/ui/switch-story/switch.stories.tsx",
+          "path": "registry/atoms/switch-story/switch.stories.tsx",
           "type": "registry:component"
         }
       ]
@@ -644,12 +682,12 @@
       "type": "registry:component",
       "title": "Table Story",
       "description": "Interactive Storybook stories demonstrating table component usage and variants",
-      "categories": ["ui", "storybook", "table", "data"],
+      "categories": ["atoms", "storybook", "table", "data"],
       "author": "Lloyd Richards <lloyd.d.richards@gmail.com>",
       "registryDependencies": ["table"],
       "files": [
         {
-          "path": "registry/ui/table-story/table.stories.tsx",
+          "path": "registry/atoms/table-story/table.stories.tsx",
           "type": "registry:component"
         }
       ]
@@ -659,12 +697,12 @@
       "type": "registry:component",
       "title": "Tabs Story",
       "description": "Interactive Storybook stories demonstrating tabs component usage and variants",
-      "categories": ["ui", "storybook", "tabs", "navigation"],
+      "categories": ["atoms", "storybook", "tabs", "navigation"],
       "author": "Lloyd Richards <lloyd.d.richards@gmail.com>",
       "registryDependencies": ["tabs"],
       "files": [
         {
-          "path": "registry/ui/tabs-story/tabs.stories.tsx",
+          "path": "registry/atoms/tabs-story/tabs.stories.tsx",
           "type": "registry:component"
         }
       ]
@@ -674,12 +712,12 @@
       "type": "registry:component",
       "title": "Textarea Story",
       "description": "Interactive Storybook stories demonstrating textarea component usage and variants",
-      "categories": ["ui", "storybook", "textarea", "form"],
+      "categories": ["atoms", "storybook", "textarea", "form"],
       "author": "Lloyd Richards <lloyd.d.richards@gmail.com>",
       "registryDependencies": ["textarea", "button", "label"],
       "files": [
         {
-          "path": "registry/ui/textarea-story/textarea.stories.tsx",
+          "path": "registry/atoms/textarea-story/textarea.stories.tsx",
           "type": "registry:component"
         }
       ]
@@ -689,13 +727,13 @@
       "type": "registry:component",
       "title": "Toggle Story",
       "description": "Interactive Storybook stories demonstrating toggle component usage and variants",
-      "categories": ["ui", "storybook", "toggle", "form"],
+      "categories": ["atoms", "storybook", "toggle", "form"],
       "author": "Lloyd Richards <lloyd.d.richards@gmail.com>",
       "registryDependencies": ["toggle"],
       "dependencies": ["lucide-react"],
       "files": [
         {
-          "path": "registry/ui/toggle-story/toggle.stories.tsx",
+          "path": "registry/atoms/toggle-story/toggle.stories.tsx",
           "type": "registry:component"
         }
       ]
@@ -705,13 +743,13 @@
       "type": "registry:component",
       "title": "Toggle Group Story",
       "description": "Interactive Storybook stories demonstrating toggle group component usage and variants",
-      "categories": ["ui", "storybook", "toggle-group", "form"],
+      "categories": ["atoms", "storybook", "toggle-group", "form"],
       "author": "Lloyd Richards <lloyd.d.richards@gmail.com>",
       "registryDependencies": ["toggle-group"],
       "dependencies": ["lucide-react"],
       "files": [
         {
-          "path": "registry/ui/toggle-group-story/toggle-group.stories.tsx",
+          "path": "registry/atoms/toggle-group-story/toggle-group.stories.tsx",
           "type": "registry:component"
         }
       ]
@@ -721,13 +759,13 @@
       "type": "registry:component",
       "title": "Tooltip Story",
       "description": "Interactive Storybook stories demonstrating tooltip component usage and variants",
-      "categories": ["ui", "storybook", "tooltip", "overlay"],
+      "categories": ["atoms", "storybook", "tooltip", "overlay"],
       "author": "Lloyd Richards <lloyd.d.richards@gmail.com>",
       "registryDependencies": ["tooltip"],
       "dependencies": ["lucide-react"],
       "files": [
         {
-          "path": "registry/ui/tooltip-story/tooltip.stories.tsx",
+          "path": "registry/atoms/tooltip-story/tooltip.stories.tsx",
           "type": "registry:component"
         }
       ]
@@ -737,7 +775,7 @@
       "type": "registry:component",
       "title": "Color Story",
       "description": "Design system documentation and examples for color tokens and themes",
-      "categories": ["design", "tokens", "storybook", "color"],
+      "categories": ["foundation", "tokens", "storybook", "color"],
       "author": "Lloyd Richards <lloyd.d.richards@gmail.com>",
       "registryDependencies": ["table"],
       "files": [
@@ -752,7 +790,7 @@
       "type": "registry:component",
       "title": "Radius Story",
       "description": "Design system documentation and examples for border radius tokens",
-      "categories": ["design", "tokens", "storybook", "radius"],
+      "categories": ["foundation", "tokens", "storybook", "radius"],
       "author": "Lloyd Richards <lloyd.d.richards@gmail.com>",
       "registryDependencies": ["table"],
       "files": [
@@ -767,7 +805,7 @@
       "type": "registry:component",
       "title": "Shadow Story",
       "description": "Design system documentation and examples for shadow tokens",
-      "categories": ["design", "tokens", "storybook", "shadow"],
+      "categories": ["foundation", "tokens", "storybook", "shadow"],
       "author": "Lloyd Richards <lloyd.d.richards@gmail.com>",
       "registryDependencies": ["table"],
       "files": [
@@ -782,7 +820,7 @@
       "type": "registry:component",
       "title": "Spacing Story",
       "description": "Design system documentation and examples for spacing tokens",
-      "categories": ["design", "tokens", "storybook", "spacing"],
+      "categories": ["foundation", "tokens", "storybook", "spacing"],
       "author": "Lloyd Richards <lloyd.d.richards@gmail.com>",
       "registryDependencies": ["table"],
       "files": [
@@ -797,12 +835,54 @@
       "type": "registry:component",
       "title": "Typography Story",
       "description": "Design system documentation and examples for typography tokens",
-      "categories": ["design", "tokens", "storybook", "typography"],
+      "categories": ["foundation", "tokens", "storybook", "typography"],
       "author": "Lloyd Richards <lloyd.d.richards@gmail.com>",
       "registryDependencies": ["table"],
       "files": [
         {
           "path": "registry/tokens/typography-story/typography.stories.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "typography-components-story",
+      "type": "registry:component",
+      "title": "Typography Components Story",
+      "description": "Typography components for consistent text styling across the application",
+      "categories": ["foundation", "atoms", "storybook", "typography"],
+      "author": "Lloyd Richards <lloyd.d.richards@gmail.com>",
+      "registryDependencies": ["typography"],
+      "files": [
+        {
+          "path": "registry/foundation/typography-components-story/typography.stories.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "dashboard-template",
+      "type": "registry:component",
+      "title": "Dashboard Template",
+      "description": "A complete dashboard template showcasing various shadcn/ui components in a real-world layout",
+      "categories": ["templates", "storybook", "dashboard"],
+      "author": "Lloyd Richards <lloyd.d.richards@gmail.com>",
+      "registryDependencies": [
+        "card",
+        "select",
+        "button",
+        "input",
+        "avatar",
+        "table",
+        "badge"
+      ],
+      "files": [
+        {
+          "path": "registry/templates/dashboard-template/dashboard-template.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "registry/templates/dashboard-template/dashboard-template.stories.tsx",
           "type": "registry:component"
         }
       ]
@@ -861,191 +941,191 @@
       ],
       "files": [
         {
-          "path": "registry/ui/accordion-story/accordion.stories.tsx",
+          "path": "registry/atoms/accordion-story/accordion.stories.tsx",
           "type": "registry:component"
         },
         {
-          "path": "registry/ui/alert-story/alert.stories.tsx",
+          "path": "registry/atoms/alert-story/alert.stories.tsx",
           "type": "registry:component"
         },
         {
-          "path": "registry/ui/alert-dialog-story/alert-dialog.stories.tsx",
+          "path": "registry/atoms/alert-dialog-story/alert-dialog.stories.tsx",
           "type": "registry:component"
         },
         {
-          "path": "registry/ui/aspect-ratio-story/aspect-ratio.stories.tsx",
+          "path": "registry/atoms/aspect-ratio-story/aspect-ratio.stories.tsx",
           "type": "registry:component"
         },
         {
-          "path": "registry/ui/avatar-story/avatar.stories.tsx",
+          "path": "registry/atoms/avatar-story/avatar.stories.tsx",
           "type": "registry:component"
         },
         {
-          "path": "registry/ui/badge-story/badge.stories.tsx",
+          "path": "registry/atoms/badge-story/badge.stories.tsx",
           "type": "registry:component"
         },
         {
-          "path": "registry/ui/breadcrumb-story/breadcrumb.stories.tsx",
+          "path": "registry/atoms/breadcrumb-story/breadcrumb.stories.tsx",
           "type": "registry:component"
         },
         {
-          "path": "registry/ui/button-story/button.stories.tsx",
+          "path": "registry/atoms/button-story/button.stories.tsx",
           "type": "registry:component"
         },
         {
-          "path": "registry/ui/calendar-story/calendar.stories.tsx",
+          "path": "registry/atoms/calendar-story/calendar.stories.tsx",
           "type": "registry:component"
         },
         {
-          "path": "registry/ui/card-story/card.stories.tsx",
+          "path": "registry/atoms/card-story/card.stories.tsx",
           "type": "registry:component"
         },
         {
-          "path": "registry/ui/carousel-story/carousel.stories.tsx",
+          "path": "registry/atoms/carousel-story/carousel.stories.tsx",
           "type": "registry:component"
         },
         {
-          "path": "registry/ui/chart-story/chart.stories.tsx",
+          "path": "registry/atoms/chart-story/chart.stories.tsx",
           "type": "registry:component"
         },
         {
-          "path": "registry/ui/checkbox-story/checkbox.stories.tsx",
+          "path": "registry/atoms/checkbox-story/checkbox.stories.tsx",
           "type": "registry:component"
         },
         {
-          "path": "registry/ui/collapsible-story/collapsible.stories.tsx",
+          "path": "registry/atoms/collapsible-story/collapsible.stories.tsx",
           "type": "registry:component"
         },
         {
-          "path": "registry/ui/command-story/command.stories.tsx",
+          "path": "registry/atoms/command-story/command.stories.tsx",
           "type": "registry:component"
         },
         {
-          "path": "registry/ui/context-menu-story/context-menu.stories.tsx",
+          "path": "registry/atoms/context-menu-story/context-menu.stories.tsx",
           "type": "registry:component"
         },
         {
-          "path": "registry/ui/date-picker-story/date-picker.stories.tsx",
+          "path": "registry/atoms/date-picker-story/date-picker.stories.tsx",
           "type": "registry:component"
         },
         {
-          "path": "registry/ui/dialog-story/dialog.stories.tsx",
+          "path": "registry/atoms/dialog-story/dialog.stories.tsx",
           "type": "registry:component"
         },
         {
-          "path": "registry/ui/drawer-story/drawer.stories.tsx",
+          "path": "registry/atoms/drawer-story/drawer.stories.tsx",
           "type": "registry:component"
         },
         {
-          "path": "registry/ui/dropdown-menu-story/dropdown-menu.stories.tsx",
+          "path": "registry/atoms/dropdown-menu-story/dropdown-menu.stories.tsx",
           "type": "registry:component"
         },
         {
-          "path": "registry/ui/form-story/form.stories.tsx",
+          "path": "registry/atoms/form-story/form.stories.tsx",
           "type": "registry:component"
         },
         {
-          "path": "registry/ui/hover-card-story/hover-card.stories.tsx",
+          "path": "registry/atoms/hover-card-story/hover-card.stories.tsx",
           "type": "registry:component"
         },
         {
-          "path": "registry/ui/input-story/input.stories.tsx",
+          "path": "registry/atoms/input-story/input.stories.tsx",
           "type": "registry:component"
         },
         {
-          "path": "registry/ui/input-otp-story/input-otp.stories.tsx",
+          "path": "registry/atoms/input-otp-story/input-otp.stories.tsx",
           "type": "registry:component"
         },
         {
-          "path": "registry/ui/label-story/label.stories.tsx",
+          "path": "registry/atoms/label-story/label.stories.tsx",
           "type": "registry:component"
         },
         {
-          "path": "registry/ui/menubar-story/menubar.stories.tsx",
+          "path": "registry/atoms/menubar-story/menubar.stories.tsx",
           "type": "registry:component"
         },
         {
-          "path": "registry/ui/navigation-menu-story/navigation-menu.stories.tsx",
+          "path": "registry/atoms/navigation-menu-story/navigation-menu.stories.tsx",
           "type": "registry:component"
         },
         {
-          "path": "registry/ui/pagination-story/pagination.stories.tsx",
+          "path": "registry/atoms/pagination-story/pagination.stories.tsx",
           "type": "registry:component"
         },
         {
-          "path": "registry/ui/popover-story/popover.stories.tsx",
+          "path": "registry/atoms/popover-story/popover.stories.tsx",
           "type": "registry:component"
         },
         {
-          "path": "registry/ui/progress-story/progress.stories.tsx",
+          "path": "registry/atoms/progress-story/progress.stories.tsx",
           "type": "registry:component"
         },
         {
-          "path": "registry/ui/radio-group-story/radio-group.stories.tsx",
+          "path": "registry/atoms/radio-group-story/radio-group.stories.tsx",
           "type": "registry:component"
         },
         {
-          "path": "registry/ui/resizable-story/resizable.stories.tsx",
+          "path": "registry/atoms/resizable-story/resizable.stories.tsx",
           "type": "registry:component"
         },
         {
-          "path": "registry/ui/scroll-area-story/scroll-area.stories.tsx",
+          "path": "registry/atoms/scroll-area-story/scroll-area.stories.tsx",
           "type": "registry:component"
         },
         {
-          "path": "registry/ui/select-story/select.stories.tsx",
+          "path": "registry/atoms/select-story/select.stories.tsx",
           "type": "registry:component"
         },
         {
-          "path": "registry/ui/separator-story/separator.stories.tsx",
+          "path": "registry/atoms/separator-story/separator.stories.tsx",
           "type": "registry:component"
         },
         {
-          "path": "registry/ui/sheet-story/sheet.stories.tsx",
+          "path": "registry/atoms/sheet-story/sheet.stories.tsx",
           "type": "registry:component"
         },
         {
-          "path": "registry/ui/sidebar-story/sidebar.stories.tsx",
+          "path": "registry/atoms/sidebar-story/sidebar.stories.tsx",
           "type": "registry:component"
         },
         {
-          "path": "registry/ui/skeleton-story/skeleton.stories.tsx",
+          "path": "registry/atoms/skeleton-story/skeleton.stories.tsx",
           "type": "registry:component"
         },
         {
-          "path": "registry/ui/slider-story/slider.stories.tsx",
+          "path": "registry/atoms/slider-story/slider.stories.tsx",
           "type": "registry:component"
         },
         {
-          "path": "registry/ui/sonner-story/sonner.stories.tsx",
+          "path": "registry/atoms/sonner-story/sonner.stories.tsx",
           "type": "registry:component"
         },
         {
-          "path": "registry/ui/switch-story/switch.stories.tsx",
+          "path": "registry/atoms/switch-story/switch.stories.tsx",
           "type": "registry:component"
         },
         {
-          "path": "registry/ui/table-story/table.stories.tsx",
+          "path": "registry/atoms/table-story/table.stories.tsx",
           "type": "registry:component"
         },
         {
-          "path": "registry/ui/tabs-story/tabs.stories.tsx",
+          "path": "registry/atoms/tabs-story/tabs.stories.tsx",
           "type": "registry:component"
         },
         {
-          "path": "registry/ui/textarea-story/textarea.stories.tsx",
+          "path": "registry/atoms/textarea-story/textarea.stories.tsx",
           "type": "registry:component"
         },
         {
-          "path": "registry/ui/toggle-story/toggle.stories.tsx",
+          "path": "registry/atoms/toggle-story/toggle.stories.tsx",
           "type": "registry:component"
         },
         {
-          "path": "registry/ui/toggle-group-story/toggle-group.stories.tsx",
+          "path": "registry/atoms/toggle-group-story/toggle-group.stories.tsx",
           "type": "registry:component"
         },
         {
-          "path": "registry/ui/tooltip-story/tooltip.stories.tsx",
+          "path": "registry/atoms/tooltip-story/tooltip.stories.tsx",
           "type": "registry:component"
         },
         {

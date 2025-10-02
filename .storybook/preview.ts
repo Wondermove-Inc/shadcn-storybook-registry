@@ -6,11 +6,14 @@ import "./preview.css";
 
 const preview: Preview = {
   parameters: {
+    react: {
+      rootSelector: '#root'
+    },
     options: {
       storySort: {
         order: [
-          "design",
-          "ui",
+          "foundation",
+          "atoms",
           "*",
         ],
         method: "alphabetical",

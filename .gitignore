@@ -12,6 +12,7 @@
 
 # testing
 /coverage
+/tests/test-results/
 
 # next.js
 /.next/
@@ -42,6 +43,9 @@ next-env.d.ts
 
 # storybook
 public/storybook
-*storybook.log
+*.log
+/build/storybook-static
+/build/*.log
 
-storybook-static
+# legacy
+/stories-legacy
