@@ -84,7 +84,8 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 /**
- * The default form of the card.
+ * 기본 Card 컴포넌트입니다. Header, Content, Footer로 구성되어 정보를 그룹화하며,
+ * 로그인 폼 예제처럼 관련 콘텐츠를 하나의 시각적 단위로 묶습니다. 대시보드나 목록 UI에 적합합니다.
  */
 export const Default: Story = {
   render: () => <CardDemo />,

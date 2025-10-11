@@ -118,14 +118,16 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 /**
- * The default profile editing dialog with form inputs.
+ * 기본 Dialog 모달입니다. 프로필 수정 폼 예제로 제목, 설명, 입력 필드, 버튼을 포함하며,
+ * 중요한 작업이나 추가 정보 입력이 필요할 때 사용합니다. 모달 오버레이로 집중도를 높입니다.
  */
 export const Default: Story = {
   render: () => <DialogDemo />,
 };
 
 /**
- * Custom dialog with a share link and close button.
+ * 커스텀 닫기 버튼이 있는 Dialog입니다. 링크 공유 UI 예제로 읽기 전용 input과 복사 버튼을 제공하며,
+ * DialogClose를 사용해 취소 액션을 구현합니다. 공유, 알림 등 정보 표시용 모달에 적합합니다.
  */
 export const CustomCloseButton: Story = {
   render: () => <CustomCloseButtonDemo />,
