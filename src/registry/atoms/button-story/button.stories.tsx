@@ -35,12 +35,14 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 /**
- * The default form of the button.
+ * 기본 버튼 스타일입니다. 주요 액션이나 제출 버튼으로 사용하며,
+ * 가장 눈에 띄는 시각적 강조를 제공합니다.
  */
 export const Default: Story = {};
 
 /**
- * Secondary button variant.
+ * 보조 액션에 사용하는 secondary variant입니다.
+ * 주요 버튼보다 덜 강조되며, 취소나 뒤로가기 같은 부차적인 액션에 적합합니다.
  */
 export const Secondary: Story = {
   args: {
@@ -50,7 +52,8 @@ export const Secondary: Story = {
 };
 
 /**
- * Destructive button variant.
+ * 삭제나 파괴적인 액션에 사용하는 destructive variant입니다.
+ * 빨간색 계열로 표시되어 사용자에게 신중한 결정을 유도합니다.
  */
 export const Destructive: Story = {
   args: {
@@ -60,7 +63,8 @@ export const Destructive: Story = {
 };
 
 /**
- * Outline button variant.
+ * 테두리만 있는 outline variant입니다.
+ * 배경이 투명하여 가벼운 느낌을 주며, 보조 액션이나 필터 버튼에 적합합니다.
  */
 export const Outline: Story = {
   args: {
@@ -70,7 +74,8 @@ export const Outline: Story = {
 };
 
 /**
- * Ghost button variant.
+ * 테두리와 배경이 없는 ghost variant입니다.
+ * 호버 시에만 배경이 나타나며, 네비게이션이나 드롭다운 메뉴에 사용됩니다.
  */
 export const Ghost: Story = {
   args: {
@@ -80,7 +85,8 @@ export const Ghost: Story = {
 };
 
 /**
- * Link button variant.
+ * 링크처럼 보이는 link variant입니다.
+ * 밑줄이 있는 텍스트 스타일로, 인라인 텍스트 내에서 버튼 기능이 필요할 때 사용합니다.
  */
 export const LinkVariant: Story = {
   args: {
@@ -90,7 +96,8 @@ export const LinkVariant: Story = {
 };
 
 /**
- * Icon button example.
+ * 아이콘만 표시하는 버튼입니다. size="icon"을 사용하여 정사각형 모양으로 만들며,
+ * 툴바나 액션 아이콘 버튼에 적합합니다. 접근성을 위해 aria-label 추가를 권장합니다.
  */
 export const Icon: Story = {
   render: () => (
@@ -101,7 +108,8 @@ export const Icon: Story = {
 };
 
 /**
- * Button with icon.
+ * 텍스트와 아이콘을 함께 표시하는 버튼입니다.
+ * 아이콘을 텍스트 앞에 배치하여 버튼의 기능을 시각적으로 강조할 수 있습니다.
  */
 export const WithIcon: Story = {
   render: () => (
@@ -112,7 +120,8 @@ export const WithIcon: Story = {
 };
 
 /**
- * Loading button state.
+ * 로딩 상태를 표시하는 버튼입니다. disabled 상태와 함께 spinner 아이콘을 표시하여
+ * 비동기 작업이 진행 중임을 사용자에게 알립니다.
  */
 export const Loading: Story = {
   render: () => (
@@ -124,7 +133,8 @@ export const Loading: Story = {
 };
 
 /**
- * Button as child (link).
+ * asChild prop을 사용하여 Button의 스타일을 다른 컴포넌트에 적용합니다.
+ * Next.js Link나 React Router Link 등을 버튼처럼 스타일링할 때 유용합니다.
  */
 export const AsChild: Story = {
   render: () => (
