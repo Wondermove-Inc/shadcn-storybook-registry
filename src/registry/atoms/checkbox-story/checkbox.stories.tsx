@@ -1,14 +1,7 @@
-"use client"
+"use client";
 
-import type { Meta, StoryObj } from "@storybook/nextjs-vite";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Label } from "@/components/ui/label";
-import { expect, userEvent, within } from "storybook/test";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { toast } from "sonner";
-import { z } from "zod";
 import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
 import {
   Form,
   FormControl,
@@ -18,6 +11,13 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import { Label } from "@/components/ui/label";
+import { zodResolver } from "@hookform/resolvers/zod";
+import type { Meta, StoryObj } from "@storybook/nextjs-vite";
+import { useForm } from "react-hook-form";
+import { toast } from "sonner";
+import { expect, fn, userEvent, within } from "storybook/test";
+import { z } from "zod";
 
 export function CheckboxDemo() {
   return (
@@ -55,7 +55,7 @@ export function CheckboxDemo() {
         </div>
       </Label>
     </div>
-  )
+  );
 }
 
 /**
@@ -68,8 +68,11 @@ const meta: Meta<typeof Checkbox> = {
   parameters: {
     layout: "centered",
   },
+  args: {
+    onCheckedChange: fn(),
+  },
   excludeStories: /.*Demo$/,
-  render: () => <CheckboxDemo />
+  render: () => <CheckboxDemo />,
 } satisfies Meta<typeof Checkbox>;
 
 export default meta;
@@ -90,7 +93,7 @@ export const Basic: Story = {
       <Checkbox id="terms" />
       <Label htmlFor="terms">Accept terms and conditions</Label>
     </div>
-  )
+  ),
 };
 
 /**
@@ -107,7 +110,7 @@ export const Checked: Story = {
         </p>
       </div>
     </div>
-  )
+  ),
 };
 
 /**
@@ -119,7 +122,7 @@ export const Disabled: Story = {
       <Checkbox id="toggle" disabled />
       <Label htmlFor="toggle">Enable notifications</Label>
     </div>
-  )
+  ),
 };
 
 /**
@@ -134,15 +137,13 @@ export const WithCard: Story = {
         className="data-[state=checked]:border-blue-600 data-[state=checked]:bg-blue-600 data-[state=checked]:text-white dark:data-[state=checked]:border-blue-700 dark:data-[state=checked]:bg-blue-700"
       />
       <div className="grid gap-1.5 font-normal">
-        <p className="text-sm leading-none font-medium">
-          Enable notifications
-        </p>
+        <p className="text-sm leading-none font-medium">Enable notifications</p>
         <p className="text-muted-foreground text-sm">
           You can enable or disable notifications at any time.
         </p>
       </div>
     </Label>
-  )
+  ),
 };
 
 /**
@@ -217,13 +218,13 @@ const items = [
     id: "documents",
     label: "Documents",
   },
-] as const
+] as const;
 
 const FormSchema = z.object({
   items: z.array(z.string()).refine((value) => value.some((item) => item), {
     message: "You have to select at least one item.",
   }),
-})
+});
 
 function CheckboxReactHookFormMultiple() {
   const form = useForm<z.infer<typeof FormSchema>>({
@@ -231,7 +232,7 @@ function CheckboxReactHookFormMultiple() {
     defaultValues: {
       items: ["recents", "home"],
     },
-  })
+  });
 
   function onSubmit(data: z.infer<typeof FormSchema>) {
     toast("You submitted the following values", {
@@ -240,7 +241,7 @@ function CheckboxReactHookFormMultiple() {
           <code className="text-white">{JSON.stringify(data, null, 2)}</code>
         </pre>
       ),
-    })
+    });
   }
 
   return (
@@ -276,9 +277,9 @@ function CheckboxReactHookFormMultiple() {
                                 ? field.onChange([...field.value, item.id])
                                 : field.onChange(
                                     field.value?.filter(
-                                      (value) => value !== item.id
-                                    )
-                                  )
+                                      (value) => value !== item.id,
+                                    ),
+                                  );
                             }}
                           />
                         </FormControl>
@@ -286,7 +287,7 @@ function CheckboxReactHookFormMultiple() {
                           {item.label}
                         </FormLabel>
                       </FormItem>
-                    )
+                    );
                   }}
                 />
               ))}
@@ -297,7 +298,7 @@ function CheckboxReactHookFormMultiple() {
         <Button type="submit">Submit</Button>
       </form>
     </Form>
-  )
+  );
 }
 
 /**

@@ -16,7 +16,7 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { expect, userEvent, within } from "storybook/test";
+import { expect, fn, userEvent, within } from "storybook/test";
 
 function DialogDemo() {
   return (
@@ -106,6 +106,9 @@ const meta = {
   tags: ["autodocs"],
   parameters: {
     layout: "centered",
+  },
+  args: {
+    onOpenChange: fn(),
   },
   excludeStories: /.*Demo$/,
 } satisfies Meta<typeof DialogDemo>;

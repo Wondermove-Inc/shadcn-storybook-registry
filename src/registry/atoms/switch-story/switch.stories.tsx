@@ -1,12 +1,13 @@
-"use client"
+"use client";
 
+import { zodResolver } from "@hookform/resolvers/zod";
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
-import { toast } from "sonner"
-import { z } from "zod"
+import { useForm } from "react-hook-form";
+import { toast } from "sonner";
+import { fn } from "storybook/test";
+import { z } from "zod";
 
-import { Button } from "@/components/ui/button"
+import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
@@ -14,10 +15,10 @@ import {
   FormField,
   FormItem,
   FormLabel,
-} from "@/components/ui/form"
+} from "@/components/ui/form";
 import { Label } from "@/components/ui/label";
+import { Toaster } from "@/components/ui/sonner";
 import { Switch } from "@/components/ui/switch";
-import { Toaster } from "@/components/ui/sonner"
 
 // Default example from official docs
 export function SwitchDemo() {
@@ -26,14 +27,14 @@ export function SwitchDemo() {
       <Switch id="airplane-mode" />
       <Label htmlFor="airplane-mode">Airplane Mode</Label>
     </div>
-  )
+  );
 }
 
 // Form example from official docs
 const FormSchema = z.object({
   marketing_emails: z.boolean().default(false).optional(),
   security_emails: z.boolean(),
-})
+});
 
 export function SwitchForm() {
   const form = useForm<z.infer<typeof FormSchema>>({
@@ -41,7 +42,7 @@ export function SwitchForm() {
     defaultValues: {
       security_emails: true,
     },
-  })
+  });
 
   function onSubmit(data: z.infer<typeof FormSchema>) {
     toast("You submitted the following values", {
@@ -50,7 +51,7 @@ export function SwitchForm() {
           <code className="text-white">{JSON.stringify(data, null, 2)}</code>
         </pre>
       ),
-    })
+    });
   }
 
   return (
@@ -106,7 +107,7 @@ export function SwitchForm() {
         <Button type="submit">Submit</Button>
       </form>
     </Form>
-  )
+  );
 }
 
 /**
@@ -119,8 +120,11 @@ const meta = {
   parameters: {
     layout: "centered",
   },
+  args: {
+    onCheckedChange: fn(),
+  },
   excludeStories: /.*Demo$|.*Form$/,
-  render: () => <SwitchDemo />
+  render: () => <SwitchDemo />,
 } satisfies Meta<typeof Switch>;
 
 export default meta;

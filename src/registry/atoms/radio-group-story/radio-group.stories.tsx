@@ -15,6 +15,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
+import { fn } from "storybook/test";
 import { z } from "zod";
 
 /**
@@ -27,6 +28,9 @@ const meta = {
   tags: ["autodocs"],
   parameters: {
     layout: "centered",
+  },
+  args: {
+    onValueChange: fn(),
   },
   excludeStories: /.*Demo$|FormSchema/,
   render: () => (

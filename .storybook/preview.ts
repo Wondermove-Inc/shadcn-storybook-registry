@@ -1,5 +1,5 @@
-import type { Preview } from "@storybook/nextjs-vite";
 import { withThemeByClassName } from "@storybook/addon-themes";
+import type { Preview } from "@storybook/nextjs-vite";
 
 import "../app/globals.css";
 import "./preview.css";
@@ -7,17 +7,11 @@ import "./preview.css";
 const preview: Preview = {
   parameters: {
     react: {
-      rootSelector: '#root'
+      rootSelector: "#root",
     },
     options: {
       storySort: {
-        order: [
-          "foundation",
-          "design",
-          "ui",
-          "templates",
-          "*",
-        ],
+        order: ["foundation", "design", "ui", "templates", "*"],
         method: "alphabetical",
       },
     },
@@ -27,7 +21,6 @@ const preview: Preview = {
         date: /Date$/i,
       },
     },
-    actions: { argTypesRegex: "^on.*" },
     a11y: {
       // 'todo' - show a11y violations in the test UI only
       // 'error' - fail CI on a11y violations

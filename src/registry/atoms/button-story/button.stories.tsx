@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useRef } from "react";
 
 import { Button } from "@/components/ui/button";
-import { expect, userEvent, within } from "storybook/test";
+import { expect, fn, userEvent, within } from "storybook/test";
 
 export function ButtonDemo() {
   return <Button>Button</Button>;
@@ -19,6 +19,9 @@ const meta: Meta<typeof Button> = {
   tags: ["autodocs"],
   parameters: {
     layout: "centered",
+  },
+  args: {
+    onClick: fn(),
   },
   excludeStories: /.*Demo$/,
   render: () => <ButtonDemo />,

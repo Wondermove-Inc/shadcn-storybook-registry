@@ -1,13 +1,6 @@
-"use client"
+"use client";
 
-import type { Meta, StoryObj } from "@storybook/nextjs-vite";
-import * as React from "react"
-import Link from "next/link"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
-import { toast } from "sonner"
-import { z } from "zod"
-import { Button } from "@/components/ui/button"
+import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
@@ -16,7 +9,7 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form"
+} from "@/components/ui/form";
 import {
   Select,
   SelectContent,
@@ -25,7 +18,14 @@ import {
   SelectLabel,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select"
+} from "@/components/ui/select";
+import { zodResolver } from "@hookform/resolvers/zod";
+import type { Meta, StoryObj } from "@storybook/nextjs-vite";
+import Link from "next/link";
+import { useForm } from "react-hook-form";
+import { toast } from "sonner";
+import { fn } from "storybook/test";
+import { z } from "zod";
 
 export function SelectDemo() {
   return (
@@ -44,7 +44,7 @@ export function SelectDemo() {
         </SelectGroup>
       </SelectContent>
     </Select>
-  )
+  );
 }
 
 /**
@@ -57,8 +57,12 @@ const meta = {
   parameters: {
     layout: "centered",
   },
+  args: {
+    onValueChange: fn(),
+    onOpenChange: fn(),
+  },
   excludeStories: /.*Demo$|SelectScrollable|SelectForm/,
-  render: () => <SelectDemo />
+  render: () => <SelectDemo />,
 } satisfies Meta<typeof Select>;
 
 export default meta;
@@ -134,7 +138,7 @@ export const Scrollable: Story = {
         </SelectGroup>
       </SelectContent>
     </Select>
-  )
+  ),
 };
 
 export function SelectScrollable() {
@@ -198,7 +202,7 @@ export function SelectScrollable() {
         </SelectGroup>
       </SelectContent>
     </Select>
-  )
+  );
 }
 
 const FormSchema = z.object({
@@ -206,12 +210,12 @@ const FormSchema = z.object({
     .string()
     .min(1, { message: "Please select an email to display." })
     .email({ message: "Please select a valid email." }),
-})
+});
 
 export function SelectForm() {
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
-  })
+  });
 
   function onSubmit(data: z.infer<typeof FormSchema>) {
     toast("You submitted the following values:", {
@@ -220,7 +224,7 @@ export function SelectForm() {
           <code className="text-white">{JSON.stringify(data, null, 2)}</code>
         </pre>
       ),
-    })
+    });
   }
 
   return (
@@ -255,7 +259,7 @@ export function SelectForm() {
         <Button type="submit">Submit</Button>
       </form>
     </Form>
-  )
+  );
 }
 
 /**

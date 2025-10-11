@@ -1,4 +1,4 @@
-import { expect, userEvent, within } from "storybook/test";
+import { expect, fn, userEvent, within } from "storybook/test";
 // Replace nextjs-vite with the name of your framework
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 import { useRef } from "react";
@@ -20,6 +20,7 @@ const meta = {
     type: "email",
     placeholder: "Email",
     disabled: false,
+    onChange: fn(),
   },
   parameters: {
     layout: "centered",
