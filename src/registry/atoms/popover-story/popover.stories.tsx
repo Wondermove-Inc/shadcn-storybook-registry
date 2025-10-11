@@ -7,6 +7,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
+import { expect, userEvent, within } from "storybook/test";
 
 function PopoverDemo() {
   return (
@@ -83,4 +84,21 @@ type Story = StoryObj<typeof meta>;
  */
 export const Default: Story = {
   render: () => <PopoverDemo />,
+};
+
+export const ShouldOpenPopover: Story = {
+  name: "when popover trigger is clicked, should open popover",
+  tags: ["!dev", "!autodocs"],
+  render: () => <PopoverDemo />,
+  play: async ({ canvasElement, step }) => {
+    const canvas = within(canvasElement);
+
+    await step("click 'Open popover' button to open popover", async () => {
+      const openButton = canvas.getByRole("button", { name: /open popover/i });
+      await userEvent.click(openButton);
+    });
+
+    const popoverHeading = await canvas.findByText(/Dimensions/i);
+    await expect(popoverHeading).toBeVisible();
+  },
 };

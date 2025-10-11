@@ -1,8 +1,9 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
+import { expect, userEvent, within } from "storybook/test";
 
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import {
   Sheet,
   SheetClose,
@@ -46,7 +47,7 @@ export function SheetDemo() {
         </SheetFooter>
       </SheetContent>
     </Sheet>
-  )
+  );
 }
 
 /**
@@ -71,7 +72,7 @@ type Story = StoryObj<typeof meta>;
  * The default form of the sheet.
  */
 export const Default: Story = {
-  render: () => <SheetDemo />
+  render: () => <SheetDemo />,
 };
 
 /**
@@ -87,13 +88,13 @@ export const SideRight: Story = {
         <SheetHeader>
           <SheetTitle>Are you absolutely sure?</SheetTitle>
           <SheetDescription>
-            This action cannot be undone. This will permanently delete your account
-            and remove your data from our servers.
+            This action cannot be undone. This will permanently delete your
+            account and remove your data from our servers.
           </SheetDescription>
         </SheetHeader>
       </SheetContent>
     </Sheet>
-  )
+  ),
 };
 
 /**
@@ -109,13 +110,13 @@ export const SideLeft: Story = {
         <SheetHeader>
           <SheetTitle>Are you absolutely sure?</SheetTitle>
           <SheetDescription>
-            This action cannot be undone. This will permanently delete your account
-            and remove your data from our servers.
+            This action cannot be undone. This will permanently delete your
+            account and remove your data from our servers.
           </SheetDescription>
         </SheetHeader>
       </SheetContent>
     </Sheet>
-  )
+  ),
 };
 
 /**
@@ -131,13 +132,13 @@ export const SideTop: Story = {
         <SheetHeader>
           <SheetTitle>Are you absolutely sure?</SheetTitle>
           <SheetDescription>
-            This action cannot be undone. This will permanently delete your account
-            and remove your data from our servers.
+            This action cannot be undone. This will permanently delete your
+            account and remove your data from our servers.
           </SheetDescription>
         </SheetHeader>
       </SheetContent>
     </Sheet>
-  )
+  ),
 };
 
 /**
@@ -153,13 +154,13 @@ export const SideBottom: Story = {
         <SheetHeader>
           <SheetTitle>Are you absolutely sure?</SheetTitle>
           <SheetDescription>
-            This action cannot be undone. This will permanently delete your account
-            and remove your data from our servers.
+            This action cannot be undone. This will permanently delete your
+            account and remove your data from our servers.
           </SheetDescription>
         </SheetHeader>
       </SheetContent>
     </Sheet>
-  )
+  ),
 };
 
 /**
@@ -175,11 +176,28 @@ export const CustomSize: Story = {
         <SheetHeader>
           <SheetTitle>Are you absolutely sure?</SheetTitle>
           <SheetDescription>
-            This action cannot be undone. This will permanently delete your account
-            and remove your data from our servers.
+            This action cannot be undone. This will permanently delete your
+            account and remove your data from our servers.
           </SheetDescription>
         </SheetHeader>
       </SheetContent>
     </Sheet>
-  )
+  ),
+};
+
+export const ShouldOpenSheet: Story = {
+  name: "when sheet trigger is clicked, should open sheet",
+  tags: ["!dev", "!autodocs"],
+  render: () => <SheetDemo />,
+  play: async ({ canvasElement, step }) => {
+    const canvas = within(canvasElement);
+
+    await step("click 'Open' button to open sheet", async () => {
+      const openButton = canvas.getByRole("button", { name: /^open$/i });
+      await userEvent.click(openButton);
+    });
+
+    const sheetTitle = await canvas.findByText(/Edit profile/i);
+    await expect(sheetTitle).toBeVisible();
+  },
 };

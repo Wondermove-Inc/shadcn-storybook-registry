@@ -1,11 +1,12 @@
-"use client"
+"use client";
 
-import * as React from "react"
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
-import { Minus, Plus } from "lucide-react"
-import { Bar, BarChart, ResponsiveContainer } from "recharts"
+import { Minus, Plus } from "lucide-react";
+import * as React from "react";
+import { Bar, BarChart, ResponsiveContainer } from "recharts";
+import { expect, userEvent, within } from "storybook/test";
 
-import { Button } from "@/components/ui/button"
+import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
@@ -13,7 +14,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog"
+} from "@/components/ui/dialog";
 import {
   Drawer,
   DrawerClose,
@@ -23,10 +24,10 @@ import {
   DrawerHeader,
   DrawerTitle,
   DrawerTrigger,
-} from "@/components/ui/drawer"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { cn } from "@/lib/utils"
+} from "@/components/ui/drawer";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { cn } from "@/lib/utils";
 
 const data = [
   {
@@ -68,13 +69,13 @@ const data = [
   {
     goal: 349,
   },
-]
+];
 
 function DrawerDemo() {
-  const [goal, setGoal] = React.useState(350)
+  const [goal, setGoal] = React.useState(350);
 
   function onClick(adjustment: number) {
-    setGoal(Math.max(200, Math.min(400, goal + adjustment)))
+    setGoal(Math.max(200, Math.min(400, goal + adjustment)));
   }
 
   return (
@@ -144,32 +145,32 @@ function DrawerDemo() {
         </div>
       </DrawerContent>
     </Drawer>
-  )
+  );
 }
 
 // useMediaQuery hook
 function useMediaQuery(query: string) {
-  const [value, setValue] = React.useState(false)
+  const [value, setValue] = React.useState(false);
 
   React.useEffect(() => {
     function onChange(event: MediaQueryListEvent) {
-      setValue(event.matches)
+      setValue(event.matches);
     }
 
-    const result = matchMedia(query)
-    result.addEventListener("change", onChange)
-    setValue(result.matches)
+    const result = matchMedia(query);
+    result.addEventListener("change", onChange);
+    setValue(result.matches);
 
-    return () => result.removeEventListener("change", onChange)
-  }, [query])
+    return () => result.removeEventListener("change", onChange);
+  }, [query]);
 
-  return value
+  return value;
 }
 
 // Responsive Dialog/Drawer Example
 function ResponsiveDialogDrawerDemo() {
-  const [open, setOpen] = React.useState(false)
-  const isDesktop = useMediaQuery("(min-width: 768px)")
+  const [open, setOpen] = React.useState(false);
+  const isDesktop = useMediaQuery("(min-width: 768px)");
 
   if (isDesktop) {
     return (
@@ -181,13 +182,14 @@ function ResponsiveDialogDrawerDemo() {
           <DialogHeader>
             <DialogTitle>Edit profile</DialogTitle>
             <DialogDescription>
-              Make changes to your profile here. Click save when you&apos;re done.
+              Make changes to your profile here. Click save when you&apos;re
+              done.
             </DialogDescription>
           </DialogHeader>
           <ProfileForm />
         </DialogContent>
       </Dialog>
-    )
+    );
   }
 
   return (
@@ -210,7 +212,7 @@ function ResponsiveDialogDrawerDemo() {
         </DrawerFooter>
       </DrawerContent>
     </Drawer>
-  )
+  );
 }
 
 function ProfileForm({ className }: React.ComponentProps<"form">) {
@@ -226,7 +228,7 @@ function ProfileForm({ className }: React.ComponentProps<"form">) {
       </div>
       <Button type="submit">Save changes</Button>
     </form>
-  )
+  );
 }
 
 /**
@@ -256,4 +258,21 @@ export const Default: Story = {};
  */
 export const ResponsiveDialogDrawer: Story = {
   render: () => <ResponsiveDialogDrawerDemo />,
+};
+
+export const ShouldOpenDrawer: Story = {
+  name: "when drawer trigger is clicked, should open drawer",
+  tags: ["!dev", "!autodocs"],
+  render: () => <DrawerDemo />,
+  play: async ({ canvasElement, step }) => {
+    const canvas = within(canvasElement);
+
+    await step("click 'Open Drawer' button to open drawer", async () => {
+      const openButton = canvas.getByRole("button", { name: /open drawer/i });
+      await userEvent.click(openButton);
+    });
+
+    const drawerTitle = await canvas.findByText(/Move Goal/i);
+    await expect(drawerTitle).toBeVisible();
+  },
 };
