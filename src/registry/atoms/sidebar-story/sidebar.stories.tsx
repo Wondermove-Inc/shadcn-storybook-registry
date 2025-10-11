@@ -1,6 +1,18 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 import * as React from "react";
+import { expect, userEvent, within } from "storybook/test";
 
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/components/ui/collapsible";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import {
   Sidebar,
   SidebarContent,
@@ -35,17 +47,6 @@ import {
   Settings,
   User2,
 } from "lucide-react";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import {
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger,
-} from "@/components/ui/collapsible";
 
 // Menu items from official docs
 const items = [
@@ -74,7 +75,7 @@ const items = [
     url: "#",
     icon: Settings,
   },
-]
+];
 
 /**
  * A composable, themeable and customizable sidebar component.
@@ -123,7 +124,7 @@ export const BasicStructure: Story = {
         <SidebarTrigger />
       </main>
     </SidebarProvider>
-  )
+  ),
 };
 
 /**
@@ -182,7 +183,7 @@ export const WithHeaderDropdown: Story = {
         <SidebarTrigger />
       </main>
     </SidebarProvider>
-  )
+  ),
 };
 
 /**
@@ -244,7 +245,7 @@ export const WithFooterDropdown: Story = {
         <SidebarTrigger />
       </main>
     </SidebarProvider>
-  )
+  ),
 };
 
 /**
@@ -287,7 +288,7 @@ export const CollapsibleGroup: Story = {
         <SidebarTrigger />
       </main>
     </SidebarProvider>
-  )
+  ),
 };
 
 /**
@@ -324,7 +325,7 @@ export const WithMenuAction: Story = {
         <SidebarTrigger />
       </main>
     </SidebarProvider>
-  )
+  ),
 };
 
 /**
@@ -359,7 +360,7 @@ export const WithMenuBadge: Story = {
         <SidebarTrigger />
       </main>
     </SidebarProvider>
-  )
+  ),
 };
 
 /**
@@ -421,7 +422,7 @@ export const WithSubmenu: Story = {
         <SidebarTrigger />
       </main>
     </SidebarProvider>
-  )
+  ),
 };
 
 /**
@@ -429,8 +430,8 @@ export const WithSubmenu: Story = {
  */
 export const Controlled: Story = {
   render: () => {
-    const [open, setOpen] = React.useState(false)
-    
+    const [open, setOpen] = React.useState(false);
+
     return (
       <SidebarProvider open={open} onOpenChange={setOpen}>
         <Sidebar>
@@ -457,12 +458,12 @@ export const Controlled: Story = {
         <main className="flex flex-1 flex-col gap-4 p-4">
           <div className="flex items-center gap-4">
             <SidebarTrigger />
-            <span>Sidebar is {open ? 'open' : 'closed'}</span>
+            <span>Sidebar is {open ? "open" : "closed"}</span>
           </div>
         </main>
       </SidebarProvider>
-    )
-  }
+    );
+  },
 };
 
 /**
@@ -497,7 +498,7 @@ export const WithRail: Story = {
         <SidebarTrigger />
       </main>
     </SidebarProvider>
-  )
+  ),
 };
 
 /**
@@ -598,5 +599,62 @@ export const FullExample: Story = {
         </main>
       </SidebarInset>
     </SidebarProvider>
-  )
+  ),
+};
+
+export const ShouldToggleSidebar: Story = {
+  name: "when sidebar trigger is clicked, should toggle sidebar visibility",
+  tags: ["!dev", "!autodocs"],
+  render: () => (
+    <SidebarProvider>
+      <Sidebar>
+        <SidebarContent>
+          <SidebarGroup>
+            <SidebarGroupLabel>Application</SidebarGroupLabel>
+            <SidebarGroupContent>
+              <SidebarMenu>
+                {items.map((item) => (
+                  <SidebarMenuItem key={item.title}>
+                    <SidebarMenuButton asChild>
+                      <a href={item.url}>
+                        <item.icon />
+                        <span>{item.title}</span>
+                      </a>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                ))}
+              </SidebarMenu>
+            </SidebarGroupContent>
+          </SidebarGroup>
+        </SidebarContent>
+      </Sidebar>
+      <main>
+        <SidebarTrigger />
+      </main>
+    </SidebarProvider>
+  ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+
+    // 🎯 목적: Sidebar Trigger 버튼이 존재하고 클릭 가능한지, 메뉴 아이템들이 올바르게 렌더링되는지 확인
+    const triggerButton = canvas.getByRole("button", {
+      name: /toggle sidebar/i,
+    });
+    await expect(triggerButton).toBeInTheDocument();
+
+    // 메뉴 아이템들이 존재하는지 확인
+    const homeLink = canvas.getByRole("link", { name: /home/i });
+    const inboxLink = canvas.getByRole("link", { name: /inbox/i });
+    const calendarLink = canvas.getByRole("link", { name: /calendar/i });
+
+    await expect(homeLink).toBeInTheDocument();
+    await expect(inboxLink).toBeInTheDocument();
+    await expect(calendarLink).toBeInTheDocument();
+
+    // Trigger 버튼 클릭
+    await userEvent.click(triggerButton);
+
+    // 메뉴 아이템 클릭 가능 확인
+    await userEvent.click(homeLink);
+  },
 };

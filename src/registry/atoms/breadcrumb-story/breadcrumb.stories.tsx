@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 import { ChevronDownIcon, SlashIcon } from "lucide-react";
 import Link from "next/link";
+import { expect, userEvent, within } from "storybook/test";
 
 import {
   Breadcrumb,
@@ -157,4 +158,24 @@ export const Collapsed: Story = {
       </BreadcrumbList>
     </Breadcrumb>
   ),
+};
+
+export const ShouldNavigateWhenClicked: Story = {
+  name: "when breadcrumb link is clicked, should have correct href",
+  tags: ["!dev", "!autodocs"],
+  render: () => <BreadcrumbDemo />,
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+
+    // 🎯 목적: Breadcrumb 링크가 올바른 href를 가지고 있는지 확인
+    const homeLink = canvas.getByRole("link", { name: /home/i });
+    const componentsLink = canvas.getByRole("link", { name: /components/i });
+
+    await expect(homeLink).toHaveAttribute("href", "/");
+    await expect(componentsLink).toHaveAttribute("href", "/components");
+
+    // 링크 클릭 가능 확인
+    await userEvent.click(homeLink);
+    await userEvent.click(componentsLink);
+  },
 };

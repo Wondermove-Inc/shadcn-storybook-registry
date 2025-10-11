@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
+import { expect, userEvent, waitFor, within } from "storybook/test";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
@@ -55,3 +56,35 @@ type Story = StoryObj<typeof meta>;
  * The default hover card showing user profile information.
  */
 export const Default: Story = {};
+
+export const ShouldShowHoverCard: Story = {
+  name: "when hovering over trigger, should show hover card content",
+  tags: ["!dev", "!autodocs"],
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+
+    // 🎯 목적: Hover Card가 트리거에 호버 시 열리고, 콘텐츠가 표시되는지 확인
+    const trigger = canvas.getByRole("button", { name: /@nextjs/i });
+    await expect(trigger).toBeInTheDocument();
+
+    // 트리거에 호버하여 Hover Card 열기
+    await userEvent.hover(trigger);
+
+    // Hover Card 콘텐츠가 표시되는지 확인
+    await waitFor(async () => {
+      const heading = await canvas.findByRole("heading", {
+        name: /@nextjs/i,
+      });
+      await expect(heading).toBeInTheDocument();
+    });
+
+    // 추가 콘텐츠 확인
+    const description = canvas.getByText(
+      /the react framework – created and maintained by @vercel/i,
+    );
+    await expect(description).toBeInTheDocument();
+
+    // 호버 해제
+    await userEvent.unhover(trigger);
+  },
+};

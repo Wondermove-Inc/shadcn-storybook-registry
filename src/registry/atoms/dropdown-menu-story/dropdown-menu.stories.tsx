@@ -1,6 +1,4 @@
-import * as React from "react"
-import type { Meta, StoryObj } from "@storybook/nextjs-vite";
-import { Button } from "@/components/ui/button"
+import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
@@ -17,7 +15,10 @@ import {
   DropdownMenuSubContent,
   DropdownMenuSubTrigger,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
+} from "@/components/ui/dropdown-menu";
+import type { Meta, StoryObj } from "@storybook/nextjs-vite";
+import * as React from "react";
+import { expect, userEvent, waitFor, within } from "storybook/test";
 
 function DropdownMenuDemo() {
   return (
@@ -75,14 +76,14 @@ function DropdownMenuDemo() {
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
-  )
+  );
 }
 
 // Dropdown Menu with Checkboxes
 function DropdownMenuCheckboxesDemo() {
-  const [showStatusBar, setShowStatusBar] = React.useState(true)
-  const [showActivityBar, setShowActivityBar] = React.useState(false)
-  const [showPanel, setShowPanel] = React.useState(false)
+  const [showStatusBar, setShowStatusBar] = React.useState(true);
+  const [showActivityBar, setShowActivityBar] = React.useState(false);
+  const [showPanel, setShowPanel] = React.useState(false);
 
   return (
     <DropdownMenu>
@@ -113,12 +114,12 @@ function DropdownMenuCheckboxesDemo() {
         </DropdownMenuCheckboxItem>
       </DropdownMenuContent>
     </DropdownMenu>
-  )
+  );
 }
 
 // Dropdown Menu with Radio Group
 function DropdownMenuRadioGroupDemo() {
-  const [position, setPosition] = React.useState("bottom")
+  const [position, setPosition] = React.useState("bottom");
 
   return (
     <DropdownMenu>
@@ -135,7 +136,7 @@ function DropdownMenuRadioGroupDemo() {
         </DropdownMenuRadioGroup>
       </DropdownMenuContent>
     </DropdownMenu>
-  )
+  );
 }
 
 /**
@@ -172,4 +173,38 @@ export const Checkboxes: Story = {
  */
 export const RadioGroup: Story = {
   render: () => <DropdownMenuRadioGroupDemo />,
+};
+
+export const ShouldOpenAndSelectMenuItem: Story = {
+  name: "when trigger is clicked, should open menu and select items",
+  tags: ["!dev", "!autodocs"],
+  render: () => <DropdownMenuDemo />,
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+
+    // 🎯 목적: Dropdown Menu가 트리거 버튼 클릭으로 열리고, 메뉴 아이템 선택이 가능한지 확인
+    const triggerButton = canvas.getByRole("button", { name: /open/i });
+    await expect(triggerButton).toBeInTheDocument();
+
+    // 트리거 버튼 클릭하여 드롭다운 메뉴 열기
+    await userEvent.click(triggerButton);
+
+    // 메뉴가 열렸는지 확인 (메뉴 아이템 확인)
+    const profileItem = await waitFor(async () => {
+      return await canvas.findByRole("menuitem", {
+        name: /profile/i,
+      });
+    });
+    await expect(profileItem).toBeInTheDocument();
+
+    // 다른 메뉴 아이템들도 확인
+    const billingItem = canvas.getByRole("menuitem", { name: /billing/i });
+    const settingsItem = canvas.getByRole("menuitem", { name: /settings/i });
+
+    await expect(billingItem).toBeInTheDocument();
+    await expect(settingsItem).toBeInTheDocument();
+
+    // 메뉴 아이템 클릭
+    await userEvent.click(profileItem);
+  },
 };

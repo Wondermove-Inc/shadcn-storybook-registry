@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
-import * as React from "react";
+import { expect, userEvent, within } from "storybook/test";
 
 import { Card, CardContent } from "@/components/ui/card";
 import {
@@ -29,7 +29,7 @@ export function CarouselDemo() {
       <CarouselPrevious />
       <CarouselNext />
     </Carousel>
-  )
+  );
 }
 
 /**
@@ -43,7 +43,7 @@ const meta: Meta<typeof Carousel> = {
     layout: "centered",
   },
   excludeStories: /.*Demo$/,
-  render: () => <CarouselDemo />
+  render: () => <CarouselDemo />,
 } satisfies Meta<typeof Carousel>;
 
 export default meta;
@@ -82,7 +82,7 @@ export const Sizes: Story = {
       <CarouselPrevious />
       <CarouselNext />
     </Carousel>
-  )
+  ),
 };
 
 /**
@@ -107,7 +107,7 @@ export const Spacing: Story = {
       <CarouselPrevious />
       <CarouselNext />
     </Carousel>
-  )
+  ),
 };
 
 /**
@@ -115,10 +115,7 @@ export const Spacing: Story = {
  */
 export const Vertical: Story = {
   render: () => (
-    <Carousel
-      orientation="vertical"
-      className="w-full max-w-xs"
-    >
+    <Carousel orientation="vertical" className="w-full max-w-xs">
       <CarouselContent className="-mt-1 h-[200px]">
         {Array.from({ length: 5 }).map((_, index) => (
           <CarouselItem key={index} className="pt-1 md:basis-1/2">
@@ -135,5 +132,33 @@ export const Vertical: Story = {
       <CarouselPrevious />
       <CarouselNext />
     </Carousel>
-  )
+  ),
+};
+
+export const ShouldNavigateCarousel: Story = {
+  name: "when next/previous buttons are clicked, should navigate carousel",
+  tags: ["!dev", "!autodocs"],
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+
+    // 🎯 목적: Carousel의 Previous/Next 버튼이 존재하고 클릭 가능한지 확인
+    const previousButton = canvas.getByRole("button", {
+      name: /previous slide/i,
+    });
+    const nextButton = canvas.getByRole("button", { name: /next slide/i });
+
+    // 버튼 존재 확인
+    await expect(previousButton).toBeInTheDocument();
+    await expect(nextButton).toBeInTheDocument();
+
+    // Next 버튼 클릭 (슬라이드 이동)
+    await userEvent.click(nextButton);
+
+    // Previous 버튼 클릭 (슬라이드 이동)
+    await userEvent.click(previousButton);
+
+    // 슬라이드 컨텐츠가 존재하는지 확인
+    const slides = canvas.getAllByText(/\d+/);
+    await expect(slides.length).toBeGreaterThan(0);
+  },
 };

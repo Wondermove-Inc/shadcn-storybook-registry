@@ -1,6 +1,7 @@
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
+import { expect, userEvent, within } from "storybook/test";
 
 function LabelDemo() {
   return (
@@ -44,4 +45,24 @@ export const Default: Story = {};
  */
 export const WithCheckbox: Story = {
   render: () => <LabelDemo />,
+};
+
+export const ShouldToggleCheckboxWhenClicked: Story = {
+  name: "when label is clicked, should toggle the associated checkbox",
+  tags: ["!dev", "!autodocs"],
+  render: () => <LabelDemo />,
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const label = canvas.getByText("Accept terms and conditions");
+    const checkbox = canvas.getByRole("checkbox") as HTMLInputElement;
+
+    // 🎯 목적: Label 클릭 시 연결된 checkbox가 토글되는지 확인
+    await expect(checkbox).not.toBeChecked();
+
+    await userEvent.click(label);
+    await expect(checkbox).toBeChecked();
+
+    await userEvent.click(label);
+    await expect(checkbox).not.toBeChecked();
+  },
 };

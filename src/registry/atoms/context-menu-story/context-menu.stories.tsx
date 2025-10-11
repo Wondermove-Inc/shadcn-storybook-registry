@@ -1,6 +1,5 @@
-"use client"
+"use client";
 
-import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 import {
   ContextMenu,
   ContextMenuCheckboxItem,
@@ -15,7 +14,9 @@ import {
   ContextMenuSubContent,
   ContextMenuSubTrigger,
   ContextMenuTrigger,
-} from "@/components/ui/context-menu"
+} from "@/components/ui/context-menu";
+import type { Meta, StoryObj } from "@storybook/nextjs-vite";
+import { expect, userEvent, waitFor, within } from "storybook/test";
 
 /**
  * Displays a menu to the user — such as a set of actions or functions —
@@ -74,7 +75,7 @@ const meta = {
         </ContextMenuRadioGroup>
       </ContextMenuContent>
     </ContextMenu>
-  )
+  ),
 } satisfies Meta<typeof ContextMenu>;
 
 export default meta;
@@ -85,6 +86,39 @@ type Story = StoryObj<typeof meta>;
  * The default form of the context menu with all features.
  */
 export const Default: Story = {};
+
+export const ShouldOpenContextMenu: Story = {
+  name: "when right click on trigger, should open context menu",
+  tags: ["!dev", "!autodocs"],
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+
+    // 🎯 목적: Context Menu가 우클릭으로 열리고, 메뉴 아이템 선택이 가능한지 확인
+    const trigger = canvas.getByText(/right click here/i);
+    await expect(trigger).toBeInTheDocument();
+
+    // 트리거에 우클릭하여 컨텍스트 메뉴 열기
+    await userEvent.pointer([
+      { target: trigger },
+      { keys: "[MouseRight]", target: trigger },
+    ]);
+
+    // 메뉴가 열렸는지 확인 (메뉴 아이템 확인)
+    await waitFor(async () => {
+      const backItem = await canvas.findByRole("menuitem", {
+        name: /back/i,
+      });
+      await expect(backItem).toBeInTheDocument();
+    });
+
+    // 다른 메뉴 아이템들도 확인
+    const reloadItem = canvas.getByRole("menuitem", { name: /reload/i });
+    await expect(reloadItem).toBeInTheDocument();
+
+    // 메뉴 아이템 클릭
+    await userEvent.click(reloadItem);
+  },
+};
 
 export function ContextMenuDemo() {
   return (
@@ -132,5 +166,5 @@ export function ContextMenuDemo() {
         </ContextMenuRadioGroup>
       </ContextMenuContent>
     </ContextMenu>
-  )
+  );
 }
