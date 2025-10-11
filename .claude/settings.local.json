@@ -24,7 +24,11 @@
       "Bash(find:*)",
       "Bash(while read file)",
       "Bash(do if grep -q \"play:\" \"$file\")",
-      "Bash(then basename \"$file\" .stories.tsx fi done)"
+      "Bash(then basename \"$file\" .stories.tsx fi done)",
+      "mcp__serena__search_for_pattern",
+      "Bash(bun:*)",
+      "Bash(npm --version)",
+      "Bash(node:*)"
     ],
     "deny": [],
     "ask": []
