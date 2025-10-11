@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react"
+import { useEffect, useState } from "react";
 
 // Tailwind 기본 색상 정의
 const tailwindColors = {
@@ -288,21 +288,21 @@ const tailwindColors = {
     900: "#881337",
     950: "#4c0519",
   },
-}
+};
 
 // 스토리북 메타 정보
 export default {
   title: "foundation/Colors",
-}
+};
 
 // 모든 색상 (Tailwind 전체 팔레트 포함)
 export const AllColors = () => {
-  const [tokens, setTokens] = useState<Record<string, string>>({})
-  const [isDarkMode, setIsDarkMode] = useState(false)
+  const [tokens, setTokens] = useState<Record<string, string>>({});
+  const [isDarkMode, setIsDarkMode] = useState(false);
 
   // CSS 변수 값을 가져오는 함수
   const updateTokens = () => {
-    const styles = getComputedStyle(document.documentElement)
+    const styles = getComputedStyle(document.documentElement);
     const tokenList = [
       "--background",
       "--foreground",
@@ -336,67 +336,75 @@ export const AllColors = () => {
       "--sidebar-accent-foreground",
       "--sidebar-border",
       "--sidebar-ring",
-    ]
-    const newValues: Record<string, string> = {}
+    ];
+    const newValues: Record<string, string> = {};
     tokenList.forEach((token) => {
-      newValues[token] = styles.getPropertyValue(token).trim()
-    })
-    setTokens(newValues)
-    setIsDarkMode(document.documentElement.classList.contains('dark'))
-  }
+      newValues[token] = styles.getPropertyValue(token).trim();
+    });
+    setTokens(newValues);
+    setIsDarkMode(document.documentElement.classList.contains("dark"));
+  };
 
   // 초기 로드 및 다크모드 변경 감지
   useEffect(() => {
     // 초기 값 로드
-    updateTokens()
+    updateTokens();
 
     // MutationObserver로 클래스 변경 감지
     const observer = new MutationObserver((mutations) => {
       mutations.forEach((mutation) => {
-        if (mutation.type === 'attributes' && mutation.attributeName === 'class') {
-          updateTokens()
+        if (
+          mutation.type === "attributes" &&
+          mutation.attributeName === "class"
+        ) {
+          updateTokens();
         }
-      })
-    })
+      });
+    });
 
     observer.observe(document.documentElement, {
       attributes: true,
-      attributeFilter: ['class']
-    })
+      attributeFilter: ["class"],
+    });
 
     return () => {
-      observer.disconnect()
-    }
-  }, [])
+      observer.disconnect();
+    };
+  }, []);
 
   // 단일 컬러 박스
   const ColorBox = ({ name, value }: { name: string; value: string }) => (
     <div key={name} style={{ textAlign: "center" }}>
       <div
         style={{
-          background: value || 'transparent',
+          background: value || "transparent",
           width: "100%",
           height: "60px",
           borderRadius: "8px",
-          border: isDarkMode ? "1px solid #333" : "1px solid #e5e5e5"
+          border: isDarkMode ? "1px solid #333" : "1px solid #e5e5e5",
         }}
       />
       <p style={{ fontSize: "12px", marginTop: "4px" }}>{name}</p>
-      <code style={{ fontSize: "10px" }}>{value || '-'}</code>
+      <code style={{ fontSize: "10px" }}>{value || "-"}</code>
     </div>
-  )
+  );
 
   // Tailwind 팔레트 렌더링 (gray-50 ~ gray-900 등)
-  const renderTailwindColors = (colors: Record<string, any>, parent = "") => {
+  const renderTailwindColors = (
+    colors: Record<string, string | Record<string, string>>,
+    parent = "",
+  ) => {
     return Object.entries(colors).map(([name, value]) => {
-      const key = parent ? `${parent}-${name}` : name
+      const key = parent ? `${parent}-${name}` : name;
       if (typeof value === "string") {
-        return <ColorBox key={key} name={key} value={value} />
+        return <ColorBox key={key} name={key} value={value} />;
       }
       if (typeof value === "object") {
         return (
           <div key={key} style={{ marginBottom: "2rem", width: "100%" }}>
-            <h3 style={{ marginBottom: "0.5rem", textTransform: "capitalize" }}>{name}</h3>
+            <h3 style={{ marginBottom: "0.5rem", textTransform: "capitalize" }}>
+              {name}
+            </h3>
             <div
               style={{
                 display: "grid",
@@ -407,11 +415,11 @@ export const AllColors = () => {
               {renderTailwindColors(value, name)}
             </div>
           </div>
-        )
+        );
       }
-      return null
-    })
-  }
+      return null;
+    });
+  };
 
   // Tailwind 클래스 매핑으로 shadcn 토큰 표시
   const tokenClassMap: Record<string, string> = {
@@ -442,20 +450,29 @@ export const AllColors = () => {
     "--sidebar": "bg-[hsl(var(--sidebar))]",
     "--sidebar-foreground": "bg-[hsl(var(--sidebar-foreground))]",
     "--sidebar-primary": "bg-[hsl(var(--sidebar-primary))]",
-    "--sidebar-primary-foreground": "bg-[hsl(var(--sidebar-primary-foreground))]",
+    "--sidebar-primary-foreground":
+      "bg-[hsl(var(--sidebar-primary-foreground))]",
     "--sidebar-accent": "bg-[hsl(var(--sidebar-accent))]",
     "--sidebar-accent-foreground": "bg-[hsl(var(--sidebar-accent-foreground))]",
     "--sidebar-border": "bg-[hsl(var(--sidebar-border))]",
     "--sidebar-ring": "bg-[hsl(var(--sidebar-ring))]",
-  }
+  };
 
   return (
     <div>
       {/* 현재 테마 표시 */}
-      <div style={{ marginBottom: "1rem", padding: "0.5rem", background: isDarkMode ? "#333" : "#f5f5f5", borderRadius: "4px" }}>
-        <strong>Current Theme:</strong> {isDarkMode ? "Dark Mode" : "Light Mode"}
+      <div
+        style={{
+          marginBottom: "1rem",
+          padding: "0.5rem",
+          background: isDarkMode ? "#333" : "#f5f5f5",
+          borderRadius: "4px",
+        }}
+      >
+        <strong>Current Theme:</strong>{" "}
+        {isDarkMode ? "Dark Mode" : "Light Mode"}
       </div>
-      
+
       {/* shadcn 토큰 */}
       <h2 style={{ marginBottom: "1rem" }}>Shadcn Tokens</h2>
       <div
@@ -467,7 +484,7 @@ export const AllColors = () => {
         }}
       >
         {Object.entries(tokenClassMap).map(([token, className]) => {
-          const value = tokens[token]
+          const value = tokens[token];
           return (
             <div key={token} style={{ textAlign: "center" }}>
               <div
@@ -476,15 +493,20 @@ export const AllColors = () => {
                   width: "100%",
                   height: "60px",
                   borderRadius: "8px",
-                  border: token === "--card" || token === "--background" 
-                    ? (isDarkMode ? "2px solid #666" : "2px solid #ccc")
-                    : (isDarkMode ? "1px solid #333" : "1px solid #e5e5e5")
+                  border:
+                    token === "--card" || token === "--background"
+                      ? isDarkMode
+                        ? "2px solid #666"
+                        : "2px solid #ccc"
+                      : isDarkMode
+                        ? "1px solid #333"
+                        : "1px solid #e5e5e5",
                 }}
               />
               <p style={{ fontSize: "12px", marginTop: "4px" }}>{token}</p>
-              <code style={{ fontSize: "10px" }}>{value || 'loading...'}</code>
+              <code style={{ fontSize: "10px" }}>{value || "loading..."}</code>
             </div>
-          )
+          );
         })}
       </div>
 
@@ -492,5 +514,5 @@ export const AllColors = () => {
       <h2 style={{ marginBottom: "1rem" }}>Tailwind Colors</h2>
       {renderTailwindColors(tailwindColors)}
     </div>
-  )
-}
+  );
+};

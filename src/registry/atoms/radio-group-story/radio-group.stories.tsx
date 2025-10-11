@@ -1,12 +1,6 @@
-"use client"
+"use client";
 
-import * as React from "react"
-import type { Meta, StoryObj } from "@storybook/nextjs-vite";
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
-import { toast } from "sonner"
-import { z } from "zod"
-import { Button } from "@/components/ui/button"
+import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
@@ -14,12 +8,14 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form"
-import { Label } from "@/components/ui/label"
-import {
-  RadioGroup,
-  RadioGroupItem,
-} from "@/components/ui/radio-group"
+} from "@/components/ui/form";
+import { Label } from "@/components/ui/label";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { zodResolver } from "@hookform/resolvers/zod";
+import type { Meta, StoryObj } from "@storybook/nextjs-vite";
+import { useForm } from "react-hook-form";
+import { toast } from "sonner";
+import { z } from "zod";
 
 /**
  * A set of checkable buttons—known as radio buttons—where no more than one of
@@ -48,7 +44,7 @@ const meta = {
         <Label htmlFor="r3">Compact</Label>
       </div>
     </RadioGroup>
-  )
+  ),
 } satisfies Meta<typeof RadioGroup>;
 
 export default meta;
@@ -83,20 +79,20 @@ export function RadioGroupDemo() {
         <Label htmlFor="r3">Compact</Label>
       </div>
     </RadioGroup>
-  )
+  );
 }
 
 // Form example
 const FormSchema = z.object({
   type: z.enum(["all", "mentions", "none"], {
-    required_error: "You need to select a notification type.",
+    message: "You need to select a notification type.",
   }),
-})
+});
 
 function RadioGroupFormDemo() {
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
-  })
+  });
 
   function onSubmit(data: z.infer<typeof FormSchema>) {
     toast("You submitted the following values", {
@@ -105,7 +101,7 @@ function RadioGroupFormDemo() {
           <code className="text-white">{JSON.stringify(data, null, 2)}</code>
         </pre>
       ),
-    })
+    });
   }
 
   return (
@@ -123,7 +119,7 @@ function RadioGroupFormDemo() {
                   defaultValue={field.value}
                   className="flex flex-col space-y-1"
                 >
-                  <FormItem className="flex items-center space-x-3 space-y-0">
+                  <FormItem className="flex items-center space-y-0 space-x-3">
                     <FormControl>
                       <RadioGroupItem value="all" />
                     </FormControl>
@@ -131,7 +127,7 @@ function RadioGroupFormDemo() {
                       All new messages
                     </FormLabel>
                   </FormItem>
-                  <FormItem className="flex items-center space-x-3 space-y-0">
+                  <FormItem className="flex items-center space-y-0 space-x-3">
                     <FormControl>
                       <RadioGroupItem value="mentions" />
                     </FormControl>
@@ -139,7 +135,7 @@ function RadioGroupFormDemo() {
                       Direct messages and mentions
                     </FormLabel>
                   </FormItem>
-                  <FormItem className="flex items-center space-x-3 space-y-0">
+                  <FormItem className="flex items-center space-y-0 space-x-3">
                     <FormControl>
                       <RadioGroupItem value="none" />
                     </FormControl>
@@ -154,5 +150,5 @@ function RadioGroupFormDemo() {
         <Button type="submit">Submit</Button>
       </form>
     </Form>
-  )
+  );
 }

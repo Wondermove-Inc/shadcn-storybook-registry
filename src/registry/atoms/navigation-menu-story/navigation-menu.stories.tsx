@@ -1,9 +1,9 @@
-"use client"
+"use client";
 
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
-import * as React from "react"
-import Link from "next/link"
-import { CircleCheckIcon, CircleHelpIcon, CircleIcon } from "lucide-react"
+import { CircleCheckIcon, CircleHelpIcon, CircleIcon } from "lucide-react";
+import Link from "next/link";
+import * as React from "react";
 
 import {
   NavigationMenu,
@@ -13,7 +13,7 @@ import {
   NavigationMenuList,
   NavigationMenuTrigger,
   navigationMenuTriggerStyle,
-} from "@/components/ui/navigation-menu"
+} from "@/components/ui/navigation-menu";
 
 const components: { title: string; href: string; description: string }[] = [
   {
@@ -51,7 +51,7 @@ const components: { title: string; href: string; description: string }[] = [
     description:
       "A popup that displays information related to an element when the element receives keyboard focus or the mouse hovers over it.",
   },
-]
+];
 
 function NavigationMenuDemo() {
   return (
@@ -63,7 +63,7 @@ function NavigationMenuDemo() {
             <ul className="grid gap-2 md:w-[400px] lg:w-[500px] lg:grid-cols-[.75fr_1fr]">
               <li className="row-span-3">
                 <NavigationMenuLink asChild>
-                  <a
+                  <Link
                     className="from-muted/50 to-muted flex h-full w-full flex-col justify-end rounded-md bg-linear-to-b p-6 no-underline outline-hidden select-none focus:shadow-md"
                     href="/"
                   >
@@ -73,7 +73,7 @@ function NavigationMenuDemo() {
                     <p className="text-muted-foreground text-sm leading-tight">
                       Beautifully designed components built with Tailwind CSS.
                     </p>
-                  </a>
+                  </Link>
                 </NavigationMenuLink>
               </li>
               <ListItem href="/docs" title="Introduction">
@@ -189,7 +189,7 @@ function NavigationMenuDemo() {
         </NavigationMenuItem>
       </NavigationMenuList>
     </NavigationMenu>
-  )
+  );
 }
 
 function ListItem({
@@ -209,7 +209,7 @@ function ListItem({
         </Link>
       </NavigationMenuLink>
     </li>
-  )
+  );
 }
 
 /**
@@ -246,7 +246,7 @@ function NavigationMenuLinkDemo() {
         </NavigationMenuItem>
       </NavigationMenuList>
     </NavigationMenu>
-  )
+  );
 }
 
 /**

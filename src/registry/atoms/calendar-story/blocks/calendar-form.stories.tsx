@@ -1,14 +1,13 @@
-"use client"
+"use client";
 
-import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 import { zodResolver } from "@hookform/resolvers/zod";
+import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 import { format } from "date-fns";
 import { CalendarIcon } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
 
-import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import {
@@ -25,10 +24,11 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import { cn } from "@/lib/utils";
 
 const FormSchema = z.object({
   dob: z.date({
-    required_error: "A date of birth is required.",
+    message: "A date of birth is required.",
   }),
 });
 
@@ -75,7 +75,7 @@ export const Default: Story = {
                         variant={"outline"}
                         className={cn(
                           "w-[240px] pl-3 text-left font-normal",
-                          !field.value && "text-muted-foreground"
+                          !field.value && "text-muted-foreground",
                         )}
                       >
                         {field.value ? (

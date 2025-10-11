@@ -1,25 +1,17 @@
-"use client"
+"use client";
 
-import * as React from "react"
-import type { Meta, StoryObj } from "@storybook/nextjs-vite"
-import { format } from "date-fns"
-import { Calendar as CalendarIcon, ChevronDownIcon } from "lucide-react"
-import { parseDate } from "chrono-node"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
-import { toast } from "sonner"
-import { z } from "zod"
+import { zodResolver } from "@hookform/resolvers/zod";
+import type { Meta, StoryObj } from "@storybook/nextjs-vite";
+import { parseDate } from "chrono-node";
+import { format } from "date-fns";
+import { Calendar as CalendarIcon, ChevronDownIcon } from "lucide-react";
+import * as React from "react";
+import { useForm } from "react-hook-form";
+import { toast } from "sonner";
+import { z } from "zod";
 
-import { cn } from "@/lib/utils"
-import { Button } from "@/components/ui/button"
-import { Calendar } from "@/components/ui/calendar"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover"
+import { Button } from "@/components/ui/button";
+import { Calendar } from "@/components/ui/calendar";
 import {
   Form,
   FormControl,
@@ -28,12 +20,20 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form"
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { cn } from "@/lib/utils";
 
 // Main DatePicker Demo (Date of Birth Picker)
 export function DatePickerDemo() {
-  const [open, setOpen] = React.useState(false)
-  const [date, setDate] = React.useState<Date | undefined>(undefined)
+  const [open, setOpen] = React.useState(false);
+  const [date, setDate] = React.useState<Date | undefined>(undefined);
 
   return (
     <div className="flex flex-col gap-3">
@@ -57,20 +57,19 @@ export function DatePickerDemo() {
             selected={date}
             captionLayout="dropdown"
             onSelect={(date) => {
-              setDate(date)
-              setOpen(false)
+              setDate(date);
+              setOpen(false);
             }}
           />
         </PopoverContent>
       </Popover>
     </div>
-  )
+  );
 }
-
 
 // Picker with Input
 function PickerWithInputDemo() {
-  const [date, setDate] = React.useState<Date>()
+  const [date, setDate] = React.useState<Date>();
 
   return (
     <div className="flex flex-col gap-3">
@@ -91,28 +90,24 @@ function PickerWithInputDemo() {
             <Button
               variant="ghost"
               size="icon"
-              className="absolute right-0 top-0 h-full px-3"
+              className="absolute top-0 right-0 h-full px-3"
             >
               <CalendarIcon className="h-4 w-4" />
             </Button>
           </PopoverTrigger>
           <PopoverContent className="w-auto p-0" align="end">
-            <Calendar
-              mode="single"
-              selected={date}
-              onSelect={setDate}
-            />
+            <Calendar mode="single" selected={date} onSelect={setDate} />
           </PopoverContent>
         </Popover>
       </div>
     </div>
-  )
+  );
 }
 
 // Date and Time Picker
 function DateAndTimePickerDemo() {
-  const [open, setOpen] = React.useState(false)
-  const [date, setDate] = React.useState<Date | undefined>(undefined)
+  const [open, setOpen] = React.useState(false);
+  const [date, setDate] = React.useState<Date | undefined>(undefined);
 
   return (
     <div className="flex gap-4">
@@ -137,8 +132,8 @@ function DateAndTimePickerDemo() {
               selected={date}
               captionLayout="dropdown"
               onSelect={(date) => {
-                setDate(date)
-                setOpen(false)
+                setDate(date);
+                setOpen(false);
               }}
             />
           </PopoverContent>
@@ -157,28 +152,28 @@ function DateAndTimePickerDemo() {
         />
       </div>
     </div>
-  )
+  );
 }
 
 // Natural Language Picker
 function NaturalLanguagePickerDemo() {
-  const [open, setOpen] = React.useState(false)
-  const [value, setValue] = React.useState("In 2 days")
+  const [open, setOpen] = React.useState(false);
+  const [value, setValue] = React.useState("In 2 days");
   const [date, setDate] = React.useState<Date | undefined>(
-    parseDate(value) || undefined
-  )
-  const [month, setMonth] = React.useState<Date | undefined>(date)
+    parseDate(value) || undefined,
+  );
+  const [month, setMonth] = React.useState<Date | undefined>(date);
 
   function formatDate(date: Date | undefined) {
     if (!date) {
-      return ""
+      return "";
     }
 
     return date.toLocaleDateString("en-US", {
       day: "2-digit",
       month: "long",
       year: "numeric",
-    })
+    });
   }
 
   return (
@@ -193,17 +188,17 @@ function NaturalLanguagePickerDemo() {
           placeholder="Tomorrow or next week"
           className="bg-background pr-10"
           onChange={(e) => {
-            setValue(e.target.value)
-            const date = parseDate(e.target.value)
+            setValue(e.target.value);
+            const date = parseDate(e.target.value);
             if (date) {
-              setDate(date)
-              setMonth(date)
+              setDate(date);
+              setMonth(date);
             }
           }}
           onKeyDown={(e) => {
             if (e.key === "ArrowDown") {
-              e.preventDefault()
-              setOpen(true)
+              e.preventDefault();
+              setOpen(true);
             }
           }}
         />
@@ -226,9 +221,9 @@ function NaturalLanguagePickerDemo() {
               month={month}
               onMonthChange={setMonth}
               onSelect={(date) => {
-                setDate(date)
-                setValue(formatDate(date))
-                setOpen(false)
+                setDate(date);
+                setValue(formatDate(date));
+                setOpen(false);
               }}
             />
           </PopoverContent>
@@ -239,20 +234,20 @@ function NaturalLanguagePickerDemo() {
         <span className="font-medium">{formatDate(date)}</span>.
       </div>
     </div>
-  )
+  );
 }
 
 // Form Demo
 const FormSchema = z.object({
   dob: z.date({
-    required_error: "A date of birth is required.",
+    message: "A date of birth is required.",
   }),
-})
+});
 
 function FormDemo() {
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
-  })
+  });
 
   function onSubmit(data: z.infer<typeof FormSchema>) {
     toast("You submitted the following values", {
@@ -261,7 +256,7 @@ function FormDemo() {
           <code className="text-white">{JSON.stringify(data, null, 2)}</code>
         </pre>
       ),
-    })
+    });
   }
 
   return (
@@ -280,7 +275,7 @@ function FormDemo() {
                       variant={"outline"}
                       className={cn(
                         "w-[240px] pl-3 text-left font-normal",
-                        !field.value && "text-muted-foreground"
+                        !field.value && "text-muted-foreground",
                       )}
                     >
                       {field.value ? (
@@ -314,7 +309,7 @@ function FormDemo() {
         <Button type="submit">Submit</Button>
       </form>
     </Form>
-  )
+  );
 }
 
 /**
@@ -328,47 +323,47 @@ const meta = {
     layout: "centered",
   },
   excludeStories: /.*Demo$|FormSchema/,
-} satisfies Meta<typeof DatePickerDemo>
+} satisfies Meta<typeof DatePickerDemo>;
 
-export default meta
+export default meta;
 
-type Story = StoryObj<typeof meta>
+type Story = StoryObj<typeof meta>;
 
 /**
  * Date of Birth Picker with dropdown calendar for month/year selection.
  */
-export const Default: Story = {}
+export const Default: Story = {};
 
 /**
  * Date picker with input field.
  */
 export const PickerWithInput: Story = {
   render: () => <PickerWithInputDemo />,
-}
+};
 
 /**
  * Date picker with time input field.
  */
 export const DateAndTimePicker: Story = {
   render: () => <DateAndTimePickerDemo />,
-}
+};
 
 /**
  * Natural Language Picker - parse natural language dates
- * 
+ *
  * Note: This example requires installing the chrono-node package:
  * npm install chrono-node
  */
 export const NaturalLanguagePicker: Story = {
   render: () => <NaturalLanguagePickerDemo />,
-}
+};
 
 /**
  * Form Integration with React Hook Form
- * 
+ *
  * Note: This example requires additional packages:
  * npm install react-hook-form zod @hookform/resolvers/zod
  */
 export const FormIntegration: Story = {
   render: () => <FormDemo />,
-}
+};
