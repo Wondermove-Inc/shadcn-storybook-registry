@@ -13,7 +13,7 @@ export function ButtonDemo() {
 /**
  * Displays a button or a component that looks like a button.
  */
-const meta: Meta<typeof Button> = {
+const meta = {
   title: "ui/Button",
   component: Button,
   tags: ["autodocs"],
@@ -28,7 +28,7 @@ const meta: Meta<typeof Button> = {
     onClick: fn(),
   },
   excludeStories: /.*Demo$/,
-};
+} satisfies Meta<typeof Button>;
 
 export default meta;
 

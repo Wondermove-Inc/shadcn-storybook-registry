@@ -54,7 +54,7 @@ export function SheetDemo() {
  * Extends the Dialog component to display content that complements the main
  * content of the screen.
  */
-const meta: Meta<typeof Sheet> = {
+const meta = {
   title: "ui/Sheet",
   component: Sheet,
   tags: ["autodocs"],

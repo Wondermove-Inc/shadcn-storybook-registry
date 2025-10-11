@@ -62,7 +62,7 @@ export function ToggleDisabled() {
 /**
  * A two-state button that can be either on or off.
  */
-const meta: Meta<typeof Toggle> = {
+const meta = {
   title: "ui/Toggle",
   component: Toggle,
   tags: ["autodocs"],
@@ -71,7 +71,7 @@ const meta: Meta<typeof Toggle> = {
   },
   excludeStories: /.*Demo$|.*Outline$|.*WithText$|.*Sm$|.*Lg$|.*Disabled$/,
   render: () => <ToggleDemo />,
-};
+} satisfies Meta<typeof Toggle>;
 
 export default meta;
 

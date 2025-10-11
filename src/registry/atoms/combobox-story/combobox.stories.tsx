@@ -124,7 +124,7 @@ export function ComboboxDemo() {
 /**
  * An autocomplete input that combines a button, dropdown menu, and command palette for selecting options.
  */
-const meta: Meta<typeof ComboboxDemo> = {
+const meta = {
   title: "ui/Combobox",
   component: ComboboxDemo,
   tags: ["autodocs"],
@@ -133,7 +133,7 @@ const meta: Meta<typeof ComboboxDemo> = {
   },
   excludeStories: /.*Demo$/,
   render: () => <ComboboxDemo />,
-};
+} satisfies Meta<typeof ComboboxDemo>;
 
 export default meta;
 

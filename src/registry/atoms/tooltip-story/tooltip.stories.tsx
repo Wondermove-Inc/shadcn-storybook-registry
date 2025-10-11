@@ -14,7 +14,7 @@ import { expect, userEvent, waitFor, within } from "storybook/test";
  * A popup that displays information related to an element when the element
  * receives keyboard focus or the mouse hovers over it.
  */
-const meta: Meta<typeof TooltipContent> = {
+const meta = {
   title: "ui/Tooltip",
   component: TooltipContent,
   tags: ["autodocs"],

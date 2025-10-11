@@ -24,9 +24,8 @@ const meta: Meta<typeof Form> = {
   title: "ui/Form",
   component: Form,
   tags: ["autodocs"],
-  argTypes: {},
   render: (args) => <ProfileForm {...args} />,
-} satisfies Meta<typeof Form>;
+};
 
 export default meta;
 

@@ -62,7 +62,7 @@ export function CheckboxDemo() {
 /**
  * A control that allows the user to toggle between checked and not checked.
  */
-const meta: Meta<typeof Checkbox> = {
+const meta = {
   title: "ui/Checkbox",
   component: Checkbox,
   tags: ["autodocs"],
