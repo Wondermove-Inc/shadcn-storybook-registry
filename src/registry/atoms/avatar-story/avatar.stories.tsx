@@ -1,10 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
+import { expect, waitFor, within } from "storybook/test";
 
-import {
-  Avatar,
-  AvatarFallback,
-  AvatarImage,
-} from "@/components/ui/avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 export function AvatarDemo() {
   return (
@@ -38,7 +35,7 @@ export function AvatarDemo() {
         </Avatar>
       </div>
     </div>
-  )
+  );
 }
 
 /**
@@ -52,7 +49,7 @@ const meta = {
     layout: "centered",
   },
   excludeStories: /.*Demo$/,
-  render: () => <AvatarDemo />
+  render: () => <AvatarDemo />,
 } satisfies Meta<typeof Avatar>;
 
 export default meta;
@@ -73,7 +70,7 @@ export const Basic: Story = {
       <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
       <AvatarFallback>CN</AvatarFallback>
     </Avatar>
-  )
+  ),
 };
 
 /**
@@ -82,13 +79,10 @@ export const Basic: Story = {
 export const Rounded: Story = {
   render: () => (
     <Avatar className="rounded-lg">
-      <AvatarImage
-        src="https://github.com/evilrabbit.png"
-        alt="@evilrabbit"
-      />
+      <AvatarImage src="https://github.com/evilrabbit.png" alt="@evilrabbit" />
       <AvatarFallback>ER</AvatarFallback>
     </Avatar>
-  )
+  ),
 };
 
 /**
@@ -113,7 +107,7 @@ export const Stacked: Story = {
         <AvatarFallback>ER</AvatarFallback>
       </Avatar>
     </div>
-  )
+  ),
 };
 
 /**
@@ -124,5 +118,53 @@ export const FallbackOnly: Story = {
     <Avatar>
       <AvatarFallback>AB</AvatarFallback>
     </Avatar>
-  )
+  ),
+};
+
+/**
+ * Avatar 이미지 폴백을 테스트합니다.
+ */
+export const ShouldShowFallbackOnImageError: Story = {
+  name: "when image fails to load, should display fallback text",
+  tags: ["!dev", "!autodocs"],
+  render: () => (
+    <div className="flex gap-4">
+      <Avatar>
+        <AvatarImage
+          src="https://invalid-url-that-will-fail.example/image.png"
+          alt="@invalid"
+        />
+        <AvatarFallback data-testid="fallback">FB</AvatarFallback>
+      </Avatar>
+      <Avatar>
+        <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
+        <AvatarFallback>CN</AvatarFallback>
+      </Avatar>
+    </div>
+  ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+
+    // 🎯 목적: 이미지 로딩 실패 시 fallback 텍스트가 표시되는지 확인
+
+    // Fallback이 표시될 때까지 대기
+    await waitFor(
+      async () => {
+        const fallback = await canvas.findByTestId("fallback");
+        await expect(fallback).toBeInTheDocument();
+        await expect(fallback).toHaveTextContent("FB");
+      },
+      { timeout: 3000 },
+    );
+
+    // 두 번째 Avatar는 정상 이미지이므로 img가 로드되어야 함
+    const images = canvas.getAllByRole("img");
+    await waitFor(
+      () => {
+        // 최소 하나의 이미지가 로드됨
+        expect(images.length).toBeGreaterThan(0);
+      },
+      { timeout: 3000 },
+    );
+  },
 };

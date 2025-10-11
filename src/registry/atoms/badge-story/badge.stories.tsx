@@ -1,5 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 import { BadgeCheckIcon } from "lucide-react";
+import * as React from "react";
+import { expect, userEvent, within } from "storybook/test";
 
 import { Badge } from "@/components/ui/badge";
 
@@ -134,4 +136,83 @@ export const Numeric: Story = {
       </Badge>
     </div>
   ),
+};
+
+/**
+ * Badge variant 변경을 테스트합니다.
+ */
+export const ShouldChangeVariant: Story = {
+  name: "when user clicks buttons, should change badge variant dynamically",
+  tags: ["!dev", "!autodocs"],
+  render: () => {
+    const [variant, setVariant] = React.useState<
+      "default" | "secondary" | "destructive" | "outline"
+    >("default");
+
+    return (
+      <div className="flex flex-col items-center gap-4">
+        <Badge variant={variant} data-testid="badge">
+          {variant.charAt(0).toUpperCase() + variant.slice(1)} Badge
+        </Badge>
+        <div className="flex gap-2">
+          <button
+            onClick={() => setVariant("default")}
+            className="rounded bg-gray-200 px-3 py-1 text-sm dark:bg-gray-700"
+          >
+            Default
+          </button>
+          <button
+            onClick={() => setVariant("secondary")}
+            className="rounded bg-gray-200 px-3 py-1 text-sm dark:bg-gray-700"
+          >
+            Secondary
+          </button>
+          <button
+            onClick={() => setVariant("destructive")}
+            className="rounded bg-gray-200 px-3 py-1 text-sm dark:bg-gray-700"
+          >
+            Destructive
+          </button>
+          <button
+            onClick={() => setVariant("outline")}
+            className="rounded bg-gray-200 px-3 py-1 text-sm dark:bg-gray-700"
+          >
+            Outline
+          </button>
+        </div>
+      </div>
+    );
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+
+    // 🎯 목적: Badge variant가 버튼 클릭에 따라 동적으로 변경되는지 확인
+
+    // 초기 상태 확인 (default)
+    const badge = canvas.getByTestId("badge");
+    await expect(badge).toBeInTheDocument();
+    await expect(badge).toHaveTextContent("Default Badge");
+
+    // Secondary 버튼 클릭
+    const secondaryButton = canvas.getByRole("button", { name: /Secondary/i });
+    await userEvent.click(secondaryButton);
+    await expect(badge).toHaveTextContent("Secondary Badge");
+
+    // Destructive 버튼 클릭
+    const destructiveButton = canvas.getByRole("button", {
+      name: /Destructive/i,
+    });
+    await userEvent.click(destructiveButton);
+    await expect(badge).toHaveTextContent("Destructive Badge");
+
+    // Outline 버튼 클릭
+    const outlineButton = canvas.getByRole("button", { name: /Outline/i });
+    await userEvent.click(outlineButton);
+    await expect(badge).toHaveTextContent("Outline Badge");
+
+    // 다시 Default로 돌아가기
+    const defaultButton = canvas.getByRole("button", { name: /Default/i });
+    await userEvent.click(defaultButton);
+    await expect(badge).toHaveTextContent("Default Badge");
+  },
 };
