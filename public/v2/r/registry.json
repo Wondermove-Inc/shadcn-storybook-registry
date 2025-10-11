@@ -1922,6 +1922,181 @@
           "type": "registry:component"
         }
       ]
+    },
+    {
+      "name": "range-calendar-story",
+      "type": "registry:component",
+      "title": "Range Calendar Story",
+      "description": "Interactive Storybook stories demonstrating date range selection calendar component with start and end date picking",
+      "categories": [
+        "atoms",
+        "storybook",
+        "calendar",
+        "date",
+        "range"
+      ],
+      "author": "Lloyd Richards <lloyd.d.richards@gmail.com>",
+      "registryDependencies": [
+        "calendar"
+      ],
+      "dependencies": [
+        "date-fns"
+      ],
+      "files": [
+        {
+          "path": "src/registry/atoms/range-calendar-story/range-calendar.stories.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "date-of-birth-picker-story",
+      "type": "registry:component",
+      "title": "Date of Birth Picker Story",
+      "description": "Interactive Storybook stories demonstrating date of birth picker with year/month selection and validation",
+      "categories": [
+        "atoms",
+        "storybook",
+        "calendar",
+        "date-picker",
+        "form"
+      ],
+      "author": "Lloyd Richards <lloyd.d.richards@gmail.com>",
+      "registryDependencies": [
+        "calendar",
+        "popover",
+        "button"
+      ],
+      "dependencies": [
+        "date-fns",
+        "lucide-react"
+      ],
+      "files": [
+        {
+          "path": "src/registry/atoms/date-of-birth-picker-story/date-of-birth-picker.stories.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "date-time-picker-story",
+      "type": "registry:component",
+      "title": "Date Time Picker Story",
+      "description": "Interactive Storybook stories demonstrating combined date and time picker with hour/minute selection",
+      "categories": [
+        "atoms",
+        "storybook",
+        "calendar",
+        "date-picker",
+        "time-picker"
+      ],
+      "author": "Lloyd Richards <lloyd.d.richards@gmail.com>",
+      "registryDependencies": [
+        "calendar",
+        "popover",
+        "button",
+        "select"
+      ],
+      "dependencies": [
+        "date-fns",
+        "lucide-react"
+      ],
+      "files": [
+        {
+          "path": "src/registry/atoms/date-time-picker-story/date-time-picker.stories.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "month-year-selector-story",
+      "type": "registry:component",
+      "title": "Month Year Selector Story",
+      "description": "Interactive Storybook stories demonstrating month and year selection component for quick date navigation",
+      "categories": [
+        "atoms",
+        "storybook",
+        "calendar",
+        "selector"
+      ],
+      "author": "Lloyd Richards <lloyd.d.richards@gmail.com>",
+      "registryDependencies": [
+        "calendar",
+        "select"
+      ],
+      "dependencies": [
+        "date-fns"
+      ],
+      "files": [
+        {
+          "path": "src/registry/atoms/month-year-selector-story/month-year-selector.stories.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "natural-language-picker-story",
+      "type": "registry:component",
+      "title": "Natural Language Picker Story",
+      "description": "Interactive Storybook stories demonstrating natural language date input parsing (e.g., 'tomorrow', 'next week')",
+      "categories": [
+        "atoms",
+        "storybook",
+        "calendar",
+        "date-picker",
+        "nlp"
+      ],
+      "author": "Lloyd Richards <lloyd.d.richards@gmail.com>",
+      "registryDependencies": [
+        "calendar",
+        "popover",
+        "input",
+        "button"
+      ],
+      "dependencies": [
+        "chrono-node",
+        "date-fns",
+        "lucide-react"
+      ],
+      "files": [
+        {
+          "path": "src/registry/atoms/natural-language-picker-story/natural-language-picker.stories.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "calendar-form-story",
+      "type": "registry:component",
+      "title": "Calendar Form Story",
+      "description": "Interactive Storybook stories demonstrating calendar integration within React Hook Form with validation",
+      "categories": [
+        "atoms",
+        "storybook",
+        "calendar",
+        "form",
+        "validation"
+      ],
+      "author": "Lloyd Richards <lloyd.d.richards@gmail.com>",
+      "registryDependencies": [
+        "calendar",
+        "form",
+        "popover",
+        "button"
+      ],
+      "dependencies": [
+        "date-fns",
+        "lucide-react",
+        "react-hook-form",
+        "@hookform/resolvers",
+        "zod"
+      ],
+      "files": [
+        {
+          "path": "src/registry/atoms/calendar-form-story/calendar-form.stories.tsx",
+          "type": "registry:component"
+        }
+      ]
     }
   ]
 }

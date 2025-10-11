@@ -1,0 +1,28 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "range-calendar-story",
+  "type": "registry:component",
+  "title": "Range Calendar Story",
+  "author": "Lloyd Richards <lloyd.d.richards@gmail.com>",
+  "description": "Interactive Storybook stories demonstrating date range selection calendar component with start and end date picking",
+  "dependencies": [
+    "date-fns"
+  ],
+  "registryDependencies": [
+    "calendar"
+  ],
+  "files": [
+    {
+      "path": "src/registry/atoms/range-calendar-story/range-calendar.stories.tsx",
+      "content": "\"use client\"\n\nimport type { Meta, StoryObj } from \"@storybook/nextjs-vite\";\nimport * as React from \"react\";\n\nimport { Calendar } from \"@/components/ui/calendar\";\n\nconst meta: Meta = {\n  title: \"ui/Calendar/Blocks/Range Calendar\",\n  parameters: {\n    layout: \"centered\",\n  },\n};\n\nexport default meta;\n\ntype Story = StoryObj<typeof meta>;\n\nexport const Default: Story = {\n  render: () => {\n    const [date, setDate] = React.useState<Date | undefined>(\n      new Date(2025, 5, 12)\n    );\n\n    return (\n      <Calendar\n        mode=\"single\"\n        defaultMonth={date}\n        numberOfMonths={2}\n        selected={date}\n        onSelect={setDate}\n        className=\"rounded-lg border shadow-sm\"\n      />\n    );\n  },\n};",
+      "type": "registry:component"
+    }
+  ],
+  "categories": [
+    "atoms",
+    "storybook",
+    "calendar",
+    "date",
+    "range"
+  ]
+}

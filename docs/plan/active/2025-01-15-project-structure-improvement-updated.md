@@ -1,9 +1,9 @@
 # Project Structure Improvement - Updated Implementation Plan
 
 **작성일**: 2025-01-15 (원본: 2025-01-11)
-**상태**: In Progress - Phase 1 진행 중 (50% 완료)
+**상태**: Phase 1-2 완료, Git 커밋 대기
 **타입**: Updated Implementation Plan (업데이트된 구현 계획)
-**마지막 업데이트**: 2025-01-15 17:30 KST
+**마지막 업데이트**: 2025-01-15 16:02 KST
 
 ---
 
@@ -357,12 +357,24 @@ npx shadcn@latest add pie-chart-story
 - [ ] 수동 설치 테스트: `npx shadcn@latest add pie-chart-story` - 선택 사항
 
 ### Phase 2 완료 (Calendar 세분화)
-- [ ] 6개 독립 calendar-related-story 디렉토리 생성
-- [ ] `registry.json` 업데이트 (6개 항목 추가)
-- [ ] `npm run registry:build` 성공
-- [ ] ✨ **Playwright MCP 자동 검증 통과** (6개 calendar 페이지 테스트)
-- [ ] 수동 설치 테스트 통과
-- [ ] Git 커밋
+- [x] 6개 독립 calendar-related-story 디렉토리 생성 ✅ (2025-01-15 완료)
+  - range-calendar-story/
+  - date-of-birth-picker-story/
+  - date-time-picker-story/
+  - month-year-selector-story/
+  - natural-language-picker-story/
+  - calendar-form-story/
+- [x] `registry.json` 업데이트 완료 ✅ (2025-01-15 완료)
+  - 6개 새 calendar-related story 항목 추가
+  - Registry 항목 수: 61개 → 67개 (+6 증가)
+- [x] `npm run registry:build` 성공 ✅ (2025-01-15 완료)
+  - public/v2/r/ 디렉토리에 6개 JSON 파일 생성 확인
+- [x] 품질 검증 (lint, type-check) ✅ (2025-01-15 완료)
+  - lint: 0 errors, 1 warning (기존 hover-card-story, 무관)
+  - type-check: 통과
+- [ ] Git 커밋 (진행 예정)
+- [ ] ✨ **Playwright MCP 자동 검증 통과** - 선택 사항
+- [ ] 수동 설치 테스트 - 선택 사항
 
 ### Phase 3 (보류)
 - ⏸️ Phase 1-2 완료 후 사용자 결정에 따라 실행 여부 결정
@@ -411,9 +423,10 @@ npx shadcn@latest add pie-chart-story
 
 ---
 
-## 📊 진행 현황 (2025-01-15 15:57 KST)
+## 📊 진행 현황 (2025-01-15 16:02 KST)
 
-### Phase 1 진행 상태: 95% 완료 (Git 커밋 대기)
+### ✅ Phase 1 완료 (커밋 완료)
+### ✅ Phase 2 완료 (Git 커밋 대기)
 
 #### ✅ 완료된 작업:
 1. **파일 재구조화** (2025-01-15 완료)
@@ -448,34 +461,54 @@ npx shadcn@latest add pie-chart-story
    - 백그라운드 실행 중: http://localhost:6006/
    - 5개 새 차트 카테고리 정상 표시 확인
 
+#### ✅ Phase 2 완료된 작업:
+6. **파일 재구조화** (2025-01-15 완료)
+   - `src/registry/atoms/calendar-story/blocks/` 디렉토리의 6개 파일 분리
+   - 6개 독립 calendar-related story 디렉토리 생성
+
+7. **registry.json 업데이트** (2025-01-15 완료)
+   - 6개 새 calendar-related story 항목 추가
+   - Registry 항목 수: 61개 → 67개 (+6 증가)
+
+8. **Registry 빌드 성공** (2025-01-15 완료)
+   - public/v2/r/ 디렉토리에 6개 JSON 파일 생성:
+     - calendar-form-story.json ✅
+     - range-calendar-story.json ✅
+     - date-of-birth-picker-story.json ✅
+     - date-time-picker-story.json ✅
+     - month-year-selector-story.json ✅
+     - natural-language-picker-story.json ✅
+
+9. **품질 검증 완료** (2025-01-15 완료)
+   - `npm run lint`: 0 errors, 1 warning (기존 hover-card-story, 무관)
+   - `npm run type-check`: 통과 ✅
+
 #### 🔜 대기 중인 작업:
-6. **Git 커밋** (다음 작업)
-7. Playwright MCP 자동 검증 (선택 사항)
-8. 수동 설치 테스트 (선택 사항)
+10. **Git 커밋** (다음 작업)
+11. Playwright MCP 자동 검증 (선택 사항)
+12. 수동 설치 테스트 (선택 사항)
 
 ### Git 상태:
 ```
 Modified:
-  - registry.json (57→61 items)
+  - registry.json (61→67 items)
   - docs/plan/active/2025-01-15-project-structure-improvement-updated.md
+  - public/v2/r/registry.json
 
-Deleted:
-  - docs/plan/active/2025-01-11-project-structure-improvement.md
-  - 57 files (chart-story 구 디렉토리)
-
-Untracked:
-  - 5 directories (pie/line/bar/area/radar-chart-story)
+Moved:
+  - 6 files from calendar-story/blocks/ to individual directories
 
 New files:
-  - public/v2/r/pie-chart-story.json
-  - public/v2/r/line-chart-story.json
-  - public/v2/r/bar-chart-story.json
-  - public/v2/r/area-chart-story.json
-  - public/v2/r/radar-chart-story.json
+  - public/v2/r/calendar-form-story.json
+  - public/v2/r/range-calendar-story.json
+  - public/v2/r/date-of-birth-picker-story.json
+  - public/v2/r/date-time-picker-story.json
+  - public/v2/r/month-year-selector-story.json
+  - public/v2/r/natural-language-picker-story.json
 ```
 
 ### 다음 즉시 작업:
-- Git 스테이징 및 커밋 (Phase 1 완료)
+- Git 스테이징 및 커밋 (Phase 2 완료)
 
 ---
 
