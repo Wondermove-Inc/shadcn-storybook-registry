@@ -14,6 +14,7 @@ import {
 import { Label } from "@/components/ui/label";
 import { zodResolver } from "@hookform/resolvers/zod";
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
+import * as React from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { expect, fn, userEvent, within } from "storybook/test";
@@ -209,6 +210,112 @@ export const ShouldToggleCheck: Story = {
     expect(checkbox).not.toBeChecked();
     await userEvent.click(checkbox, { delay: 100 });
     expect(checkbox).toBeChecked();
+  },
+};
+
+export const ShouldHandleIndeterminateState: Story = {
+  name: "when parent checkbox is clicked with partial children selection, should show indeterminate state",
+  tags: ["!dev", "!autodocs"],
+  render: () => {
+    const [checkedItems, setCheckedItems] = React.useState([
+      true,
+      false,
+      false,
+    ]);
+
+    const allChecked = checkedItems.every(Boolean);
+    const noneChecked = checkedItems.every((item) => !item);
+    const isIndeterminate = !allChecked && !noneChecked;
+
+    return (
+      <div className="flex flex-col gap-4">
+        <div className="flex items-center gap-3">
+          <Checkbox
+            id="parent"
+            checked={isIndeterminate ? "indeterminate" : allChecked}
+            onCheckedChange={(checked) => {
+              setCheckedItems([
+                checked === true,
+                checked === true,
+                checked === true,
+              ]);
+            }}
+            data-testid="parent-checkbox"
+          />
+          <Label htmlFor="parent" className="font-semibold">
+            Select All
+          </Label>
+        </div>
+        <div className="ml-6 flex flex-col gap-2">
+          {["Option 1", "Option 2", "Option 3"].map((label, index) => (
+            <div key={index} className="flex items-center gap-3">
+              <Checkbox
+                id={`child-${index}`}
+                checked={checkedItems[index]}
+                onCheckedChange={(checked) => {
+                  const newItems = [...checkedItems];
+                  newItems[index] = checked === true;
+                  setCheckedItems(newItems);
+                }}
+                data-testid={`child-checkbox-${index}`}
+              />
+              <Label htmlFor={`child-${index}`}>{label}</Label>
+            </div>
+          ))}
+        </div>
+        <div
+          className="text-muted-foreground text-sm"
+          data-testid="state-display"
+        >
+          State:{" "}
+          {allChecked
+            ? "All Selected"
+            : isIndeterminate
+              ? "Partially Selected"
+              : "None Selected"}
+        </div>
+      </div>
+    );
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+
+    // 🎯 목적: 부모 Checkbox가 자식 Checkbox의 선택 상태에 따라 indeterminate 상태를 올바르게 표시하는지 확인
+
+    const parentCheckbox = canvas.getByTestId("parent-checkbox");
+    const stateDisplay = canvas.getByTestId("state-display");
+
+    // 초기 상태: Option 1만 선택됨 (Partially Selected)
+    await expect(stateDisplay).toHaveTextContent("State: Partially Selected");
+    await expect(parentCheckbox).toHaveAttribute("data-state", "indeterminate");
+
+    // Option 2 선택
+    const child1Checkbox = canvas.getByTestId("child-checkbox-1");
+    await userEvent.click(child1Checkbox);
+    await expect(stateDisplay).toHaveTextContent("State: Partially Selected");
+    await expect(parentCheckbox).toHaveAttribute("data-state", "indeterminate");
+
+    // Option 3 선택 (모두 선택됨)
+    const child2Checkbox = canvas.getByTestId("child-checkbox-2");
+    await userEvent.click(child2Checkbox);
+    await expect(stateDisplay).toHaveTextContent("State: All Selected");
+    await expect(parentCheckbox).toBeChecked();
+
+    // 부모 Checkbox 클릭으로 모두 선택 해제
+    await userEvent.click(parentCheckbox);
+    await expect(stateDisplay).toHaveTextContent("State: None Selected");
+    await expect(parentCheckbox).not.toBeChecked();
+
+    // Option 1 선택 (다시 Partially Selected)
+    const child0Checkbox = canvas.getByTestId("child-checkbox-0");
+    await userEvent.click(child0Checkbox);
+    await expect(stateDisplay).toHaveTextContent("State: Partially Selected");
+    await expect(parentCheckbox).toHaveAttribute("data-state", "indeterminate");
+
+    // 부모 Checkbox 클릭으로 모두 선택
+    await userEvent.click(parentCheckbox);
+    await expect(stateDisplay).toHaveTextContent("State: All Selected");
+    await expect(parentCheckbox).toBeChecked();
   },
 };
 

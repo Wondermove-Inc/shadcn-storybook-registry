@@ -202,6 +202,73 @@ export const ShouldAcceptOTPInput: Story = {
   },
 };
 
+export const ShouldAutoFocus: Story = {
+  name: "when user types 6-digit OTP, should auto-focus next slot",
+  tags: ["!dev", "!autodocs"],
+  render: () => {
+    const [value, setValue] = React.useState("");
+    const [complete, setComplete] = React.useState(false);
+
+    return (
+      <div className="space-y-4">
+        <InputOTP
+          maxLength={6}
+          value={value}
+          onChange={(newValue) => {
+            setValue(newValue);
+            if (newValue.length === 6) {
+              setComplete(true);
+            }
+          }}
+        >
+          <InputOTPGroup>
+            <InputOTPSlot index={0} />
+            <InputOTPSlot index={1} />
+            <InputOTPSlot index={2} />
+          </InputOTPGroup>
+          <InputOTPSeparator />
+          <InputOTPGroup>
+            <InputOTPSlot index={3} />
+            <InputOTPSlot index={4} />
+            <InputOTPSlot index={5} />
+          </InputOTPGroup>
+        </InputOTP>
+        <div className="text-center text-sm" data-testid="status">
+          {complete ? (
+            <span className="text-green-600">✓ OTP Complete: {value}</span>
+          ) : (
+            <span>Enter OTP ({value.length}/6)</span>
+          )}
+        </div>
+      </div>
+    );
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+
+    // 🎯 목적: 6자리 OTP 입력 시 자동으로 다음 슬롯으로 포커스가 이동하고, 완료 시 상태가 업데이트되는지 확인
+
+    // 초기 상태 확인
+    const status = canvas.getByTestId("status");
+    await expect(status).toHaveTextContent("Enter OTP (0/6)");
+
+    // 첫 번째 textbox 찾기
+    const inputs = canvas.getAllByRole("textbox");
+    await expect(inputs.length).toBeGreaterThan(0);
+
+    // 6자리 OTP 입력
+    await userEvent.type(inputs[0], "123456");
+
+    // 완료 상태 확인
+    await waitFor(
+      () => {
+        expect(status).toHaveTextContent("✓ OTP Complete: 123456");
+      },
+      { timeout: 2000 },
+    );
+  },
+};
+
 // Form example component
 const FormSchema = z.object({
   pin: z.string().min(6, {
