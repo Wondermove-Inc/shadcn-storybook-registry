@@ -30,17 +30,10 @@ const Menubar = React.forwardRef<
 Menubar.displayName = "Menubar";
 
 /**
- * 🎯 목적: MenubarMenu 컴포넌트에 forwardRef 적용
+ * 🎯 목적: MenubarMenu 컴포넌트
+ * 📝 주의사항: Menu는 ref를 지원하지 않음
  */
-const MenubarMenu = React.forwardRef<
-  React.ElementRef<typeof MenubarPrimitive.Menu>,
-  React.ComponentPropsWithoutRef<typeof MenubarPrimitive.Menu>
->((props, ref) => {
-  return (
-    <MenubarPrimitive.Menu ref={ref} data-slot="menubar-menu" {...props} />
-  );
-});
-MenubarMenu.displayName = "MenubarMenu";
+const MenubarMenu = MenubarPrimitive.Menu;
 
 /**
  * 🎯 목적: MenubarGroup 컴포넌트에 forwardRef 적용
@@ -56,17 +49,10 @@ const MenubarGroup = React.forwardRef<
 MenubarGroup.displayName = "MenubarGroup";
 
 /**
- * 🎯 목적: MenubarPortal 컴포넌트에 forwardRef 적용
+ * 🎯 목적: MenubarPortal 컴포넌트
+ * 📝 주의사항: Portal은 ref를 지원하지 않음
  */
-const MenubarPortal = React.forwardRef<
-  React.ElementRef<typeof MenubarPrimitive.Portal>,
-  React.ComponentPropsWithoutRef<typeof MenubarPrimitive.Portal>
->((props, ref) => {
-  return (
-    <MenubarPrimitive.Portal ref={ref} data-slot="menubar-portal" {...props} />
-  );
-});
-MenubarPortal.displayName = "MenubarPortal";
+const MenubarPortal = MenubarPrimitive.Portal;
 
 /**
  * 🎯 목적: MenubarRadioGroup 컴포넌트에 forwardRef 적용
@@ -290,15 +276,10 @@ const MenubarShortcut = React.forwardRef<
 MenubarShortcut.displayName = "MenubarShortcut";
 
 /**
- * 🎯 목적: MenubarSub 컴포넌트에 forwardRef 적용
+ * 🎯 목적: MenubarSub 컴포넌트
+ * 📝 주의사항: Sub는 ref를 지원하지 않음
  */
-const MenubarSub = React.forwardRef<
-  React.ElementRef<typeof MenubarPrimitive.Sub>,
-  React.ComponentPropsWithoutRef<typeof MenubarPrimitive.Sub>
->((props, ref) => {
-  return <MenubarPrimitive.Sub ref={ref} data-slot="menubar-sub" {...props} />;
-});
-MenubarSub.displayName = "MenubarSub";
+const MenubarSub = MenubarPrimitive.Sub;
 
 /**
  * 🎯 목적: MenubarSubTrigger 컴포넌트에 forwardRef 적용

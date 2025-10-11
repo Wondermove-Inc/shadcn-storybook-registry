@@ -7,40 +7,16 @@ import * as React from "react";
 import { cn } from "@/lib/utils";
 
 /**
- * 🎯 목적: DropdownMenu 컴포넌트에 forwardRef 적용하여 React 18/19 호환성 제공
- * 📝 주의사항: Radix UI DropdownMenu.Root primitive 사용
- * 🔄 변경이력: 2025-10-11 - React 18/19 dual support를 위한 forwardRef 추가
+ * 🎯 목적: DropdownMenu Root 컴포넌트
+ * 📝 주의사항: Radix UI DropdownMenu.Root primitive는 ref를 지원하지 않음
  */
-const DropdownMenu = React.forwardRef<
-  React.ElementRef<typeof DropdownMenuPrimitive.Root>,
-  React.ComponentPropsWithoutRef<typeof DropdownMenuPrimitive.Root>
->((props, ref) => {
-  return (
-    <DropdownMenuPrimitive.Root
-      ref={ref}
-      data-slot="dropdown-menu"
-      {...props}
-    />
-  );
-});
-DropdownMenu.displayName = "DropdownMenu";
+const DropdownMenu = DropdownMenuPrimitive.Root;
 
 /**
- * 🎯 목적: DropdownMenuPortal 컴포넌트에 forwardRef 적용
+ * 🎯 목적: DropdownMenuPortal 컴포넌트
+ * 📝 주의사항: Portal은 ref를 지원하지 않음
  */
-const DropdownMenuPortal = React.forwardRef<
-  React.ElementRef<typeof DropdownMenuPrimitive.Portal>,
-  React.ComponentPropsWithoutRef<typeof DropdownMenuPrimitive.Portal>
->((props, ref) => {
-  return (
-    <DropdownMenuPrimitive.Portal
-      ref={ref}
-      data-slot="dropdown-menu-portal"
-      {...props}
-    />
-  );
-});
-DropdownMenuPortal.displayName = "DropdownMenuPortal";
+const DropdownMenuPortal = DropdownMenuPrimitive.Portal;
 
 /**
  * 🎯 목적: DropdownMenuTrigger 컴포넌트에 forwardRef 적용
@@ -270,21 +246,10 @@ const DropdownMenuShortcut = React.forwardRef<
 DropdownMenuShortcut.displayName = "DropdownMenuShortcut";
 
 /**
- * 🎯 목적: DropdownMenuSub 컴포넌트에 forwardRef 적용
+ * 🎯 목적: DropdownMenuSub 컴포넌트
+ * 📝 주의사항: Sub는 ref를 지원하지 않음
  */
-const DropdownMenuSub = React.forwardRef<
-  React.ElementRef<typeof DropdownMenuPrimitive.Sub>,
-  React.ComponentPropsWithoutRef<typeof DropdownMenuPrimitive.Sub>
->((props, ref) => {
-  return (
-    <DropdownMenuPrimitive.Sub
-      ref={ref}
-      data-slot="dropdown-menu-sub"
-      {...props}
-    />
-  );
-});
-DropdownMenuSub.displayName = "DropdownMenuSub";
+const DropdownMenuSub = DropdownMenuPrimitive.Sub;
 
 /**
  * 🎯 목적: DropdownMenuSubTrigger 컴포넌트에 forwardRef 적용

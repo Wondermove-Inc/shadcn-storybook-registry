@@ -5,17 +5,10 @@ import * as React from "react";
 import { cn } from "@/lib/utils";
 
 /**
- * 🎯 목적: Dialog 컴포넌트에 forwardRef 적용하여 React 18/19 호환성 제공
- * 📝 주의사항: Radix UI Dialog.Root primitive 사용
- * 🔄 변경이력: 2025-10-11 - React 18/19 dual support를 위한 forwardRef 추가
+ * 🎯 목적: Dialog Root 컴포넌트
+ * 📝 주의사항: Radix UI Dialog.Root primitive는 ref를 지원하지 않음
  */
-const Dialog = React.forwardRef<
-  React.ElementRef<typeof DialogPrimitive.Root>,
-  React.ComponentPropsWithoutRef<typeof DialogPrimitive.Root>
->((props, ref) => {
-  return <DialogPrimitive.Root ref={ref} data-slot="dialog" {...props} />;
-});
-Dialog.displayName = "Dialog";
+const Dialog = DialogPrimitive.Root;
 
 /**
  * 🎯 목적: DialogTrigger 컴포넌트에 forwardRef 적용
@@ -31,17 +24,10 @@ const DialogTrigger = React.forwardRef<
 DialogTrigger.displayName = "DialogTrigger";
 
 /**
- * 🎯 목적: DialogPortal 컴포넌트에 forwardRef 적용
+ * 🎯 목적: DialogPortal 컴포넌트
+ * 📝 주의사항: Portal은 ref를 지원하지 않음
  */
-const DialogPortal = React.forwardRef<
-  React.ElementRef<typeof DialogPrimitive.Portal>,
-  React.ComponentPropsWithoutRef<typeof DialogPrimitive.Portal>
->((props, ref) => {
-  return (
-    <DialogPrimitive.Portal ref={ref} data-slot="dialog-portal" {...props} />
-  );
-});
-DialogPortal.displayName = "DialogPortal";
+const DialogPortal = DialogPrimitive.Portal;
 
 /**
  * 🎯 목적: DialogClose 컴포넌트에 forwardRef 적용

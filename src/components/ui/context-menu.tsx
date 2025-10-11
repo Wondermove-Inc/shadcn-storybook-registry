@@ -5,19 +5,10 @@ import * as React from "react";
 import { cn } from "@/lib/utils";
 
 /**
- * 🎯 목적: ContextMenu 컴포넌트에 forwardRef 적용하여 React 18/19 호환성 제공
- * 📝 주의사항: Radix UI ContextMenu.Root primitive 사용
- * 🔄 변경이력: 2025-10-11 - React 18/19 dual support를 위한 forwardRef 추가
+ * 🎯 목적: ContextMenu Root 컴포넌트
+ * 📝 주의사항: Radix UI ContextMenu.Root primitive는 ref를 지원하지 않음
  */
-const ContextMenu = React.forwardRef<
-  React.ElementRef<typeof ContextMenuPrimitive.Root>,
-  React.ComponentPropsWithoutRef<typeof ContextMenuPrimitive.Root>
->((props, ref) => {
-  return (
-    <ContextMenuPrimitive.Root ref={ref} data-slot="context-menu" {...props} />
-  );
-});
-ContextMenu.displayName = "ContextMenu";
+const ContextMenu = ContextMenuPrimitive.Root;
 
 /**
  * 🎯 목적: ContextMenuTrigger 컴포넌트에 forwardRef 적용
@@ -54,38 +45,16 @@ const ContextMenuGroup = React.forwardRef<
 ContextMenuGroup.displayName = "ContextMenuGroup";
 
 /**
- * 🎯 목적: ContextMenuPortal 컴포넌트에 forwardRef 적용
+ * 🎯 목적: ContextMenuPortal 컴포넌트
+ * 📝 주의사항: Portal은 ref를 지원하지 않음
  */
-const ContextMenuPortal = React.forwardRef<
-  React.ElementRef<typeof ContextMenuPrimitive.Portal>,
-  React.ComponentPropsWithoutRef<typeof ContextMenuPrimitive.Portal>
->((props, ref) => {
-  return (
-    <ContextMenuPrimitive.Portal
-      ref={ref}
-      data-slot="context-menu-portal"
-      {...props}
-    />
-  );
-});
-ContextMenuPortal.displayName = "ContextMenuPortal";
+const ContextMenuPortal = ContextMenuPrimitive.Portal;
 
 /**
- * 🎯 목적: ContextMenuSub 컴포넌트에 forwardRef 적용
+ * 🎯 목적: ContextMenuSub 컴포넌트
+ * 📝 주의사항: Sub는 ref를 지원하지 않음
  */
-const ContextMenuSub = React.forwardRef<
-  React.ElementRef<typeof ContextMenuPrimitive.Sub>,
-  React.ComponentPropsWithoutRef<typeof ContextMenuPrimitive.Sub>
->((props, ref) => {
-  return (
-    <ContextMenuPrimitive.Sub
-      ref={ref}
-      data-slot="context-menu-sub"
-      {...props}
-    />
-  );
-});
-ContextMenuSub.displayName = "ContextMenuSub";
+const ContextMenuSub = ContextMenuPrimitive.Sub;
 
 /**
  * 🎯 목적: ContextMenuRadioGroup 컴포넌트에 forwardRef 적용

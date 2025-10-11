@@ -7,19 +7,10 @@ import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
 /**
- * 🎯 목적: AlertDialog 컴포넌트에 forwardRef 적용하여 React 18/19 호환성 제공
- * 📝 주의사항: Radix UI AlertDialog.Root primitive 사용
- * 🔄 변경이력: 2025-10-11 - React 18/19 dual support를 위한 forwardRef 추가
+ * 🎯 목적: AlertDialog Root 컴포넌트
+ * 📝 주의사항: Radix UI AlertDialog.Root primitive는 ref를 지원하지 않음
  */
-const AlertDialog = React.forwardRef<
-  React.ElementRef<typeof AlertDialogPrimitive.Root>,
-  React.ComponentPropsWithoutRef<typeof AlertDialogPrimitive.Root>
->((props, ref) => {
-  return (
-    <AlertDialogPrimitive.Root ref={ref} data-slot="alert-dialog" {...props} />
-  );
-});
-AlertDialog.displayName = "AlertDialog";
+const AlertDialog = AlertDialogPrimitive.Root;
 
 /**
  * 🎯 목적: AlertDialogTrigger 컴포넌트에 forwardRef 적용
@@ -39,21 +30,10 @@ const AlertDialogTrigger = React.forwardRef<
 AlertDialogTrigger.displayName = "AlertDialogTrigger";
 
 /**
- * 🎯 목적: AlertDialogPortal 컴포넌트에 forwardRef 적용
+ * 🎯 목적: AlertDialogPortal 컴포넌트
+ * 📝 주의사항: Portal은 ref를 지원하지 않음
  */
-const AlertDialogPortal = React.forwardRef<
-  React.ElementRef<typeof AlertDialogPrimitive.Portal>,
-  React.ComponentPropsWithoutRef<typeof AlertDialogPrimitive.Portal>
->((props, ref) => {
-  return (
-    <AlertDialogPrimitive.Portal
-      ref={ref}
-      data-slot="alert-dialog-portal"
-      {...props}
-    />
-  );
-});
-AlertDialogPortal.displayName = "AlertDialogPortal";
+const AlertDialogPortal = AlertDialogPrimitive.Portal;
 
 /**
  * 🎯 목적: AlertDialogOverlay 컴포넌트에 forwardRef 적용

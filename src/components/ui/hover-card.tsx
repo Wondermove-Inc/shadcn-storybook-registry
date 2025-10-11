@@ -5,29 +5,41 @@ import * as React from "react";
 
 import { cn } from "@/lib/utils";
 
-function HoverCard({
-  ...props
-}: React.ComponentProps<typeof HoverCardPrimitive.Root>) {
-  return <HoverCardPrimitive.Root data-slot="hover-card" {...props} />;
-}
+/**
+ * 🎯 목적: HoverCard Root 컴포넌트
+ * 📝 주의사항: Radix UI HoverCard.Root primitive는 ref를 지원하지 않음
+ */
+const HoverCard = HoverCardPrimitive.Root;
 
-function HoverCardTrigger({
-  ...props
-}: React.ComponentProps<typeof HoverCardPrimitive.Trigger>) {
+/**
+ * 🎯 목적: HoverCardTrigger 컴포넌트에 forwardRef 적용
+ */
+const HoverCardTrigger = React.forwardRef<
+  React.ElementRef<typeof HoverCardPrimitive.Trigger>,
+  React.ComponentPropsWithoutRef<typeof HoverCardPrimitive.Trigger>
+>((props, ref) => {
   return (
-    <HoverCardPrimitive.Trigger data-slot="hover-card-trigger" {...props} />
+    <HoverCardPrimitive.Trigger
+      ref={ref}
+      data-slot="hover-card-trigger"
+      {...props}
+    />
   );
-}
+});
+HoverCardTrigger.displayName = "HoverCardTrigger";
 
-function HoverCardContent({
-  className,
-  align = "center",
-  sideOffset = 4,
-  ...props
-}: React.ComponentProps<typeof HoverCardPrimitive.Content>) {
+/**
+ * 🎯 목적: HoverCardContent 컴포넌트에 forwardRef 적용
+ * 📝 주의사항: Portal 내부에서 렌더링, align/sideOffset props 지원
+ */
+const HoverCardContent = React.forwardRef<
+  React.ElementRef<typeof HoverCardPrimitive.Content>,
+  React.ComponentPropsWithoutRef<typeof HoverCardPrimitive.Content>
+>(({ className, align = "center", sideOffset = 4, ...props }, ref) => {
   return (
     <HoverCardPrimitive.Portal data-slot="hover-card-portal">
       <HoverCardPrimitive.Content
+        ref={ref}
         data-slot="hover-card-content"
         align={align}
         sideOffset={sideOffset}
@@ -39,6 +51,7 @@ function HoverCardContent({
       />
     </HoverCardPrimitive.Portal>
   );
-}
+});
+HoverCardContent.displayName = "HoverCardContent";
 
 export { HoverCard, HoverCardContent, HoverCardTrigger };
