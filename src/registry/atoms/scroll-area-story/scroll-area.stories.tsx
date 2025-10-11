@@ -230,3 +230,78 @@ export const ShouldScroll: Story = {
     }
   },
 };
+
+export const ShouldScrollHorizontally: Story = {
+  name: "when horizontal content overflows, should scroll horizontally",
+  tags: ["!dev", "!autodocs"],
+  render: () => {
+    const items = Array.from({ length: 10 }).map((_, i) => ({
+      id: i + 1,
+      title: `Item ${i + 1}`,
+      content: `Content for item ${i + 1}`,
+    }));
+
+    return (
+      <ScrollArea
+        className="w-[400px] rounded-md border whitespace-nowrap"
+        data-testid="scroll-area"
+      >
+        <div className="flex w-max space-x-4 p-4" data-testid="scroll-content">
+          {items.map((item) => (
+            <div
+              key={item.id}
+              className="w-[200px] shrink-0 rounded-md border p-4"
+              data-testid={`item-${item.id}`}
+            >
+              <h4 className="mb-2 text-sm font-semibold">{item.title}</h4>
+              <p className="text-muted-foreground text-sm">{item.content}</p>
+            </div>
+          ))}
+        </div>
+        <ScrollBar
+          orientation="horizontal"
+          data-testid="horizontal-scrollbar"
+        />
+      </ScrollArea>
+    );
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+
+    // 🎯 목적: Scroll Area가 수평 스크롤을 지원하고 horizontal ScrollBar가 표시되는지 확인
+
+    // Scroll Area 존재 확인
+    const scrollArea = canvas.getByTestId("scroll-area");
+    await expect(scrollArea).toBeInTheDocument();
+
+    // Horizontal ScrollBar 확인
+    const horizontalScrollbar = canvas.getByTestId("horizontal-scrollbar");
+    await expect(horizontalScrollbar).toBeInTheDocument();
+
+    // 첫 번째 아이템 확인
+    const firstItem = canvas.getByTestId("item-1");
+    await expect(firstItem).toBeInTheDocument();
+    await expect(firstItem).toHaveTextContent("Item 1");
+
+    // 스크롤 viewport 찾기
+    const scrollViewport = canvasElement.querySelector(
+      "[data-radix-scroll-area-viewport]",
+    );
+
+    if (scrollViewport) {
+      // 수평 스크롤 가능 여부 확인 (scrollWidth > clientWidth)
+      await expect(scrollViewport.scrollWidth).toBeGreaterThan(
+        scrollViewport.clientWidth,
+      );
+
+      // 수평 스크롤 (오른쪽으로)
+      scrollViewport.scrollLeft = scrollViewport.scrollWidth / 2;
+
+      // 스크롤 후 중간 아이템 확인
+      await waitFor(async () => {
+        const middleItem = canvas.getByTestId("item-5");
+        await expect(middleItem).toBeInTheDocument();
+      });
+    }
+  },
+};

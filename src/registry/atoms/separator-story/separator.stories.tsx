@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
+import { expect, within } from "storybook/test";
 
 import { Separator } from "@/components/ui/separator";
 
@@ -186,4 +187,87 @@ export const InToolbar: Story = {
       </button>
     </div>
   ),
+};
+
+export const ShouldRenderBothOrientations: Story = {
+  name: "when rendered, should display both horizontal and vertical separators",
+  tags: ["!dev", "!autodocs"],
+  render: () => (
+    <div className="space-y-6" data-testid="separator-container">
+      <div className="space-y-4">
+        <h4 className="text-sm font-medium">Horizontal Separator</h4>
+        <div className="text-muted-foreground text-sm">
+          Content before separator
+        </div>
+        <Separator
+          orientation="horizontal"
+          data-testid="horizontal-separator"
+        />
+        <div className="text-muted-foreground text-sm">
+          Content after separator
+        </div>
+      </div>
+
+      <div className="space-y-4">
+        <h4 className="text-sm font-medium">Vertical Separator</h4>
+        <div className="flex items-center space-x-4 text-sm">
+          <span data-testid="item-1">Item 1</span>
+          <Separator
+            orientation="vertical"
+            className="h-6"
+            data-testid="vertical-separator-1"
+          />
+          <span data-testid="item-2">Item 2</span>
+          <Separator
+            orientation="vertical"
+            className="h-6"
+            data-testid="vertical-separator-2"
+          />
+          <span data-testid="item-3">Item 3</span>
+        </div>
+      </div>
+    </div>
+  ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+
+    // 🎯 목적: Separator 컴포넌트가 horizontal과 vertical 방향을 올바르게 렌더링하는지 확인
+
+    // Container 확인
+    const container = canvas.getByTestId("separator-container");
+    await expect(container).toBeInTheDocument();
+
+    // Horizontal Separator 확인
+    const horizontalSeparator = canvas.getByTestId("horizontal-separator");
+    await expect(horizontalSeparator).toBeInTheDocument();
+    await expect(horizontalSeparator).toHaveAttribute(
+      "data-orientation",
+      "horizontal",
+    );
+
+    // Vertical Separator 확인
+    const verticalSeparator1 = canvas.getByTestId("vertical-separator-1");
+    await expect(verticalSeparator1).toBeInTheDocument();
+    await expect(verticalSeparator1).toHaveAttribute(
+      "data-orientation",
+      "vertical",
+    );
+
+    const verticalSeparator2 = canvas.getByTestId("vertical-separator-2");
+    await expect(verticalSeparator2).toBeInTheDocument();
+    await expect(verticalSeparator2).toHaveAttribute(
+      "data-orientation",
+      "vertical",
+    );
+
+    // Separated items 확인
+    const item1 = canvas.getByTestId("item-1");
+    await expect(item1).toHaveTextContent("Item 1");
+
+    const item2 = canvas.getByTestId("item-2");
+    await expect(item2).toHaveTextContent("Item 2");
+
+    const item3 = canvas.getByTestId("item-3");
+    await expect(item3).toHaveTextContent("Item 3");
+  },
 };
