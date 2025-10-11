@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 import { AlertCircleIcon, CheckCircle2Icon, PopcornIcon } from "lucide-react";
+import { expect, within } from "storybook/test";
 
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 
@@ -109,4 +110,33 @@ export const Destructive: Story = {
       </AlertDescription>
     </Alert>
   ),
+};
+
+export const ShouldRenderAlert: Story = {
+  name: "when rendered, should display alert content",
+  tags: ["!dev", "!autodocs"],
+  render: () => (
+    <Alert data-testid="test-alert">
+      <CheckCircle2Icon />
+      <AlertTitle>Success! Your changes have been saved</AlertTitle>
+      <AlertDescription>
+        This is an alert with icon, title and description.
+      </AlertDescription>
+    </Alert>
+  ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+
+    // 🎯 목적: Alert가 올바르게 렌더링되고 텍스트가 표시되는지 확인
+    const alert = canvas.getByTestId("test-alert");
+    await expect(alert).toBeInTheDocument();
+
+    const title = canvas.getByText("Success! Your changes have been saved");
+    await expect(title).toBeInTheDocument();
+
+    const description = canvas.getByText(
+      /alert with icon, title and description/i,
+    );
+    await expect(description).toBeInTheDocument();
+  },
 };

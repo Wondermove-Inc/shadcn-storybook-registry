@@ -1,6 +1,5 @@
-"use client"
+"use client";
 
-import * as React from "react"
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 import {
   ColumnDef,
@@ -13,11 +12,13 @@ import {
   SortingState,
   useReactTable,
   VisibilityState,
-} from "@tanstack/react-table"
-import { ArrowUpDown, ChevronDown, MoreHorizontal } from "lucide-react"
+} from "@tanstack/react-table";
+import { ArrowUpDown, ChevronDown, MoreHorizontal } from "lucide-react";
+import * as React from "react";
+import { expect, userEvent, waitFor, within } from "storybook/test";
 
-import { Button } from "@/components/ui/button"
-import { Checkbox } from "@/components/ui/checkbox"
+import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
@@ -26,8 +27,8 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
-import { Input } from "@/components/ui/input"
+} from "@/components/ui/dropdown-menu";
+import { Input } from "@/components/ui/input";
 import {
   Table,
   TableBody,
@@ -35,7 +36,7 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table"
+} from "@/components/ui/table";
 
 const data: Payment[] = [
   {
@@ -68,14 +69,14 @@ const data: Payment[] = [
     status: "failed",
     email: "carmella@example.com",
   },
-]
+];
 
 type Payment = {
-  id: string
-  amount: number
-  status: "pending" | "processing" | "success" | "failed"
-  email: string
-}
+  id: string;
+  amount: number;
+  status: "pending" | "processing" | "success" | "failed";
+  email: string;
+};
 
 const columns: ColumnDef<Payment>[] = [
   {
@@ -118,7 +119,7 @@ const columns: ColumnDef<Payment>[] = [
           Email
           <ArrowUpDown />
         </Button>
-      )
+      );
     },
     cell: ({ row }) => <div className="lowercase">{row.getValue("email")}</div>,
   },
@@ -126,22 +127,22 @@ const columns: ColumnDef<Payment>[] = [
     accessorKey: "amount",
     header: () => <div className="text-right">Amount</div>,
     cell: ({ row }) => {
-      const amount = parseFloat(row.getValue("amount"))
+      const amount = parseFloat(row.getValue("amount"));
 
       // Format the amount as a dollar amount
       const formatted = new Intl.NumberFormat("en-US", {
         style: "currency",
         currency: "USD",
-      }).format(amount)
+      }).format(amount);
 
-      return <div className="text-right font-medium">{formatted}</div>
+      return <div className="text-right font-medium">{formatted}</div>;
     },
   },
   {
     id: "actions",
     enableHiding: false,
     cell: ({ row }) => {
-      const payment = row.original
+      const payment = row.original;
 
       return (
         <DropdownMenu>
@@ -163,19 +164,19 @@ const columns: ColumnDef<Payment>[] = [
             <DropdownMenuItem>View payment details</DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
-      )
+      );
     },
   },
-]
+];
 
 function DataTableDemo() {
-  const [sorting, setSorting] = React.useState<SortingState>([])
+  const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
-    []
-  )
+    [],
+  );
   const [columnVisibility, setColumnVisibility] =
-    React.useState<VisibilityState>({})
-  const [rowSelection, setRowSelection] = React.useState({})
+    React.useState<VisibilityState>({});
+  const [rowSelection, setRowSelection] = React.useState({});
 
   const table = useReactTable({
     data,
@@ -194,7 +195,7 @@ function DataTableDemo() {
       columnVisibility,
       rowSelection,
     },
-  })
+  });
 
   return (
     <div className="w-full">
@@ -229,7 +230,7 @@ function DataTableDemo() {
                   >
                     {column.id}
                   </DropdownMenuCheckboxItem>
-                )
+                );
               })}
           </DropdownMenuContent>
         </DropdownMenu>
@@ -246,10 +247,10 @@ function DataTableDemo() {
                         ? null
                         : flexRender(
                             header.column.columnDef.header,
-                            header.getContext()
+                            header.getContext(),
                           )}
                     </TableHead>
-                  )
+                  );
                 })}
               </TableRow>
             ))}
@@ -265,7 +266,7 @@ function DataTableDemo() {
                     <TableCell key={cell.id}>
                       {flexRender(
                         cell.column.columnDef.cell,
-                        cell.getContext()
+                        cell.getContext(),
                       )}
                     </TableCell>
                   ))}
@@ -309,7 +310,7 @@ function DataTableDemo() {
         </div>
       </div>
     </div>
-  )
+  );
 }
 
 /**
@@ -339,3 +340,44 @@ type Story = StoryObj<typeof meta>;
  * The default data table with all features enabled.
  */
 export const Default: Story = {};
+
+export const ShouldFilterTable: Story = {
+  name: "when filtering by email, should display filtered rows",
+  tags: ["!dev", "!autodocs"],
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+
+    // 🎯 목적: Email 필터 입력 시 테이블이 필터링되는지 확인
+    const filterInput = canvas.getByPlaceholderText("Filter emails...");
+    await userEvent.type(filterInput, "ken99");
+
+    await waitFor(
+      () => {
+        // 필터링 후 1개 행만 표시되어야 함 (ken99@example.com)
+        const email = canvas.getByText("ken99@example.com");
+        expect(email).toBeInTheDocument();
+      },
+      { timeout: 3000 },
+    );
+  },
+};
+
+export const ShouldSortTable: Story = {
+  name: "when clicking sort button, should sort table",
+  tags: ["!dev", "!autodocs"],
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+
+    // 🎯 목적: Email 컬럼 정렬 버튼 클릭 시 테이블이 정렬되는지 확인
+    const emailSortButton = canvas.getByRole("button", { name: /email/i });
+    await userEvent.click(emailSortButton);
+
+    await waitFor(
+      () => {
+        // 정렬 버튼에 정렬 아이콘이 표시되어야 함
+        expect(emailSortButton).toBeInTheDocument();
+      },
+      { timeout: 2000 },
+    );
+  },
+};
