@@ -1,13 +1,6 @@
-"use client"
+"use client";
 
-import type { Meta, StoryObj } from "@storybook/nextjs-vite";
-import * as React from "react"
-import { REGEXP_ONLY_DIGITS_AND_CHARS } from "input-otp"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
-import { toast } from "sonner"
-import { z } from "zod"
-import { Button } from "@/components/ui/button"
+import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
@@ -16,13 +9,21 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form"
+} from "@/components/ui/form";
 import {
   InputOTP,
   InputOTPGroup,
   InputOTPSeparator,
   InputOTPSlot,
-} from "@/components/ui/input-otp"
+} from "@/components/ui/input-otp";
+import { zodResolver } from "@hookform/resolvers/zod";
+import type { Meta, StoryObj } from "@storybook/nextjs-vite";
+import { REGEXP_ONLY_DIGITS_AND_CHARS } from "input-otp";
+import * as React from "react";
+import { useForm } from "react-hook-form";
+import { toast } from "sonner";
+import { expect, userEvent, waitFor, within } from "storybook/test";
+import { z } from "zod";
 
 function InputOTPDemo() {
   return (
@@ -39,7 +40,7 @@ function InputOTPDemo() {
         <InputOTPSlot index={5} />
       </InputOTPGroup>
     </InputOTP>
-  )
+  );
 }
 
 /**
@@ -52,7 +53,8 @@ const meta = {
   parameters: {
     layout: "centered",
   },
-  excludeStories: /.*Demo$|.*Pattern$|.*Separator.*|.*Controlled$|.*Form$|FormSchema/,
+  excludeStories:
+    /.*Demo$|.*Pattern$|.*Separator.*|.*Controlled$|.*Form$|FormSchema/,
 } satisfies Meta<typeof InputOTPDemo>;
 
 export default meta;
@@ -77,7 +79,7 @@ function InputOTPPattern() {
         <InputOTPSlot index={5} />
       </InputOTPGroup>
     </InputOTP>
-  )
+  );
 }
 
 /**
@@ -106,7 +108,7 @@ function InputOTPWithSeparator() {
         <InputOTPSlot index={5} />
       </InputOTPGroup>
     </InputOTP>
-  )
+  );
 }
 
 /**
@@ -130,7 +132,7 @@ function InputOTPSeparatorFourDigits() {
         <InputOTPSlot index={3} />
       </InputOTPGroup>
     </InputOTP>
-  )
+  );
 }
 
 /**
@@ -142,7 +144,7 @@ export const SeparatorFourDigits: Story = {
 
 // Controlled example component
 function InputOTPControlled() {
-  const [value, setValue] = React.useState("")
+  const [value, setValue] = React.useState("");
 
   return (
     <div className="space-y-2">
@@ -168,7 +170,7 @@ function InputOTPControlled() {
         )}
       </div>
     </div>
-  )
+  );
 }
 
 /**
@@ -178,12 +180,34 @@ export const Controlled: Story = {
   render: () => <InputOTPControlled />,
 };
 
+export const ShouldAcceptOTPInput: Story = {
+  name: "when user types OTP, should display entered values",
+  tags: ["!dev", "!autodocs"],
+  render: () => <InputOTPControlled />,
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+
+    // 🎯 목적: Input OTP가 사용자 입력을 받아 각 슬롯에 표시하고, 값을 추적하는지 확인
+    const inputs = canvas.getAllByRole("textbox");
+    await expect(inputs.length).toBeGreaterThan(0);
+
+    // 첫 번째 입력 필드에 OTP 입력
+    await userEvent.type(inputs[0], "123456");
+
+    // 입력한 값이 표시되는지 확인
+    await waitFor(async () => {
+      const displayText = await canvas.findByText(/you entered: 123456/i);
+      await expect(displayText).toBeInTheDocument();
+    });
+  },
+};
+
 // Form example component
 const FormSchema = z.object({
   pin: z.string().min(6, {
     message: "Your one-time password must be 6 characters.",
   }),
-})
+});
 
 function InputOTPForm() {
   const form = useForm<z.infer<typeof FormSchema>>({
@@ -191,7 +215,7 @@ function InputOTPForm() {
     defaultValues: {
       pin: "",
     },
-  })
+  });
 
   function onSubmit(data: z.infer<typeof FormSchema>) {
     toast("You submitted the following values", {
@@ -200,7 +224,7 @@ function InputOTPForm() {
           <code className="text-white">{JSON.stringify(data, null, 2)}</code>
         </pre>
       ),
-    })
+    });
   }
 
   return (
@@ -235,7 +259,7 @@ function InputOTPForm() {
         <Button type="submit">Submit</Button>
       </form>
     </Form>
-  )
+  );
 }
 
 /**
