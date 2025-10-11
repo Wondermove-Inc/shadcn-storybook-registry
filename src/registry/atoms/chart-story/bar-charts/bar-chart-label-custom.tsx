@@ -1,7 +1,14 @@
-"use client"
+"use client";
 
-import { TrendingUp } from "lucide-react"
-import { Bar, BarChart, CartesianGrid, LabelList, XAxis, YAxis } from "recharts"
+import { TrendingUp } from "lucide-react";
+import {
+  Bar,
+  BarChart,
+  CartesianGrid,
+  LabelList,
+  XAxis,
+  YAxis,
+} from "recharts";
 
 import {
   Card,
@@ -10,15 +17,15 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card"
+} from "@/components/ui/card";
 import {
   ChartConfig,
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
-} from "@/components/ui/chart"
+} from "@/components/ui/chart";
 
-export const description = "A bar chart with a custom label"
+export const description = "A bar chart with a custom label";
 
 const chartData = [
   { month: "January", desktop: 186, mobile: 80 },
@@ -27,7 +34,7 @@ const chartData = [
   { month: "April", desktop: 73, mobile: 190 },
   { month: "May", desktop: 209, mobile: 130 },
   { month: "June", desktop: 214, mobile: 140 },
-]
+];
 
 const chartConfig = {
   desktop: {
@@ -41,7 +48,7 @@ const chartConfig = {
   label: {
     color: "var(--background)",
   },
-} satisfies ChartConfig
+} satisfies ChartConfig;
 
 export function ChartBarLabelCustom() {
   return (
@@ -75,12 +82,7 @@ export function ChartBarLabelCustom() {
               cursor={false}
               content={<ChartTooltipContent indicator="line" />}
             />
-            <Bar
-              dataKey="desktop"
-              layout="vertical"
-              fill="var(--color-desktop)"
-              radius={4}
-            >
+            <Bar dataKey="desktop" fill="var(--color-desktop)" radius={4}>
               <LabelList
                 dataKey="month"
                 position="insideLeft"
@@ -108,5 +110,5 @@ export function ChartBarLabelCustom() {
         </div>
       </CardFooter>
     </Card>
-  )
+  );
 }

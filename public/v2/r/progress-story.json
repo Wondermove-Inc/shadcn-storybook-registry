@@ -10,13 +10,13 @@
   ],
   "files": [
     {
-      "path": "registry/ui/progress-story/progress.stories.tsx",
-      "content": "// Replace nextjs-vite with the name of your framework\nimport type { Meta, StoryObj } from \"@storybook/nextjs-vite\";\n\nimport { Progress } from \"@/components/ui/progress\";\n\n/**\n * Displays an indicator showing the completion progress of a task, typically\n * displayed as a progress bar.\n */\nconst meta = {\n  title: \"ui/Progress\",\n  component: Progress,\n  tags: [\"autodocs\"],\n  argTypes: {},\n  args: {\n    \"aria-label\": \"Progress\",\n    value: 30,\n    max: 100,\n  },\n} satisfies Meta<typeof Progress>;\n\nexport default meta;\n\ntype Story = StoryObj<typeof meta>;\n\n/**\n * The default form of the progress.\n */\nexport const Default: Story = {};\n\n/**\n * When the progress is indeterminate.\n */\nexport const Indeterminate: Story = {\n  args: {\n    value: undefined,\n  },\n};\n\n/**\n * When the progress is completed.\n */\nexport const Completed: Story = {\n  args: {\n    value: 100,\n  },\n};\n",
+      "path": "src/registry/atoms/progress-story/progress.stories.tsx",
+      "content": "\"use client\"\n\nimport type { Meta, StoryObj } from \"@storybook/nextjs-vite\";\nimport * as React from \"react\"\nimport { Progress } from \"@/components/ui/progress\"\n\n/**\n * Displays an indicator showing the completion progress of a task, typically\n * displayed as a progress bar.\n */\nconst meta = {\n  title: \"ui/Progress\",\n  component: Progress,\n  tags: [\"autodocs\"],\n  parameters: {\n    layout: \"centered\",\n  },\n  excludeStories: /.*Demo$/,\n  render: () => {\n    const [progress, setProgress] = React.useState(13)\n\n    React.useEffect(() => {\n      const timer = setTimeout(() => setProgress(66), 500)\n      return () => clearTimeout(timer)\n    }, [])\n\n    return (\n      <div className=\"w-[350px]\">\n        <Progress value={progress} className=\"w-full\" />\n      </div>\n    )\n  }\n} satisfies Meta<typeof Progress>;\n\nexport default meta;\n\ntype Story = StoryObj<typeof meta>;\n\n/**\n * The default animated progress bar that updates from 13% to 66% after 500ms.\n */\nexport const Default: Story = {};\n\nexport function ProgressDemo() {\n  const [progress, setProgress] = React.useState(13)\n\n  React.useEffect(() => {\n    const timer = setTimeout(() => setProgress(66), 500)\n    return () => clearTimeout(timer)\n  }, [])\n\n  return (\n    <div className=\"w-[350px]\">\n      <Progress value={progress} className=\"w-full\" />\n    </div>\n  )\n}\n",
       "type": "registry:component"
     }
   ],
   "categories": [
-    "ui",
+    "atoms",
     "storybook",
     "progress",
     "feedback"

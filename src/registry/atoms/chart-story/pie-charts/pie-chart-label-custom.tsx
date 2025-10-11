@@ -1,7 +1,7 @@
-"use client"
+"use client";
 
-import { TrendingUp } from "lucide-react"
-import { Pie, PieChart } from "recharts"
+import { TrendingUp } from "lucide-react";
+import { Pie, PieChart } from "recharts";
 
 import {
   Card,
@@ -10,15 +10,15 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card"
+} from "@/components/ui/card";
 import {
   ChartConfig,
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
-} from "@/components/ui/chart"
+} from "@/components/ui/chart";
 
-export const description = "A pie chart with a custom label"
+export const description = "A pie chart with a custom label";
 
 const chartData = [
   { browser: "chrome", visitors: 275, fill: "var(--color-chrome)" },
@@ -26,7 +26,7 @@ const chartData = [
   { browser: "firefox", visitors: 187, fill: "var(--color-firefox)" },
   { browser: "edge", visitors: 173, fill: "var(--color-edge)" },
   { browser: "other", visitors: 90, fill: "var(--color-other)" },
-]
+];
 
 const chartConfig = {
   visitors: {
@@ -52,7 +52,7 @@ const chartConfig = {
     label: "Other",
     color: "var(--chart-5)",
   },
-} satisfies ChartConfig
+} satisfies ChartConfig;
 
 export function ChartPieLabelCustom() {
   return (
@@ -74,20 +74,47 @@ export function ChartPieLabelCustom() {
               data={chartData}
               dataKey="visitors"
               labelLine={false}
-              label={({ payload, ...props }) => {
+              label={(props: unknown) => {
+                const { payload, cx, cy, x, y, textAnchor, dominantBaseline } =
+                  props as {
+                    payload: (typeof chartData)[number];
+                    cx?: number;
+                    cy?: number;
+                    x?: number;
+                    y?: number;
+                    textAnchor?: string;
+                    dominantBaseline?: string;
+                  };
                 return (
                   <text
-                    cx={props.cx}
-                    cy={props.cy}
-                    x={props.x}
-                    y={props.y}
-                    textAnchor={props.textAnchor}
-                    dominantBaseline={props.dominantBaseline}
+                    cx={cx}
+                    cy={cy}
+                    x={x}
+                    y={y}
+                    textAnchor={
+                      textAnchor as
+                        | "inherit"
+                        | "end"
+                        | "start"
+                        | "middle"
+                        | undefined
+                    }
+                    dominantBaseline={
+                      dominantBaseline as
+                        | "inherit"
+                        | "auto"
+                        | "alphabetic"
+                        | "hanging"
+                        | "ideographic"
+                        | "mathematical"
+                        | "middle"
+                        | undefined
+                    }
                     fill="hsla(var(--foreground))"
                   >
                     {payload.visitors}
                   </text>
-                )
+                );
               }}
               nameKey="browser"
             />
@@ -103,5 +130,5 @@ export function ChartPieLabelCustom() {
         </div>
       </CardFooter>
     </Card>
-  )
+  );
 }
