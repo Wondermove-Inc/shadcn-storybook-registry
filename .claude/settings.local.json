@@ -20,7 +20,11 @@
       "Read(//Users/tw.kim/Documents/AGA/test/**)",
       "WebSearch",
       "WebFetch(domain:storybook.js.org)",
-      "WebFetch(domain:help.figma.com)"
+      "WebFetch(domain:help.figma.com)",
+      "Bash(find:*)",
+      "Bash(while read file)",
+      "Bash(do if grep -q \"play:\" \"$file\")",
+      "Bash(then basename \"$file\" .stories.tsx fi done)"
     ],
     "deny": [],
     "ask": []
