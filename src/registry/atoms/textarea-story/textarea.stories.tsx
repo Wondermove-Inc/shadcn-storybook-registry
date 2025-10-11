@@ -6,7 +6,7 @@ import { Textarea } from "@/components/ui/textarea";
 
 // Default example from official docs
 export function TextareaDemo() {
-  return <Textarea placeholder="Type your message here." />
+  return <Textarea placeholder="Type your message here." />;
 }
 
 // With Label example from official docs
@@ -16,7 +16,7 @@ export function TextareaWithLabel() {
       <Label htmlFor="message">Your message</Label>
       <Textarea placeholder="Type your message here." id="message" />
     </div>
-  )
+  );
 }
 
 // With Text example from official docs
@@ -29,7 +29,7 @@ export function TextareaWithText() {
         Your message will be copied to the support team.
       </p>
     </div>
-  )
+  );
 }
 
 // With Button example from official docs
@@ -39,12 +39,12 @@ export function TextareaWithButton() {
       <Textarea placeholder="Type your message here." />
       <Button>Send message</Button>
     </div>
-  )
+  );
 }
 
 // Disabled example from official docs
 export function TextareaDisabled() {
-  return <Textarea placeholder="Type your message here." disabled />
+  return <Textarea placeholder="Type your message here." disabled />;
 }
 
 /**
@@ -57,8 +57,11 @@ const meta = {
   parameters: {
     layout: "centered",
   },
+  args: {
+    placeholder: "Type your message here.",
+    disabled: false,
+  },
   excludeStories: /.*Demo$|.*WithLabel$|.*WithText$|.*WithButton$|.*Disabled$/,
-  render: () => <TextareaDemo />
 } satisfies Meta<typeof Textarea>;
 
 export default meta;
@@ -74,26 +77,28 @@ export const Default: Story = {};
  * Textarea with a label.
  */
 export const WithLabel: Story = {
-  render: () => <TextareaWithLabel />
+  render: () => <TextareaWithLabel />,
 };
 
 /**
  * Textarea with label and helper text.
  */
 export const WithText: Story = {
-  render: () => <TextareaWithText />
+  render: () => <TextareaWithText />,
 };
 
 /**
  * Textarea with a button.
  */
 export const WithButton: Story = {
-  render: () => <TextareaWithButton />
+  render: () => <TextareaWithButton />,
 };
 
 /**
  * Disabled textarea.
  */
 export const Disabled: Story = {
-  render: () => <TextareaDisabled />
+  args: {
+    disabled: true,
+  },
 };
