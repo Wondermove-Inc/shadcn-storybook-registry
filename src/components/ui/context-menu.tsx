@@ -1,149 +1,224 @@
-import * as React from "react"
-import * as ContextMenuPrimitive from "@radix-ui/react-context-menu"
-import { CheckIcon, ChevronRightIcon, CircleIcon } from "lucide-react"
+import * as ContextMenuPrimitive from "@radix-ui/react-context-menu";
+import { CheckIcon, ChevronRightIcon, CircleIcon } from "lucide-react";
+import * as React from "react";
 
-import { cn } from "@/lib/utils"
+import { cn } from "@/lib/utils";
 
-function ContextMenu({
-  ...props
-}: React.ComponentProps<typeof ContextMenuPrimitive.Root>) {
-  return <ContextMenuPrimitive.Root data-slot="context-menu" {...props} />
-}
-
-function ContextMenuTrigger({
-  ...props
-}: React.ComponentProps<typeof ContextMenuPrimitive.Trigger>) {
+/**
+ * 🎯 목적: ContextMenu 컴포넌트에 forwardRef 적용하여 React 18/19 호환성 제공
+ * 📝 주의사항: Radix UI ContextMenu.Root primitive 사용
+ * 🔄 변경이력: 2025-10-11 - React 18/19 dual support를 위한 forwardRef 추가
+ */
+const ContextMenu = React.forwardRef<
+  React.ElementRef<typeof ContextMenuPrimitive.Root>,
+  React.ComponentPropsWithoutRef<typeof ContextMenuPrimitive.Root>
+>((props, ref) => {
   return (
-    <ContextMenuPrimitive.Trigger data-slot="context-menu-trigger" {...props} />
-  )
-}
+    <ContextMenuPrimitive.Root ref={ref} data-slot="context-menu" {...props} />
+  );
+});
+ContextMenu.displayName = "ContextMenu";
 
-function ContextMenuGroup({
-  ...props
-}: React.ComponentProps<typeof ContextMenuPrimitive.Group>) {
+/**
+ * 🎯 목적: ContextMenuTrigger 컴포넌트에 forwardRef 적용
+ */
+const ContextMenuTrigger = React.forwardRef<
+  React.ElementRef<typeof ContextMenuPrimitive.Trigger>,
+  React.ComponentPropsWithoutRef<typeof ContextMenuPrimitive.Trigger>
+>((props, ref) => {
   return (
-    <ContextMenuPrimitive.Group data-slot="context-menu-group" {...props} />
-  )
-}
+    <ContextMenuPrimitive.Trigger
+      ref={ref}
+      data-slot="context-menu-trigger"
+      {...props}
+    />
+  );
+});
+ContextMenuTrigger.displayName = "ContextMenuTrigger";
 
-function ContextMenuPortal({
-  ...props
-}: React.ComponentProps<typeof ContextMenuPrimitive.Portal>) {
+/**
+ * 🎯 목적: ContextMenuGroup 컴포넌트에 forwardRef 적용
+ */
+const ContextMenuGroup = React.forwardRef<
+  React.ElementRef<typeof ContextMenuPrimitive.Group>,
+  React.ComponentPropsWithoutRef<typeof ContextMenuPrimitive.Group>
+>((props, ref) => {
   return (
-    <ContextMenuPrimitive.Portal data-slot="context-menu-portal" {...props} />
-  )
-}
+    <ContextMenuPrimitive.Group
+      ref={ref}
+      data-slot="context-menu-group"
+      {...props}
+    />
+  );
+});
+ContextMenuGroup.displayName = "ContextMenuGroup";
 
-function ContextMenuSub({
-  ...props
-}: React.ComponentProps<typeof ContextMenuPrimitive.Sub>) {
-  return <ContextMenuPrimitive.Sub data-slot="context-menu-sub" {...props} />
-}
+/**
+ * 🎯 목적: ContextMenuPortal 컴포넌트에 forwardRef 적용
+ */
+const ContextMenuPortal = React.forwardRef<
+  React.ElementRef<typeof ContextMenuPrimitive.Portal>,
+  React.ComponentPropsWithoutRef<typeof ContextMenuPrimitive.Portal>
+>((props, ref) => {
+  return (
+    <ContextMenuPrimitive.Portal
+      ref={ref}
+      data-slot="context-menu-portal"
+      {...props}
+    />
+  );
+});
+ContextMenuPortal.displayName = "ContextMenuPortal";
 
-function ContextMenuRadioGroup({
-  ...props
-}: React.ComponentProps<typeof ContextMenuPrimitive.RadioGroup>) {
+/**
+ * 🎯 목적: ContextMenuSub 컴포넌트에 forwardRef 적용
+ */
+const ContextMenuSub = React.forwardRef<
+  React.ElementRef<typeof ContextMenuPrimitive.Sub>,
+  React.ComponentPropsWithoutRef<typeof ContextMenuPrimitive.Sub>
+>((props, ref) => {
+  return (
+    <ContextMenuPrimitive.Sub
+      ref={ref}
+      data-slot="context-menu-sub"
+      {...props}
+    />
+  );
+});
+ContextMenuSub.displayName = "ContextMenuSub";
+
+/**
+ * 🎯 목적: ContextMenuRadioGroup 컴포넌트에 forwardRef 적용
+ */
+const ContextMenuRadioGroup = React.forwardRef<
+  React.ElementRef<typeof ContextMenuPrimitive.RadioGroup>,
+  React.ComponentPropsWithoutRef<typeof ContextMenuPrimitive.RadioGroup>
+>((props, ref) => {
   return (
     <ContextMenuPrimitive.RadioGroup
+      ref={ref}
       data-slot="context-menu-radio-group"
       {...props}
     />
-  )
-}
+  );
+});
+ContextMenuRadioGroup.displayName = "ContextMenuRadioGroup";
 
-function ContextMenuSubTrigger({
-  className,
-  inset,
-  children,
-  ...props
-}: React.ComponentProps<typeof ContextMenuPrimitive.SubTrigger> & {
-  inset?: boolean
-}) {
+/**
+ * 🎯 목적: ContextMenuSubTrigger 컴포넌트에 forwardRef 적용
+ * 📝 주의사항: inset prop, ChevronRightIcon 포함
+ */
+const ContextMenuSubTrigger = React.forwardRef<
+  React.ElementRef<typeof ContextMenuPrimitive.SubTrigger>,
+  React.ComponentPropsWithoutRef<typeof ContextMenuPrimitive.SubTrigger> & {
+    inset?: boolean;
+  }
+>(({ className, inset, children, ...props }, ref) => {
   return (
     <ContextMenuPrimitive.SubTrigger
+      ref={ref}
       data-slot="context-menu-sub-trigger"
       data-inset={inset}
       className={cn(
         "focus:bg-accent focus:text-accent-foreground data-[state=open]:bg-accent data-[state=open]:text-accent-foreground flex cursor-default items-center rounded-sm px-2 py-1.5 text-sm outline-hidden select-none data-[inset]:pl-8 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
-        className
+        className,
       )}
       {...props}
     >
       {children}
       <ChevronRightIcon className="ml-auto" />
     </ContextMenuPrimitive.SubTrigger>
-  )
-}
+  );
+});
+ContextMenuSubTrigger.displayName = "ContextMenuSubTrigger";
 
-function ContextMenuSubContent({
-  className,
-  ...props
-}: React.ComponentProps<typeof ContextMenuPrimitive.SubContent>) {
+/**
+ * 🎯 목적: ContextMenuSubContent 컴포넌트에 forwardRef 적용
+ */
+const ContextMenuSubContent = React.forwardRef<
+  React.ElementRef<typeof ContextMenuPrimitive.SubContent>,
+  React.ComponentPropsWithoutRef<typeof ContextMenuPrimitive.SubContent>
+>(({ className, ...props }, ref) => {
   return (
     <ContextMenuPrimitive.SubContent
+      ref={ref}
       data-slot="context-menu-sub-content"
       className={cn(
         "bg-popover text-popover-foreground data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 z-50 min-w-[8rem] origin-(--radix-context-menu-content-transform-origin) overflow-hidden rounded-md border p-1 shadow-lg",
-        className
+        className,
       )}
       {...props}
     />
-  )
-}
+  );
+});
+ContextMenuSubContent.displayName = "ContextMenuSubContent";
 
-function ContextMenuContent({
-  className,
-  ...props
-}: React.ComponentProps<typeof ContextMenuPrimitive.Content>) {
+/**
+ * 🎯 목적: ContextMenuContent 컴포넌트에 forwardRef 적용
+ * 📝 주의사항: Portal 내부에서 렌더링
+ */
+const ContextMenuContent = React.forwardRef<
+  React.ElementRef<typeof ContextMenuPrimitive.Content>,
+  React.ComponentPropsWithoutRef<typeof ContextMenuPrimitive.Content>
+>(({ className, ...props }, ref) => {
   return (
     <ContextMenuPrimitive.Portal>
       <ContextMenuPrimitive.Content
+        ref={ref}
         data-slot="context-menu-content"
         className={cn(
           "bg-popover text-popover-foreground data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 z-50 max-h-(--radix-context-menu-content-available-height) min-w-[8rem] origin-(--radix-context-menu-content-transform-origin) overflow-x-hidden overflow-y-auto rounded-md border p-1 shadow-md",
-          className
+          className,
         )}
         {...props}
       />
     </ContextMenuPrimitive.Portal>
-  )
-}
+  );
+});
+ContextMenuContent.displayName = "ContextMenuContent";
 
-function ContextMenuItem({
-  className,
-  inset,
-  variant = "default",
-  ...props
-}: React.ComponentProps<typeof ContextMenuPrimitive.Item> & {
-  inset?: boolean
-  variant?: "default" | "destructive"
-}) {
+/**
+ * 🎯 목적: ContextMenuItem 컴포넌트에 forwardRef 적용
+ * 📝 주의사항: inset prop, variant prop (default/destructive)
+ */
+const ContextMenuItem = React.forwardRef<
+  React.ElementRef<typeof ContextMenuPrimitive.Item>,
+  React.ComponentPropsWithoutRef<typeof ContextMenuPrimitive.Item> & {
+    inset?: boolean;
+    variant?: "default" | "destructive";
+  }
+>(({ className, inset, variant = "default", ...props }, ref) => {
   return (
     <ContextMenuPrimitive.Item
+      ref={ref}
       data-slot="context-menu-item"
       data-inset={inset}
       data-variant={variant}
       className={cn(
         "focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:!text-destructive [&_svg:not([class*='text-'])]:text-muted-foreground relative flex cursor-default items-center gap-2 rounded-sm px-2 py-1.5 text-sm outline-hidden select-none data-[disabled]:pointer-events-none data-[disabled]:opacity-50 data-[inset]:pl-8 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
-        className
+        className,
       )}
       {...props}
     />
-  )
-}
+  );
+});
+ContextMenuItem.displayName = "ContextMenuItem";
 
-function ContextMenuCheckboxItem({
-  className,
-  children,
-  checked,
-  ...props
-}: React.ComponentProps<typeof ContextMenuPrimitive.CheckboxItem>) {
+/**
+ * 🎯 목적: ContextMenuCheckboxItem 컴포넌트에 forwardRef 적용
+ * 📝 주의사항: CheckIcon indicator 포함
+ */
+const ContextMenuCheckboxItem = React.forwardRef<
+  React.ElementRef<typeof ContextMenuPrimitive.CheckboxItem>,
+  React.ComponentPropsWithoutRef<typeof ContextMenuPrimitive.CheckboxItem>
+>(({ className, children, checked, ...props }, ref) => {
   return (
     <ContextMenuPrimitive.CheckboxItem
+      ref={ref}
       data-slot="context-menu-checkbox-item"
       className={cn(
         "focus:bg-accent focus:text-accent-foreground relative flex cursor-default items-center gap-2 rounded-sm py-1.5 pr-2 pl-8 text-sm outline-hidden select-none data-[disabled]:pointer-events-none data-[disabled]:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
-        className
+        className,
       )}
       checked={checked}
       {...props}
@@ -155,20 +230,25 @@ function ContextMenuCheckboxItem({
       </span>
       {children}
     </ContextMenuPrimitive.CheckboxItem>
-  )
-}
+  );
+});
+ContextMenuCheckboxItem.displayName = "ContextMenuCheckboxItem";
 
-function ContextMenuRadioItem({
-  className,
-  children,
-  ...props
-}: React.ComponentProps<typeof ContextMenuPrimitive.RadioItem>) {
+/**
+ * 🎯 목적: ContextMenuRadioItem 컴포넌트에 forwardRef 적용
+ * 📝 주의사항: CircleIcon indicator 포함
+ */
+const ContextMenuRadioItem = React.forwardRef<
+  React.ElementRef<typeof ContextMenuPrimitive.RadioItem>,
+  React.ComponentPropsWithoutRef<typeof ContextMenuPrimitive.RadioItem>
+>(({ className, children, ...props }, ref) => {
   return (
     <ContextMenuPrimitive.RadioItem
+      ref={ref}
       data-slot="context-menu-radio-item"
       className={cn(
         "focus:bg-accent focus:text-accent-foreground relative flex cursor-default items-center gap-2 rounded-sm py-1.5 pr-2 pl-8 text-sm outline-hidden select-none data-[disabled]:pointer-events-none data-[disabled]:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
-        className
+        className,
       )}
       {...props}
     >
@@ -179,72 +259,89 @@ function ContextMenuRadioItem({
       </span>
       {children}
     </ContextMenuPrimitive.RadioItem>
-  )
-}
+  );
+});
+ContextMenuRadioItem.displayName = "ContextMenuRadioItem";
 
-function ContextMenuLabel({
-  className,
-  inset,
-  ...props
-}: React.ComponentProps<typeof ContextMenuPrimitive.Label> & {
-  inset?: boolean
-}) {
+/**
+ * 🎯 목적: ContextMenuLabel 컴포넌트에 forwardRef 적용
+ * 📝 주의사항: inset prop 지원
+ */
+const ContextMenuLabel = React.forwardRef<
+  React.ElementRef<typeof ContextMenuPrimitive.Label>,
+  React.ComponentPropsWithoutRef<typeof ContextMenuPrimitive.Label> & {
+    inset?: boolean;
+  }
+>(({ className, inset, ...props }, ref) => {
   return (
     <ContextMenuPrimitive.Label
+      ref={ref}
       data-slot="context-menu-label"
       data-inset={inset}
       className={cn(
         "text-foreground px-2 py-1.5 text-sm font-medium data-[inset]:pl-8",
-        className
+        className,
       )}
       {...props}
     />
-  )
-}
+  );
+});
+ContextMenuLabel.displayName = "ContextMenuLabel";
 
-function ContextMenuSeparator({
-  className,
-  ...props
-}: React.ComponentProps<typeof ContextMenuPrimitive.Separator>) {
+/**
+ * 🎯 목적: ContextMenuSeparator 컴포넌트에 forwardRef 적용
+ */
+const ContextMenuSeparator = React.forwardRef<
+  React.ElementRef<typeof ContextMenuPrimitive.Separator>,
+  React.ComponentPropsWithoutRef<typeof ContextMenuPrimitive.Separator>
+>(({ className, ...props }, ref) => {
   return (
     <ContextMenuPrimitive.Separator
+      ref={ref}
       data-slot="context-menu-separator"
       className={cn("bg-border -mx-1 my-1 h-px", className)}
       {...props}
     />
-  )
-}
+  );
+});
+ContextMenuSeparator.displayName = "ContextMenuSeparator";
 
-function ContextMenuShortcut({
-  className,
-  ...props
-}: React.ComponentProps<"span">) {
+/**
+ * 🎯 목적: ContextMenuShortcut 컴포넌트에 forwardRef 적용
+ * 📝 주의사항: HTML span 요소 사용
+ */
+const ContextMenuShortcut = React.forwardRef<
+  HTMLSpanElement,
+  React.ComponentProps<"span">
+>(({ className, ...props }, ref) => {
   return (
     <span
+      ref={ref}
       data-slot="context-menu-shortcut"
       className={cn(
         "text-muted-foreground ml-auto text-xs tracking-widest",
-        className
+        className,
       )}
       {...props}
     />
-  )
-}
+  );
+});
+ContextMenuShortcut.displayName = "ContextMenuShortcut";
 
 export {
   ContextMenu,
-  ContextMenuTrigger,
-  ContextMenuContent,
-  ContextMenuItem,
   ContextMenuCheckboxItem,
-  ContextMenuRadioItem,
+  ContextMenuContent,
+  ContextMenuGroup,
+  ContextMenuItem,
   ContextMenuLabel,
+  ContextMenuPortal,
+  ContextMenuRadioGroup,
+  ContextMenuRadioItem,
   ContextMenuSeparator,
   ContextMenuShortcut,
-  ContextMenuGroup,
-  ContextMenuPortal,
   ContextMenuSub,
   ContextMenuSubContent,
   ContextMenuSubTrigger,
-  ContextMenuRadioGroup,
-}
+  ContextMenuTrigger,
+};

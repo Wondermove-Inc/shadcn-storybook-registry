@@ -6,12 +6,18 @@ import * as React from "react";
 
 import { cn } from "@/lib/utils";
 
-function Menubar({
-  className,
-  ...props
-}: React.ComponentProps<typeof MenubarPrimitive.Root>) {
+/**
+ * 🎯 목적: Menubar 컴포넌트에 forwardRef 적용하여 React 18/19 호환성 제공
+ * 📝 주의사항: Radix UI Menubar.Root primitive 사용
+ * 🔄 변경이력: 2025-10-11 - React 18/19 dual support를 위한 forwardRef 추가
+ */
+const Menubar = React.forwardRef<
+  React.ElementRef<typeof MenubarPrimitive.Root>,
+  React.ComponentPropsWithoutRef<typeof MenubarPrimitive.Root>
+>(({ className, ...props }, ref) => {
   return (
     <MenubarPrimitive.Root
+      ref={ref}
       data-slot="menubar"
       className={cn(
         "bg-background flex h-9 items-center gap-1 rounded-md border p-1 shadow-xs",
@@ -20,40 +26,75 @@ function Menubar({
       {...props}
     />
   );
-}
+});
+Menubar.displayName = "Menubar";
 
-function MenubarMenu({
-  ...props
-}: React.ComponentProps<typeof MenubarPrimitive.Menu>) {
-  return <MenubarPrimitive.Menu data-slot="menubar-menu" {...props} />;
-}
-
-function MenubarGroup({
-  ...props
-}: React.ComponentProps<typeof MenubarPrimitive.Group>) {
-  return <MenubarPrimitive.Group data-slot="menubar-group" {...props} />;
-}
-
-function MenubarPortal({
-  ...props
-}: React.ComponentProps<typeof MenubarPrimitive.Portal>) {
-  return <MenubarPrimitive.Portal data-slot="menubar-portal" {...props} />;
-}
-
-function MenubarRadioGroup({
-  ...props
-}: React.ComponentProps<typeof MenubarPrimitive.RadioGroup>) {
+/**
+ * 🎯 목적: MenubarMenu 컴포넌트에 forwardRef 적용
+ */
+const MenubarMenu = React.forwardRef<
+  React.ElementRef<typeof MenubarPrimitive.Menu>,
+  React.ComponentPropsWithoutRef<typeof MenubarPrimitive.Menu>
+>((props, ref) => {
   return (
-    <MenubarPrimitive.RadioGroup data-slot="menubar-radio-group" {...props} />
+    <MenubarPrimitive.Menu ref={ref} data-slot="menubar-menu" {...props} />
   );
-}
+});
+MenubarMenu.displayName = "MenubarMenu";
 
-function MenubarTrigger({
-  className,
-  ...props
-}: React.ComponentProps<typeof MenubarPrimitive.Trigger>) {
+/**
+ * 🎯 목적: MenubarGroup 컴포넌트에 forwardRef 적용
+ */
+const MenubarGroup = React.forwardRef<
+  React.ElementRef<typeof MenubarPrimitive.Group>,
+  React.ComponentPropsWithoutRef<typeof MenubarPrimitive.Group>
+>((props, ref) => {
+  return (
+    <MenubarPrimitive.Group ref={ref} data-slot="menubar-group" {...props} />
+  );
+});
+MenubarGroup.displayName = "MenubarGroup";
+
+/**
+ * 🎯 목적: MenubarPortal 컴포넌트에 forwardRef 적용
+ */
+const MenubarPortal = React.forwardRef<
+  React.ElementRef<typeof MenubarPrimitive.Portal>,
+  React.ComponentPropsWithoutRef<typeof MenubarPrimitive.Portal>
+>((props, ref) => {
+  return (
+    <MenubarPrimitive.Portal ref={ref} data-slot="menubar-portal" {...props} />
+  );
+});
+MenubarPortal.displayName = "MenubarPortal";
+
+/**
+ * 🎯 목적: MenubarRadioGroup 컴포넌트에 forwardRef 적용
+ */
+const MenubarRadioGroup = React.forwardRef<
+  React.ElementRef<typeof MenubarPrimitive.RadioGroup>,
+  React.ComponentPropsWithoutRef<typeof MenubarPrimitive.RadioGroup>
+>((props, ref) => {
+  return (
+    <MenubarPrimitive.RadioGroup
+      ref={ref}
+      data-slot="menubar-radio-group"
+      {...props}
+    />
+  );
+});
+MenubarRadioGroup.displayName = "MenubarRadioGroup";
+
+/**
+ * 🎯 목적: MenubarTrigger 컴포넌트에 forwardRef 적용
+ */
+const MenubarTrigger = React.forwardRef<
+  React.ElementRef<typeof MenubarPrimitive.Trigger>,
+  React.ComponentPropsWithoutRef<typeof MenubarPrimitive.Trigger>
+>(({ className, ...props }, ref) => {
   return (
     <MenubarPrimitive.Trigger
+      ref={ref}
       data-slot="menubar-trigger"
       className={cn(
         "focus:bg-accent focus:text-accent-foreground data-[state=open]:bg-accent data-[state=open]:text-accent-foreground flex items-center rounded-sm px-2 py-1 text-sm font-medium outline-hidden select-none",
@@ -62,43 +103,55 @@ function MenubarTrigger({
       {...props}
     />
   );
-}
+});
+MenubarTrigger.displayName = "MenubarTrigger";
 
-function MenubarContent({
-  className,
-  align = "start",
-  alignOffset = -4,
-  sideOffset = 8,
-  ...props
-}: React.ComponentProps<typeof MenubarPrimitive.Content>) {
-  return (
-    <MenubarPortal>
-      <MenubarPrimitive.Content
-        data-slot="menubar-content"
-        align={align}
-        alignOffset={alignOffset}
-        sideOffset={sideOffset}
-        className={cn(
-          "bg-popover text-popover-foreground data-[state=open]:animate-in data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 z-50 min-w-[12rem] origin-(--radix-menubar-content-transform-origin) overflow-hidden rounded-md border p-1 shadow-md",
-          className,
-        )}
-        {...props}
-      />
-    </MenubarPortal>
-  );
-}
+/**
+ * 🎯 목적: MenubarContent 컴포넌트에 forwardRef 적용
+ * 📝 주의사항: Portal 내부에서 렌더링, align/alignOffset/sideOffset 기본값 설정
+ */
+const MenubarContent = React.forwardRef<
+  React.ElementRef<typeof MenubarPrimitive.Content>,
+  React.ComponentPropsWithoutRef<typeof MenubarPrimitive.Content>
+>(
+  (
+    { className, align = "start", alignOffset = -4, sideOffset = 8, ...props },
+    ref,
+  ) => {
+    return (
+      <MenubarPortal>
+        <MenubarPrimitive.Content
+          ref={ref}
+          data-slot="menubar-content"
+          align={align}
+          alignOffset={alignOffset}
+          sideOffset={sideOffset}
+          className={cn(
+            "bg-popover text-popover-foreground data-[state=open]:animate-in data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 z-50 min-w-[12rem] origin-(--radix-menubar-content-transform-origin) overflow-hidden rounded-md border p-1 shadow-md",
+            className,
+          )}
+          {...props}
+        />
+      </MenubarPortal>
+    );
+  },
+);
+MenubarContent.displayName = "MenubarContent";
 
-function MenubarItem({
-  className,
-  inset,
-  variant = "default",
-  ...props
-}: React.ComponentProps<typeof MenubarPrimitive.Item> & {
-  inset?: boolean;
-  variant?: "default" | "destructive";
-}) {
+/**
+ * 🎯 목적: MenubarItem 컴포넌트에 forwardRef 적용
+ * 📝 주의사항: inset prop, variant prop (default/destructive)
+ */
+const MenubarItem = React.forwardRef<
+  React.ElementRef<typeof MenubarPrimitive.Item>,
+  React.ComponentPropsWithoutRef<typeof MenubarPrimitive.Item> & {
+    inset?: boolean;
+    variant?: "default" | "destructive";
+  }
+>(({ className, inset, variant = "default", ...props }, ref) => {
   return (
     <MenubarPrimitive.Item
+      ref={ref}
       data-slot="menubar-item"
       data-inset={inset}
       data-variant={variant}
@@ -109,16 +162,20 @@ function MenubarItem({
       {...props}
     />
   );
-}
+});
+MenubarItem.displayName = "MenubarItem";
 
-function MenubarCheckboxItem({
-  className,
-  children,
-  checked,
-  ...props
-}: React.ComponentProps<typeof MenubarPrimitive.CheckboxItem>) {
+/**
+ * 🎯 목적: MenubarCheckboxItem 컴포넌트에 forwardRef 적용
+ * 📝 주의사항: CheckIcon indicator 포함
+ */
+const MenubarCheckboxItem = React.forwardRef<
+  React.ElementRef<typeof MenubarPrimitive.CheckboxItem>,
+  React.ComponentPropsWithoutRef<typeof MenubarPrimitive.CheckboxItem>
+>(({ className, children, checked, ...props }, ref) => {
   return (
     <MenubarPrimitive.CheckboxItem
+      ref={ref}
       data-slot="menubar-checkbox-item"
       className={cn(
         "focus:bg-accent focus:text-accent-foreground relative flex cursor-default items-center gap-2 rounded-xs py-1.5 pr-2 pl-8 text-sm outline-hidden select-none data-[disabled]:pointer-events-none data-[disabled]:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
@@ -135,15 +192,20 @@ function MenubarCheckboxItem({
       {children}
     </MenubarPrimitive.CheckboxItem>
   );
-}
+});
+MenubarCheckboxItem.displayName = "MenubarCheckboxItem";
 
-function MenubarRadioItem({
-  className,
-  children,
-  ...props
-}: React.ComponentProps<typeof MenubarPrimitive.RadioItem>) {
+/**
+ * 🎯 목적: MenubarRadioItem 컴포넌트에 forwardRef 적용
+ * 📝 주의사항: CircleIcon indicator 포함
+ */
+const MenubarRadioItem = React.forwardRef<
+  React.ElementRef<typeof MenubarPrimitive.RadioItem>,
+  React.ComponentPropsWithoutRef<typeof MenubarPrimitive.RadioItem>
+>(({ className, children, ...props }, ref) => {
   return (
     <MenubarPrimitive.RadioItem
+      ref={ref}
       data-slot="menubar-radio-item"
       className={cn(
         "focus:bg-accent focus:text-accent-foreground relative flex cursor-default items-center gap-2 rounded-xs py-1.5 pr-2 pl-8 text-sm outline-hidden select-none data-[disabled]:pointer-events-none data-[disabled]:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
@@ -159,17 +221,22 @@ function MenubarRadioItem({
       {children}
     </MenubarPrimitive.RadioItem>
   );
-}
+});
+MenubarRadioItem.displayName = "MenubarRadioItem";
 
-function MenubarLabel({
-  className,
-  inset,
-  ...props
-}: React.ComponentProps<typeof MenubarPrimitive.Label> & {
-  inset?: boolean;
-}) {
+/**
+ * 🎯 목적: MenubarLabel 컴포넌트에 forwardRef 적용
+ * 📝 주의사항: inset prop 지원
+ */
+const MenubarLabel = React.forwardRef<
+  React.ElementRef<typeof MenubarPrimitive.Label>,
+  React.ComponentPropsWithoutRef<typeof MenubarPrimitive.Label> & {
+    inset?: boolean;
+  }
+>(({ className, inset, ...props }, ref) => {
   return (
     <MenubarPrimitive.Label
+      ref={ref}
       data-slot="menubar-label"
       data-inset={inset}
       className={cn(
@@ -179,27 +246,38 @@ function MenubarLabel({
       {...props}
     />
   );
-}
+});
+MenubarLabel.displayName = "MenubarLabel";
 
-function MenubarSeparator({
-  className,
-  ...props
-}: React.ComponentProps<typeof MenubarPrimitive.Separator>) {
+/**
+ * 🎯 목적: MenubarSeparator 컴포넌트에 forwardRef 적용
+ */
+const MenubarSeparator = React.forwardRef<
+  React.ElementRef<typeof MenubarPrimitive.Separator>,
+  React.ComponentPropsWithoutRef<typeof MenubarPrimitive.Separator>
+>(({ className, ...props }, ref) => {
   return (
     <MenubarPrimitive.Separator
+      ref={ref}
       data-slot="menubar-separator"
       className={cn("bg-border -mx-1 my-1 h-px", className)}
       {...props}
     />
   );
-}
+});
+MenubarSeparator.displayName = "MenubarSeparator";
 
-function MenubarShortcut({
-  className,
-  ...props
-}: React.ComponentProps<"span">) {
+/**
+ * 🎯 목적: MenubarShortcut 컴포넌트에 forwardRef 적용
+ * 📝 주의사항: HTML span 요소 사용
+ */
+const MenubarShortcut = React.forwardRef<
+  HTMLSpanElement,
+  React.ComponentProps<"span">
+>(({ className, ...props }, ref) => {
   return (
     <span
+      ref={ref}
       data-slot="menubar-shortcut"
       className={cn(
         "text-muted-foreground ml-auto text-xs tracking-widest",
@@ -208,24 +286,33 @@ function MenubarShortcut({
       {...props}
     />
   );
-}
+});
+MenubarShortcut.displayName = "MenubarShortcut";
 
-function MenubarSub({
-  ...props
-}: React.ComponentProps<typeof MenubarPrimitive.Sub>) {
-  return <MenubarPrimitive.Sub data-slot="menubar-sub" {...props} />;
-}
+/**
+ * 🎯 목적: MenubarSub 컴포넌트에 forwardRef 적용
+ */
+const MenubarSub = React.forwardRef<
+  React.ElementRef<typeof MenubarPrimitive.Sub>,
+  React.ComponentPropsWithoutRef<typeof MenubarPrimitive.Sub>
+>((props, ref) => {
+  return <MenubarPrimitive.Sub ref={ref} data-slot="menubar-sub" {...props} />;
+});
+MenubarSub.displayName = "MenubarSub";
 
-function MenubarSubTrigger({
-  className,
-  inset,
-  children,
-  ...props
-}: React.ComponentProps<typeof MenubarPrimitive.SubTrigger> & {
-  inset?: boolean;
-}) {
+/**
+ * 🎯 목적: MenubarSubTrigger 컴포넌트에 forwardRef 적용
+ * 📝 주의사항: inset prop, ChevronRightIcon 포함
+ */
+const MenubarSubTrigger = React.forwardRef<
+  React.ElementRef<typeof MenubarPrimitive.SubTrigger>,
+  React.ComponentPropsWithoutRef<typeof MenubarPrimitive.SubTrigger> & {
+    inset?: boolean;
+  }
+>(({ className, inset, children, ...props }, ref) => {
   return (
     <MenubarPrimitive.SubTrigger
+      ref={ref}
       data-slot="menubar-sub-trigger"
       data-inset={inset}
       className={cn(
@@ -238,14 +325,19 @@ function MenubarSubTrigger({
       <ChevronRightIcon className="ml-auto h-4 w-4" />
     </MenubarPrimitive.SubTrigger>
   );
-}
+});
+MenubarSubTrigger.displayName = "MenubarSubTrigger";
 
-function MenubarSubContent({
-  className,
-  ...props
-}: React.ComponentProps<typeof MenubarPrimitive.SubContent>) {
+/**
+ * 🎯 목적: MenubarSubContent 컴포넌트에 forwardRef 적용
+ */
+const MenubarSubContent = React.forwardRef<
+  React.ElementRef<typeof MenubarPrimitive.SubContent>,
+  React.ComponentPropsWithoutRef<typeof MenubarPrimitive.SubContent>
+>(({ className, ...props }, ref) => {
   return (
     <MenubarPrimitive.SubContent
+      ref={ref}
       data-slot="menubar-sub-content"
       className={cn(
         "bg-popover text-popover-foreground data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 z-50 min-w-[8rem] origin-(--radix-menubar-content-transform-origin) overflow-hidden rounded-md border p-1 shadow-lg",
@@ -254,7 +346,8 @@ function MenubarSubContent({
       {...props}
     />
   );
-}
+});
+MenubarSubContent.displayName = "MenubarSubContent";
 
 export {
   Menubar,
