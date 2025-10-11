@@ -310,7 +310,7 @@ const ColorTile = ({ value }: Pick<Color, "value">) => {
   const [colorValue, setColorValue] = useState("");
 
   useEffect(() => {
-    // 🌓 CSS 변수 값을 읽고 다크모드 상태를 업데이트하는 함수
+    // 🌓 CSS 변수 값을 읽어서 표시용으로만 사용
     const updateColor = () => {
       const styles = getComputedStyle(document.documentElement);
       const cssValue = styles.getPropertyValue(value);
@@ -346,7 +346,7 @@ const ColorTile = ({ value }: Pick<Color, "value">) => {
     <div className="flex flex-col items-center gap-2">
       <div
         className="size-20 rounded-md border"
-        style={{ backgroundColor: `hsl(${colorValue})` }}
+        style={{ backgroundColor: `hsl(var(${value}))` }}
       />
       <p className="text-center text-xs opacity-70">{value}</p>
       <p className="text-center font-mono text-xs">{colorValue}</p>
