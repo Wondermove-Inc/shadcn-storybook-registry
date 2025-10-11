@@ -147,14 +147,20 @@ const Calendar = React.forwardRef<
                     if (typeof rootRef === "function") {
                       rootRef(el);
                     } else {
-                      rootRef.current = el;
+                      // React 18 호환성: ref.current는 read-only이므로 타입 단언 사용
+                      (
+                        rootRef as React.MutableRefObject<HTMLDivElement | null>
+                      ).current = el;
                     }
                   }
                   if (ref) {
                     if (typeof ref === "function") {
                       ref(el);
                     } else {
-                      ref.current = el;
+                      // React 18 호환성: ref.current는 read-only이므로 타입 단언 사용
+                      (
+                        ref as React.MutableRefObject<HTMLDivElement | null>
+                      ).current = el;
                     }
                   }
                 }}

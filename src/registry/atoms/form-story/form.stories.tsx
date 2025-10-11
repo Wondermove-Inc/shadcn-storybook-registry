@@ -172,7 +172,10 @@ export const WithRef: Story = {
                     <Input
                       ref={(e) => {
                         ref(e);
-                        inputRef.current = e;
+                        // React 18 호환성: ref.current는 read-only이므로 타입 단언 사용
+                        (
+                          inputRef as React.MutableRefObject<HTMLInputElement | null>
+                        ).current = e;
                       }}
                       type="email"
                       placeholder="example@email.com"
