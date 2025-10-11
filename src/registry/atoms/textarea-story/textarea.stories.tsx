@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
+import { expect, userEvent, within } from "storybook/test";
 
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
@@ -100,5 +101,28 @@ export const WithButton: Story = {
 export const Disabled: Story = {
   args: {
     disabled: true,
+  },
+};
+
+export const ShouldEnterMultilineText: Story = {
+  name: "when user enters multiline text, should see it in the textarea",
+  tags: ["!dev", "!autodocs"],
+  render: () => (
+    <div className="grid w-full gap-3">
+      <Label htmlFor="message-test">Your message</Label>
+      <Textarea placeholder="Type your message here." id="message-test" />
+    </div>
+  ),
+  play: async ({ canvasElement, step }) => {
+    const canvas = within(canvasElement);
+    const textarea = canvas.getByPlaceholderText(/type your message here/i);
+    const multilineMessage = "This is line 1\nThis is line 2\nThis is line 3";
+
+    await step("focus and type multiline text into textarea", async () => {
+      await userEvent.click(textarea);
+      await userEvent.type(textarea, multilineMessage);
+    });
+
+    expect(textarea).toHaveValue(multilineMessage);
   },
 };

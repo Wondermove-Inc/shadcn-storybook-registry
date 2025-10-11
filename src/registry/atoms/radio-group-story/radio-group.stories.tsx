@@ -15,7 +15,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
-import { fn } from "storybook/test";
+import { expect, fn, userEvent, within } from "storybook/test";
 import { z } from "zod";
 
 /**
@@ -184,3 +184,35 @@ function RadioGroupFormDemo() {
     </Form>
   );
 }
+
+export const ShouldSelectRadioOption: Story = {
+  name: "when user selects a radio option, should update the value",
+  tags: ["!dev", "!autodocs"],
+  render: () => (
+    <RadioGroup defaultValue="">
+      <div className="flex items-center space-x-2">
+        <RadioGroupItem value="default" id="r1-test" />
+        <Label htmlFor="r1-test">Default</Label>
+      </div>
+      <div className="flex items-center space-x-2">
+        <RadioGroupItem value="comfortable" id="r2-test" />
+        <Label htmlFor="r2-test">Comfortable</Label>
+      </div>
+      <div className="flex items-center space-x-2">
+        <RadioGroupItem value="compact" id="r3-test" />
+        <Label htmlFor="r3-test">Compact</Label>
+      </div>
+    </RadioGroup>
+  ),
+  play: async ({ canvasElement, step }) => {
+    const canvas = within(canvasElement);
+
+    await step("select 'Comfortable' radio option", async () => {
+      const comfortableRadio = canvas.getByLabelText(/comfortable/i);
+      await userEvent.click(comfortableRadio);
+    });
+
+    const comfortableRadio = canvas.getByLabelText(/comfortable/i);
+    await expect(comfortableRadio).toBeChecked();
+  },
+};

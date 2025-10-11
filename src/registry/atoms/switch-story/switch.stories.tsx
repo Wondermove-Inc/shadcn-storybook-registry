@@ -4,7 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
-import { fn } from "storybook/test";
+import { expect, fn, userEvent, within } from "storybook/test";
 import { z } from "zod";
 
 import { Button } from "@/components/ui/button";
@@ -187,4 +187,29 @@ export const FormExample: Story = {
       <Toaster />
     </div>
   ),
+};
+
+export const ShouldToggleSwitch: Story = {
+  name: "when user clicks switch, should toggle state",
+  tags: ["!dev", "!autodocs"],
+  render: () => (
+    <div className="flex items-center space-x-2">
+      <Switch id="test-switch" />
+      <Label htmlFor="test-switch">Airplane Mode</Label>
+    </div>
+  ),
+  play: async ({ canvasElement, step }) => {
+    const canvas = within(canvasElement);
+    const switchButton = canvas.getByRole("switch");
+
+    await step("verify switch is initially unchecked", async () => {
+      await expect(switchButton).toHaveAttribute("aria-checked", "false");
+    });
+
+    await step("click switch to toggle on", async () => {
+      await userEvent.click(switchButton);
+    });
+
+    await expect(switchButton).toHaveAttribute("aria-checked", "true");
+  },
 };

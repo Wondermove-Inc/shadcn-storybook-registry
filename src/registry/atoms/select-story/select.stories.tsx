@@ -24,7 +24,7 @@ import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
-import { fn } from "storybook/test";
+import { expect, fn, userEvent, within } from "storybook/test";
 import { z } from "zod";
 
 export function SelectDemo() {
@@ -310,4 +310,39 @@ export function SelectForm() {
  */
 export const WithForm: Story = {
   render: () => <SelectForm />,
+};
+
+export const ShouldSelectOption: Story = {
+  name: "when user selects an option, should update the value",
+  tags: ["!dev", "!autodocs"],
+  render: () => (
+    <Select>
+      <SelectTrigger className="w-[180px]" data-testid="select-trigger">
+        <SelectValue placeholder="Select a fruit" />
+      </SelectTrigger>
+      <SelectContent>
+        <SelectGroup>
+          <SelectLabel>Fruits</SelectLabel>
+          <SelectItem value="apple">Apple</SelectItem>
+          <SelectItem value="banana">Banana</SelectItem>
+          <SelectItem value="blueberry">Blueberry</SelectItem>
+        </SelectGroup>
+      </SelectContent>
+    </Select>
+  ),
+  play: async ({ canvasElement, step }) => {
+    const canvas = within(canvasElement);
+    const trigger = canvas.getByTestId("select-trigger");
+
+    await step("click trigger to open select menu", async () => {
+      await userEvent.click(trigger);
+    });
+
+    await step("select 'Banana' option", async () => {
+      const bananaOption = canvas.getByRole("option", { name: /banana/i });
+      await userEvent.click(bananaOption);
+    });
+
+    await expect(trigger).toHaveTextContent(/banana/i);
+  },
 };
