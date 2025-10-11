@@ -114,12 +114,71 @@ function MenubarDemo() {
  */
 const meta = {
   title: "ui/Menubar",
-  component: MenubarDemo,
+  component: Menubar,
   tags: ["autodocs"],
   parameters: {
     layout: "centered",
   },
-} satisfies Meta<typeof MenubarDemo>;
+  argTypes: {
+    loop: {
+      control: "boolean",
+      description:
+        "When true, keyboard navigation will loop from last item to first, and vice versa",
+    },
+  },
+  args: {
+    loop: false,
+  },
+  render: (args) => (
+    <Menubar loop={args.loop}>
+      <MenubarMenu>
+        <MenubarTrigger>File</MenubarTrigger>
+        <MenubarContent>
+          <MenubarItem>
+            New Tab <MenubarShortcut>⌘T</MenubarShortcut>
+          </MenubarItem>
+          <MenubarItem>
+            New Window <MenubarShortcut>⌘N</MenubarShortcut>
+          </MenubarItem>
+          <MenubarItem disabled>New Incognito Window</MenubarItem>
+          <MenubarSeparator />
+          <MenubarItem>
+            Print... <MenubarShortcut>⌘P</MenubarShortcut>
+          </MenubarItem>
+        </MenubarContent>
+      </MenubarMenu>
+      <MenubarMenu>
+        <MenubarTrigger>Edit</MenubarTrigger>
+        <MenubarContent>
+          <MenubarItem>
+            Undo <MenubarShortcut>⌘Z</MenubarShortcut>
+          </MenubarItem>
+          <MenubarItem>
+            Redo <MenubarShortcut>⇧⌘Z</MenubarShortcut>
+          </MenubarItem>
+          <MenubarSeparator />
+          <MenubarItem>Cut</MenubarItem>
+          <MenubarItem>Copy</MenubarItem>
+          <MenubarItem>Paste</MenubarItem>
+        </MenubarContent>
+      </MenubarMenu>
+      <MenubarMenu>
+        <MenubarTrigger>View</MenubarTrigger>
+        <MenubarContent>
+          <MenubarCheckboxItem>Always Show Bookmarks Bar</MenubarCheckboxItem>
+          <MenubarCheckboxItem checked>
+            Always Show Full URLs
+          </MenubarCheckboxItem>
+          <MenubarSeparator />
+          <MenubarItem inset>
+            Reload <MenubarShortcut>⌘R</MenubarShortcut>
+          </MenubarItem>
+          <MenubarItem inset>Toggle Fullscreen</MenubarItem>
+        </MenubarContent>
+      </MenubarMenu>
+    </Menubar>
+  ),
+} satisfies Meta<typeof Menubar>;
 
 export default meta;
 

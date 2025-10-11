@@ -9,9 +9,34 @@ import {
   HoverCardTrigger,
 } from "@/components/ui/hover-card";
 
-function HoverCardDemo() {
-  return (
-    <HoverCard>
+/**
+ * A hover card with avatar and profile information.
+ */
+const meta = {
+  title: "ui/HoverCard",
+  component: HoverCard,
+  tags: ["autodocs"],
+  parameters: {
+    layout: "centered",
+  },
+  argTypes: {
+    openDelay: {
+      control: "number",
+      description:
+        "The duration from when the mouse enters the trigger until the hover card opens (ms)",
+    },
+    closeDelay: {
+      control: "number",
+      description:
+        "The duration from when the mouse leaves the trigger until the hover card closes (ms)",
+    },
+  },
+  args: {
+    openDelay: 700,
+    closeDelay: 300,
+  },
+  render: (args) => (
+    <HoverCard openDelay={args.openDelay} closeDelay={args.closeDelay}>
       <HoverCardTrigger asChild>
         <Button variant="link">@nextjs</Button>
       </HoverCardTrigger>
@@ -33,20 +58,8 @@ function HoverCardDemo() {
         </div>
       </HoverCardContent>
     </HoverCard>
-  );
-}
-
-/**
- * A hover card with avatar and profile information.
- */
-const meta = {
-  title: "ui/HoverCard",
-  component: HoverCardDemo,
-  tags: ["autodocs"],
-  parameters: {
-    layout: "centered",
-  },
-} satisfies Meta<typeof HoverCardDemo>;
+  ),
+} satisfies Meta<typeof HoverCard>;
 
 export default meta;
 
@@ -55,7 +68,32 @@ type Story = StoryObj<typeof meta>;
 /**
  * The default hover card showing user profile information.
  */
-export const Default: Story = {};
+export const Default: Story = {
+  render: (args) => (
+    <HoverCard openDelay={args.openDelay} closeDelay={args.closeDelay}>
+      <HoverCardTrigger asChild>
+        <Button variant="link">@nextjs</Button>
+      </HoverCardTrigger>
+      <HoverCardContent className="w-80">
+        <div className="flex justify-between gap-4">
+          <Avatar>
+            <AvatarImage src="https://github.com/vercel.png" />
+            <AvatarFallback>VC</AvatarFallback>
+          </Avatar>
+          <div className="space-y-1">
+            <h4 className="text-sm font-semibold">@nextjs</h4>
+            <p className="text-sm">
+              The React Framework – created and maintained by @vercel.
+            </p>
+            <div className="text-muted-foreground text-xs">
+              Joined December 2021
+            </div>
+          </div>
+        </div>
+      </HoverCardContent>
+    </HoverCard>
+  ),
+};
 
 export const ShouldShowHoverCard: Story = {
   name: "when hovering over trigger, should show hover card content",

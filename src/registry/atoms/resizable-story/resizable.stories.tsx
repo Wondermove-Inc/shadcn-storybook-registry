@@ -18,6 +18,13 @@ const meta = {
     layout: "centered",
   },
   excludeStories: /.*Demo$/,
+  argTypes: {
+    direction: {
+      control: "radio",
+      options: ["horizontal", "vertical"],
+      description: "The direction of the resizable panel group",
+    },
+  },
   args: {
     direction: "horizontal",
     className: "max-w-md rounded-lg border md:min-w-[450px]",

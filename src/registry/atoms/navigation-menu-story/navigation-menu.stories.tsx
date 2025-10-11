@@ -218,13 +218,78 @@ function ListItem({
  */
 const meta = {
   title: "ui/NavigationMenu",
-  component: NavigationMenuDemo,
+  component: NavigationMenu,
   tags: ["autodocs"],
   parameters: {
     layout: "centered",
   },
   excludeStories: /.*Demo$|ListItem|components/,
-} satisfies Meta<typeof NavigationMenuDemo>;
+  argTypes: {
+    delayDuration: {
+      control: "number",
+      description:
+        "The duration from when the mouse enters a trigger until the content opens (ms)",
+    },
+    skipDelayDuration: {
+      control: "number",
+      description:
+        "How long a user can navigate from one trigger to another before the delay resets (ms)",
+    },
+  },
+  args: {
+    delayDuration: 200,
+    skipDelayDuration: 300,
+  },
+  render: (args) => (
+    <NavigationMenu
+      delayDuration={args.delayDuration}
+      skipDelayDuration={args.skipDelayDuration}
+      viewport={false}
+    >
+      <NavigationMenuList>
+        <NavigationMenuItem>
+          <NavigationMenuTrigger>Components</NavigationMenuTrigger>
+          <NavigationMenuContent>
+            <ul className="grid w-[400px] gap-2 md:w-[500px] md:grid-cols-2 lg:w-[600px]">
+              {components.map((component) => (
+                <ListItem
+                  key={component.title}
+                  title={component.title}
+                  href={component.href}
+                >
+                  {component.description}
+                </ListItem>
+              ))}
+            </ul>
+          </NavigationMenuContent>
+        </NavigationMenuItem>
+        <NavigationMenuItem>
+          <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
+            <Link href="/docs">Docs</Link>
+          </NavigationMenuLink>
+        </NavigationMenuItem>
+        <NavigationMenuItem>
+          <NavigationMenuTrigger>Simple</NavigationMenuTrigger>
+          <NavigationMenuContent>
+            <ul className="grid w-[200px] gap-4">
+              <li>
+                <NavigationMenuLink asChild>
+                  <Link href="#">Components</Link>
+                </NavigationMenuLink>
+                <NavigationMenuLink asChild>
+                  <Link href="#">Documentation</Link>
+                </NavigationMenuLink>
+                <NavigationMenuLink asChild>
+                  <Link href="#">Blocks</Link>
+                </NavigationMenuLink>
+              </li>
+            </ul>
+          </NavigationMenuContent>
+        </NavigationMenuItem>
+      </NavigationMenuList>
+    </NavigationMenu>
+  ),
+} satisfies Meta<typeof NavigationMenu>;
 
 export default meta;
 

@@ -30,8 +30,18 @@ const meta = {
     layout: "centered",
   },
   excludeStories: /.*Demo$/,
-  render: () => (
-    <ContextMenu>
+  argTypes: {
+    modal: {
+      control: "boolean",
+      description:
+        "Whether the context menu should be modal (blocking interaction with the rest of the page)",
+    },
+  },
+  args: {
+    modal: true,
+  },
+  render: (args) => (
+    <ContextMenu modal={args.modal}>
       <ContextMenuTrigger className="flex h-[150px] w-[300px] items-center justify-center rounded-md border border-dashed text-sm">
         Right click here
       </ContextMenuTrigger>

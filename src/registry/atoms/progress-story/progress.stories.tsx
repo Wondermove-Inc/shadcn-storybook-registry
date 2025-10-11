@@ -18,20 +18,25 @@ const meta = {
     layout: "centered",
   },
   excludeStories: /.*Demo$/,
-  render: () => {
-    const [progress, setProgress] = React.useState(13);
-
-    React.useEffect(() => {
-      const timer = setTimeout(() => setProgress(66), 500);
-      return () => clearTimeout(timer);
-    }, []);
-
-    return (
-      <div className="w-[350px]">
-        <Progress value={progress} className="w-full" />
-      </div>
-    );
+  argTypes: {
+    value: {
+      control: { type: "range", min: 0, max: 100, step: 1 },
+      description: "The progress value (0-100)",
+    },
+    max: {
+      control: "number",
+      description: "The maximum progress value",
+    },
   },
+  args: {
+    value: 66,
+    max: 100,
+  },
+  render: (args) => (
+    <div className="w-[350px]">
+      <Progress value={args.value} max={args.max} className="w-full" />
+    </div>
+  ),
 } satisfies Meta<typeof Progress>;
 
 export default meta;

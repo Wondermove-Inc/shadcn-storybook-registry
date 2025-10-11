@@ -41,7 +41,17 @@ const meta = {
     layout: "centered",
   },
   excludeStories: /.*Demo$|SkeletonCard/,
-  render: () => <SkeletonDemo />,
+  argTypes: {
+    className: {
+      control: "text",
+      description:
+        "Additional CSS classes for styling (e.g., 'h-12 w-12 rounded-full')",
+    },
+  },
+  args: {
+    className: "h-12 w-[250px]",
+  },
+  render: (args) => <Skeleton className={args.className} />,
 } satisfies Meta<typeof Skeleton>;
 
 export default meta;

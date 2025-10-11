@@ -49,7 +49,22 @@ const meta = {
     layout: "centered",
   },
   excludeStories: /.*Demo$/,
-  render: () => <AvatarDemo />,
+  argTypes: {
+    className: {
+      control: "text",
+      description:
+        "Additional CSS classes (e.g., 'h-16 w-16' for large size, 'rounded-lg' for square)",
+    },
+  },
+  args: {
+    className: "",
+  },
+  render: (args) => (
+    <Avatar className={args.className}>
+      <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
+      <AvatarFallback>CN</AvatarFallback>
+    </Avatar>
+  ),
 } satisfies Meta<typeof Avatar>;
 
 export default meta;

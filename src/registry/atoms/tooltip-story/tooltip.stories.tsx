@@ -24,26 +24,38 @@ const meta: Meta<typeof TooltipContent> = {
       control: {
         type: "radio",
       },
+      description: "The preferred side of the anchor to render against",
+    },
+    align: {
+      options: ["start", "center", "end"],
+      control: {
+        type: "radio",
+      },
+      description: "The preferred alignment against the anchor",
     },
     children: {
       control: "text",
+      description: "The content of the tooltip",
     },
   },
   args: {
     side: "top",
+    align: "center",
     children: "Add to library",
   },
   parameters: {
     layout: "centered",
   },
   render: (args) => (
-    <TooltipProvider>
+    <TooltipProvider delayDuration={700}>
       <Tooltip>
         <TooltipTrigger>
           <Plus className="h-4 w-4" />
           <span className="sr-only">Add</span>
         </TooltipTrigger>
-        <TooltipContent {...args} />
+        <TooltipContent side={args.side} align={args.align}>
+          {args.children}
+        </TooltipContent>
       </Tooltip>
     </TooltipProvider>
   ),

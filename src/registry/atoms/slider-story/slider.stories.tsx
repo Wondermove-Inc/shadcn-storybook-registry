@@ -32,7 +32,42 @@ const meta = {
     layout: "centered",
   },
   excludeStories: /.*Demo$/,
-  render: () => <SliderDemo />,
+  argTypes: {
+    min: {
+      control: "number",
+      description: "The minimum value of the slider",
+    },
+    max: {
+      control: "number",
+      description: "The maximum value of the slider",
+    },
+    step: {
+      control: "number",
+      description: "The step increment for the slider",
+    },
+    disabled: {
+      control: "boolean",
+      description: "Whether the slider is disabled",
+    },
+  },
+  args: {
+    min: 0,
+    max: 100,
+    step: 1,
+    disabled: false,
+  },
+  render: (args) => (
+    <div className="w-[350px]">
+      <Slider
+        defaultValue={[50]}
+        min={args.min}
+        max={args.max}
+        step={args.step}
+        disabled={args.disabled}
+        className="w-full"
+      />
+    </div>
+  ),
 } satisfies Meta<typeof Slider>;
 
 export default meta;
