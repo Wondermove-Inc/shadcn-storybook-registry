@@ -1,15 +1,17 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
+import { expect } from "storybook/test";
+
 import { ChartContainer } from "@/components/ui/chart";
-import { ChartBarInteractive } from "./bar-chart-interactive";
+import { ChartBarActive } from "./bar-chart-active";
 import { ChartBarDefault } from "./bar-chart-default";
 import { ChartBarHorizontal } from "./bar-chart-horizontal";
-import { ChartBarMultiple } from "./bar-chart-multiple";
-import { ChartBarStacked } from "./bar-chart-stacked";
+import { ChartBarInteractive } from "./bar-chart-interactive";
 import { ChartBarLabel } from "./bar-chart-label";
 import { ChartBarLabelCustom } from "./bar-chart-label-custom";
 import { ChartBarMixed } from "./bar-chart-mixed";
-import { ChartBarActive } from "./bar-chart-active";
+import { ChartBarMultiple } from "./bar-chart-multiple";
 import { ChartBarNegative } from "./bar-chart-negative";
+import { ChartBarStacked } from "./bar-chart-stacked";
 
 const meta = {
   title: "ui/Chart/Bar Charts",
@@ -156,6 +158,26 @@ export const Negative: Story = {
     children: <div />,
   },
   render: () => <ChartBarNegative />,
+  parameters: {
+    layout: "fullscreen",
+  },
+};
+
+export const ShouldRenderChart: Story = {
+  name: "when chart is rendered, should display chart container and content",
+  tags: ["!dev", "!autodocs"],
+  args: {
+    config: {},
+    children: <div />,
+  },
+  render: () => <ChartBarDefault />,
+  play: async ({ canvasElement }) => {
+    // 🎯 목적: Bar Chart가 정상적으로 렌더링되고 Chart container가 존재하는지 확인
+
+    // ChartContainer가 렌더링되었는지 확인
+    const chartContainer = canvasElement.querySelector("[data-chart]");
+    await expect(chartContainer).toBeInTheDocument();
+  },
   parameters: {
     layout: "fullscreen",
   },

@@ -1,17 +1,19 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
+import { expect } from "storybook/test";
+
 import { ChartContainer } from "@/components/ui/chart";
 import { ChartRadarDefault } from "./radar-chart-default";
 import { ChartRadarDots } from "./radar-chart-dots";
-import { ChartRadarLinesOnly } from "./radar-chart-lines-only";
-import { ChartRadarLabelCustom } from "./radar-chart-label-custom";
-import { ChartRadarGridCustom } from "./radar-chart-grid-custom";
-import { ChartRadarGridNone } from "./radar-chart-grid-none";
 import { ChartRadarGridCircle } from "./radar-chart-grid-circle";
-import { ChartRadarGridCircleNoLines } from "./radar-chart-grid-circle-no-lines";
 import { ChartRadarGridCircleFill } from "./radar-chart-grid-circle-fill";
+import { ChartRadarGridCircleNoLines } from "./radar-chart-grid-circle-no-lines";
+import { ChartRadarGridCustom } from "./radar-chart-grid-custom";
 import { ChartRadarGridFill } from "./radar-chart-grid-fill";
-import { ChartRadarMultiple } from "./radar-chart-multiple";
+import { ChartRadarGridNone } from "./radar-chart-grid-none";
+import { ChartRadarLabelCustom } from "./radar-chart-label-custom";
 import { ChartRadarLegend } from "./radar-chart-legend";
+import { ChartRadarLinesOnly } from "./radar-chart-lines-only";
+import { ChartRadarMultiple } from "./radar-chart-multiple";
 
 const meta = {
   title: "ui/Chart/Radar Charts",
@@ -186,6 +188,26 @@ export const RadarLegend: Story = {
     children: <div />,
   },
   render: () => <ChartRadarLegend />,
+  parameters: {
+    layout: "fullscreen",
+  },
+};
+
+export const ShouldRenderChart: Story = {
+  name: "when chart is rendered, should display chart container and content",
+  tags: ["!dev", "!autodocs"],
+  args: {
+    config: {},
+    children: <div />,
+  },
+  render: () => <ChartRadarDefault />,
+  play: async ({ canvasElement }) => {
+    // 🎯 목적: Radar Chart가 정상적으로 렌더링되고 Chart container가 존재하는지 확인
+
+    // ChartContainer가 렌더링되었는지 확인
+    const chartContainer = canvasElement.querySelector("[data-chart]");
+    await expect(chartContainer).toBeInTheDocument();
+  },
   parameters: {
     layout: "fullscreen",
   },

@@ -1,5 +1,7 @@
-import { ChartContainer } from "@/components/ui/chart";
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
+import { expect } from "storybook/test";
+
+import { ChartContainer } from "@/components/ui/chart";
 
 // Import all pie chart components
 import { ChartPieDonut } from "./pie-chart-donut";
@@ -88,4 +90,19 @@ export const Interactive: Story = {
   // @ts-expect-error - Storybook 타입 시스템이 component: ChartContainer와 render 함수 조합을 올바르게 처리하지 못합니다
   args: {},
   render: () => <ChartPieInteractive />,
+};
+
+export const ShouldRenderChart: Story = {
+  name: "when chart is rendered, should display chart container and content",
+  tags: ["!dev", "!autodocs"],
+  // @ts-expect-error - Storybook 타입 시스템이 component: ChartContainer와 render 함수 조합을 올바르게 처리하지 못합니다
+  args: {},
+  render: () => <ChartPieSimple />,
+  play: async ({ canvasElement }) => {
+    // 🎯 목적: Pie Chart가 정상적으로 렌더링되고 Chart container가 존재하는지 확인
+
+    // ChartContainer가 렌더링되었는지 확인
+    const chartContainer = canvasElement.querySelector("[data-chart]");
+    await expect(chartContainer).toBeInTheDocument();
+  },
 };

@@ -1,15 +1,17 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
+import { expect } from "storybook/test";
+
 import { ChartContainer } from "@/components/ui/chart";
-import { ChartAreaInteractive } from "./area-chart-interactive";
+import { ChartAreaAxes } from "./area-chart-axes";
 import { ChartAreaDefault } from "./area-chart-default";
-import { ChartAreaLinear } from "./area-chart-linear";
-import { ChartAreaStep } from "./area-chart-step";
+import { ChartAreaGradient } from "./area-chart-gradient";
+import { ChartAreaIcons } from "./area-chart-icons";
+import { ChartAreaInteractive } from "./area-chart-interactive";
 import { ChartAreaLegend } from "./area-chart-legend";
+import { ChartAreaLinear } from "./area-chart-linear";
 import { ChartAreaStacked } from "./area-chart-stacked";
 import { ChartAreaStackedExpand } from "./area-chart-stacked-expand";
-import { ChartAreaIcons } from "./area-chart-icons";
-import { ChartAreaGradient } from "./area-chart-gradient";
-import { ChartAreaAxes } from "./area-chart-axes";
+import { ChartAreaStep } from "./area-chart-step";
 
 const meta = {
   title: "ui/Chart/Area Charts",
@@ -156,6 +158,26 @@ export const Axes: Story = {
     children: <div />,
   },
   render: () => <ChartAreaAxes />,
+  parameters: {
+    layout: "fullscreen",
+  },
+};
+
+export const ShouldRenderChart: Story = {
+  name: "when chart is rendered, should display chart container and content",
+  tags: ["!dev", "!autodocs"],
+  args: {
+    config: {},
+    children: <div />,
+  },
+  render: () => <ChartAreaDefault />,
+  play: async ({ canvasElement }) => {
+    // 🎯 목적: Area Chart가 정상적으로 렌더링되고 Chart container가 존재하는지 확인
+
+    // ChartContainer가 렌더링되었는지 확인
+    const chartContainer = canvasElement.querySelector("[data-chart]");
+    await expect(chartContainer).toBeInTheDocument();
+  },
   parameters: {
     layout: "fullscreen",
   },
