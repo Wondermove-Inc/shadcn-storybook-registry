@@ -1,0 +1,26 @@
+{
+  "permissions": {
+    "allow": [
+      "mcp__serena__list_dir",
+      "Read(//Users/tw.kim/Documents/AGA/test/shadcn-storybook-registry/**)",
+      "Read(//Users/tw.kim/Documents/AGA/test/shadcn-storybook-registry/src/**)",
+      "Bash(test:*)",
+      "Bash(cat:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(chmod:*)",
+      "Bash(npm run storybook:*)",
+      "Bash(npm run registry:*)",
+      "Bash(npm run build:*)",
+      "Bash(npm run dev:*)",
+      "Bash(npm run lint:*)",
+      "Bash(npm run format:*)",
+      "Bash(npm run type-check:*)",
+      "mcp__serena__activate_project",
+      "Read(//Users/tw.kim/Documents/AGA/test/**)",
+      "WebSearch"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}
