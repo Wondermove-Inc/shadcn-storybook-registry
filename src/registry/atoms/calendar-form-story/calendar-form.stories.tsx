@@ -34,6 +34,7 @@ const FormSchema = z.object({
 
 const meta: Meta = {
   title: "ui/Calendar/Blocks/Form Integration",
+  tags: ["autodocs"],
   parameters: {
     layout: "centered",
   },

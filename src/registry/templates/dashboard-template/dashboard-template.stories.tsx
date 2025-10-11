@@ -8,6 +8,7 @@ import { DashboardTemplate } from "./dashboard-template";
 const meta: Meta<typeof DashboardTemplate> = {
   title: "templates/Dashboard",
   component: DashboardTemplate,
+  tags: ["autodocs"],
   parameters: {
     layout: "fullscreen",
     design: {

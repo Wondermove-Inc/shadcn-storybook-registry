@@ -37,6 +37,7 @@ const meta: Meta<{
   radius: Radius[];
 }> = {
   title: "foundation/Radius",
+  tags: ["autodocs"],
   argTypes: {},
   render: (args) => (
     <Table>

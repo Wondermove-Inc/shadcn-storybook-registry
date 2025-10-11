@@ -1,9 +1,9 @@
-"use client"
+"use client";
 
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
-import * as React from "react";
 import { parseDate } from "chrono-node";
 import { CalendarIcon } from "lucide-react";
+import * as React from "react";
 
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
@@ -29,6 +29,7 @@ function formatDate(date: Date | undefined) {
 
 const meta: Meta = {
   title: "ui/Calendar/Blocks/Natural Language Picker",
+  tags: ["autodocs"],
   parameters: {
     layout: "centered",
   },
@@ -43,7 +44,7 @@ export const Default: Story = {
     const [open, setOpen] = React.useState(false);
     const [value, setValue] = React.useState("In 2 days");
     const [date, setDate] = React.useState<Date | undefined>(
-      parseDate(value) || undefined
+      parseDate(value) || undefined,
     );
     const [month, setMonth] = React.useState<Date | undefined>(date);
 

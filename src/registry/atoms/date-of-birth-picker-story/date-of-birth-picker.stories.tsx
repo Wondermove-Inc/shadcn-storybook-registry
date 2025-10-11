@@ -1,8 +1,8 @@
-"use client"
+"use client";
 
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
-import * as React from "react";
 import { ChevronDownIcon } from "lucide-react";
+import * as React from "react";
 
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
@@ -15,6 +15,7 @@ import {
 
 const meta: Meta = {
   title: "ui/Calendar/Blocks/Date of Birth Picker",
+  tags: ["autodocs"],
   parameters: {
     layout: "centered",
   },

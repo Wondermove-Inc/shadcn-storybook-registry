@@ -373,6 +373,7 @@ const meta: Meta<{
   colors: Color[];
 }> = {
   title: "foundation/Color",
+  tags: ["autodocs"],
   argTypes: {},
   render: (args) => (
     <Table>

@@ -54,6 +54,7 @@ const meta: Meta<{
   property: Typography[];
 }> = {
   title: "foundation/Typography/Tokens",
+  tags: ["autodocs"],
   argTypes: {},
   args: {
     children: "Typeface",

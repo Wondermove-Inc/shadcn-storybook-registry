@@ -40,6 +40,7 @@ const meta: Meta<{
   scale: Spacing[];
 }> = {
   title: "foundation/Spacing",
+  tags: ["autodocs"],
   argTypes: {},
   render: (args) => (
     <Table>

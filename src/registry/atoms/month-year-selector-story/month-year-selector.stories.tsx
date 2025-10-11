@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 import * as React from "react";
@@ -15,6 +15,7 @@ import {
 
 const meta: Meta = {
   title: "ui/Calendar/Blocks/Month and Year Selector",
+  tags: ["autodocs"],
   parameters: {
     layout: "centered",
   },
@@ -28,10 +29,10 @@ export const Default: Story = {
   render: () => {
     const [dropdown, setDropdown] =
       React.useState<React.ComponentProps<typeof Calendar>["captionLayout"]>(
-        "dropdown"
+        "dropdown",
       );
     const [date, setDate] = React.useState<Date | undefined>(
-      new Date(2025, 5, 12)
+      new Date(2025, 5, 12),
     );
 
     return (
@@ -52,7 +53,7 @@ export const Default: Story = {
             value={dropdown}
             onValueChange={(value) =>
               setDropdown(
-                value as React.ComponentProps<typeof Calendar>["captionLayout"]
+                value as React.ComponentProps<typeof Calendar>["captionLayout"],
               )
             }
           >

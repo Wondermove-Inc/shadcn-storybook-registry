@@ -1,8 +1,8 @@
-"use client"
+"use client";
 
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
-import * as React from "react";
 import { ChevronDownIcon } from "lucide-react";
+import * as React from "react";
 
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
@@ -16,6 +16,7 @@ import {
 
 const meta: Meta = {
   title: "ui/Calendar/Blocks/Date and Time Picker",
+  tags: ["autodocs"],
   parameters: {
     layout: "centered",
   },
@@ -47,7 +48,10 @@ export const Default: Story = {
                 <ChevronDownIcon />
               </Button>
             </PopoverTrigger>
-            <PopoverContent className="w-auto overflow-hidden p-0" align="start">
+            <PopoverContent
+              className="w-auto overflow-hidden p-0"
+              align="start"
+            >
               <Calendar
                 mode="single"
                 selected={date}

@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 import * as React from "react";
@@ -7,6 +7,7 @@ import { Calendar } from "@/components/ui/calendar";
 
 const meta: Meta = {
   title: "ui/Calendar/Blocks/Range Calendar",
+  tags: ["autodocs"],
   parameters: {
     layout: "centered",
   },
@@ -19,7 +20,7 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
   render: () => {
     const [date, setDate] = React.useState<Date | undefined>(
-      new Date(2025, 5, 12)
+      new Date(2025, 5, 12),
     );
 
     return (

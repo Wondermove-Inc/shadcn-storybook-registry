@@ -37,6 +37,7 @@ const meta: Meta<{
   shadow: Shadow[];
 }> = {
   title: "foundation/Shadow",
+  tags: ["autodocs"],
   argTypes: {},
   render: (args) => (
     <Table>
