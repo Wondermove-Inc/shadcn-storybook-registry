@@ -6,15 +6,20 @@ import * as React from "react";
 
 import { cn } from "@/lib/utils";
 
-function InputOTP({
-  className,
-  containerClassName,
-  ...props
-}: React.ComponentProps<typeof OTPInput> & {
-  containerClassName?: string;
-}) {
+/**
+ * 🎯 목적: InputOTP 컴포넌트에 forwardRef 적용하여 React 18/19 호환성 제공
+ * 📝 주의사항: input-otp 라이브러리의 OTPInput 사용
+ * 🔄 변경이력: 2025-10-11 - React 18/19 dual support를 위한 forwardRef 추가
+ */
+const InputOTP = React.forwardRef<
+  React.ElementRef<typeof OTPInput>,
+  React.ComponentPropsWithoutRef<typeof OTPInput> & {
+    containerClassName?: string;
+  }
+>(({ className, containerClassName, ...props }, ref) => {
   return (
     <OTPInput
+      ref={ref}
       data-slot="input-otp"
       containerClassName={cn(
         "flex items-center gap-2 has-disabled:opacity-50",
@@ -24,30 +29,46 @@ function InputOTP({
       {...props}
     />
   );
-}
+});
+InputOTP.displayName = "InputOTP";
 
-function InputOTPGroup({ className, ...props }: React.ComponentProps<"div">) {
+/**
+ * 🎯 목적: InputOTPGroup 컴포넌트에 forwardRef 적용하여 React 18/19 호환성 제공
+ * 📝 주의사항: HTML div 요소 사용
+ * 🔄 변경이력: 2025-10-11 - React 18/19 dual support를 위한 forwardRef 추가
+ */
+const InputOTPGroup = React.forwardRef<
+  HTMLDivElement,
+  React.ComponentProps<"div">
+>(({ className, ...props }, ref) => {
   return (
     <div
+      ref={ref}
       data-slot="input-otp-group"
       className={cn("flex items-center", className)}
       {...props}
     />
   );
-}
+});
+InputOTPGroup.displayName = "InputOTPGroup";
 
-function InputOTPSlot({
-  index,
-  className,
-  ...props
-}: React.ComponentProps<"div"> & {
-  index: number;
-}) {
+/**
+ * 🎯 목적: InputOTPSlot 컴포넌트에 forwardRef 적용하여 React 18/19 호환성 제공
+ * 📝 주의사항: HTML div 요소 사용, OTPInputContext에서 슬롯 상태 가져옴
+ * 🔄 변경이력: 2025-10-11 - React 18/19 dual support를 위한 forwardRef 추가
+ */
+const InputOTPSlot = React.forwardRef<
+  HTMLDivElement,
+  React.ComponentProps<"div"> & {
+    index: number;
+  }
+>(({ index, className, ...props }, ref) => {
   const inputOTPContext = React.useContext(OTPInputContext);
   const { char, hasFakeCaret, isActive } = inputOTPContext?.slots[index] ?? {};
 
   return (
     <div
+      ref={ref}
       data-slot="input-otp-slot"
       data-active={isActive}
       className={cn(
@@ -64,14 +85,24 @@ function InputOTPSlot({
       )}
     </div>
   );
-}
+});
+InputOTPSlot.displayName = "InputOTPSlot";
 
-function InputOTPSeparator({ ...props }: React.ComponentProps<"div">) {
+/**
+ * 🎯 목적: InputOTPSeparator 컴포넌트에 forwardRef 적용하여 React 18/19 호환성 제공
+ * 📝 주의사항: HTML div 요소 사용, 시각적 구분자 역할
+ * 🔄 변경이력: 2025-10-11 - React 18/19 dual support를 위한 forwardRef 추가
+ */
+const InputOTPSeparator = React.forwardRef<
+  HTMLDivElement,
+  React.ComponentProps<"div">
+>(({ ...props }, ref) => {
   return (
-    <div data-slot="input-otp-separator" role="separator" {...props}>
+    <div ref={ref} data-slot="input-otp-separator" role="separator" {...props}>
       <MinusIcon />
     </div>
   );
-}
+});
+InputOTPSeparator.displayName = "InputOTPSeparator";
 
 export { InputOTP, InputOTPGroup, InputOTPSeparator, InputOTPSlot };
