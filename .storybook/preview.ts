@@ -28,7 +28,33 @@ const preview: Preview = {
       test: "todo",
     },
     backgrounds: {
-      disable: true,
+      disable: false,
+      default: "light",
+      values: [
+        { name: "light", value: "#ffffff" },
+        { name: "dark", value: "#0a0a0a" },
+        { name: "gray", value: "#f5f5f5" },
+      ],
+    },
+    viewport: {
+      viewports: {
+        mobile: {
+          name: "Mobile",
+          styles: { width: "375px", height: "667px" },
+          type: "mobile",
+        },
+        tablet: {
+          name: "Tablet",
+          styles: { width: "768px", height: "1024px" },
+          type: "tablet",
+        },
+        desktop: {
+          name: "Desktop",
+          styles: { width: "1920px", height: "1080px" },
+          type: "desktop",
+        },
+      },
+      defaultViewport: "desktop",
     },
   },
 
