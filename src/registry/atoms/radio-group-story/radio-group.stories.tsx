@@ -30,11 +30,23 @@ const meta = {
     layout: "centered",
   },
   args: {
+    defaultValue: "comfortable",
+    disabled: false,
     onValueChange: fn(),
   },
   excludeStories: /.*Demo$|FormSchema/,
-  render: () => (
-    <RadioGroup defaultValue="comfortable">
+} satisfies Meta<typeof RadioGroup>;
+
+export default meta;
+
+type Story = StoryObj<typeof meta>;
+
+/**
+ * The default form of the radio group.
+ */
+export const Default: Story = {
+  render: (args) => (
+    <RadioGroup {...args}>
       <div className="flex items-center space-x-2">
         <RadioGroupItem value="default" id="r1" />
         <Label htmlFor="r1">Default</Label>
@@ -49,16 +61,32 @@ const meta = {
       </div>
     </RadioGroup>
   ),
-} satisfies Meta<typeof RadioGroup>;
-
-export default meta;
-
-type Story = StoryObj<typeof meta>;
+};
 
 /**
- * The default form of the radio group.
+ * Disabled radio group.
  */
-export const Default: Story = {};
+export const Disabled: Story = {
+  args: {
+    disabled: true,
+  },
+  render: (args) => (
+    <RadioGroup {...args}>
+      <div className="flex items-center space-x-2">
+        <RadioGroupItem value="default" id="r1-disabled" />
+        <Label htmlFor="r1-disabled">Default</Label>
+      </div>
+      <div className="flex items-center space-x-2">
+        <RadioGroupItem value="comfortable" id="r2-disabled" />
+        <Label htmlFor="r2-disabled">Comfortable</Label>
+      </div>
+      <div className="flex items-center space-x-2">
+        <RadioGroupItem value="compact" id="r3-disabled" />
+        <Label htmlFor="r3-disabled">Compact</Label>
+      </div>
+    </RadioGroup>
+  ),
+};
 
 /**
  * Radio group integrated with React Hook Form and Zod validation.

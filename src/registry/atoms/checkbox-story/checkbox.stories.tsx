@@ -69,10 +69,11 @@ const meta: Meta<typeof Checkbox> = {
     layout: "centered",
   },
   args: {
+    defaultChecked: false,
+    disabled: false,
     onCheckedChange: fn(),
   },
   excludeStories: /.*Demo$/,
-  render: () => <CheckboxDemo />,
 } satisfies Meta<typeof Checkbox>;
 
 export default meta;
@@ -80,9 +81,27 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 /**
- * The default form of the checkbox with various states and styles.
+ * The default form of the checkbox.
  */
 export const Default: Story = {};
+
+/**
+ * Checkbox in checked state.
+ */
+export const DefaultChecked: Story = {
+  args: {
+    defaultChecked: true,
+  },
+};
+
+/**
+ * Disabled checkbox.
+ */
+export const DefaultDisabled: Story = {
+  args: {
+    disabled: true,
+  },
+};
 
 /**
  * Basic checkbox with label.

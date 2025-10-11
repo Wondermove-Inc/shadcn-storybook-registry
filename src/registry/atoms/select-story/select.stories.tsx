@@ -58,11 +58,12 @@ const meta = {
     layout: "centered",
   },
   args: {
+    defaultValue: undefined,
+    disabled: false,
     onValueChange: fn(),
     onOpenChange: fn(),
   },
   excludeStories: /.*Demo$|SelectScrollable|SelectForm/,
-  render: () => <SelectDemo />,
 } satisfies Meta<typeof Select>;
 
 export default meta;
@@ -72,7 +73,49 @@ type Story = StoryObj<typeof meta>;
 /**
  * The default form of the select.
  */
-export const Default: Story = {};
+export const Default: Story = {
+  render: (args) => (
+    <Select {...args}>
+      <SelectTrigger className="w-[180px]">
+        <SelectValue placeholder="Select a fruit" />
+      </SelectTrigger>
+      <SelectContent>
+        <SelectGroup>
+          <SelectLabel>Fruits</SelectLabel>
+          <SelectItem value="apple">Apple</SelectItem>
+          <SelectItem value="banana">Banana</SelectItem>
+          <SelectItem value="blueberry">Blueberry</SelectItem>
+          <SelectItem value="grapes">Grapes</SelectItem>
+          <SelectItem value="pineapple">Pineapple</SelectItem>
+        </SelectGroup>
+      </SelectContent>
+    </Select>
+  ),
+};
+
+/**
+ * Disabled select.
+ */
+export const Disabled: Story = {
+  args: {
+    disabled: true,
+  },
+  render: (args) => (
+    <Select {...args}>
+      <SelectTrigger className="w-[180px]">
+        <SelectValue placeholder="Select a fruit" />
+      </SelectTrigger>
+      <SelectContent>
+        <SelectGroup>
+          <SelectLabel>Fruits</SelectLabel>
+          <SelectItem value="apple">Apple</SelectItem>
+          <SelectItem value="banana">Banana</SelectItem>
+          <SelectItem value="blueberry">Blueberry</SelectItem>
+        </SelectGroup>
+      </SelectContent>
+    </Select>
+  ),
+};
 
 /**
  * Scrollable select with many timezone options.

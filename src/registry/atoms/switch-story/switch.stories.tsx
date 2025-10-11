@@ -121,10 +121,11 @@ const meta = {
     layout: "centered",
   },
   args: {
+    defaultChecked: false,
+    disabled: false,
     onCheckedChange: fn(),
   },
   excludeStories: /.*Demo$|.*Form$/,
-  render: () => <SwitchDemo />,
 } satisfies Meta<typeof Switch>;
 
 export default meta;
@@ -135,6 +136,46 @@ type Story = StoryObj<typeof meta>;
  * The default form of the switch.
  */
 export const Default: Story = {};
+
+/**
+ * Switch in checked state.
+ */
+export const Checked: Story = {
+  args: {
+    defaultChecked: true,
+  },
+};
+
+/**
+ * Disabled switch.
+ */
+export const Disabled: Story = {
+  args: {
+    disabled: true,
+  },
+};
+
+/**
+ * Disabled and checked switch.
+ */
+export const DisabledChecked: Story = {
+  args: {
+    disabled: true,
+    defaultChecked: true,
+  },
+};
+
+/**
+ * Switch with label.
+ */
+export const WithLabel: Story = {
+  render: (args) => (
+    <div className="flex items-center space-x-2">
+      <Switch {...args} id="airplane-mode" />
+      <Label htmlFor="airplane-mode">Airplane Mode</Label>
+    </div>
+  ),
+};
 
 /**
  * Switch used within a form with validation.
