@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
-import Link from "next/link";
 import { ChevronDownIcon, SlashIcon } from "lucide-react";
+import Link from "next/link";
 
 import {
   Breadcrumb,
@@ -35,7 +35,7 @@ export function BreadcrumbDemo() {
         </BreadcrumbItem>
       </BreadcrumbList>
     </Breadcrumb>
-  )
+  );
 }
 
 /**
@@ -49,7 +49,6 @@ const meta = {
     layout: "centered",
   },
   excludeStories: /.*Demo$/,
-  render: () => <BreadcrumbDemo />
 } satisfies Meta<typeof Breadcrumb>;
 
 export default meta;
@@ -59,7 +58,9 @@ type Story = StoryObj<typeof meta>;
 /**
  * The default form of the breadcrumb.
  */
-export const Default: Story = {};
+export const Default: Story = {
+  render: () => <BreadcrumbDemo />,
+};
 
 /**
  * Custom separator example.

@@ -102,7 +102,7 @@ function CustomCloseButtonDemo() {
  */
 const meta = {
   title: "ui/Dialog",
-  component: DialogDemo,
+  component: Dialog,
   tags: ["autodocs"],
   parameters: {
     layout: "centered",
@@ -111,7 +111,7 @@ const meta = {
     onOpenChange: fn(),
   },
   excludeStories: /.*Demo$/,
-} satisfies Meta<typeof DialogDemo>;
+} satisfies Meta<typeof Dialog>;
 
 export default meta;
 
@@ -120,7 +120,9 @@ type Story = StoryObj<typeof meta>;
 /**
  * The default profile editing dialog with form inputs.
  */
-export const Default: Story = {};
+export const Default: Story = {
+  render: () => <DialogDemo />,
+};
 
 /**
  * Custom dialog with a share link and close button.

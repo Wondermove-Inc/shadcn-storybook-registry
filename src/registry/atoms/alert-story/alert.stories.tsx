@@ -1,11 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 import { AlertCircleIcon, CheckCircle2Icon, PopcornIcon } from "lucide-react";
 
-import {
-  Alert,
-  AlertDescription,
-  AlertTitle,
-} from "@/components/ui/alert";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 
 export function AlertDemo() {
   return (
@@ -36,7 +32,7 @@ export function AlertDemo() {
         </AlertDescription>
       </Alert>
     </div>
-  )
+  );
 }
 
 /**
@@ -49,8 +45,10 @@ const meta = {
   parameters: {
     layout: "centered",
   },
+  args: {
+    variant: "default",
+  },
   excludeStories: /.*Demo$/,
-  render: () => <AlertDemo />
 } satisfies Meta<typeof Alert>;
 
 export default meta;
@@ -60,7 +58,9 @@ type Story = StoryObj<typeof meta>;
 /**
  * The default form of the alert.
  */
-export const Default: Story = {};
+export const Default: Story = {
+  render: () => <AlertDemo />,
+};
 
 /**
  * Success alert with icon, title and description.
@@ -74,7 +74,7 @@ export const Success: Story = {
         This is an alert with icon, title and description.
       </AlertDescription>
     </Alert>
-  )
+  ),
 };
 
 /**
@@ -88,7 +88,7 @@ export const TitleOnly: Story = {
         This Alert has a title and an icon. No description.
       </AlertTitle>
     </Alert>
-  )
+  ),
 };
 
 /**
@@ -108,5 +108,5 @@ export const Destructive: Story = {
         </ul>
       </AlertDescription>
     </Alert>
-  )
+  ),
 };

@@ -1,18 +1,18 @@
-"use client"
+"use client";
 
-import * as React from "react"
-import type { Meta, StoryObj } from "@storybook/nextjs-vite";
-import { ChevronsUpDown } from "lucide-react"
-import { Button } from "@/components/ui/button"
+import { Button } from "@/components/ui/button";
 import {
   Collapsible,
   CollapsibleContent,
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
+import type { Meta, StoryObj } from "@storybook/nextjs-vite";
+import { ChevronsUpDown } from "lucide-react";
+import * as React from "react";
 import { expect, userEvent } from "storybook/test";
 
 export function CollapsibleDemo() {
-  const [isOpen, setIsOpen] = React.useState(false)
+  const [isOpen, setIsOpen] = React.useState(false);
 
   return (
     <Collapsible
@@ -43,7 +43,7 @@ export function CollapsibleDemo() {
         </div>
       </CollapsibleContent>
     </Collapsible>
-  )
+  );
 }
 
 /**
@@ -57,7 +57,6 @@ const meta = {
     layout: "centered",
   },
   excludeStories: /.*Demo$/,
-  render: () => <CollapsibleDemo />
 } satisfies Meta<typeof Collapsible>;
 
 export default meta;
@@ -67,7 +66,9 @@ type Story = StoryObj<typeof meta>;
 /**
  * The default form of the collapsible with repository list example.
  */
-export const Default: Story = {};
+export const Default: Story = {
+  render: () => <CollapsibleDemo />,
+};
 
 export const ShouldOpenClose: Story = {
   name: "when collapsible trigger is clicked, should show content",

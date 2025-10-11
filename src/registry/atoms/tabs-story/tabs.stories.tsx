@@ -11,12 +11,7 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import {
-  Tabs,
-  TabsContent,
-  TabsList,
-  TabsTrigger,
-} from "@/components/ui/tabs";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 // Default example from official docs
 export function TabsDemo() {
@@ -73,7 +68,7 @@ export function TabsDemo() {
         </Card>
       </TabsContent>
     </Tabs>
-  )
+  );
 }
 
 /**
@@ -86,8 +81,10 @@ const meta = {
   parameters: {
     layout: "centered",
   },
+  args: {
+    defaultValue: "account",
+  },
   excludeStories: /.*Demo$/,
-  render: () => <TabsDemo />
 } satisfies Meta<typeof Tabs>;
 
 export default meta;
@@ -97,4 +94,6 @@ type Story = StoryObj<typeof meta>;
 /**
  * The default tabs with account and password sections.
  */
-export const Default: Story = {};
+export const Default: Story = {
+  render: () => <TabsDemo />,
+};

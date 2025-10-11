@@ -48,8 +48,8 @@ export function AccordionDemo() {
         <AccordionContent className="flex flex-col gap-4 text-balance">
           <p>
             We stand behind our products with a comprehensive 30-day return
-            policy. If you're not completely satisfied, simply return the
-            item in its original condition.
+            policy. If you're not completely satisfied, simply return the item
+            in its original condition.
           </p>
           <p>
             Our hassle-free return process includes free return shipping and
@@ -59,7 +59,7 @@ export function AccordionDemo() {
         </AccordionContent>
       </AccordionItem>
     </Accordion>
-  )
+  );
 }
 
 /**
@@ -73,8 +73,12 @@ const meta = {
   parameters: {
     layout: "centered",
   },
+  args: {
+    type: "single",
+    collapsible: true,
+    defaultValue: "item-1",
+  },
   excludeStories: /.*Demo$/,
-  render: () => <AccordionDemo />
 } satisfies Meta<typeof Accordion>;
 
 export default meta;
@@ -85,8 +89,5 @@ type Story = StoryObj<typeof meta>;
  * The default single accordion.
  */
 export const Default: Story = {
-  args: {
-    type: "single"
-  }
+  render: () => <AccordionDemo />,
 };
-

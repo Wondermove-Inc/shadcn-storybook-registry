@@ -77,7 +77,6 @@ const meta = {
     layout: "centered",
   },
   excludeStories: /.*Demo$/,
-  render: () => <CardDemo />,
 } satisfies Meta<typeof Card>;
 
 export default meta;
@@ -87,7 +86,9 @@ type Story = StoryObj<typeof meta>;
 /**
  * The default form of the card.
  */
-export const Default: Story = {};
+export const Default: Story = {
+  render: () => <CardDemo />,
+};
 
 /**
  * Ref 사용 예제: Card에 ref를 전달하여 DOM 요소에 직접 접근합니다.
