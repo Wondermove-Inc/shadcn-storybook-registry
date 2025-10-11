@@ -1,9 +1,10 @@
 # Project Structure Improvement - Updated Implementation Plan
 
 **작성일**: 2025-01-15 (원본: 2025-01-11)
-**상태**: Phase 1-2 완료, Git 커밋 대기
-**타입**: Updated Implementation Plan (업데이트된 구현 계획)
-**마지막 업데이트**: 2025-01-15 16:02 KST
+**상태**: ✅ 완료 (Phase 1-2 모두 완료, Phase 3 보류)
+**타입**: Completed Implementation Plan
+**마지막 업데이트**: 2025-01-15 16:04 KST
+**완료일**: 2025-01-15
 
 ---
 
@@ -372,9 +373,10 @@ npx shadcn@latest add pie-chart-story
 - [x] 품질 검증 (lint, type-check) ✅ (2025-01-15 완료)
   - lint: 0 errors, 1 warning (기존 hover-card-story, 무관)
   - type-check: 통과
-- [ ] Git 커밋 (진행 예정)
-- [ ] ✨ **Playwright MCP 자동 검증 통과** - 선택 사항
-- [ ] 수동 설치 테스트 - 선택 사항
+- [x] Git 커밋 ✅ (2025-01-15 완료)
+  - Commit: d5beaf3 "feat: refactor calendar-story blocks into 6 independent stories"
+- [ ] ✨ **Playwright MCP 자동 검증 통과** - 선택 사항 (생략)
+- [ ] 수동 설치 테스트 - 선택 사항 (생략)
 
 ### Phase 3 (보류)
 - ⏸️ Phase 1-2 완료 후 사용자 결정에 따라 실행 여부 결정
