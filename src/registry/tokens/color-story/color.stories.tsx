@@ -366,7 +366,7 @@ const ColorTile = ({ value }: Pick<Color, "value">) => {
 const meta: Meta<{
   colors: Color[];
 }> = {
-  title: "design/Color",
+  title: "foundation/Color",
   argTypes: {},
   render: (args) => (
     <Table>
