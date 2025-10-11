@@ -162,3 +162,73 @@ export const ShouldNavigateCarousel: Story = {
     await expect(slides.length).toBeGreaterThan(0);
   },
 };
+
+export const ShouldChangeSlideOnNavigation: Story = {
+  name: "when next button is clicked, should display next slide",
+  tags: ["!dev", "!autodocs"],
+  render: () => (
+    <Carousel className="w-full max-w-xs" data-testid="carousel">
+      <CarouselContent>
+        {Array.from({ length: 5 }).map((_, index) => (
+          <CarouselItem key={index} data-testid={`slide-${index + 1}`}>
+            <div className="p-1">
+              <Card>
+                <CardContent className="flex aspect-square items-center justify-center p-6">
+                  <span
+                    className="text-4xl font-semibold"
+                    data-testid={`slide-number-${index + 1}`}
+                  >
+                    {index + 1}
+                  </span>
+                </CardContent>
+              </Card>
+            </div>
+          </CarouselItem>
+        ))}
+      </CarouselContent>
+      <CarouselPrevious data-testid="prev-button" />
+      <CarouselNext data-testid="next-button" />
+    </Carousel>
+  ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+
+    // 🎯 목적: Next/Previous 버튼 클릭 시 실제로 슬라이드가 이동하는지 확인
+
+    // Carousel 존재 확인
+    const carousel = canvas.getByTestId("carousel");
+    await expect(carousel).toBeInTheDocument();
+
+    // Next 버튼 확인
+    const nextButton = canvas.getByTestId("next-button");
+    await expect(nextButton).toBeInTheDocument();
+
+    // Previous 버튼 확인
+    const prevButton = canvas.getByTestId("prev-button");
+    await expect(prevButton).toBeInTheDocument();
+
+    // 첫 번째 슬라이드 확인
+    const firstSlide = canvas.getByTestId("slide-number-1");
+    await expect(firstSlide).toHaveTextContent("1");
+
+    // Next 버튼 클릭 (2번째 슬라이드로 이동)
+    await userEvent.click(nextButton);
+
+    // 2번째 슬라이드가 보이는지 확인
+    const secondSlide = canvas.getByTestId("slide-number-2");
+    await expect(secondSlide).toBeInTheDocument();
+
+    // Next 버튼 다시 클릭 (3번째 슬라이드로 이동)
+    await userEvent.click(nextButton);
+
+    // 3번째 슬라이드가 보이는지 확인
+    const thirdSlide = canvas.getByTestId("slide-number-3");
+    await expect(thirdSlide).toBeInTheDocument();
+
+    // Previous 버튼 클릭 (2번째 슬라이드로 되돌아감)
+    await userEvent.click(prevButton);
+
+    // 2번째 슬라이드가 다시 보이는지 확인
+    await expect(secondSlide).toBeInTheDocument();
+  },
+};
