@@ -1,5 +1,9 @@
+import * as DialogPrimitive from "@radix-ui/react-dialog";
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
-import { Button } from "@/components/ui/button"
+import { Copy } from "lucide-react";
+import { useRef, useState } from "react";
+
+import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogClose,
@@ -9,10 +13,10 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Copy } from "lucide-react"
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { expect, userEvent, within } from "storybook/test";
 
 function DialogDemo() {
   return (
@@ -48,7 +52,7 @@ function DialogDemo() {
         </DialogContent>
       </form>
     </Dialog>
-  )
+  );
 }
 
 // Custom Close Button Dialog (Share)
@@ -90,7 +94,7 @@ function CustomCloseButtonDemo() {
         </DialogFooter>
       </DialogContent>
     </Dialog>
-  )
+  );
 }
 
 /**
@@ -120,4 +124,102 @@ export const Default: Story = {};
  */
 export const CustomCloseButton: Story = {
   render: () => <CustomCloseButtonDemo />,
+};
+
+/**
+ * Ref 사용 예제: DialogContent에 ref를 전달하여 Radix UI primitive에 접근합니다.
+ * 이 예제는 프로그래매틱하게 Dialog를 열고 닫는 방법을 보여줍니다.
+ */
+export const WithRef: Story = {
+  render: () => {
+    // 🎯 목적: Radix UI Dialog primitive의 ElementRef 타입을 사용하여 ref 생성
+    const contentRef =
+      useRef<React.ElementRef<typeof DialogPrimitive.Content>>(null);
+    const [open, setOpen] = useState(false);
+    const [message, setMessage] = useState("");
+
+    const handleSubmit = (e: React.FormEvent) => {
+      e.preventDefault();
+      setMessage("Form submitted successfully!");
+      // 3초 후 Dialog 닫기
+      setTimeout(() => {
+        setOpen(false);
+        setMessage("");
+      }, 3000);
+    };
+
+    return (
+      <div className="flex flex-col gap-4">
+        <Dialog open={open} onOpenChange={setOpen}>
+          <DialogTrigger asChild>
+            <Button variant="outline">Open Controlled Dialog</Button>
+          </DialogTrigger>
+          <DialogContent ref={contentRef} className="sm:max-w-[425px]">
+            <DialogHeader>
+              <DialogTitle>Controlled Dialog Example</DialogTitle>
+              <DialogDescription>
+                This dialog can be controlled programmatically using state and
+                ref.
+              </DialogDescription>
+            </DialogHeader>
+            <form onSubmit={handleSubmit}>
+              <div className="grid gap-4">
+                <div className="grid gap-3">
+                  <Label htmlFor="email-input">Email</Label>
+                  <Input
+                    id="email-input"
+                    type="email"
+                    placeholder="example@email.com"
+                    required
+                  />
+                </div>
+                {message && (
+                  <div className="text-sm text-green-600 dark:text-green-400">
+                    {message}
+                  </div>
+                )}
+              </div>
+              <DialogFooter className="mt-4">
+                <DialogClose asChild>
+                  <Button type="button" variant="outline">
+                    Cancel
+                  </Button>
+                </DialogClose>
+                <Button type="submit">Submit</Button>
+              </DialogFooter>
+            </form>
+          </DialogContent>
+        </Dialog>
+
+        <div className="flex gap-2">
+          <Button variant="secondary" size="sm" onClick={() => setOpen(true)}>
+            Open via State
+          </Button>
+          <Button variant="secondary" size="sm" onClick={() => setOpen(false)}>
+            Close via State
+          </Button>
+        </div>
+
+        <p className="text-muted-foreground text-sm">
+          Dialog state: {open ? "Open" : "Closed"}
+        </p>
+      </div>
+    );
+  },
+  play: async ({ canvasElement }) => {
+    // 🎯 목적: play function을 통해 Dialog ref와 상태 제어를 테스트
+    const canvas = within(canvasElement);
+
+    // "Open via State" 버튼으로 Dialog 열기
+    const openButton = canvas.getByRole("button", { name: "Open via State" });
+    await userEvent.click(openButton);
+
+    // Dialog가 열렸는지 확인
+    const dialogTitle = await canvas.findByText("Controlled Dialog Example");
+    await expect(dialogTitle).toBeVisible();
+
+    // Dialog 상태 텍스트 확인
+    const stateText = canvas.getByText(/Dialog state:/);
+    await expect(stateText).toHaveTextContent("Dialog state: Open");
+  },
 };

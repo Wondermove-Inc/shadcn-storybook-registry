@@ -1,6 +1,7 @@
-import { expect, userEvent } from "storybook/test";
+import { expect, userEvent, within } from "storybook/test";
 // Replace nextjs-vite with the name of your framework
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
+import { useRef } from "react";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -41,7 +42,7 @@ export const File: Story = {
   args: {
     type: "file",
     placeholder: undefined,
-    className: "max-w-sm"
+    className: "max-w-sm",
   },
   render: (args) => (
     <div className="grid w-full max-w-sm items-center gap-1.5">
@@ -94,7 +95,9 @@ export const WithButton: Story = {
   render: (args) => (
     <div className="flex w-full max-w-sm items-center space-x-2">
       <Input {...args} />
-      <Button type="submit" variant="outline">Subscribe</Button>
+      <Button type="submit" variant="outline">
+        Subscribe
+      </Button>
     </div>
   ),
 };
@@ -112,5 +115,63 @@ export const ShouldEnterText: Story = {
     });
 
     expect(input).toHaveValue(mockedInput);
+  },
+};
+
+/**
+ * Ref 사용 예제: Input에 ref를 전달하여 DOM 요소에 직접 접근합니다.
+ * 이 예제는 ref를 통한 focus와 select 제어를 보여줍니다.
+ */
+export const WithRef: Story = {
+  render: () => {
+    // 🎯 목적: HTMLInputElement에 대한 ref를 생성하여 focus()와 select() 메서드 접근
+    const inputRef = useRef<HTMLInputElement>(null);
+
+    return (
+      <div className="grid w-full max-w-sm items-center gap-4">
+        <div className="grid items-center gap-1.5">
+          <Label htmlFor="target-input">Target Input</Label>
+          <Input
+            ref={inputRef}
+            id="target-input"
+            type="text"
+            placeholder="Type something..."
+            defaultValue="Example text"
+          />
+        </div>
+        <div className="flex gap-2">
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => inputRef.current?.focus()}
+          >
+            Focus Input
+          </Button>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => inputRef.current?.select()}
+          >
+            Select Text
+          </Button>
+        </div>
+      </div>
+    );
+  },
+  play: async ({ canvasElement }) => {
+    // 🎯 목적: play function을 통해 ref 동작을 자동으로 테스트
+    const canvas = within(canvasElement);
+    const input = canvas.getByLabelText("Target Input") as HTMLInputElement;
+    const focusButton = canvas.getByRole("button", { name: "Focus Input" });
+    const selectButton = canvas.getByRole("button", { name: "Select Text" });
+
+    // "Focus Input" 버튼 클릭하여 input에 focus 트리거
+    await userEvent.click(focusButton);
+    await expect(input).toHaveFocus();
+
+    // "Select Text" 버튼 클릭하여 텍스트 선택 트리거
+    await userEvent.click(selectButton);
+    await expect(input.selectionStart).toBe(0);
+    await expect(input.selectionEnd).toBe(input.value.length);
   },
 };
