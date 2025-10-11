@@ -465,28 +465,44 @@ export const Default: Story = {
 
 ### Phase 3: Interactive 기능 확대 (우선순위: 중간)
 
-#### [🔄] 7. Args 기반 Interactive Controls 확대 (20개 컴포넌트) 🔄 **진행 중** (2025-01-15)
+#### [✅] 7. Args 기반 Interactive Controls 확대 (20개 컴포넌트) ✅ **완료** (2025-01-15)
 **목적**: 사용자가 Storybook에서 동적으로 props 변경 가능하도록 개선
 **예상 시간**: 8시간
 **난이도**: ⭐⭐⭐ 어려움
-**현재 진행률**: 9/20 완료 (45%)
+**실제 소요**: ~3시간 (Previous session 2h + Current session 1h)
+**최종 진행률**: 20/20 완료 (100%)
 
-**완료된 컴포넌트 (9개)**:
+**완료 결과**:
+- ✅ 20개 컴포넌트 모두 Args 패턴 적용 완료
+- ✅ Meta에서 render 함수 제거하여 Args 차단 해제
+- ✅ 적절한 args 추가 (variant, disabled, onXxx callbacks 등)
+- ✅ 복합 컴포넌트는 Default 스토리에 render 유지 (필수 구조)
+- ✅ Popover, Dialog의 meta.component 수정 (Demo → 실제 컴포넌트)
+- ✅ Sheet는 이미 Args 패턴 완료 상태 (변경 불필요)
+- ✅ 모든 타입 검사 및 Lint 통과
+- ✅ 2개 커밋 완료 (11개 + 8개)
+
+**완료된 컴포넌트 (20개)**:
 - ✅ Button (button.stories.tsx) - args 기반으로 6개 variant story 변경
 - ✅ Badge (badge.stories.tsx) - args 기반으로 4개 variant story 변경
 - ✅ Label (label.stories.tsx) - component를 Label로 수정, args 추가
 - ✅ Textarea (textarea.stories.tsx) - args 기반, Disabled story 변경
 - ✅ Input (input.stories.tsx) - args 기반 확인 완료 (이미 완료 상태)
-- ✅ Checkbox (checkbox.stories.tsx) - args 추가, 3개 args 기반 story 추가 (Default, DefaultChecked, DefaultDisabled)
-- ✅ RadioGroup (radio-group.stories.tsx) - args 추가, Disabled story 추가
-- ✅ Select (select.stories.tsx) - args 추가, Disabled story 추가
-- ✅ Switch (switch.stories.tsx) - args 추가, 5개 args 기반 story 추가 (Default, Checked, Disabled, DisabledChecked, WithLabel)
-
-**남은 컴포넌트 (11개)**:
-- **UI 기본** (1개): Alert (복합 컴포넌트, 어려움)
-- **레이아웃** (3개): Card, Separator, Aspect Ratio
-- **Overlay** (3개): Dialog, Sheet, Popover
-- **Navigation** (4개): Accordion, Tabs, Collapsible, Breadcrumb
+- ✅ Checkbox (checkbox.stories.tsx) - meta render 제거, args 추가, 3개 args story 추가
+- ✅ RadioGroup (radio-group.stories.tsx) - meta render 제거, args 추가, Disabled story 추가
+- ✅ Select (select.stories.tsx) - meta render 제거, args 추가, Disabled story 추가
+- ✅ Switch (switch.stories.tsx) - meta render 제거, args 추가, 5개 args story 추가
+- ✅ Separator (separator.stories.tsx) - args 추가, 4개 args story 추가
+- ✅ AspectRatio (aspect-ratio.stories.tsx) - meta render 제거, args 추가, 5개 ratio story 추가
+- ✅ Breadcrumb (breadcrumb.stories.tsx) - meta render 제거, Default에 render 추가
+- ✅ Collapsible (collapsible.stories.tsx) - meta render 제거, Default에 render 추가
+- ✅ Alert (alert.stories.tsx) - meta render 제거, args: variant 추가, Default에 render 추가
+- ✅ Tabs (tabs.stories.tsx) - meta render 제거, args: defaultValue 추가, Default에 render 추가
+- ✅ Accordion (accordion.stories.tsx) - meta render 제거, args: type/collapsible/defaultValue 추가, Default에 render 추가
+- ✅ Card (card.stories.tsx) - meta render 제거, Default에 render 추가
+- ✅ Popover (popover.stories.tsx) - meta.component 수정 (PopoverDemo → Popover), Default에 render 추가
+- ✅ Sheet (sheet.stories.tsx) - 이미 Args 패턴 완료 (변경 불필요)
+- ✅ Dialog (dialog.stories.tsx) - meta.component 수정 (DialogDemo → Dialog), args: onOpenChange: fn() 유지, Default에 render 추가
 
 **작업 내용**:
 1. 우선순위 컴포넌트 20개 선정:
