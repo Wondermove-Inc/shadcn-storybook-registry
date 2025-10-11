@@ -5,6 +5,11 @@ import * as React from "react";
 
 import { cn } from "@/lib/utils";
 
+/**
+ * 🎯 목적: TooltipProvider 컴포넌트 (Radix UI Provider primitive)
+ * 📝 주의사항: Provider primitive는 ref를 지원하지 않음
+ * 🔄 변경이력: 2025-10-11 - React 18/19 dual support 검토 (ref 미지원 확인)
+ */
 function TooltipProvider({
   delayDuration = 0,
   ...props
@@ -18,6 +23,11 @@ function TooltipProvider({
   );
 }
 
+/**
+ * 🎯 목적: Tooltip 컴포넌트 (Radix UI Root primitive)
+ * 📝 주의사항: Root primitive는 ref를 지원하지 않음
+ * 🔄 변경이력: 2025-10-11 - React 18/19 dual support 검토 (ref 미지원 확인)
+ */
 function Tooltip({
   ...props
 }: React.ComponentProps<typeof TooltipPrimitive.Root>) {
@@ -28,21 +38,38 @@ function Tooltip({
   );
 }
 
-function TooltipTrigger({
-  ...props
-}: React.ComponentProps<typeof TooltipPrimitive.Trigger>) {
-  return <TooltipPrimitive.Trigger data-slot="tooltip-trigger" {...props} />;
-}
+/**
+ * 🎯 목적: TooltipTrigger 컴포넌트에 forwardRef 적용하여 React 18/19 호환성 제공
+ * 📝 주의사항: Radix UI Trigger primitive 사용
+ * 🔄 변경이력: 2025-10-11 - React 18/19 dual support를 위한 forwardRef 추가
+ */
+const TooltipTrigger = React.forwardRef<
+  React.ElementRef<typeof TooltipPrimitive.Trigger>,
+  React.ComponentPropsWithoutRef<typeof TooltipPrimitive.Trigger>
+>((props, ref) => {
+  return (
+    <TooltipPrimitive.Trigger
+      ref={ref}
+      data-slot="tooltip-trigger"
+      {...props}
+    />
+  );
+});
+TooltipTrigger.displayName = "TooltipTrigger";
 
-function TooltipContent({
-  className,
-  sideOffset = 0,
-  children,
-  ...props
-}: React.ComponentProps<typeof TooltipPrimitive.Content>) {
+/**
+ * 🎯 목적: TooltipContent 컴포넌트에 forwardRef 적용하여 React 18/19 호환성 제공
+ * 📝 주의사항: Radix UI Content primitive 사용, Portal로 래핑됨, Arrow 포함
+ * 🔄 변경이력: 2025-10-11 - React 18/19 dual support를 위한 forwardRef 추가
+ */
+const TooltipContent = React.forwardRef<
+  React.ElementRef<typeof TooltipPrimitive.Content>,
+  React.ComponentPropsWithoutRef<typeof TooltipPrimitive.Content>
+>(({ className, sideOffset = 0, children, ...props }, ref) => {
   return (
     <TooltipPrimitive.Portal>
       <TooltipPrimitive.Content
+        ref={ref}
         data-slot="tooltip-content"
         sideOffset={sideOffset}
         className={cn(
@@ -56,6 +83,7 @@ function TooltipContent({
       </TooltipPrimitive.Content>
     </TooltipPrimitive.Portal>
   );
-}
+});
+TooltipContent.displayName = "TooltipContent";
 
 export { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger };

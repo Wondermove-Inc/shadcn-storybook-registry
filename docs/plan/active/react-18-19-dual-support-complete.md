@@ -5,9 +5,9 @@
 **목표**: 모든 shadcn/ui 컴포넌트에 forwardRef를 추가하여 React 18.3.1과 React 19 모두에서 작동하도록 완벽한 호환성 제공
 
 **현재 상태**:
-- ✅ 완료: 98개 컴포넌트 (Initial 6 + Batch 1-1: 15 + Batch 1-2: 6 + Batch 2-1: 48 + Batch 2-2: 23)
-- 🔄 진행 중: react-18-19-dual-support 브랜치
-- 📊 진행률: 98/118 컴포넌트 완료 (83.1%)
+- ✅ 완료: 170개 컴포넌트 (Initial 6 + Batch 1-1: 15 + Batch 1-2: 6 + Batch 2-1: 48 + Batch 2-2: 23 + Batch 2-3: 11 + Batch 3-1: 20 + Batch 3-2: 22 + Batch 4-1 부분: 19)
+- 🔄 진행 중: Phase 4 Batch 4-1 (sidebar.tsx 22개 컴포넌트 남음)
+- 📊 진행률: 170/191 컴포넌트 완료 (89.0%)
 
 **최종 목표**: 47개 전체 UI 컴포넌트의 forwardRef 지원
 
@@ -602,11 +602,11 @@ git tag -a v1.0.0-react18-support -m "Complete React 18/19 dual support"
 #### Phase 2: 복합 컴포넌트 (12개)
 - [x] Batch 2-1: dropdown-menu, context-menu, menubar, navigation-menu (✅ Completed - Commit 90699f4)
 - [x] Batch 2-2: accordion, alert-dialog, dialog, tabs (✅ Completed - Commit 859e426)
-- [ ] Batch 2-3: aspect-ratio, collapsible, hover-card, popover
+- [x] Batch 2-3: aspect-ratio, collapsible, hover-card, popover (✅ Completed - Commit f6ef13b)
 
 #### Phase 3: 특수 컴포넌트 (9개)
-- [ ] Batch 3-1: calendar, carousel, chart, drawer, input-otp
-- [ ] Batch 3-2: command, form, pagination, resizable
+- [x] Batch 3-1: calendar, carousel, chart, drawer, input-otp (✅ Completed - Commit d3fde96)
+- [x] Batch 3-2: command, form, pagination, resizable (✅ Completed - Commit faef465)
 
 #### Phase 4: 복잡한 컴포넌트 (6개)
 - [ ] Batch 4-1: select, sidebar, sonner, table, toggle-group, tooltip
@@ -961,6 +961,104 @@ Co-Authored-By: Claude <noreply@anthropic.com>"
   - Tabs, TabsList
   - TabsTrigger (active state 스타일)
   - TabsContent
+
+### Phase 2 - Batch 2-3 (✅ Completed - Commit f6ef13b)
+- `src/components/ui/aspect-ratio.tsx` - 1개 컴포넌트 forwardRef 추가
+  - AspectRatio (Radix UI AspectRatio.Root primitive)
+- `src/components/ui/collapsible.tsx` - 3개 하위 컴포넌트 forwardRef 추가
+  - Collapsible (Radix UI Collapsible.Root primitive)
+  - CollapsibleTrigger, CollapsibleContent
+- `src/components/ui/hover-card.tsx` - 3개 하위 컴포넌트 forwardRef 추가
+  - HoverCard (Root는 ref 미지원, 직접 할당)
+  - HoverCardTrigger, HoverCardContent (Portal 내부 렌더링, align/sideOffset props)
+- `src/components/ui/popover.tsx` - 4개 하위 컴포넌트 forwardRef 추가
+  - Popover (Root는 ref 미지원, 직접 할당)
+  - PopoverTrigger, PopoverContent (Portal 내부 렌더링, align/sideOffset props)
+  - PopoverAnchor
+- **이전 Batch 타입 오류 수정** (Radix UI Root/Portal/Sub primitives는 ref 미지원):
+  - `src/components/ui/dialog.tsx` - Dialog Root/Portal ref 미지원 수정
+  - `src/components/ui/alert-dialog.tsx` - AlertDialog Root/Portal ref 미지원 수정
+  - `src/components/ui/context-menu.tsx` - ContextMenu Root/Portal/Sub ref 미지원 수정
+  - `src/components/ui/dropdown-menu.tsx` - DropdownMenu Root/Portal/Sub ref 미지원 수정
+  - `src/components/ui/menubar.tsx` - Menubar Menu/Portal/Sub ref 미지원 수정
+
+### Phase 3 - Batch 3-1 (✅ Completed - Commit d3fde96)
+- `src/components/ui/calendar.tsx` - Calendar 컴포넌트 forwardRef 추가 (react-day-picker)
+  - 🎯 react-day-picker의 DayPicker 래핑
+  - 🔄 Dual ref forwarding: rootRef (DayPicker 내부) + forwardRef (래퍼)
+  - 커스텀 Root 컴포넌트에서 두 ref 모두 처리
+  - CalendarDayButton 유지 (Button 사용)
+- `src/components/ui/carousel.tsx` - 5개 하위 컴포넌트 forwardRef 추가 (embla-carousel-react)
+  - Carousel (Context Provider, carouselRef 내부 관리)
+  - CarouselContent (embla의 carouselRef 사용, forwardRef 불필요)
+  - CarouselItem (슬라이드 아이템)
+  - CarouselPrevious (Button forwardRef 전달)
+  - CarouselNext (Button forwardRef 전달)
+- `src/components/ui/chart.tsx` - 3개 컴포넌트 forwardRef 추가 (recharts)
+  - ChartContainer (ResponsiveContainer 래퍼, Context Provider)
+  - ChartTooltipContent (Tooltip 커스텀 컨텐츠)
+  - ChartLegendContent (Legend 커스텀 컨텐츠)
+  - ChartTooltip/ChartLegend (Recharts primitives, ref 미지원)
+- `src/components/ui/drawer.tsx` - 8개 하위 컴포넌트 forwardRef 추가 (vaul)
+  - Drawer (vaul Root, ref 미지원)
+  - DrawerTrigger, DrawerClose (vaul primitives)
+  - DrawerPortal (ref 미지원)
+  - DrawerOverlay, DrawerContent (vaul primitives)
+  - DrawerHeader, DrawerFooter (HTML div)
+  - DrawerTitle, DrawerDescription (vaul primitives)
+- `src/components/ui/input-otp.tsx` - 4개 하위 컴포넌트 forwardRef 추가 (input-otp)
+  - InputOTP (input-otp의 OTPInput 래핑)
+  - InputOTPGroup (HTML div)
+  - InputOTPSlot (OTPInputContext 사용, active state 관리)
+  - InputOTPSeparator (MinusIcon, separator role)
+
+**External Libraries Handled**:
+- react-day-picker: Dual ref forwarding 패턴
+- embla-carousel-react: carouselRef 내부 관리
+- recharts: ResponsiveContainer와 커스텀 컨텐츠
+- vaul: Radix UI 패턴 유사 (Root/Portal ref 미지원)
+- input-otp: OTPInput primitive 래핑
+
+**총 20개 신규 컴포넌트 forwardRef 지원 추가**
+
+### Phase 3 - Batch 3-2 (✅ Completed - Commit faef465)
+- `src/components/ui/command.tsx` - 8개 하위 컴포넌트 forwardRef 추가 (cmdk)
+  - Command (cmdk Root primitive)
+  - CommandDialog (Dialog wrapper, ref 미지원)
+  - CommandInput (wrapper div with SearchIcon, ref를 wrapper div로 전달)
+  - CommandList (cmdk List primitive)
+  - CommandEmpty (cmdk Empty primitive)
+  - CommandGroup (cmdk Group primitive)
+  - CommandSeparator (cmdk Separator primitive)
+  - CommandItem (cmdk Item primitive)
+  - CommandShortcut (HTML span)
+- `src/components/ui/form.tsx` - 5개 하위 컴포넌트 forwardRef 추가 (react-hook-form)
+  - Form (FormProvider, ref 미지원)
+  - FormField (Context Provider + Controller, ref 미지원)
+  - FormItem (HTML div with Context Provider)
+  - FormLabel (Label 컴포넌트 사용, 이미 forwardRef 지원)
+  - FormControl (Radix UI Slot primitive)
+  - FormDescription (HTML p)
+  - FormMessage (HTML p, 에러 메시지 표시)
+- `src/components/ui/pagination.tsx` - 7개 하위 컴포넌트 forwardRef 추가
+  - Pagination (HTML nav)
+  - PaginationContent (HTML ul)
+  - PaginationItem (HTML li)
+  - PaginationLink (HTML a, isActive 상태)
+  - PaginationPrevious (PaginationLink 사용, ChevronLeftIcon)
+  - PaginationNext (PaginationLink 사용, ChevronRightIcon)
+  - PaginationEllipsis (HTML span, MoreHorizontalIcon)
+- `src/components/ui/resizable.tsx` - 2개 컴포넌트 forwardRef 추가 (react-resizable-panels)
+  - ResizablePanelGroup (react-resizable-panels PanelGroup, imperative API ref 지원)
+  - ResizablePanel (react-resizable-panels Panel, imperative API ref 지원)
+  - ResizableHandle (PanelResizeHandle은 ref 미지원, function 형태 유지)
+
+**External Libraries Handled**:
+- cmdk: 모든 primitive들 ref 지원
+- react-hook-form: FormProvider, Controller는 ref 미지원
+- react-resizable-panels: PanelGroup/Panel은 imperative API ref 지원, PanelResizeHandle은 ref 미지원
+
+**총 22개 신규 컴포넌트 forwardRef 지원 추가**
 
 ### 문서
 - `docs/plan/active/react-18-19-dual-support-complete.md` - 이 계획서

@@ -1,178 +1,202 @@
-# Claude Code Hook 시스템 테스트 결과
+# Hook 테스트 결과 보고서
 
-## 테스트 일시
-2025-10-07
+**테스트 일시**: 2025-10-11
+**프로젝트**: shadcn-storybook-registry
+**테스트 대상**: .claude/settings.json Hook 설정 및 실행 스크립트
 
-## 테스트 목적
-Claude Code PostToolUse hook이 test.ts 파일에 대해서만 품질 검사를 수행하는지 검증
+---
 
-## 테스트 환경
-- **프로젝트**: VSCode Extension (FreeLens Migration)
-- **Hook 설정**: `.claude/settings.json`
-- **테스트 파일**: `test.ts` (프로젝트 루트)
-- **검사 도구**: TypeScript, ESLint, Prettier
+## 📋 테스트 개요
 
-## 테스트 시나리오
+CLAUDE.md 업데이트 후 .claude/ 디렉토리 설정을 검증하고, settings.json에 정의된 Hook들의 동작을 테스트하였습니다.
 
-### 1. TypeScript 타입 체크 (typecheck.cjs)
-**실행 명령**:
+---
+
+## ✅ 테스트 결과 요약
+
+| Hook 종류 | 스크립트 | 상태 | 비고 |
+|-----------|---------|------|------|
+| PostToolUse | quality-check.sh | ✅ 성공 | Edit/Write 후 자동 실행 |
+| PostToolUse | parallel-check.cjs | ✅ 성공 | ESLint, Prettier, TypeCheck 병렬 실행 |
+| PostToolUse | eslint.cjs | ✅ 성공 | 코드 lint 검사 정상 |
+| PostToolUse | prettier.cjs | ✅ 성공 | 코드 포맷 검사 정상 |
+| PostToolUse | typecheck.cjs | ✅ 성공 | TypeScript 타입 검사 정상 |
+| Stop | build-check.sh | ✅ 성공 | 세션 종료 시 빌드 검증 (빌드 스크립트 없음 시 생략) |
+
+---
+
+## 🔍 상세 테스트 내역
+
+### 1. Git 상태 확인
 ```bash
-node .claude/hooks/typecheck.cjs test.ts
+✅ CLAUDE.md 커밋 완료
+✅ .claude/ 디렉토리 커밋 완료
+✅ 작업 디렉토리 클린 상태 확인
 ```
 
-**결과**: ✅ **성공**
+### 2. .claude 설정 검증
+
+#### 디렉토리 구조
 ```
-test.ts(23,7): error TS2322: Type 'number' is not assignable to type 'string'.
+.claude/
+├── HOOK_TEST_RESULTS.md      # 이 파일
+├── commands/
+│   ├── plan.md               # ✅ Storybook 프로젝트에 맞춤 작성됨
+│   ├── qa.md                 # QA 프로세스 slash command
+│   └── run.md                # 실행 명령어 slash command
+├── hooks/
+│   ├── build-check.sh        # Stop hook (빌드 검증)
+│   ├── eslint.cjs            # ESLint 검사
+│   ├── gitlens-guide.sh      # GitLens 가이드
+│   ├── parallel-check.cjs    # 병렬 품질 검사 orchestrator
+│   ├── prettier.cjs          # Prettier 포맷 검사
+│   ├── quality-check.sh      # PostToolUse hook 진입점
+│   └── typecheck.cjs         # TypeScript 타입 검사
+├── settings.json             # Hook 설정
+├── settings.local.json       # 로컬 설정
+└── test-hook.ts              # Hook 테스트용 파일
 ```
 
-**검증**:
-- ✅ test.ts 파일만 검사
-- ✅ 타입 오류 정확히 감지 (line 23)
-- ✅ Exit code 1 반환 (오류 있음)
+#### settings.json 설정 검증
+```json
+{
+  "hooks": {
+    "PostToolUse": [{
+      "matcher": "Edit|Write|MultiEdit",
+      "hooks": [{
+        "type": "command",
+        "command": "bash \"$CLAUDE_PROJECT_DIR\"/.claude/hooks/quality-check.sh",
+        "timeout": 30
+      }]
+    }],
+    "Stop": [{
+      "hooks": [{
+        "type": "command",
+        "command": "bash \"$CLAUDE_PROJECT_DIR\"/.claude/hooks/build-check.sh",
+        "timeout": 120
+      }]
+    }]
+  }
+}
+```
 
----
+**결과**: ✅ 설정이 올바르게 구성됨
 
-### 2. ESLint 검사 (eslint.cjs)
-**실행 명령**:
+### 3. PostToolUse Hook 테스트
+
+#### 테스트 방법
 ```bash
-node .claude/hooks/eslint.cjs test.ts
+# quality-check.sh 수동 실행
+echo '{"tool_input": {"file_path": ".claude/test-hook.ts"}}' | bash .claude/hooks/quality-check.sh
 ```
 
-**결과**: ✅ **성공**
-- `var` → `const` 자동 수정
-- 포맷팅 자동 수정
-- `no-unused-vars`, `no-console`, `@typescript-eslint/no-explicit-any` 오류 감지 (autofix 불가)
+#### 실행 결과
+```
+🔍 품질 검사: .claude/test-hook.ts
+✅ 모든 검사 통과
+```
 
-**검증**:
-- ✅ test.ts 파일만 검사
-- ✅ `--fix` 옵션으로 수정 가능한 오류 자동 수정
-- ✅ 수정 불가능한 오류 감지
+**결과**: ✅ quality-check.sh가 정상적으로 실행되고 parallel-check.cjs를 호출함
 
----
+### 4. 개별 Hook 스크립트 테스트
 
-### 3. Prettier 포맷팅 (prettier.cjs)
-**실행 명령**:
+#### 4.1 eslint.cjs
 ```bash
-node .claude/hooks/prettier.cjs test.ts
+node .claude/hooks/eslint.cjs .claude/test-hook.ts
 ```
+**결과**: ✅ 정상 실행, 오류 없음
 
-**결과**: ✅ **성공**
-- 잘못된 포맷팅 자동 수정
-  - `const   x=1+2;const   y=3;` → `const x = 1 + 2;\nconst y = 3;`
-  - 탭 사용 (useTabs: true)
-  - 싱글 쿼트 적용
-
-**검증**:
-- ✅ test.ts 파일만 포맷팅
-- ✅ `.prettierrc` 설정 준수
-- ✅ Exit code 0 반환 (non-blocking)
-
----
-
-### 4. 병렬 검사 전체 실행 (parallel-check.cjs)
-**실행 명령**:
+#### 4.2 prettier.cjs
 ```bash
-node .claude/hooks/parallel-check.cjs test.ts
+node .claude/hooks/prettier.cjs .claude/test-hook.ts
+```
+**결과**: ✅ 정상 실행, 포맷 검사 통과
+
+#### 4.3 typecheck.cjs
+```bash
+node .claude/hooks/typecheck.cjs .claude/test-hook.ts
+```
+**결과**: ✅ 정상 실행, 타입 검사 통과
+
+#### 4.4 parallel-check.cjs (Orchestrator)
+```bash
+node .claude/hooks/parallel-check.cjs .claude/test-hook.ts
+```
+**결과**: ✅ ESLint, Prettier, TypeCheck를 병렬로 실행하여 모든 검사 통과
+
+### 5. Stop Hook 테스트
+
+#### 테스트 방법
+```bash
+bash .claude/hooks/build-check.sh
 ```
 
-**결과**: ✅ **성공 - Exit code 2로 차단**
+#### 실행 결과
 ```
-🚨 오류 발견:
-
-[TypeScript]
-test.ts(23,7): error TS2322: Type 'number' is not assignable to type 'string'.
+🏁 세션 종료 - 빌드 검증
+ℹ️  빌드 스크립트 없음. 검증 생략.
 ```
 
-**검증**:
-- ✅ test.ts에 대해서만 3가지 검사 병렬 실행
-- ✅ TypeScript 오류 감지 및 보고
-- ✅ ESLint, Prettier는 자동 수정 수행
-- ✅ Exit code 2 반환 (Claude Code 차단)
-- ✅ stderr로 오류 피드백
+**결과**: ✅ build-check.sh가 정상 실행됨
+**비고**: `npm run build` 스크립트가 있으면 세션 종료 시 빌드 검증 수행
 
 ---
 
-## 핵심 검증 항목
+## 📝 주요 발견사항
 
-### ✅ test.ts 파일만 검사하는가?
-**결과**: **YES**
-- quality-check.sh가 `tool_input.file_path`에서 파일 경로 추출
-- TypeScript/JavaScript 파일만 필터링 (`.ts`, `.tsx`, `.js`, `.jsx`)
-- 다른 파일은 exit 0으로 즉시 통과
+### ✅ 긍정적 요소
 
-### ✅ 실제 문제를 감지하는가?
-**결과**: **YES**
-- **TypeScript**: 타입 오류 2개 감지 (string ≠ number)
-- **ESLint**: unused vars, console.log, explicit any 감지
-- **Prettier**: 포맷팅 오류 자동 수정
+1. **plan.md는 이미 Storybook 프로젝트에 맞게 작성됨**
+   - Storybook 도구 및 명령어 포함
+   - Registry 시스템 언급
+   - CLAUDE.md 준수 강조
+   - 최소 수정 원칙 적용
 
-### ✅ Exit code로 Claude Code를 차단하는가?
-**결과**: **YES**
-- Exit code 0: 검사 통과 (작업 계속)
-- Exit code 1: 비차단 오류 (경고만)
-- **Exit code 2: 차단 오류 (Claude에게 피드백)**
+2. **모든 Hook 스크립트가 정상 작동**
+   - PostToolUse Hook (quality-check.sh)
+   - Stop Hook (build-check.sh)
+   - 개별 검사 스크립트들 (eslint, prettier, typecheck)
 
-### ✅ 병렬 실행이 작동하는가?
-**결과**: **YES**
-- 3가지 검사(TypeScript, ESLint, Prettier)를 동시에 실행
-- Promise.all로 병렬 처리
-- 모든 결과를 취합하여 통합 보고
+3. **병렬 처리 최적화**
+   - parallel-check.cjs가 3가지 검사를 동시 실행
+   - 품질 검사 시간 단축
 
----
+### ⚠️ 권장사항
 
-## Hook 시스템 아키텍처
+1. **Hook 자동 실행 확인 필요**
+   - 현재 테스트에서는 수동으로 Hook을 실행했습니다
+   - 실제 Edit/Write 도구 사용 시 자동 실행 여부 모니터링 권장
 
-```
-PostToolUse Hook (Edit/Write/MultiEdit)
-    ↓
-quality-check.sh
-    ↓
-tool_input.file_path 추출 → test.ts
-    ↓
-TypeScript 파일? YES
-    ↓
-parallel-check.cjs
-    ├─→ typecheck.cjs (10초 타임아웃)
-    ├─→ eslint.cjs (10초 타임아웃)
-    └─→ prettier.cjs (5초 타임아웃)
-    ↓
-오류 있음? → Exit 2 (차단)
-오류 없음? → Exit 0 (통과)
-```
+2. **빌드 스크립트 활성화 고려**
+   - 현재 build-check.sh가 빌드 스크립트를 찾지 못함
+   - Storybook 프로젝트에서 `npm run build` 또는 `npm run registry:build` 사용 시 활성화 가능
+
+3. **타입 검사 범위**
+   - 현재는 개별 파일만 검사
+   - 프로젝트 전체 타입 검사가 필요한 경우 tsconfig.json 활용 고려
 
 ---
 
-## 문제 및 해결
+## 🎯 결론
 
-### 문제 1: ES Module 오류
-**증상**: `require is not defined in ES module scope`
-**원인**: package.json에 `"type": "module"` 설정
-**해결**: `.js` → `.cjs` 확장자로 변경 (CommonJS 강제)
+### 종합 평가: ✅ **모든 Hook이 정상 작동**
 
-### 문제 2: ESLint autofix로 오류 감지 못함
-**증상**: 모든 오류가 자동 수정되어 exit code 0 반환
-**해결**: autofix 불가능한 오류 추가
-- `no-unused-vars` (사용되지 않는 변수)
-- `no-console` (console.log 사용)
-- `@typescript-eslint/no-explicit-any` (any 타입 사용)
+- **CLAUDE.md 기준**: .claude/ 디렉토리가 Storybook 프로젝트에 맞게 구성됨
+- **설정 검증**: settings.json의 Hook 설정이 올바름
+- **실행 테스트**: 모든 Hook 스크립트가 정상 실행되고 품질 검사 통과
+- **프로세스 통합**: CLAUDE.md의 개발 프로세스와 Hook이 일치함
 
----
+### 다음 단계
 
-## 결론
+1. ✅ Git 상태 정리 완료
+2. ✅ .claude 설정 검증 완료
+3. ✅ Hook 테스트 완료
+4. ✅ 테스트 결과 보고서 작성 완료
 
-### ✅ Hook 시스템 정상 작동 확인
-1. **test.ts 파일만 검사**: tool_input.file_path 기반 필터링 작동
-2. **실제 문제 감지**: TypeScript, ESLint, Prettier 모두 오류 정확히 감지
-3. **Exit code 차단**: Exit 2로 Claude Code에 피드백 및 작업 차단
-4. **병렬 실행**: 30초 이내 3가지 검사 완료
-5. **자동 수정**: ESLint --fix, Prettier --write 정상 작동
-
-### 📋 권장 사항
-1. **test.ts 유지**: `.gitignore`에 추가하여 향후 hook 변경 시 재사용
-2. **타임아웃 조정**: 대용량 파일 시 30초 → 60초로 증가 검토
-3. **Skip 옵션**: 필요 시 주석으로 hook 비활성화 가능
+**모든 작업 완료: shadcn-storybook-registry 프로젝트에 맞는 .claude 설정 및 Hook 시스템이 정상 작동합니다.**
 
 ---
 
-**테스트 완료 일시**: 2025-10-07 15:35 KST
-**테스트 수행자**: Claude Code (Sonnet 4.5)
+**작성일**: 2025-10-11
+**작성자**: Claude Code
+**문서 버전**: 1.0
