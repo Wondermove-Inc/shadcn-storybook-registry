@@ -1,10 +1,11 @@
 // Replace nextjs-vite with the name of your framework
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
+import { expect, userEvent, within } from "storybook/test";
 
-import { cn } from "@/lib/utils"
 import { Slider } from "@/components/ui/slider";
+import { cn } from "@/lib/utils";
 
-type SliderProps = React.ComponentProps<typeof Slider>
+type SliderProps = React.ComponentProps<typeof Slider>;
 
 export function SliderDemo({ className, ...props }: SliderProps) {
   return (
@@ -17,7 +18,7 @@ export function SliderDemo({ className, ...props }: SliderProps) {
         {...props}
       />
     </div>
-  )
+  );
 }
 
 /**
@@ -31,7 +32,7 @@ const meta = {
     layout: "centered",
   },
   excludeStories: /.*Demo$/,
-  render: () => <SliderDemo />
+  render: () => <SliderDemo />,
 } satisfies Meta<typeof Slider>;
 
 export default meta;
@@ -47,12 +48,36 @@ export const Default: Story = {};
  * Use the `inverted` prop to have the slider fill from right to left.
  */
 export const Inverted: Story = {
-  render: () => <SliderDemo inverted />
+  render: () => <SliderDemo inverted />,
 };
 
 /**
  * Use the `disabled` prop to disable the slider.
  */
 export const Disabled: Story = {
-  render: () => <SliderDemo disabled />
+  render: () => <SliderDemo disabled />,
+};
+
+export const ShouldChangeValue: Story = {
+  name: "when user interacts with slider, should change value",
+  tags: ["!dev", "!autodocs"],
+  render: () => <SliderDemo />,
+  play: async ({ canvasElement, step }) => {
+    const canvas = within(canvasElement);
+
+    await step("focus slider and press arrow key", async () => {
+      const slider = canvas.getByRole("slider");
+      await userEvent.click(slider);
+
+      // Get initial value
+      const initialValue = slider.getAttribute("aria-valuenow");
+
+      // Press right arrow key to increase value
+      await userEvent.keyboard("{ArrowRight}");
+
+      // Verify value changed
+      const newValue = slider.getAttribute("aria-valuenow");
+      await expect(Number(newValue)).toBeGreaterThan(Number(initialValue));
+    });
+  },
 };

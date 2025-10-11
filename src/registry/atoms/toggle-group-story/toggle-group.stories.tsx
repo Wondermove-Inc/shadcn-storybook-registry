@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 import { Bold, Italic, Underline } from "lucide-react";
+import { expect, userEvent, within } from "storybook/test";
 
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 
@@ -17,7 +18,7 @@ export function ToggleGroupDemo() {
         <Underline className="h-4 w-4" />
       </ToggleGroupItem>
     </ToggleGroup>
-  )
+  );
 }
 
 // Outline example from official docs
@@ -34,7 +35,7 @@ export function ToggleGroupOutline() {
         <Underline className="h-4 w-4" />
       </ToggleGroupItem>
     </ToggleGroup>
-  )
+  );
 }
 
 // Single example from official docs
@@ -51,7 +52,7 @@ export function ToggleGroupSingle() {
         <Underline className="h-4 w-4" />
       </ToggleGroupItem>
     </ToggleGroup>
-  )
+  );
 }
 
 // Small size example from official docs
@@ -68,7 +69,7 @@ export function ToggleGroupSmall() {
         <Underline className="h-4 w-4" />
       </ToggleGroupItem>
     </ToggleGroup>
-  )
+  );
 }
 
 // Large size example from official docs
@@ -85,7 +86,7 @@ export function ToggleGroupLarge() {
         <Underline className="h-4 w-4" />
       </ToggleGroupItem>
     </ToggleGroup>
-  )
+  );
 }
 
 // Disabled example from official docs
@@ -102,9 +103,8 @@ export function ToggleGroupDisabled() {
         <Underline className="h-4 w-4" />
       </ToggleGroupItem>
     </ToggleGroup>
-  )
+  );
 }
-
 
 /**
  * A set of two-state buttons that can be toggled on or off.
@@ -128,9 +128,9 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
   args: {
     type: "multiple",
-    variant: "outline"
+    variant: "outline",
   },
-  render: () => <ToggleGroupDemo />
+  render: () => <ToggleGroupDemo />,
 };
 
 /**
@@ -139,9 +139,9 @@ export const Default: Story = {
 export const Outline: Story = {
   args: {
     type: "multiple",
-    variant: "outline"
+    variant: "outline",
   },
-  render: () => <ToggleGroupOutline />
+  render: () => <ToggleGroupOutline />,
 };
 
 /**
@@ -149,9 +149,9 @@ export const Outline: Story = {
  */
 export const Single: Story = {
   args: {
-    type: "single"
+    type: "single",
   },
-  render: () => <ToggleGroupSingle />
+  render: () => <ToggleGroupSingle />,
 };
 
 /**
@@ -160,9 +160,9 @@ export const Single: Story = {
 export const Small: Story = {
   args: {
     type: "single",
-    size: "sm"
+    size: "sm",
   },
-  render: () => <ToggleGroupSmall />
+  render: () => <ToggleGroupSmall />,
 };
 
 /**
@@ -171,9 +171,9 @@ export const Small: Story = {
 export const Large: Story = {
   args: {
     type: "multiple",
-    size: "lg"
+    size: "lg",
   },
-  render: () => <ToggleGroupLarge />
+  render: () => <ToggleGroupLarge />,
 };
 
 /**
@@ -182,7 +182,45 @@ export const Large: Story = {
 export const Disabled: Story = {
   args: {
     type: "multiple",
-    disabled: true
+    disabled: true,
   },
-  render: () => <ToggleGroupDisabled />
+  render: () => <ToggleGroupDisabled />,
+};
+
+export const ShouldSelectItem: Story = {
+  name: "when toggle group item is clicked, should toggle selection",
+  tags: ["!dev", "!autodocs"],
+  args: {
+    type: "multiple",
+    variant: "outline",
+  },
+  render: () => <ToggleGroupDemo />,
+  play: async ({ canvasElement, step }) => {
+    const canvas = within(canvasElement);
+
+    await step("click 'Toggle bold' button", async () => {
+      const boldButton = canvas.getByLabelText(/toggle bold/i);
+      await userEvent.click(boldButton);
+    });
+
+    await step("verify bold button is selected", async () => {
+      const boldButton = canvas.getByLabelText(/toggle bold/i);
+      await expect(boldButton).toHaveAttribute("data-state", "on");
+    });
+
+    await step("click 'Toggle italic' button", async () => {
+      const italicButton = canvas.getByLabelText(/toggle italic/i);
+      await userEvent.click(italicButton);
+    });
+
+    await step(
+      "verify both bold and italic are selected (multiple type)",
+      async () => {
+        const boldButton = canvas.getByLabelText(/toggle bold/i);
+        const italicButton = canvas.getByLabelText(/toggle italic/i);
+        await expect(boldButton).toHaveAttribute("data-state", "on");
+        await expect(italicButton).toHaveAttribute("data-state", "on");
+      },
+    );
+  },
 };

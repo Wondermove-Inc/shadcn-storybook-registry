@@ -1,15 +1,15 @@
-"use client"
+"use client";
 
-import * as React from "react"
+import { zodResolver } from "@hookform/resolvers/zod";
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
-import { Check, ChevronsUpDown, MoreHorizontal } from "lucide-react"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
-import { z } from "zod"
-import { toast } from "sonner"
+import { Check, ChevronsUpDown, MoreHorizontal } from "lucide-react";
+import * as React from "react";
+import { useForm } from "react-hook-form";
+import { toast } from "sonner";
+import { expect, userEvent, within } from "storybook/test";
+import { z } from "zod";
 
-import { cn } from "@/lib/utils"
-import { Button } from "@/components/ui/button"
+import { Button } from "@/components/ui/button";
 import {
   Command,
   CommandEmpty,
@@ -17,21 +17,7 @@ import {
   CommandInput,
   CommandItem,
   CommandList,
-} from "@/components/ui/command"
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover"
-import {
-  Form,
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form"
+} from "@/components/ui/command";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -44,7 +30,22 @@ import {
   DropdownMenuSubContent,
   DropdownMenuSubTrigger,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
+} from "@/components/ui/dropdown-menu";
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { cn } from "@/lib/utils";
 
 const frameworks = [
   {
@@ -67,11 +68,11 @@ const frameworks = [
     value: "astro",
     label: "Astro",
   },
-]
+];
 
 export function ComboboxDemo() {
-  const [open, setOpen] = React.useState(false)
-  const [value, setValue] = React.useState("")
+  const [open, setOpen] = React.useState(false);
+  const [value, setValue] = React.useState("");
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -99,15 +100,15 @@ export function ComboboxDemo() {
                   key={framework.value}
                   value={framework.value}
                   onSelect={(currentValue) => {
-                    setValue(currentValue === value ? "" : currentValue)
-                    setOpen(false)
+                    setValue(currentValue === value ? "" : currentValue);
+                    setOpen(false);
                   }}
                 >
                   {framework.label}
                   <Check
                     className={cn(
                       "ml-auto",
-                      value === framework.value ? "opacity-100" : "opacity-0"
+                      value === framework.value ? "opacity-100" : "opacity-0",
                     )}
                   />
                 </CommandItem>
@@ -117,7 +118,7 @@ export function ComboboxDemo() {
         </Command>
       </PopoverContent>
     </Popover>
-  )
+  );
 }
 
 /**
@@ -131,8 +132,8 @@ const meta: Meta<typeof ComboboxDemo> = {
     layout: "centered",
   },
   excludeStories: /.*Demo$/,
-  render: () => <ComboboxDemo />
-}
+  render: () => <ComboboxDemo />,
+};
 
 export default meta;
 
@@ -148,8 +149,8 @@ export const Default: Story = {};
  */
 export const PopoverPosition: Story = {
   render: () => {
-    const [open, setOpen] = React.useState(false)
-    const [value, setValue] = React.useState("")
+    const [open, setOpen] = React.useState(false);
+    const [value, setValue] = React.useState("");
 
     return (
       <Popover open={open} onOpenChange={setOpen}>
@@ -177,15 +178,15 @@ export const PopoverPosition: Story = {
                     key={framework.value}
                     value={framework.value}
                     onSelect={(currentValue) => {
-                      setValue(currentValue === value ? "" : currentValue)
-                      setOpen(false)
+                      setValue(currentValue === value ? "" : currentValue);
+                      setOpen(false);
                     }}
                   >
                     {framework.label}
                     <Check
                       className={cn(
                         "ml-auto",
-                        value === framework.value ? "opacity-100" : "opacity-0"
+                        value === framework.value ? "opacity-100" : "opacity-0",
                       )}
                     />
                   </CommandItem>
@@ -195,8 +196,8 @@ export const PopoverPosition: Story = {
           </Command>
         </PopoverContent>
       </Popover>
-    )
-  }
+    );
+  },
 };
 
 /**
@@ -208,21 +209,23 @@ export const WithForm: Story = {
       framework: z.string().min(1, {
         message: "Please select a framework.",
       }),
-    })
+    });
 
     function ComboboxForm() {
       const form = useForm<z.infer<typeof FormSchema>>({
         resolver: zodResolver(FormSchema),
-      })
+      });
 
       function onSubmit(data: z.infer<typeof FormSchema>) {
         toast("You submitted the following values:", {
           description: (
             <pre className="mt-2 w-[320px] rounded-md bg-neutral-950 p-4">
-              <code className="text-white">{JSON.stringify(data, null, 2)}</code>
+              <code className="text-white">
+                {JSON.stringify(data, null, 2)}
+              </code>
             </pre>
           ),
-        })
+        });
       }
 
       return (
@@ -242,12 +245,12 @@ export const WithForm: Story = {
                           role="combobox"
                           className={cn(
                             "w-[200px] justify-between",
-                            !field.value && "text-muted-foreground"
+                            !field.value && "text-muted-foreground",
                           )}
                         >
                           {field.value
                             ? frameworks.find(
-                                (framework) => framework.value === field.value
+                                (framework) => framework.value === field.value,
                               )?.label
                             : "Select framework"}
                           <ChevronsUpDown className="opacity-50" />
@@ -268,7 +271,7 @@ export const WithForm: Story = {
                                 value={framework.label}
                                 key={framework.value}
                                 onSelect={() => {
-                                  form.setValue("framework", framework.value)
+                                  form.setValue("framework", framework.value);
                                 }}
                               >
                                 {framework.label}
@@ -277,7 +280,7 @@ export const WithForm: Story = {
                                     "ml-auto",
                                     framework.value === field.value
                                       ? "opacity-100"
-                                      : "opacity-0"
+                                      : "opacity-0",
                                   )}
                                 />
                               </CommandItem>
@@ -297,11 +300,11 @@ export const WithForm: Story = {
             <Button type="submit">Submit</Button>
           </form>
         </Form>
-      )
+      );
     }
 
-    return <ComboboxForm />
-  }
+    return <ComboboxForm />;
+  },
 };
 
 /**
@@ -310,9 +313,9 @@ export const WithForm: Story = {
 export const StatusPopover: Story = {
   render: () => {
     type Status = {
-      value: string
-      label: string
-    }
+      value: string;
+      label: string;
+    };
 
     const statuses: Status[] = [
       { value: "backlog", label: "Backlog" },
@@ -320,19 +323,25 @@ export const StatusPopover: Story = {
       { value: "in progress", label: "In Progress" },
       { value: "done", label: "Done" },
       { value: "canceled", label: "Canceled" },
-    ]
+    ];
 
     function ComboboxPopover() {
-      const [open, setOpen] = React.useState(false)
-      const [selectedStatus, setSelectedStatus] = React.useState<Status | null>(null)
+      const [open, setOpen] = React.useState(false);
+      const [selectedStatus, setSelectedStatus] = React.useState<Status | null>(
+        null,
+      );
 
       return (
         <div className="flex items-center gap-4">
-          <p className="text-sm text-muted-foreground">Status</p>
+          <p className="text-muted-foreground text-sm">Status</p>
           <Popover open={open} onOpenChange={setOpen}>
             <PopoverTrigger asChild>
               <Button variant="outline" className="w-[150px] justify-start">
-                {selectedStatus ? <>{selectedStatus.label}</> : <>+ Set status</>}
+                {selectedStatus ? (
+                  <>{selectedStatus.label}</>
+                ) : (
+                  <>+ Set status</>
+                )}
               </Button>
             </PopoverTrigger>
             <PopoverContent className="p-0" side="right" align="start">
@@ -347,9 +356,11 @@ export const StatusPopover: Story = {
                         value={status.value}
                         onSelect={(value) => {
                           setSelectedStatus(
-                            statuses.find((priority) => priority.value === value) || null
-                          )
-                          setOpen(false)
+                            statuses.find(
+                              (priority) => priority.value === value,
+                            ) || null,
+                          );
+                          setOpen(false);
                         }}
                       >
                         {status.label}
@@ -361,11 +372,11 @@ export const StatusPopover: Story = {
             </PopoverContent>
           </Popover>
         </div>
-      )
+      );
     }
 
-    return <ComboboxPopover />
-  }
+    return <ComboboxPopover />;
+  },
 };
 
 /**
@@ -381,16 +392,16 @@ export const DropdownMenuIntegration: Story = {
       "design",
       "question",
       "maintenance",
-    ]
+    ];
 
     function ComboboxDropdownMenu() {
-      const [label, setLabel] = React.useState("feature")
-      const [open, setOpen] = React.useState(false)
+      const [label, setLabel] = React.useState("feature");
+      const [open, setOpen] = React.useState(false);
 
       return (
         <div className="flex w-full flex-col items-start justify-between rounded-md border px-4 py-3 sm:flex-row sm:items-center">
-          <p className="text-sm font-medium leading-none">
-            <span className="mr-2 rounded-lg bg-primary px-2 py-1 text-xs text-primary-foreground">
+          <p className="text-sm leading-none font-medium">
+            <span className="bg-primary text-primary-foreground mr-2 rounded-lg px-2 py-1 text-xs">
               {label}
             </span>
             <span className="text-muted-foreground">Create a new project</span>
@@ -424,8 +435,8 @@ export const DropdownMenuIntegration: Story = {
                               key={label}
                               value={label}
                               onSelect={(value) => {
-                                setLabel(value)
-                                setOpen(false)
+                                setLabel(value);
+                                setOpen(false);
                               }}
                             >
                               {label}
@@ -445,9 +456,36 @@ export const DropdownMenuIntegration: Story = {
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
-      )
+      );
     }
 
-    return <ComboboxDropdownMenu />
-  }
+    return <ComboboxDropdownMenu />;
+  },
+};
+
+export const ShouldSelectOption: Story = {
+  name: "when user opens combobox and selects option, should update value",
+  tags: ["!dev", "!autodocs"],
+  render: () => <ComboboxDemo />,
+  play: async ({ canvasElement, step }) => {
+    const canvas = within(canvasElement);
+
+    await step("click combobox button to open", async () => {
+      const comboboxButton = canvas.getByRole("combobox");
+      await userEvent.click(comboboxButton);
+    });
+
+    await step("select 'Next.js' option", async () => {
+      // Wait for the options to appear
+      const nextjsOption = await canvas.findByText("Next.js", {
+        selector: '[role="option"]',
+      });
+      await userEvent.click(nextjsOption);
+    });
+
+    await step("verify combobox shows selected value", async () => {
+      const comboboxButton = canvas.getByRole("combobox");
+      await expect(comboboxButton).toHaveTextContent("Next.js");
+    });
+  },
 };
