@@ -342,11 +342,15 @@ const ColorTile = ({ value }: Pick<Color, "value">) => {
     };
   }, [value]);
 
+  // 🎨 HSL 값을 쉼표 형식으로 변환 (React 인라인 스타일 호환성)
+  // "0 0% 100%" → "0, 0%, 100%"
+  const hslValue = colorValue.replace(/\s+/g, ", ");
+
   return (
     <div className="flex flex-col items-center gap-2">
       <div
         className="size-20 rounded-md border"
-        style={{ backgroundColor: `hsl(var(${value}))` }}
+        style={{ backgroundColor: `hsl(${hslValue})` }}
       />
       <p className="text-center text-xs opacity-70">{value}</p>
       <p className="text-center font-mono text-xs">{colorValue}</p>
