@@ -4,6 +4,7 @@ import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 import { CircleCheckIcon, CircleHelpIcon, CircleIcon } from "lucide-react";
 import Link from "next/link";
 import * as React from "react";
+import { expect, userEvent, within } from "storybook/test";
 
 import {
   NavigationMenu,
@@ -254,4 +255,23 @@ function NavigationMenuLinkDemo() {
  */
 export const LinkItem: Story = {
   render: () => <NavigationMenuLinkDemo />,
+};
+
+export const ShouldOpenNavigationMenu: Story = {
+  name: "when navigation menu trigger is clicked, should show content",
+  tags: ["!dev", "!autodocs"],
+  render: () => <NavigationMenuDemo />,
+  play: async ({ canvasElement, step }) => {
+    const canvas = within(canvasElement);
+
+    await step("click 'Components' trigger to open menu", async () => {
+      const componentsTrigger = canvas.getByRole("button", {
+        name: /components/i,
+      });
+      await userEvent.click(componentsTrigger);
+    });
+
+    const alertDialogLink = await canvas.findByText(/Alert Dialog/i);
+    await expect(alertDialogLink).toBeVisible();
+  },
 };

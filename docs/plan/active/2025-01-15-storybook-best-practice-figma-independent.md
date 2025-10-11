@@ -4,6 +4,32 @@
 **프로젝트**: shadcn-storybook-registry
 **계획 유형**: Figma URL 없이 진행 가능한 개선사항
 
+## 📊 현재 진행 상황 (2025-01-15 업데이트)
+
+**전체 진행률**: 7/13 작업 완료 (53.8%)
+
+### ✅ Phase 1: 필수 개선 - 완료 (100%)
+- ✅ Task 1: Autodocs 태그 12개 누락 수정 (66/66 = 100%)
+- ✅ Task 2: Actions argTypesRegex 경고 해결 (7개 컴포넌트 fn() 추가)
+- ✅ Task 3: storybook-dark-mode 애드온 정리 (16개 패키지 제거)
+
+### ✅ Phase 2: 기반 도구 설치 - 완료 (100%)
+- ✅ Task 4: Viewport addon 활성화 (Mobile/Tablet/Desktop)
+- ✅ Task 5: Backgrounds addon 활성화 (Light/Dark/Gray)
+- ✅ Task 6: Essentials addon 확인 (Storybook 9 코어 내장)
+
+### ⏳ Phase 3: Interactive 기능 확대 - 진행 중 (50%)
+- ✅ Task 7: Args 기반 Interactive Controls 확대 (20/20 컴포넌트 완료)
+- ⏳ Task 8: Play functions 커버리지 향상 (1/5 Form 컴포넌트 완료, 20%)
+
+### ⏸️ Phase 4: 고급 기능 및 문서화 - 대기 중 (0%)
+- ⏸️ Task 9-12: 옵션 작업 (storybook-design-token, Chromatic, A11y, MDX)
+
+### ⏸️ Phase 5: React 18.3.1 호환성 테스트 - 대기 중 (0%)
+- ⏸️ Task 13: React 18/19 Dual Support 검증
+
+**현재 작업**: Task 8 - Play functions 커버리지 향상 (Input 완료, Textarea/Select/RadioGroup/Switch 대기)
+
 ---
 
 ## 🎯 목표 (Goal)
@@ -592,16 +618,23 @@ export const Default: Story = {
 
 ---
 
-#### [ ] 8. Play functions 커버리지 향상 (20개 컴포넌트 추가)
+#### [⏳] 8. Play functions 커버리지 향상 (20개 컴포넌트 추가) ⏳ **진행 중** (2025-01-15)
 **목적**: 자동화된 인터랙션 테스트 커버리지를 22.7%에서 53%+로 확대
 **예상 시간**: 10시간
 **난이도**: ⭐⭐⭐ 어려움
+**현재 진행률**: 1/5 Form 컴포넌트 완료 (20%)
+
+**완료 결과 (현재까지)**:
+- ✅ **Input (Task 8-1)**: 이미 2개 Play function 구현 완료
+  - `ShouldEnterText`: 타이핑 테스트 (userEvent.type, expect.toHaveValue)
+  - `WithRef`: Ref 기반 focus/select 테스트
+- ⏳ Textarea, Select, RadioGroup, Switch 작업 대기 중
 
 **작업 내용**:
 1. Play functions 추가 대상 (20개):
 
    **Form 컴포넌트 (5개, 30분/개)**:
-   - Input: 타이핑 테스트
+   - ✅ Input: 타이핑 테스트 (이미 완료)
    - Textarea: 멀티라인 입력 테스트
    - Select: 옵션 선택 테스트
    - Radio: 라디오 버튼 선택 테스트
@@ -1221,14 +1254,18 @@ React 19.1.1 환경:
 
 ## 🎯 성과 지표 (KPI)
 
-| 지표 | 현재 (Before) | 목표 (After) | 달성률 |
-|------|---------------|--------------|--------|
-| **Best Practice 점수** | 78/100 | 93/100 | +15점 |
-| **Autodocs 커버리지** | 54/66 (81.8%) | 66/66 (100%) | +18.2% |
-| **Play functions 커버리지** | 15/66 (22.7%) | 35/66 (53.0%) | +30.3% |
-| **Args 기반 Controls** | 0개 | 20개 | +20개 |
-| **패키지 의존성** | storybook-dark-mode 있음 | 정리 완료 | ✅ |
-| **Actions 경고** | 발생 중 | 완전 제거 | ✅ |
+| 지표 | 현재 (Before) | 현재 진행 (Progress) | 목표 (After) | 달성률 |
+|------|---------------|---------------------|--------------|--------|
+| **Best Practice 점수** | 78/100 | ~84/100 (예상) | 93/100 | 6/15점 (40%) |
+| **Autodocs 커버리지** | 54/66 (81.8%) | 66/66 (100%) ✅ | 66/66 (100%) | ✅ 완료 |
+| **Play functions 커버리지** | 15/66 (22.7%) | 15/66 (22.7%) | 35/66 (53.0%) | 0/20개 (0%) |
+| **Args 기반 Controls** | 0개 | 20개 ✅ | 20개 | ✅ 완료 |
+| **패키지 의존성** | storybook-dark-mode 있음 | 정리 완료 ✅ | 정리 완료 | ✅ 완료 |
+| **Actions 경고** | 발생 중 | 완전 제거 ✅ | 완전 제거 | ✅ 완료 |
+| **Viewport addon** | 미설치 | 활성화 완료 ✅ | 활성화 | ✅ 완료 |
+| **Backgrounds addon** | 비활성화 | 활성화 완료 ✅ | 활성화 | ✅ 완료 |
+
+**참고**: Play functions는 Input에 이미 2개 구현되어 있었으므로, Task 8에서는 추가로 19개 컴포넌트에 Play functions를 구현해야 커버리지 목표(35/66)를 달성할 수 있습니다.
 
 ---
 

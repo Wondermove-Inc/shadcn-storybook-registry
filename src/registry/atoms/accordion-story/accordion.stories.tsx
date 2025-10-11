@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
+import { expect, userEvent, within } from "storybook/test";
 
 import {
   Accordion,
@@ -90,4 +91,23 @@ type Story = StoryObj<typeof meta>;
  */
 export const Default: Story = {
   render: () => <AccordionDemo />,
+};
+
+export const ShouldExpandAccordion: Story = {
+  name: "when accordion trigger is clicked, should expand content",
+  tags: ["!dev", "!autodocs"],
+  render: () => <AccordionDemo />,
+  play: async ({ canvasElement, step }) => {
+    const canvas = within(canvasElement);
+
+    await step("click 'Shipping Details' accordion trigger", async () => {
+      const shippingTrigger = canvas.getByRole("button", {
+        name: /shipping details/i,
+      });
+      await userEvent.click(shippingTrigger);
+    });
+
+    const shippingContent = canvas.getByText(/We offer worldwide shipping/i);
+    await expect(shippingContent).toBeVisible();
+  },
 };

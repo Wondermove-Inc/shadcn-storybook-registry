@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
+import { expect, userEvent, within } from "storybook/test";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -96,4 +97,21 @@ type Story = StoryObj<typeof meta>;
  */
 export const Default: Story = {
   render: () => <TabsDemo />,
+};
+
+export const ShouldSwitchTabs: Story = {
+  name: "when tab is clicked, should switch content",
+  tags: ["!dev", "!autodocs"],
+  render: () => <TabsDemo />,
+  play: async ({ canvasElement, step }) => {
+    const canvas = within(canvasElement);
+
+    await step("click 'Password' tab", async () => {
+      const passwordTab = canvas.getByRole("tab", { name: /password/i });
+      await userEvent.click(passwordTab);
+    });
+
+    const passwordContent = canvas.getByText(/Change your password here/i);
+    await expect(passwordContent).toBeVisible();
+  },
 };

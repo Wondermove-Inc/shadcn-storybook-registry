@@ -1,4 +1,3 @@
-import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 import {
   Menubar,
   MenubarCheckboxItem,
@@ -13,7 +12,9 @@ import {
   MenubarSubContent,
   MenubarSubTrigger,
   MenubarTrigger,
-} from "@/components/ui/menubar"
+} from "@/components/ui/menubar";
+import type { Meta, StoryObj } from "@storybook/nextjs-vite";
+import { expect, userEvent, within } from "storybook/test";
 
 function MenubarDemo() {
   return (
@@ -104,7 +105,7 @@ function MenubarDemo() {
         </MenubarContent>
       </MenubarMenu>
     </Menubar>
-  )
+  );
 }
 
 /**
@@ -128,3 +129,20 @@ type Story = StoryObj<typeof meta>;
  * The default form of the menubar with multiple menus, submenus, radio groups, and checkbox items.
  */
 export const Default: Story = {};
+
+export const ShouldOpenMenubar: Story = {
+  name: "when menubar trigger is clicked, should open menu items",
+  tags: ["!dev", "!autodocs"],
+  render: () => <MenubarDemo />,
+  play: async ({ canvasElement, step }) => {
+    const canvas = within(canvasElement);
+
+    await step("click 'Edit' menubar trigger", async () => {
+      const editTrigger = canvas.getByRole("menuitem", { name: /edit/i });
+      await userEvent.click(editTrigger);
+    });
+
+    const undoItem = await canvas.findByText(/Undo/i);
+    await expect(undoItem).toBeVisible();
+  },
+};
