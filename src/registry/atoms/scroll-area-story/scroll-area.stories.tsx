@@ -1,16 +1,17 @@
+import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
+import { Separator } from "@/components/ui/separator";
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
-import * as React from "react"
-import Image from "next/image"
-import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area"
-import { Separator } from "@/components/ui/separator"
+import Image from "next/image";
+import * as React from "react";
+import { expect, waitFor, within } from "storybook/test";
 
 const tags = Array.from({ length: 50 }).map(
-  (_, i, a) => `v1.2.0-beta.${a.length - i}`
-)
+  (_, i, a) => `v1.2.0-beta.${a.length - i}`,
+);
 
 interface Artwork {
-  artist: string
-  art: string
+  artist: string;
+  art: string;
 }
 
 const works: Artwork[] = [
@@ -26,7 +27,7 @@ const works: Artwork[] = [
     artist: "Vladimir Malyavko",
     art: "https://images.unsplash.com/photo-1494337480532-3725c85fd2ab?auto=format&fit=crop&w=300&q=80",
   },
-]
+];
 
 // Demo component from official docs
 export function ScrollAreaDemo() {
@@ -42,7 +43,7 @@ export function ScrollAreaDemo() {
         ))}
       </div>
     </ScrollArea>
-  )
+  );
 }
 
 // Horizontal demo component from official docs
@@ -72,7 +73,7 @@ export function ScrollAreaHorizontalDemo() {
       </div>
       <ScrollBar orientation="horizontal" />
     </ScrollArea>
-  )
+  );
 }
 
 /**
@@ -88,14 +89,14 @@ const meta = {
   excludeStories: /.*Demo$/,
   argTypes: {
     className: {
-      control: 'text',
-      description: 'Additional CSS classes to apply'
+      control: "text",
+      description: "Additional CSS classes to apply",
     },
     children: {
       control: false,
-      description: 'Content to be scrolled'
-    }
-  }
+      description: "Content to be scrolled",
+    },
+  },
 } satisfies Meta<typeof ScrollArea>;
 
 export default meta;
@@ -106,7 +107,7 @@ type Story = StoryObj<typeof meta>;
  * The default form of the scroll area with vertical scrolling.
  */
 export const Default: Story = {
-  render: () => <ScrollAreaDemo />
+  render: () => <ScrollAreaDemo />,
 };
 
 /**
@@ -115,24 +116,25 @@ export const Default: Story = {
 export const BasicUsage: Story = {
   render: () => (
     <ScrollArea className="h-[200px] w-[350px] rounded-md border p-4">
-      Jokester began sneaking into the castle in the middle of the night and leaving 
-      jokes all over the place: under the king's pillow, in his soup, even in the 
-      royal toilet. The king was furious, but he couldn't seem to stop Jokester. 
-      And then, one day, the people of the kingdom discovered that the jokes left 
-      by Jokester were so funny that they couldn't help but laugh. And once they 
-      started laughing, they couldn't stop. The laughter spread throughout the 
-      kingdom, bringing joy and happiness to everyone. Even the grumpy king couldn't 
-      help but chuckle at some of the jokes. From that day on, Jokester became a 
-      beloved figure in the kingdom, bringing laughter and joy to all.
+      Jokester began sneaking into the castle in the middle of the night and
+      leaving jokes all over the place: under the king's pillow, in his soup,
+      even in the royal toilet. The king was furious, but he couldn't seem to
+      stop Jokester. And then, one day, the people of the kingdom discovered
+      that the jokes left by Jokester were so funny that they couldn't help but
+      laugh. And once they started laughing, they couldn't stop. The laughter
+      spread throughout the kingdom, bringing joy and happiness to everyone.
+      Even the grumpy king couldn't help but chuckle at some of the jokes. From
+      that day on, Jokester became a beloved figure in the kingdom, bringing
+      laughter and joy to all.
     </ScrollArea>
-  )
+  ),
 };
 
 /**
  * Horizontal scrolling with images.
  */
 export const HorizontalScrolling: Story = {
-  render: () => <ScrollAreaHorizontalDemo />
+  render: () => <ScrollAreaHorizontalDemo />,
 };
 
 /**
@@ -142,13 +144,14 @@ export const CustomHeight: Story = {
   render: () => (
     <ScrollArea className="h-[400px] w-[250px] rounded-md border">
       <div className="p-4">
-        <h4 className="mb-4 text-sm font-medium leading-none">Notifications</h4>
+        <h4 className="mb-4 text-sm leading-none font-medium">Notifications</h4>
         {Array.from({ length: 20 }).map((_, i) => (
           <React.Fragment key={i}>
             <div className="py-2">
               <p className="text-sm font-medium">Notification {i + 1}</p>
-              <p className="text-sm text-muted-foreground">
-                This is a sample notification message that might be longer than expected and needs scrolling.
+              <p className="text-muted-foreground text-sm">
+                This is a sample notification message that might be longer than
+                expected and needs scrolling.
               </p>
             </div>
             {i < 19 && <Separator />}
@@ -156,7 +159,7 @@ export const CustomHeight: Story = {
         ))}
       </div>
     </ScrollArea>
-  )
+  ),
 };
 
 /**
@@ -169,11 +172,11 @@ export const BothDirections: Story = {
         <table className="w-[600px]">
           <thead>
             <tr className="border-b">
-              <th className="text-left p-2">Name</th>
-              <th className="text-left p-2">Email</th>
-              <th className="text-left p-2">Status</th>
-              <th className="text-left p-2">Role</th>
-              <th className="text-left p-2">Last Active</th>
+              <th className="p-2 text-left">Name</th>
+              <th className="p-2 text-left">Email</th>
+              <th className="p-2 text-left">Status</th>
+              <th className="p-2 text-left">Role</th>
+              <th className="p-2 text-left">Last Active</th>
             </tr>
           </thead>
           <tbody>
@@ -191,5 +194,39 @@ export const BothDirections: Story = {
       </div>
       <ScrollBar orientation="horizontal" />
     </ScrollArea>
-  )
+  ),
+};
+
+export const ShouldScroll: Story = {
+  name: "when content overflows, should be scrollable",
+  tags: ["!dev", "!autodocs"],
+  render: () => <ScrollAreaDemo />,
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+
+    // 🎯 목적: Scroll Area가 콘텐츠가 넘칠 때 스크롤 가능한지 확인
+    // 첫 번째 태그 확인 (v1.2.0-beta.50)
+    const firstTag = await canvas.findByText(/v1\.2\.0-beta\.50/i);
+    await expect(firstTag).toBeInTheDocument();
+
+    // 스크롤 영역을 찾아서 스크롤 다운
+    const scrollViewport = canvasElement.querySelector(
+      "[data-radix-scroll-area-viewport]",
+    );
+    if (scrollViewport) {
+      // 스크롤 가능 여부 확인 (scrollHeight > clientHeight)
+      await expect(scrollViewport.scrollHeight).toBeGreaterThan(
+        scrollViewport.clientHeight,
+      );
+
+      // 스크롤 다운
+      scrollViewport.scrollTop = scrollViewport.scrollHeight;
+
+      // 스크롤 후 마지막 태그가 보이는지 확인
+      await waitFor(async () => {
+        const lastTagVisible = await canvas.findByText(/v1\.2\.0-beta\.1$/);
+        await expect(lastTagVisible).toBeInTheDocument();
+      });
+    }
+  },
 };

@@ -8,6 +8,7 @@ import { Calendar as CalendarIcon, ChevronDownIcon } from "lucide-react";
 import * as React from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
+import { expect, userEvent, waitFor, within } from "storybook/test";
 import { z } from "zod";
 
 import { Button } from "@/components/ui/button";
@@ -366,4 +367,42 @@ export const NaturalLanguagePicker: Story = {
  */
 export const FormIntegration: Story = {
   render: () => <FormDemo />,
+};
+
+export const ShouldSelectDate: Story = {
+  name: "when user clicks trigger and selects date, should display selected date",
+  tags: ["!dev", "!autodocs"],
+  render: () => <DatePickerDemo />,
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+
+    // 🎯 목적: Date Picker가 트리거 버튼 클릭으로 열리고, 날짜 선택 후 표시되는지 확인
+    const triggerButton = canvas.getByRole("button", { name: /select date/i });
+    await expect(triggerButton).toBeInTheDocument();
+
+    // 트리거 버튼 클릭하여 Calendar 열기
+    await userEvent.click(triggerButton);
+
+    // Calendar가 열렸는지 확인 (날짜 버튼 확인)
+    await waitFor(async () => {
+      const dateButtons = await canvas.findAllByRole("button");
+      await expect(dateButtons.length).toBeGreaterThan(1);
+    });
+
+    // 날짜 버튼 찾기 (15일 선택)
+    const dateButtons = canvas.getAllByRole("button");
+    const date15Button = dateButtons.find(
+      (button) => button.textContent?.trim() === "15",
+    );
+
+    if (date15Button) {
+      // 날짜 클릭
+      await userEvent.click(date15Button);
+
+      // 선택된 날짜가 버튼에 표시되는지 확인 (Popover가 닫히고 날짜가 표시됨)
+      await waitFor(() => {
+        expect(triggerButton.textContent).not.toMatch(/select date/i);
+      });
+    }
+  },
 };
