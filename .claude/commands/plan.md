@@ -260,6 +260,44 @@ Registry 테스트:
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ```
 
+## 📖 CLAUDE.md 필수 참조 가이드
+
+**⚠️ 계획 수립 전 CLAUDE.md의 다음 섹션들을 반드시 읽고 숙지하세요:**
+
+### 🎯 계획 수립 시
+- **"## 📋 Task List Creation Guidelines (docs/plan)"**
+  - Phase 1: High-Level Tasks (4-6개 상위 작업 도출)
+  - Phase 2: Detailed Tasks (사용자 승인 후에만 작성)
+  - **사용자 승인 없이 구현 시작 금지**
+  - 상위 작업은 주니어 개발자가 따라할 수 있도록 친절하고 상세하게 작성
+  - docs/plan/active/ 디렉토리에 YYYY-MM-DD-[작업명].md 형식으로 저장
+
+### 🚀 계획 실행 시
+- **"## 📋 Task List Management Protocol"**
+  - Full Task Execution ("Accept"/"Go" 승인 후 전체 실행)
+  - Decision Points (의사결정 필요 시 중단하고 옵션 제시)
+  - Completion Protocol (상위 작업 완료 시 테스트→정리→커밋)
+  - 하위 작업 완료 즉시 TodoWrite로 completed 표시
+  - 모든 하위 작업 완료 시 상위 작업 completed 표시
+
+### 🔧 코드 수정 시
+- **"## 🔧 Source Code Modification Process"**
+  - 6단계 프로세스 (분석→계획→구현→검증→문서화→커밋)
+  - Thorough Validation (lint, type-check, test, registry:build)
+  - Conventional Commits 형식
+  - 불확실할 경우 최소 2회 웹 검색으로 정보 확보
+  - 여러 해결책 존재 시 사용자에게 옵션 제시
+
+### 📝 문서 작성 규칙
+- **"## Communication Guidelines"**
+  - 한국어: 코드 주석, 문서, 사용자 응답
+  - 영어: 코드 네이밍, 커밋 메시지 (Conventional Commits)
+  - 이모지 활용: 🎯 목적, 🎭 임시, 🔧 수정 등
+
+**💡 Tip**: Claude Code에게 "@CLAUDE.md의 [섹션 제목]을 참조하세요"라고 요청하면 즉시 해당 섹션을 읽습니다.
+
+---
+
 ## 최종 계획 완료 보고서
 
 ### 📋 계획 수립 완료 보고서 템플릿

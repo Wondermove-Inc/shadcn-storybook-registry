@@ -106,6 +106,45 @@ Step 6: If still failing → Report to user with full details
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ```
 
+## 📖 CLAUDE.md 필수 참조 가이드
+
+**⚠️ 작업 실행 전 CLAUDE.md의 다음 섹션들을 반드시 읽고 숙지하세요:**
+
+### 🔧 소스 코드 수정 시
+- **"## 🔧 Source Code Modification Process"**
+  - Requirements Analysis (요구사항 분석 및 문제 재현)
+  - Task Planning (TodoWrite 도구로 작업 단계 기록)
+  - Code Implementation (작은 단위로 집중 수정)
+  - Thorough Validation (lint, format:check, test, registry:build)
+  - Documentation Update (진행 내역 및 테스트 결과 업데이트)
+  - Version Control (검증 후 커밋, Conventional Commits)
+
+### 📋 작업 목록 관리 시
+- **"## 📋 Task List Management Protocol"**
+  - Task Execution ("Accept"/"Go" 승인 후 모든 작업 실행)
+  - Decision Points (불확실성 증가 시 즉시 중단하고 옵션 제시)
+  - Uncertainty Protocol (절대 추측 금지, 웹 검색으로 조사)
+  - Completion Protocol (하위 작업 완료 즉시 표시, 상위 작업 완료 시 테스트→커밋)
+  - 하위 작업을 의미 축약/축소 없이 최대한 자세히 서술
+
+### 💬 의사소통 규칙
+- **"## Communication Guidelines"**
+  - 한국어: 주석, 문서, 사용자 응답
+  - 영어: 코드 네이밍, 커밋 메시지 (Conventional Commits)
+  - 이모지 활용: 🎯 목적, 🎭 임시 등
+  - 함수 문서화: JSDoc에 `🎯 목적` 포함 필수
+
+### 📚 Storybook Registry 특화
+- **"## Development Workflow"**
+  - src/registry/ 디렉토리 구조 (atoms/tokens/foundation/templates)
+  - Registry 시스템 (registry.json, registryDependencies, dependencies)
+  - @/ 경로 별칭 사용 (registry build system 의존성)
+  - Story Structure Pattern (Meta, StoryObj, JSDoc 설명)
+
+**💡 Tip**: Claude Code에게 "@CLAUDE.md의 Source Code Modification Process를 따르세요"라고 명시하면 6단계 프로세스를 준수합니다.
+
+---
+
 ## Step 1: Mandatory Hard Think Pre-Analysis
 
 ### 🧠 Hard Think Verification Checklist:
