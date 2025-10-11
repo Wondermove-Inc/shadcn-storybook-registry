@@ -5,7 +5,7 @@ import { DashboardTemplate } from "./dashboard-template";
  * A complete dashboard template showcasing various shadcn/ui components in a real-world layout.
  * Based on the Figma design from shadcn UI Kit.
  */
-const meta: Meta<typeof DashboardTemplate> = {
+const meta = {
   title: "templates/Dashboard",
   component: DashboardTemplate,
   tags: ["autodocs"],
@@ -23,7 +23,7 @@ const meta: Meta<typeof DashboardTemplate> = {
       </div>
     ),
   ],
-};
+} satisfies Meta<typeof DashboardTemplate>;
 
 export default meta;
 

@@ -33,9 +33,7 @@ const RadiusTile = ({ value }: Pick<Radius, "value">) => {
 /**
  * Radius tokens for the design system
  */
-const meta: Meta<{
-  radius: Radius[];
-}> = {
+const meta = {
   title: "foundation/Radius",
   tags: ["autodocs"],
   argTypes: {},
@@ -61,7 +59,9 @@ const meta: Meta<{
       </TableBody>
     </Table>
   ),
-};
+} satisfies Meta<{
+  radius: Radius[];
+}>;
 
 export default meta;
 

@@ -36,9 +36,7 @@ const SpacingRow = ({ value, name }: Spacing) => {
 /**
  * Spacing tokens for the design system
  */
-const meta: Meta<{
-  scale: Spacing[];
-}> = {
+const meta = {
   title: "foundation/Spacing",
   tags: ["autodocs"],
   argTypes: {},
@@ -61,7 +59,9 @@ const meta: Meta<{
       </TableBody>
     </Table>
   ),
-};
+} satisfies Meta<{
+  scale: Spacing[];
+}>;
 
 export default meta;
 

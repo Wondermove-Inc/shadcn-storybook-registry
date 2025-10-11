@@ -33,9 +33,7 @@ const ShadowTile = ({ value }: Pick<Shadow, "value">) => {
 /**
  * Shadow tokens for the design system
  */
-const meta: Meta<{
-  shadow: Shadow[];
-}> = {
+const meta = {
   title: "foundation/Shadow",
   tags: ["autodocs"],
   argTypes: {},
@@ -61,7 +59,9 @@ const meta: Meta<{
       </TableBody>
     </Table>
   ),
-};
+} satisfies Meta<{
+  shadow: Shadow[];
+}>;
 
 export default meta;
 

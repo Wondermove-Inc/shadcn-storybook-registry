@@ -24,7 +24,6 @@ const meta: Meta<typeof Form> = {
   title: "ui/Form",
   component: Form,
   tags: ["autodocs"],
-  render: (args) => <ProfileForm {...args} />,
 };
 
 export default meta;
@@ -79,11 +78,14 @@ const ProfileForm = (args: Story["args"]) => {
 /**
  * The default form of the form.
  */
-export const Default: Story = {};
+export const Default: Story = {
+  render: () => <ProfileForm />,
+};
 
 export const ShouldSucceedWhenValidInput: Story = {
   name: "when typing a valid username, should not show an error message",
   tags: ["!dev", "!autodocs"],
+  render: () => <ProfileForm />,
   play: async ({ canvas, step }) => {
     await step("Type a valid username", async () => {
       await userEvent.type(
@@ -108,6 +110,7 @@ export const ShouldSucceedWhenValidInput: Story = {
 export const ShouldShowErrorWhenInvalidInput: Story = {
   name: "when typing a short username, should show an error message",
   tags: ["!dev", "!autodocs"],
+  render: () => <ProfileForm />,
   play: async ({ canvas, step }) => {
     await step("Type a short username", async () => {
       await userEvent.type(

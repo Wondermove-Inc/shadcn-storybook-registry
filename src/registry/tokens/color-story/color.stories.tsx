@@ -369,9 +369,7 @@ const ColorTile = ({ value }: Pick<Color, "value">) => {
  *
  * 다크모드 전환 시 shadcn 토큰 값이 실시간으로 업데이트됩니다.
  */
-const meta: Meta<{
-  colors: Color[];
-}> = {
+const meta = {
   title: "foundation/Color",
   tags: ["autodocs"],
   argTypes: {},
@@ -401,7 +399,9 @@ const meta: Meta<{
       </TableBody>
     </Table>
   ),
-};
+} satisfies Meta<{
+  colors: Color[];
+}>;
 
 export default meta;
 
@@ -647,6 +647,9 @@ export const Sidebar: Story = {
  * 다크모드 전환 시 shadcn 토큰 값이 실시간으로 업데이트됩니다.
  */
 export const TailwindPalette: Story = {
+  args: {
+    colors: [],
+  },
   render: () => {
     const [tokens, setTokens] = useState<Record<string, string>>({});
     const [isDarkMode, setIsDarkMode] = useState(false);

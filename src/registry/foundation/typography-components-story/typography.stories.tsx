@@ -5,7 +5,7 @@ import { Typography as TypographyComponent } from "@/components/ui/typography";
 /**
  * Typography components for consistent text styling across the application.
  */
-const meta: Meta<typeof TypographyComponent> = {
+const meta = {
   title: "design/Typography",
   component: TypographyComponent,
   tags: ["autodocs"],
@@ -15,7 +15,21 @@ const meta: Meta<typeof TypographyComponent> = {
   argTypes: {
     variant: {
       control: "select",
-      options: ["h1", "h2", "h3", "h4", "p", "blockquote", "table", "list", "inlineCode", "lead", "large", "small", "muted"],
+      options: [
+        "h1",
+        "h2",
+        "h3",
+        "h4",
+        "p",
+        "blockquote",
+        "table",
+        "list",
+        "inlineCode",
+        "lead",
+        "large",
+        "small",
+        "muted",
+      ],
       description: "The typography variant to render",
     },
     children: {
@@ -27,7 +41,7 @@ const meta: Meta<typeof TypographyComponent> = {
     variant: "h1",
     children: "Taxing Laughter: The Joke Tax Chronicles",
   },
-};
+} satisfies Meta<typeof TypographyComponent>;
 
 export default meta;
 
@@ -64,15 +78,15 @@ export const Typography: Story = {
       <div>
         <p className="text-muted-foreground mb-2 text-sm">p</p>
         <TypographyComponent variant="p">
-          The king, seeing how much happier his subjects were, realized the error of
-          his ways and repealed the joke tax.
+          The king, seeing how much happier his subjects were, realized the
+          error of his ways and repealed the joke tax.
         </TypographyComponent>
       </div>
       <div>
         <p className="text-muted-foreground mb-2 text-sm">blockquote</p>
         <TypographyComponent variant="blockquote">
-          "After all," he said, "everyone enjoys a good joke, so
-          it's only fair that they should pay for the privilege."
+          "After all," he said, "everyone enjoys a good joke, so it's only fair
+          that they should pay for the privilege."
         </TypographyComponent>
       </div>
       <div>
@@ -90,13 +104,18 @@ export const Typography: Story = {
       <div>
         <p className="text-muted-foreground mb-2 text-sm">inline code</p>
         <p>
-          Use <TypographyComponent variant="inlineCode">@radix-ui/react-alert-dialog</TypographyComponent> for building accessible alert dialogs.
+          Use{" "}
+          <TypographyComponent variant="inlineCode">
+            @radix-ui/react-alert-dialog
+          </TypographyComponent>{" "}
+          for building accessible alert dialogs.
         </p>
       </div>
       <div>
         <p className="text-muted-foreground mb-2 text-sm">lead</p>
         <TypographyComponent variant="lead">
-          The joke tax was a preposterous idea that shook the very foundations of our society.
+          The joke tax was a preposterous idea that shook the very foundations
+          of our society.
         </TypographyComponent>
       </div>
       <div>
@@ -114,7 +133,8 @@ export const Typography: Story = {
       <div>
         <p className="text-muted-foreground mb-2 text-sm">muted</p>
         <TypographyComponent variant="muted">
-          This story is entirely fictional. Any resemblance to real tax policies is purely coincidental.
+          This story is entirely fictional. Any resemblance to real tax policies
+          is purely coincidental.
         </TypographyComponent>
       </div>
     </div>

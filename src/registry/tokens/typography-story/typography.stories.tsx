@@ -48,11 +48,7 @@ const TypographyRow = ({
 /**
  * Typography tokens for the design system.
  */
-const meta: Meta<{
-  children: string;
-  key: keyof CSSProperties;
-  property: Typography[];
-}> = {
+const meta = {
   title: "foundation/Typography/Tokens",
   tags: ["autodocs"],
   argTypes: {},
@@ -84,7 +80,11 @@ const meta: Meta<{
       </TableBody>
     </Table>
   ),
-};
+} satisfies Meta<{
+  children: string;
+  key: keyof CSSProperties;
+  property: Typography[];
+}>;
 
 export default meta;
 
