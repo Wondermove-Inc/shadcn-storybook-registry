@@ -37,7 +37,7 @@ export function BadgeDemo() {
         </Badge>
       </div>
     </div>
-  )
+  );
 }
 
 /**
@@ -50,8 +50,11 @@ const meta = {
   parameters: {
     layout: "centered",
   },
+  args: {
+    children: "Badge",
+    variant: "default",
+  },
   excludeStories: /.*Demo$/,
-  render: () => <BadgeDemo />
 } satisfies Meta<typeof Badge>;
 
 export default meta;
@@ -67,21 +70,30 @@ export const Default: Story = {};
  * Secondary badge variant.
  */
 export const Secondary: Story = {
-  render: () => <Badge variant="secondary">Secondary</Badge>
+  args: {
+    variant: "secondary",
+    children: "Secondary",
+  },
 };
 
 /**
  * Destructive badge variant.
  */
 export const Destructive: Story = {
-  render: () => <Badge variant="destructive">Destructive</Badge>
+  args: {
+    variant: "destructive",
+    children: "Destructive",
+  },
 };
 
 /**
  * Outline badge variant.
  */
 export const Outline: Story = {
-  render: () => <Badge variant="outline">Outline</Badge>
+  args: {
+    variant: "outline",
+    children: "Outline",
+  },
 };
 
 /**
@@ -96,7 +108,7 @@ export const WithIcon: Story = {
       <BadgeCheckIcon />
       Verified
     </Badge>
-  )
+  ),
 };
 
 /**
@@ -121,5 +133,5 @@ export const Numeric: Story = {
         20+
       </Badge>
     </div>
-  )
+  ),
 };

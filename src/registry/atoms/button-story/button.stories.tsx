@@ -21,10 +21,13 @@ const meta: Meta<typeof Button> = {
     layout: "centered",
   },
   args: {
+    children: "Button",
+    variant: "default",
+    size: "default",
+    disabled: false,
     onClick: fn(),
   },
   excludeStories: /.*Demo$/,
-  render: () => <ButtonDemo />,
 };
 
 export default meta;
@@ -40,35 +43,50 @@ export const Default: Story = {};
  * Secondary button variant.
  */
 export const Secondary: Story = {
-  render: () => <Button variant="secondary">Secondary</Button>,
+  args: {
+    variant: "secondary",
+    children: "Secondary",
+  },
 };
 
 /**
  * Destructive button variant.
  */
 export const Destructive: Story = {
-  render: () => <Button variant="destructive">Destructive</Button>,
+  args: {
+    variant: "destructive",
+    children: "Destructive",
+  },
 };
 
 /**
  * Outline button variant.
  */
 export const Outline: Story = {
-  render: () => <Button variant="outline">Outline</Button>,
+  args: {
+    variant: "outline",
+    children: "Outline",
+  },
 };
 
 /**
  * Ghost button variant.
  */
 export const Ghost: Story = {
-  render: () => <Button variant="ghost">Ghost</Button>,
+  args: {
+    variant: "ghost",
+    children: "Ghost",
+  },
 };
 
 /**
  * Link button variant.
  */
 export const LinkVariant: Story = {
-  render: () => <Button variant="link">Link</Button>,
+  args: {
+    variant: "link",
+    children: "Link",
+  },
 };
 
 /**
