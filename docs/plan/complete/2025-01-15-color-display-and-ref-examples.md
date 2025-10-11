@@ -1,10 +1,10 @@
 # Color Display Issue & Storybook Ref Examples Plan
 
 **Created**: 2025-01-15
-**Updated**: 2025-01-15 (Phase 1 완료, Phase 2 대기)
-**Status**: Active - Phase 1 ✅ Completed, Phase 2 Pending
-**Estimated Time**: ~~45분 (Phase 1)~~ ✅ 완료 ~ 2시간 50분 (전체)
-**Actual Time (Phase 1)**: 약 30분
+**Updated**: 2025-01-15 (Phase 1 & Phase 2 완료)
+**Status**: ✅ Completed - All Phases
+**Estimated Time**: ~~45분 (Phase 1)~~ ✅ 완료 + ~~2시간 5분 (Phase 2)~~ ✅ 완료
+**Actual Time**: Phase 1: 약 30분, Phase 2: 약 1시간 50분
 
 ## Overview
 
@@ -277,11 +277,117 @@ npm run type-check
 - [x] Phase 1 완료 및 문서 업데이트
 - [x] 색상 표시 버그 완전 해결 (3회 시도, 웹 검색 5회)
 - [x] Git 커밋 완료 (모든 변경사항 커밋됨)
-- [ ] Phase 2 진행 여부 결정 (사용자 선택 필요)
+- [x] Phase 2 진행 여부 결정 (옵션 A 선택 - 5개 컴포넌트 전부)
+- [x] Phase 2 완료 (5개 컴포넌트 WithRef 스토리 추가)
 
 ---
 
-### Phase 2: Storybook Ref Examples (선택적)
+## ✅ Phase 2 Implementation Results (완료)
+
+### 사용자 결정
+- **선택**: 옵션 A - 5개 컴포넌트 전부 (Button, Input, Card, Dialog, Form)
+- **예상 시간**: 2시간 5분
+- **실제 시간**: 약 1시간 50분
+
+### 구현 완료 항목
+
+#### 1. Button Story - WithRef 추가 ✅
+**파일**: `src/registry/atoms/button-story/button.stories.tsx`
+- `useRef<HTMLButtonElement>` 사용
+- Focus 제어 예제 (두 버튼 간 focus 전환)
+- Play function으로 focus 테스트
+- storybook/test의 `userEvent`, `within`, `expect` 사용
+
+#### 2. Input Story - WithRef 추가 ✅
+**파일**: `src/registry/atoms/input-story/input.stories.tsx`
+- `useRef<HTMLInputElement>` 사용
+- Focus와 Select 제어 예제
+- Play function으로 focus 및 text selection 테스트
+
+#### 3. Card Story - WithRef 추가 ✅
+**파일**: `src/registry/atoms/card-story/card.stories.tsx`
+- `useRef<HTMLDivElement>` 사용 (3개 Card refs)
+- scrollIntoView 예제 구현
+- Play function으로 scroll 동작 테스트
+- Sticky 네비게이션 버튼으로 각 카드 스크롤
+
+#### 4. Dialog Story - WithRef 추가 ✅
+**파일**: `src/registry/atoms/dialog-story/dialog.stories.tsx`
+- Radix UI `React.ElementRef<typeof DialogPrimitive.Content>` 사용
+- Controlled Dialog 예제 (open state 관리)
+- Play function으로 Dialog open 상태 테스트
+- Programmatic Dialog 제어 방법 시연
+
+#### 5. Form Story - WithRef 추가 ✅
+**파일**: `src/registry/atoms/form-story/form.stories.tsx`
+- react-hook-form ref 통합 (field ref + custom ref 병합)
+- `useRef<HTMLInputElement>` + field ref 조합 패턴
+- Focus 제어 및 Validation 테스트
+- Play function으로 form validation 동작 검증
+- 복잡한 ref forwarding 패턴 구현:
+  ```typescript
+  ref={(e) => {
+    ref(e);
+    inputRef.current = e;
+  }}
+  ```
+
+### 기술적 세부사항
+
+#### Import 패턴
+모든 스토리에 다음 import 추가:
+```typescript
+import { useRef } from "react";
+import { expect, userEvent, within } from "storybook/test";
+```
+
+#### Play Function 패턴
+```typescript
+play: async ({ canvasElement }) => {
+  const canvas = within(canvasElement);
+  // userEvent를 통한 사용자 인터랙션 시뮬레이션
+  // expect를 통한 결과 검증
+}
+```
+
+#### 한국어 주석
+모든 ref 관련 코드에 `🎯 목적:` 형식의 한국어 주석 추가
+
+### 검증 결과
+
+#### ESLint ✅
+```bash
+npm run lint
+```
+**결과**: 1개 경고 (hover-card-story의 CalendarIcon 미사용, WithRef와 무관)
+- 모든 WithRef 스토리: 경고 없음 ✅
+
+#### TypeScript Type-Check ✅
+```bash
+npm run type-check
+```
+**결과**: 타입 오류 없음 ✅
+- 모든 ref 타입이 올바르게 정의됨
+- Radix UI ElementRef 타입 정상 동작
+- react-hook-form ref 병합 패턴 타입 안전성 확보
+
+### 주요 패턴 및 학습 내용
+
+1. **Basic HTML Element Refs**: Button, Input (표준 HTML 요소)
+2. **Container Refs**: Card (scrollIntoView 사용)
+3. **Radix UI Refs**: Dialog (ElementRef 타입 사용)
+4. **Complex Ref Forwarding**: Form (react-hook-form과 custom ref 병합)
+
+### 추가된 스토리 목록
+- `Button: WithRef` - focus 제어
+- `Input: WithRef` - focus/select 제어
+- `Card: WithRef` - scrollIntoView 제어
+- `Dialog: WithRef` - controlled dialog 제어
+- `Form: WithRef` - form validation 제어
+
+---
+
+### Phase 2: Storybook Ref Examples (완료)
 
 #### Task 2-1: 주요 컴포넌트 선정
 다음 컴포넌트들에 ref 예제를 추가할 것을 제안:
