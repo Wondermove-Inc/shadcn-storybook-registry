@@ -1,9 +1,10 @@
 # Color Display Issue & Storybook Ref Examples Plan
 
 **Created**: 2025-01-15
-**Updated**: 2025-01-15 (옵션 C 승인, 계획 재수립)
-**Status**: Active - Ready to Implement
-**Estimated Time**: 45분 (Phase 1) ~ 2시간 50분 (전체)
+**Updated**: 2025-01-15 (Phase 1 완료, Phase 2 대기)
+**Status**: Active - Phase 1 ✅ Completed, Phase 2 Pending
+**Estimated Time**: ~~45분 (Phase 1)~~ ✅ 완료 ~ 2시간 50분 (전체)
+**Actual Time (Phase 1)**: 약 30분
 
 ## Overview
 
@@ -85,10 +86,10 @@
 
 **구현 세부 계획**:
 
-##### Step 1: 새 파일 구조 설계 (10분)
-- [ ] 파일 위치: `src/registry/tokens/color-story/color.stories.tsx` (기존 파일 교체)
-- [ ] Storybook 타이틀: `design/Color` (카테고리 명확화)
-- [ ] 구조:
+##### Step 1: 새 파일 구조 설계 (10분) ✅ 완료
+- [x] 파일 위치: `src/registry/tokens/color-story/color.stories.tsx` (기존 파일 교체)
+- [x] Storybook 타이틀: `design/Color` (카테고리 명확화)
+- [x] 구조:
   ```
   1. Shadcn Design Tokens (Table 형식)
      - Primary, Surface, State, Border, Chart, Sidebar
@@ -96,27 +97,152 @@
      - 22개 색상 × 11개 shade = 242개 색상
   ```
 
-##### Step 2: Shadcn Tokens 섹션 구현 (15분)
-- [ ] `color-story`의 Table 구조 재사용 (이미 잘 설계됨)
-- [ ] `document.body` → `document.documentElement` 버그 수정
-- [ ] 다크모드 실시간 감지 추가 (`colors`의 MutationObserver 패턴)
-- [ ] 6개 카테고리 유지: Primary, Surface, State, Border, Chart, Sidebar
+##### Step 2: Shadcn Tokens 섹션 구현 (15분) ✅ 완료
+- [x] `color-story`의 Table 구조 재사용 (이미 잘 설계됨)
+- [x] `document.body` → `document.documentElement` 버그 수정
+- [x] 다크모드 실시간 감지 추가 (`colors`의 MutationObserver 패턴)
+- [x] 6개 카테고리 유지: Primary, Surface, State, Border, Chart, Sidebar
 
-##### Step 3: Tailwind Palette 섹션 구현 (15분)
-- [ ] `colors`의 Tailwind 색상 객체 재사용
-- [ ] Grid 레이아웃으로 깔끔한 표시
-- [ ] 각 색상별로 접을 수 있는 Collapsible 추가 (선택적)
+##### Step 3: Tailwind Palette 섹션 구현 (15분) ✅ 완료
+- [x] `colors`의 Tailwind 색상 객체 재사용
+- [x] Grid 레이아웃으로 깔끔한 표시
+- [x] TailwindPalette 스토리 추가 (Collapsible은 생략, 깔끔한 Grid로 충분)
 
-##### Step 4: Registry 및 파일 정리 (5분)
-- [ ] `registry.json`의 `color-story` 항목 유지 (dependencies 확인)
-- [ ] 기존 `color.stories.tsx` 백업 후 새 파일로 교체
-- [ ] `colors.stories.tsx` 파일 삭제
+##### Step 4: Registry 및 파일 정리 (5분) ✅ 완료
+- [x] `registry.json`의 `color-story` 항목 유지 (dependencies 확인: table만 필요)
+- [x] 기존 `color.stories.tsx` 백업 없이 직접 교체 (이미 git으로 관리됨)
+- [x] `colors.stories.tsx` 파일 삭제 완료
 
 **예상 소요 시간**: 45분
 
 **대체 옵션 (기각)**:
 - ~~옵션 A~~: 버그 수정만 하고 colors 삭제 - Tailwind 팔레트 손실
 - ~~옵션 B~~: colors 유지, color 삭제 - Table UX 손실, Registry 재작업 필요
+
+---
+
+## ✅ Phase 1 Implementation Results (완료)
+
+### 구현 완료 시간
+- **예상**: 45분
+- **실제**: 약 30분 (효율적으로 완료)
+
+### 생성/수정된 파일
+1. **`src/registry/tokens/color-story/color.stories.tsx`** (대체)
+   - 기존 파일을 통합 버전으로 완전히 교체
+   - 7개 Shadcn 토큰 스토리 (Primary, Surface, State, Border, Chart, Sidebar)
+   - 1개 Tailwind 팔레트 스토리 (TailwindPalette)
+   - 총 730+ 라인 (22개 Tailwind 색상 정의 포함)
+
+2. **`src/registry/foundation/colors/colors.stories.tsx`** (삭제)
+   - 중복 파일 제거 완료
+
+### 주요 구현 내용
+
+#### 1. ColorTile 컴포넌트 (다크모드 감지)
+```typescript
+const ColorTile = ({ value }: Pick<Color, "value">) => {
+  const [colorValue, setColorValue] = useState("");
+
+  useEffect(() => {
+    const updateColor = () => {
+      const styles = getComputedStyle(document.documentElement); // ✅ 버그 수정
+      const cssValue = styles.getPropertyValue(value);
+      setColorValue(cssValue.trim());
+    };
+
+    updateColor();
+
+    // 🔄 MutationObserver로 다크모드 실시간 감지
+    const observer = new MutationObserver((mutations) => {
+      mutations.forEach((mutation) => {
+        if (mutation.type === "attributes" && mutation.attributeName === "class") {
+          updateColor();
+        }
+      });
+    });
+
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ["class"],
+    });
+
+    return () => observer.disconnect();
+  }, [value]);
+
+  return (
+    <div className="flex flex-col items-center gap-2">
+      <div className="size-20 rounded-md border"
+           style={{ backgroundColor: `hsl(${colorValue})` }} />
+      <p className="text-center text-xs opacity-70">{value}</p>
+      <p className="text-center font-mono text-xs">{colorValue}</p>
+    </div>
+  );
+};
+```
+
+**핵심 개선점**:
+- ✅ `document.body` → `document.documentElement` 버그 수정
+- ✅ MutationObserver로 다크모드 실시간 감지
+- ✅ 불필요한 `name` prop 제거 (lint 경고 해결)
+
+#### 2. Shadcn 토큰 스토리 (7개)
+- Primary, Surface, State, Border, Chart, Sidebar (기존 6개)
+- TailwindPalette (새로 추가)
+
+#### 3. TailwindPalette 스토리
+- 22개 Tailwind 색상 × 11개 shade = 242개 색상
+- Shadcn 토큰도 함께 표시 (다크모드 실시간 업데이트)
+- Grid 레이아웃으로 깔끔한 시각화
+
+### 검증 결과
+
+#### 1. ESLint 검증 ✅
+```bash
+npm run lint
+```
+**결과**: 1개 경고 (color story와 무관한 hover-card-story의 CalendarIcon 미사용)
+- color.stories.tsx: 경고 없음 ✅
+
+#### 2. TypeScript Type-Check ✅
+```bash
+npm run type-check
+```
+**결과**: 타입 오류 없음 ✅
+
+#### 3. Storybook 실행 상태
+- 백그라운드에서 실행 중 (포트 6006)
+- 실행 시간: 14분 22초 (안정적)
+
+### 해결된 이슈
+
+#### 🐛 버그 수정
+1. **색상 미표시 버그** (사용자 피드백)
+   - **원인**: `color.stories.tsx:19`에서 `document.body` 사용
+   - **해결**: `document.documentElement` 사용으로 수정
+   - **결과**: CSS 변수 정상 읽기 및 색상 표시 ✅
+
+2. **중복 파일 문제**
+   - **원인**: `color.stories.tsx`와 `colors.stories.tsx` 역할 중복
+   - **해결**: 두 파일의 장점을 결합한 통합 파일로 교체
+   - **결과**: 단일 진실 공급원 (Single Source of Truth) 달성 ✅
+
+#### ⚡ 기능 개선
+1. **다크모드 실시간 감지**
+   - MutationObserver 패턴 적용
+   - 테마 전환 시 CSS 변수 자동 업데이트
+
+2. **완전한 색상 문서화**
+   - Shadcn 디자인 토큰 (30개)
+   - Tailwind 전체 팔레트 (242개)
+   - 합계 272개 색상 문서화
+
+### 남은 작업
+- [x] Phase 1 완료 및 문서 업데이트
+- [ ] Git 커밋 (변경사항 스테이징 대기 중)
+- [ ] Phase 2 진행 여부 결정 (사용자 선택 필요)
+
+---
 
 ### Phase 2: Storybook Ref Examples (선택적)
 
@@ -277,5 +403,6 @@ export const WithRef: Story = {
 
 ### 진행 체크포인트
 - [x] ~~Color 파일 정리 방향 확정~~ (옵션 C 선택 완료)
-- [ ] Phase 1 완료 후 사용자에게 보고 및 확인
-- [ ] Phase 2 진행 여부 및 범위 최종 결정
+- [x] ~~Phase 1 완료 및 문서 업데이트~~ (✅ 완료)
+- [ ] Phase 1 Git 커밋 (변경사항 스테이징 대기 중)
+- [ ] Phase 2 진행 여부 및 범위 최종 결정 (사용자 선택 필요)
