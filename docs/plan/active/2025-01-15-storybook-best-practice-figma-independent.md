@@ -465,10 +465,28 @@ export const Default: Story = {
 
 ### Phase 3: Interactive 기능 확대 (우선순위: 중간)
 
-#### [ ] 7. Args 기반 Interactive Controls 확대 (20개 컴포넌트)
+#### [🔄] 7. Args 기반 Interactive Controls 확대 (20개 컴포넌트) 🔄 **진행 중** (2025-01-15)
 **목적**: 사용자가 Storybook에서 동적으로 props 변경 가능하도록 개선
 **예상 시간**: 8시간
 **난이도**: ⭐⭐⭐ 어려움
+**현재 진행률**: 9/20 완료 (45%)
+
+**완료된 컴포넌트 (9개)**:
+- ✅ Button (button.stories.tsx) - args 기반으로 6개 variant story 변경
+- ✅ Badge (badge.stories.tsx) - args 기반으로 4개 variant story 변경
+- ✅ Label (label.stories.tsx) - component를 Label로 수정, args 추가
+- ✅ Textarea (textarea.stories.tsx) - args 기반, Disabled story 변경
+- ✅ Input (input.stories.tsx) - args 기반 확인 완료 (이미 완료 상태)
+- ✅ Checkbox (checkbox.stories.tsx) - args 추가, 3개 args 기반 story 추가 (Default, DefaultChecked, DefaultDisabled)
+- ✅ RadioGroup (radio-group.stories.tsx) - args 추가, Disabled story 추가
+- ✅ Select (select.stories.tsx) - args 추가, Disabled story 추가
+- ✅ Switch (switch.stories.tsx) - args 추가, 5개 args 기반 story 추가 (Default, Checked, Disabled, DisabledChecked, WithLabel)
+
+**남은 컴포넌트 (11개)**:
+- **UI 기본** (1개): Alert (복합 컴포넌트, 어려움)
+- **레이아웃** (3개): Card, Separator, Aspect Ratio
+- **Overlay** (3개): Dialog, Sheet, Popover
+- **Navigation** (4개): Accordion, Tabs, Collapsible, Breadcrumb
 
 **작업 내용**:
 1. 우선순위 컴포넌트 20개 선정:
@@ -1049,6 +1067,129 @@ export const Default: Story = {
    ```
 
 **완료 기준**: 4개 MDX 문서 작성 완료, Storybook Introduction 카테고리에서 문서 확인 가능
+
+---
+
+### Phase 5: React 18.3.1 호환성 테스트 (우선순위: 높음)
+
+#### [ ] 13. React 18.3.1 환경에서 전체 테스트 및 검증
+**목적**: React 18/19 Dual Support 검증, 브랜치명과 실제 호환성 일치 확인
+**예상 시간**: 2시간
+**난이도**: ⭐⭐ 보통
+
+**배경**:
+- 현재 브랜치명: `react-18-19-dual-support`
+- 현재 package.json: React 19.1.1만 설치
+- 컴포넌트는 `React.forwardRef` 패턴으로 작성 (React 18/19 호환 가능)
+- **문제**: React 18.3.1에서 실제 테스트 없이 dual support를 가정하고 있음
+
+**작업 내용**:
+
+1. **React 18.3.1로 다운그레이드 테스트 환경 구성**:
+   ```bash
+   # 1. 현재 React 버전 백업
+   cp package.json package.json.react19.backup
+
+   # 2. React 18.3.1 설치
+   npm install react@18.3.1 react-dom@18.3.1 @types/react@^18.3.3 @types/react-dom@^18.3.0
+
+   # 3. node_modules 클린 재설치
+   rm -rf node_modules package-lock.json
+   npm install
+   ```
+
+2. **React 18.3.1 환경에서 전체 검증**:
+   ```bash
+   # Type 검사
+   npm run type-check
+
+   # Lint 검사
+   npm run lint
+
+   # 단위 테스트
+   npm run test:unit
+
+   # Storybook 빌드 및 실행
+   npm run storybook
+
+   # Registry 빌드
+   npm run registry:build
+
+   # 전체 빌드 (Next.js + Storybook)
+   npm run build
+   ```
+
+3. **Storybook 스토리 동작 확인** (React 18 특화):
+   ```bash
+   npm run storybook
+   # 포트 6006에서 확인:
+   # - Button, Input, Dialog 등 핵심 컴포넌트 정상 렌더링
+   # - forwardRef 패턴 컴포넌트 ref 전달 정상 작동
+   # - Play functions 정상 실행
+   # - Theme 전환 (Light/Dark) 정상 작동
+   # - Controls 패널에서 args 동적 변경 정상 작동
+   ```
+
+4. **호환성 문제 발견 시 수정**:
+   - React 18/19 차이점 조사 (5회 웹 검색)
+   - 문제 원인 분석 및 해결책 적용
+   - 양쪽 버전 모두 지원하도록 코드 수정
+
+5. **React 19로 복원 및 재검증**:
+   ```bash
+   # React 19로 복원
+   cp package.json.react19.backup package.json
+   rm -rf node_modules package-lock.json
+   npm install
+
+   # React 19 환경 재검증
+   npm run type-check && npm run lint && npm run storybook
+   ```
+
+6. **문서화**:
+   - `CLAUDE.md` 또는 별도 `REACT_COMPATIBILITY.md`에 테스트 결과 기록
+   - package.json에 React 18/19 dual support 명시 방법 결정:
+     ```json
+     // 옵션 1: peerDependencies 사용
+     "peerDependencies": {
+       "react": "^18.3.1 || ^19.0.0",
+       "react-dom": "^18.3.1 || ^19.0.0"
+     }
+
+     // 옵션 2: README에 명시
+     ```
+
+**검증 항목 체크리스트**:
+```
+React 18.3.1 환경:
+□ TypeScript 컴파일 성공
+□ ESLint 통과
+□ Vitest 단위 테스트 통과
+□ Storybook 개발 서버 실행 성공
+□ Registry 빌드 성공
+□ Next.js + Storybook 프로덕션 빌드 성공
+□ forwardRef 패턴 컴포넌트 정상 작동
+□ Play functions 정상 실행
+□ Args 기반 Controls 정상 작동
+
+React 19.1.1 환경:
+□ 모든 위 테스트 재확인
+□ 양쪽 버전 모두 통과
+```
+
+**완료 기준**:
+- React 18.3.1과 React 19.1.1 환경 모두에서 모든 테스트 통과
+- Storybook 모든 스토리 정상 렌더링 및 인터랙션 작동
+- 호환성 문제 발견 시 수정 완료
+- Dual support 검증 결과 문서화
+
+**예상 문제점 및 대응**:
+- React 18 → 19 주요 변경사항:
+  - `useId` hook 변경
+  - Suspense 동작 변경
+  - `ref` 전달 방식 변경 (forwardRef는 여전히 지원)
+- 발견 시 → 5회 웹 검색으로 해결책 조사
+- 해결 불가 시 → 사용자에게 옵션 제시
 
 ---
 
