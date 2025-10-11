@@ -6,12 +6,18 @@ import * as ResizablePrimitive from "react-resizable-panels";
 
 import { cn } from "@/lib/utils";
 
-function ResizablePanelGroup({
-  className,
-  ...props
-}: React.ComponentProps<typeof ResizablePrimitive.PanelGroup>) {
+/**
+ * 🎯 목적: ResizablePanelGroup 컴포넌트에 forwardRef 적용하여 React 18/19 호환성 제공
+ * 📝 주의사항: react-resizable-panels의 PanelGroup 사용, imperative API ref 지원
+ * 🔄 변경이력: 2025-10-11 - React 18/19 dual support를 위한 forwardRef 추가
+ */
+const ResizablePanelGroup = React.forwardRef<
+  React.ElementRef<typeof ResizablePrimitive.PanelGroup>,
+  React.ComponentPropsWithoutRef<typeof ResizablePrimitive.PanelGroup>
+>(({ className, ...props }, ref) => {
   return (
     <ResizablePrimitive.PanelGroup
+      ref={ref}
       data-slot="resizable-panel-group"
       className={cn(
         "flex h-full w-full data-[panel-group-direction=vertical]:flex-col",
@@ -20,14 +26,33 @@ function ResizablePanelGroup({
       {...props}
     />
   );
-}
+});
+ResizablePanelGroup.displayName = "ResizablePanelGroup";
 
-function ResizablePanel({
-  ...props
-}: React.ComponentProps<typeof ResizablePrimitive.Panel>) {
-  return <ResizablePrimitive.Panel data-slot="resizable-panel" {...props} />;
-}
+/**
+ * 🎯 목적: ResizablePanel 컴포넌트에 forwardRef 적용하여 React 18/19 호환성 제공
+ * 📝 주의사항: react-resizable-panels의 Panel 사용, imperative API ref 지원
+ * 🔄 변경이력: 2025-10-11 - React 18/19 dual support를 위한 forwardRef 추가
+ */
+const ResizablePanel = React.forwardRef<
+  React.ElementRef<typeof ResizablePrimitive.Panel>,
+  React.ComponentPropsWithoutRef<typeof ResizablePrimitive.Panel>
+>((props, ref) => {
+  return (
+    <ResizablePrimitive.Panel
+      ref={ref}
+      data-slot="resizable-panel"
+      {...props}
+    />
+  );
+});
+ResizablePanel.displayName = "ResizablePanel";
 
+/**
+ * 🎯 목적: ResizableHandle 컴포넌트
+ * 📝 주의사항: react-resizable-panels의 PanelResizeHandle은 ref를 지원하지 않음
+ * 🔄 변경이력: 2025-10-11 - React 18/19 dual support 검토 (ref 미지원 확인)
+ */
 function ResizableHandle({
   withHandle,
   className,
