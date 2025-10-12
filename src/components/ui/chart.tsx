@@ -10,7 +10,24 @@ import {
 } from "recharts/types/component/DefaultTooltipContent";
 
 // Format: { THEME_NAME: CSS_SELECTOR }
-const THEMES = { light: "", dark: ".dark" } as const;
+// 🎯 목적: Storybook의 14개 테마 지원 (7가지 색상 × light/dark)
+// 📝 주의: preview.ts의 withThemeByClassName themes와 동일한 키 사용
+const THEMES = {
+  "default-light": ".theme-default-light",
+  "default-dark": ".theme-default-dark",
+  "red-light": ".theme-red-light",
+  "red-dark": ".theme-red-dark",
+  "orange-light": ".theme-orange-light",
+  "orange-dark": ".theme-orange-dark",
+  "green-light": ".theme-green-light",
+  "green-dark": ".theme-green-dark",
+  "blue-light": ".theme-blue-light",
+  "blue-dark": ".theme-blue-dark",
+  "yellow-light": ".theme-yellow-light",
+  "yellow-dark": ".theme-yellow-dark",
+  "violet-light": ".theme-violet-light",
+  "violet-dark": ".theme-violet-dark",
+} as const;
 
 export type ChartConfig = {
   [k in string]: {

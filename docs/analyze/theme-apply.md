@@ -1,13 +1,5 @@
-@import "tailwindcss";
-@import "tw-animate-css";
+[Theme name : Default]
 
-/* Tailwind dark mode variant: .dark 클래스를 가진 요소와 그 자식 모두에 적용 */
-@custom-variant dark (&:where(.dark, .dark *));
-
-/* 🎯 목적: 기본 테마 변수 정의 (:root 레벨)
- * 📝 주의: @theme inline에서 var() 참조가 작동하려면 :root에 원본 변수 필요
- * 🔄 동작: html.theme-* 선택자가 이 값들을 오버라이드
- */
 :root {
   --radius: 0.65rem;
   --background: oklch(1 0 0);
@@ -25,7 +17,6 @@
   --accent: oklch(0.97 0 0);
   --accent-foreground: oklch(0.205 0 0);
   --destructive: oklch(0.577 0.245 27.325);
-  --destructive-foreground: oklch(0.985 0 0);
   --border: oklch(0.922 0 0);
   --input: oklch(0.922 0 0);
   --ring: oklch(0.708 0 0);
@@ -34,6 +25,7 @@
   --chart-3: oklch(0.398 0.07 227.392);
   --chart-4: oklch(0.828 0.189 84.429);
   --chart-5: oklch(0.769 0.188 70.08);
+  --radius: 0.625rem;
   --sidebar: oklch(0.985 0 0);
   --sidebar-foreground: oklch(0.145 0 0);
   --sidebar-primary: oklch(0.205 0 0);
@@ -44,43 +36,7 @@
   --sidebar-ring: oklch(0.708 0 0);
 }
 
-/* 테마별 CSS 변수 정의 - html.theme-* 선택자로 :root 값 오버라이드 */
-html.theme-default-light {
-  --radius: 0.65rem;
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.145 0 0);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.145 0 0);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.205 0 0);
-  --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.97 0 0);
-  --secondary-foreground: oklch(0.205 0 0);
-  --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.556 0 0);
-  --accent: oklch(0.97 0 0);
-  --accent-foreground: oklch(0.205 0 0);
-  --destructive: oklch(0.577 0.245 27.325);
-  --destructive-foreground: oklch(0.985 0 0);
-  --border: oklch(0.922 0 0);
-  --input: oklch(0.922 0 0);
-  --ring: oklch(0.708 0 0);
-  --chart-1: oklch(0.646 0.222 41.116);
-  --chart-2: oklch(0.6 0.118 184.704);
-  --chart-3: oklch(0.398 0.07 227.392);
-  --chart-4: oklch(0.828 0.189 84.429);
-  --chart-5: oklch(0.769 0.188 70.08);
-  --sidebar: oklch(0.985 0 0);
-  --sidebar-foreground: oklch(0.145 0 0);
-  --sidebar-primary: oklch(0.205 0 0);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.97 0 0);
-  --sidebar-accent-foreground: oklch(0.205 0 0);
-  --sidebar-border: oklch(0.922 0 0);
-  --sidebar-ring: oklch(0.708 0 0);
-}
-html.theme-default-dark {
+.dark {
   --background: oklch(0.145 0 0);
   --foreground: oklch(0.985 0 0);
   --card: oklch(0.205 0 0);
@@ -96,7 +52,6 @@ html.theme-default-dark {
   --accent: oklch(0.269 0 0);
   --accent-foreground: oklch(0.985 0 0);
   --destructive: oklch(0.704 0.191 22.216);
-  --destructive-foreground: oklch(0.985 0 0);
   --border: oklch(1 0 0 / 10%);
   --input: oklch(1 0 0 / 15%);
   --ring: oklch(0.556 0 0);
@@ -114,7 +69,9 @@ html.theme-default-dark {
   --sidebar-border: oklch(1 0 0 / 10%);
   --sidebar-ring: oklch(0.556 0 0);
 }
-html.theme-red-light {
+
+[Theme name : Red]
+:root {
   --radius: 0.65rem;
   --background: oklch(1 0 0);
   --foreground: oklch(0.141 0.005 285.823);
@@ -131,7 +88,6 @@ html.theme-red-light {
   --accent: oklch(0.967 0.001 286.375);
   --accent-foreground: oklch(0.21 0.006 285.885);
   --destructive: oklch(0.577 0.245 27.325);
-  --destructive-foreground: oklch(0.985 0 0);
   --border: oklch(0.92 0.004 286.32);
   --input: oklch(0.92 0.004 286.32);
   --ring: oklch(0.637 0.237 25.331);
@@ -149,7 +105,8 @@ html.theme-red-light {
   --sidebar-border: oklch(0.92 0.004 286.32);
   --sidebar-ring: oklch(0.637 0.237 25.331);
 }
-html.theme-red-dark {
+
+.dark {
   --background: oklch(0.141 0.005 285.823);
   --foreground: oklch(0.985 0 0);
   --card: oklch(0.21 0.006 285.885);
@@ -165,7 +122,6 @@ html.theme-red-dark {
   --accent: oklch(0.274 0.006 286.033);
   --accent-foreground: oklch(0.985 0 0);
   --destructive: oklch(0.704 0.191 22.216);
-  --destructive-foreground: oklch(0.985 0 0);
   --border: oklch(1 0 0 / 10%);
   --input: oklch(1 0 0 / 15%);
   --ring: oklch(0.637 0.237 25.331);
@@ -183,7 +139,10 @@ html.theme-red-dark {
   --sidebar-border: oklch(1 0 0 / 10%);
   --sidebar-ring: oklch(0.637 0.237 25.331);
 }
-html.theme-orange-light {
+
+
+[Theme name : Orange]
+:root {
   --radius: 0.65rem;
   --background: oklch(1 0 0);
   --foreground: oklch(0.141 0.005 285.823);
@@ -200,7 +159,6 @@ html.theme-orange-light {
   --accent: oklch(0.967 0.001 286.375);
   --accent-foreground: oklch(0.21 0.006 285.885);
   --destructive: oklch(0.577 0.245 27.325);
-  --destructive-foreground: oklch(0.985 0 0);
   --border: oklch(0.92 0.004 286.32);
   --input: oklch(0.92 0.004 286.32);
   --ring: oklch(0.705 0.213 47.604);
@@ -218,7 +176,8 @@ html.theme-orange-light {
   --sidebar-border: oklch(0.92 0.004 286.32);
   --sidebar-ring: oklch(0.705 0.213 47.604);
 }
-html.theme-orange-dark {
+
+.dark {
   --background: oklch(0.141 0.005 285.823);
   --foreground: oklch(0.985 0 0);
   --card: oklch(0.21 0.006 285.885);
@@ -234,7 +193,6 @@ html.theme-orange-dark {
   --accent: oklch(0.274 0.006 286.033);
   --accent-foreground: oklch(0.985 0 0);
   --destructive: oklch(0.704 0.191 22.216);
-  --destructive-foreground: oklch(0.985 0 0);
   --border: oklch(1 0 0 / 10%);
   --input: oklch(1 0 0 / 15%);
   --ring: oklch(0.646 0.222 41.116);
@@ -252,7 +210,9 @@ html.theme-orange-dark {
   --sidebar-border: oklch(1 0 0 / 10%);
   --sidebar-ring: oklch(0.646 0.222 41.116);
 }
-html.theme-green-light {
+
+[Theme name : Green]
+:root {
   --radius: 0.65rem;
   --background: oklch(1 0 0);
   --foreground: oklch(0.141 0.005 285.823);
@@ -269,7 +229,6 @@ html.theme-green-light {
   --accent: oklch(0.967 0.001 286.375);
   --accent-foreground: oklch(0.21 0.006 285.885);
   --destructive: oklch(0.577 0.245 27.325);
-  --destructive-foreground: oklch(0.985 0 0);
   --border: oklch(0.92 0.004 286.32);
   --input: oklch(0.92 0.004 286.32);
   --ring: oklch(0.723 0.219 149.579);
@@ -287,7 +246,8 @@ html.theme-green-light {
   --sidebar-border: oklch(0.92 0.004 286.32);
   --sidebar-ring: oklch(0.723 0.219 149.579);
 }
-html.theme-green-dark {
+
+.dark {
   --background: oklch(0.141 0.005 285.823);
   --foreground: oklch(0.985 0 0);
   --card: oklch(0.21 0.006 285.885);
@@ -303,7 +263,6 @@ html.theme-green-dark {
   --accent: oklch(0.274 0.006 286.033);
   --accent-foreground: oklch(0.985 0 0);
   --destructive: oklch(0.704 0.191 22.216);
-  --destructive-foreground: oklch(0.985 0 0);
   --border: oklch(1 0 0 / 10%);
   --input: oklch(1 0 0 / 15%);
   --ring: oklch(0.527 0.154 150.069);
@@ -321,7 +280,10 @@ html.theme-green-dark {
   --sidebar-border: oklch(1 0 0 / 10%);
   --sidebar-ring: oklch(0.527 0.154 150.069);
 }
-html.theme-blue-light {
+
+
+[Theme name : Blue]
+:root {
   --radius: 0.65rem;
   --background: oklch(1 0 0);
   --foreground: oklch(0.141 0.005 285.823);
@@ -338,7 +300,6 @@ html.theme-blue-light {
   --accent: oklch(0.967 0.001 286.375);
   --accent-foreground: oklch(0.21 0.006 285.885);
   --destructive: oklch(0.577 0.245 27.325);
-  --destructive-foreground: oklch(0.985 0 0);
   --border: oklch(0.92 0.004 286.32);
   --input: oklch(0.92 0.004 286.32);
   --ring: oklch(0.623 0.214 259.815);
@@ -356,7 +317,8 @@ html.theme-blue-light {
   --sidebar-border: oklch(0.92 0.004 286.32);
   --sidebar-ring: oklch(0.623 0.214 259.815);
 }
-html.theme-blue-dark {
+
+.dark {
   --background: oklch(0.141 0.005 285.823);
   --foreground: oklch(0.985 0 0);
   --card: oklch(0.21 0.006 285.885);
@@ -372,7 +334,6 @@ html.theme-blue-dark {
   --accent: oklch(0.274 0.006 286.033);
   --accent-foreground: oklch(0.985 0 0);
   --destructive: oklch(0.704 0.191 22.216);
-  --destructive-foreground: oklch(0.985 0 0);
   --border: oklch(1 0 0 / 10%);
   --input: oklch(1 0 0 / 15%);
   --ring: oklch(0.488 0.243 264.376);
@@ -390,7 +351,9 @@ html.theme-blue-dark {
   --sidebar-border: oklch(1 0 0 / 10%);
   --sidebar-ring: oklch(0.488 0.243 264.376);
 }
-html.theme-yellow-light {
+
+[Theme name : Yellow]
+:root {
   --radius: 0.65rem;
   --background: oklch(1 0 0);
   --foreground: oklch(0.141 0.005 285.823);
@@ -407,7 +370,6 @@ html.theme-yellow-light {
   --accent: oklch(0.967 0.001 286.375);
   --accent-foreground: oklch(0.21 0.006 285.885);
   --destructive: oklch(0.577 0.245 27.325);
-  --destructive-foreground: oklch(0.985 0 0);
   --border: oklch(0.92 0.004 286.32);
   --input: oklch(0.92 0.004 286.32);
   --ring: oklch(0.795 0.184 86.047);
@@ -425,7 +387,8 @@ html.theme-yellow-light {
   --sidebar-border: oklch(0.92 0.004 286.32);
   --sidebar-ring: oklch(0.795 0.184 86.047);
 }
-html.theme-yellow-dark {
+
+.dark {
   --background: oklch(0.141 0.005 285.823);
   --foreground: oklch(0.985 0 0);
   --card: oklch(0.21 0.006 285.885);
@@ -441,7 +404,6 @@ html.theme-yellow-dark {
   --accent: oklch(0.274 0.006 286.033);
   --accent-foreground: oklch(0.985 0 0);
   --destructive: oklch(0.704 0.191 22.216);
-  --destructive-foreground: oklch(0.985 0 0);
   --border: oklch(1 0 0 / 10%);
   --input: oklch(1 0 0 / 15%);
   --ring: oklch(0.554 0.135 66.442);
@@ -459,7 +421,10 @@ html.theme-yellow-dark {
   --sidebar-border: oklch(1 0 0 / 10%);
   --sidebar-ring: oklch(0.554 0.135 66.442);
 }
-html.theme-violet-light {
+
+
+[Theme name : Violet]
+:root {
   --radius: 0.65rem;
   --background: oklch(1 0 0);
   --foreground: oklch(0.141 0.005 285.823);
@@ -476,7 +441,6 @@ html.theme-violet-light {
   --accent: oklch(0.967 0.001 286.375);
   --accent-foreground: oklch(0.21 0.006 285.885);
   --destructive: oklch(0.577 0.245 27.325);
-  --destructive-foreground: oklch(0.985 0 0);
   --border: oklch(0.92 0.004 286.32);
   --input: oklch(0.92 0.004 286.32);
   --ring: oklch(0.606 0.25 292.717);
@@ -494,7 +458,8 @@ html.theme-violet-light {
   --sidebar-border: oklch(0.92 0.004 286.32);
   --sidebar-ring: oklch(0.606 0.25 292.717);
 }
-html.theme-violet-dark {
+
+.dark {
   --background: oklch(0.141 0.005 285.823);
   --foreground: oklch(0.985 0 0);
   --card: oklch(0.21 0.006 285.885);
@@ -510,7 +475,6 @@ html.theme-violet-dark {
   --accent: oklch(0.274 0.006 286.033);
   --accent-foreground: oklch(0.985 0 0);
   --destructive: oklch(0.704 0.191 22.216);
-  --destructive-foreground: oklch(0.985 0 0);
   --border: oklch(1 0 0 / 10%);
   --input: oklch(1 0 0 / 15%);
   --ring: oklch(0.541 0.281 293.009);
@@ -527,87 +491,4 @@ html.theme-violet-dark {
   --sidebar-accent-foreground: oklch(0.985 0 0);
   --sidebar-border: oklch(1 0 0 / 10%);
   --sidebar-ring: oklch(0.541 0.281 293.009);
-}
-
-/* 🎯 목적: Tailwind v4 테마 시스템 설정 - 폰트와 radius만 정의
- * 📝 주의: 색상 변수는 @theme inline 블록에서 동적 참조로 정의
- * 🔄 변경이력: 2025-10-12 - @theme inline으로 색상 변수 이동 (다중 테마 지원)
- */
-@theme {
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-  --radius: 0.65rem;
-  --radius-sm: calc(var(--radius) - 4px);
-  --radius-md: calc(var(--radius) - 2px);
-  --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) + 4px);
-}
-
-@layer base {
-  * {
-    @apply border-border outline-ring/50;
-  }
-  body {
-    @apply bg-background text-foreground;
-  }
-}
-
-/* 🎯 목적: Tailwind v4 동적 테마 시스템 - 모든 색상 변수를 동적 참조로 정의
- * 📝 주의: @theme inline은 CSS 변수 참조를 허용하여 html.theme-* 클래스로 값 변경 가능
- * 🔄 동작 원리: --color-primary: var(--primary) → html.theme-red-dark에서 --primary 오버라이드
- */
-@theme inline {
-  /* 기본 색상 */
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-
-  /* 카드 */
-  --color-card: var(--card);
-  --color-card-foreground: var(--card-foreground);
-
-  /* 팝오버 */
-  --color-popover: var(--popover);
-  --color-popover-foreground: var(--popover-foreground);
-
-  /* 프라이머리 */
-  --color-primary: var(--primary);
-  --color-primary-foreground: var(--primary-foreground);
-
-  /* 세컨더리 */
-  --color-secondary: var(--secondary);
-  --color-secondary-foreground: var(--secondary-foreground);
-
-  /* 뮤티드 */
-  --color-muted: var(--muted);
-  --color-muted-foreground: var(--muted-foreground);
-
-  /* 액센트 */
-  --color-accent: var(--accent);
-  --color-accent-foreground: var(--accent-foreground);
-
-  /* 디스트럭티브 */
-  --color-destructive: var(--destructive);
-  --color-destructive-foreground: var(--destructive-foreground);
-
-  /* 보더 및 인풋 */
-  --color-border: var(--border);
-  --color-input: var(--input);
-  --color-ring: var(--ring);
-
-  /* 차트 */
-  --color-chart-1: var(--chart-1);
-  --color-chart-2: var(--chart-2);
-  --color-chart-3: var(--chart-3);
-  --color-chart-4: var(--chart-4);
-  --color-chart-5: var(--chart-5);
-
-  /* 사이드바 */
-  --color-sidebar: var(--sidebar);
-  --color-sidebar-foreground: var(--sidebar-foreground);
-  --color-sidebar-primary: var(--sidebar-primary);
-  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
-  --color-sidebar-accent: var(--sidebar-accent);
-  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
-  --color-sidebar-border: var(--sidebar-border);
-  --color-sidebar-ring: var(--sidebar-ring);
 }

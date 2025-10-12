@@ -342,18 +342,13 @@ const ColorTile = ({ value }: Pick<Color, "value">) => {
     };
   }, [value]);
 
-  // 🎨 Tailwind v4: CSS 변수 값이 이미 "hsl(0 0% 100%)" 형식 (hsl() 포함)
-  // React 인라인 스타일 호환을 위해 공백을 쉼표로 변환
-  const hslValue = colorValue.replace(/hsl\(([^)]+)\)/, (match, values) => {
-    return `hsl(${values.replace(/\s+/g, ", ")})`;
-  });
+  // 🎨 CSS 변수 이름을 Tailwind 클래스로 변환
+  // 예: "--primary" → "bg-primary"
+  const bgClass = `bg-[var(${value})]`;
 
   return (
     <div className="flex flex-col items-center gap-2">
-      <div
-        className="size-20 rounded-md border"
-        style={{ backgroundColor: hslValue || "transparent" }}
-      />
+      <div className={`size-20 rounded-md border ${bgClass}`} />
       <p className="text-center text-xs opacity-70">{value}</p>
       <p className="text-center font-mono text-xs">{colorValue}</p>
     </div>
