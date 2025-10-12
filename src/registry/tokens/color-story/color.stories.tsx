@@ -343,18 +343,12 @@ const ColorTile = ({ value }: Pick<Color, "value">) => {
   }, [value]);
 
   // 🎯 목적: CSS 변수명을 Tailwind 클래스명으로 변환
-  // 📝 로직:
-  //   - 단순 변수 (--primary) → bg-primary (Tailwind가 --color-primary 자동 참조)
-  //   - 복합 변수 (--primary-foreground) → bg-[var(--color-primary-foreground)]
+  // 📝 로직: Tailwind v4는 bg-{name} 형식을 자동으로 --color-{name}으로 매핑
+  //   - --primary → bg-primary → --color-primary
+  //   - --chart-1 → bg-chart-1 → --color-chart-1
+  //   - --primary-foreground → bg-primary-foreground → --color-primary-foreground
   const getBackgroundClass = (cssVariable: string): string => {
     const varName = cssVariable.replace(/^--/, "");
-
-    // 복합 변수명 (하이픈 포함)은 @theme inline의 --color-* 형식으로 참조
-    if (varName.includes("-")) {
-      return `bg-[var(--color-${varName})]`;
-    }
-
-    // 단순 변수명은 Tailwind 기본 클래스 사용
     return `bg-${varName}`;
   };
 
@@ -462,7 +456,7 @@ export const Primary: Story = {
 /**
  * 🗂️ Surface: 표면 색상 토큰
  *
- * 카드, 팝오버 등 UI 표면 요소를 위한 색상 토큰입니다.
+ * 카드, 팝오버, 코드 블록 등 UI 표면 요소를 위한 색상 토큰입니다.
  */
 export const Surface: Story = {
   args: {
@@ -487,6 +481,36 @@ export const Surface: Story = {
         value: "--popover-foreground",
         description: "Popover 배경 위의 텍스트 색상",
       },
+      {
+        name: "Surface",
+        value: "--surface",
+        description: "일반 표면 요소의 배경 색상",
+      },
+      {
+        name: "Surface Foreground",
+        value: "--surface-foreground",
+        description: "Surface 배경 위의 텍스트 색상",
+      },
+      {
+        name: "Code",
+        value: "--code",
+        description: "코드 블록의 배경 색상",
+      },
+      {
+        name: "Code Foreground",
+        value: "--code-foreground",
+        description: "코드 블록의 텍스트 색상",
+      },
+      {
+        name: "Code Highlight",
+        value: "--code-highlight",
+        description: "코드 블록의 하이라이트 배경 색상",
+      },
+      {
+        name: "Code Number",
+        value: "--code-number",
+        description: "코드 블록의 라인 번호 색상",
+      },
     ],
   },
 };
@@ -494,7 +518,7 @@ export const Surface: Story = {
 /**
  * ⚡ State: 상태 및 유틸리티 색상 토큰
  *
- * 비활성화, 강조, 파괴적 액션 등 다양한 상태를 나타내는 색상 토큰입니다.
+ * 비활성화, 강조, 파괴적 액션, 선택 영역 등 다양한 상태를 나타내는 색상 토큰입니다.
  */
 export const State: Story = {
   args: {
@@ -528,6 +552,16 @@ export const State: Story = {
         name: "Destructive Foreground",
         value: "--destructive-foreground",
         description: "Destructive 배경 위의 텍스트 색상",
+      },
+      {
+        name: "Selection",
+        value: "--selection",
+        description: "텍스트 선택 영역의 배경 색상",
+      },
+      {
+        name: "Selection Foreground",
+        value: "--selection-foreground",
+        description: "선택된 텍스트의 색상",
       },
     ],
   },
@@ -699,6 +733,14 @@ export const TailwindPalette: Story = {
         "--sidebar-accent-foreground",
         "--sidebar-border",
         "--sidebar-ring",
+        "--surface",
+        "--surface-foreground",
+        "--code",
+        "--code-foreground",
+        "--code-highlight",
+        "--code-number",
+        "--selection",
+        "--selection-foreground",
       ];
       const newValues: Record<string, string> = {};
       tokenList.forEach((token) => {
@@ -785,7 +827,12 @@ export const TailwindPalette: Story = {
       });
     };
 
-    // Tailwind 클래스 매핑으로 shadcn 토큰 표시
+    // 🎯 목적: Tailwind 클래스 매핑으로 shadcn 토큰 표시
+    // 📝 로직: Tailwind v4는 bg-{name} 형식을 자동으로 --color-{name}으로 매핑
+    //   - --primary → bg-primary → --color-primary
+    //   - --chart-1 → bg-chart-1 → --color-chart-1
+    //   - --sidebar → bg-sidebar → --color-sidebar
+    //   - --surface → bg-surface → --color-surface
     const tokenClassMap: Record<string, string> = {
       "--background": "bg-background",
       "--foreground": "bg-foreground",
@@ -811,16 +858,22 @@ export const TailwindPalette: Story = {
       "--chart-3": "bg-chart-3",
       "--chart-4": "bg-chart-4",
       "--chart-5": "bg-chart-5",
-      "--sidebar": "bg-[hsl(var(--sidebar))]",
-      "--sidebar-foreground": "bg-[hsl(var(--sidebar-foreground))]",
-      "--sidebar-primary": "bg-[hsl(var(--sidebar-primary))]",
-      "--sidebar-primary-foreground":
-        "bg-[hsl(var(--sidebar-primary-foreground))]",
-      "--sidebar-accent": "bg-[hsl(var(--sidebar-accent))]",
-      "--sidebar-accent-foreground":
-        "bg-[hsl(var(--sidebar-accent-foreground))]",
-      "--sidebar-border": "bg-[hsl(var(--sidebar-border))]",
-      "--sidebar-ring": "bg-[hsl(var(--sidebar-ring))]",
+      "--sidebar": "bg-sidebar",
+      "--sidebar-foreground": "bg-sidebar-foreground",
+      "--sidebar-primary": "bg-sidebar-primary",
+      "--sidebar-primary-foreground": "bg-sidebar-primary-foreground",
+      "--sidebar-accent": "bg-sidebar-accent",
+      "--sidebar-accent-foreground": "bg-sidebar-accent-foreground",
+      "--sidebar-border": "bg-sidebar-border",
+      "--sidebar-ring": "bg-sidebar-ring",
+      "--surface": "bg-surface",
+      "--surface-foreground": "bg-surface-foreground",
+      "--code": "bg-code",
+      "--code-foreground": "bg-code-foreground",
+      "--code-highlight": "bg-code-highlight",
+      "--code-number": "bg-code-number",
+      "--selection": "bg-selection",
+      "--selection-foreground": "bg-selection-foreground",
     };
 
     return (
