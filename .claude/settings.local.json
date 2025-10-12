@@ -28,7 +28,9 @@
       "mcp__serena__search_for_pattern",
       "Bash(bun:*)",
       "Bash(npm --version)",
-      "Bash(node:*)"
+      "Bash(node:*)",
+      "Bash(sed:*)",
+      "mcp__serena__think_about_collected_information"
     ],
     "deny": [],
     "ask": []
