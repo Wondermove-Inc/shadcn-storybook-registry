@@ -61,23 +61,23 @@ const preview: Preview = {
   tags: ["autodocs"],
   decorators: [
     // 테마 및 모드 조합 선택 (7가지 색상 × 2가지 모드 = 14가지 조합)
-    // Blue 테마는 다중 클래스 방식으로 default 테마로 폴백
+    // 모든 컬러 테마는 다중 클래스 방식으로 default 테마로 폴백
     withThemeByClassName({
       themes: {
         "default-light": "theme-default-light",
         "default-dark": "theme-default-dark",
-        "red-light": "theme-red-light",
-        "red-dark": "theme-red-dark",
-        "orange-light": "theme-orange-light",
-        "orange-dark": "theme-orange-dark",
-        "green-light": "theme-green-light",
-        "green-dark": "theme-green-dark",
+        "red-light": ["theme-default-light", "theme-red-light"],
+        "red-dark": ["theme-default-dark", "theme-red-dark"],
+        "orange-light": ["theme-default-light", "theme-orange-light"],
+        "orange-dark": ["theme-default-dark", "theme-orange-dark"],
+        "green-light": ["theme-default-light", "theme-green-light"],
+        "green-dark": ["theme-default-dark", "theme-green-dark"],
         "blue-light": ["theme-default-light", "theme-blue-light"],
         "blue-dark": ["theme-default-dark", "theme-blue-dark"],
-        "yellow-light": "theme-yellow-light",
-        "yellow-dark": "theme-yellow-dark",
-        "violet-light": "theme-violet-light",
-        "violet-dark": "theme-violet-dark",
+        "yellow-light": ["theme-default-light", "theme-yellow-light"],
+        "yellow-dark": ["theme-default-dark", "theme-yellow-dark"],
+        "violet-light": ["theme-default-light", "theme-violet-light"],
+        "violet-dark": ["theme-default-dark", "theme-violet-dark"],
       },
       defaultTheme: "blue-light",
       parentSelector: "html",
