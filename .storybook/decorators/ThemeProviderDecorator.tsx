@@ -19,9 +19,9 @@ export const withThemeProvider: Decorator = (Story, context) => {
 
   return (
     <ThemeProvider
-      forcedTheme={mode}
+      defaultTheme={mode}
       attribute="class"
-      enableSystem={false}
+      enableSystem={true}
       disableTransitionOnChange
     >
       <Story />
