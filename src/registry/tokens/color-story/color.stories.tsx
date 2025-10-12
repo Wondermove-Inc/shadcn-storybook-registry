@@ -342,9 +342,23 @@ const ColorTile = ({ value }: Pick<Color, "value">) => {
     };
   }, [value]);
 
-  // 🎨 CSS 변수 이름을 Tailwind 클래스로 변환
-  // 예: "--primary" → "bg-primary"
-  const bgClass = `bg-[var(${value})]`;
+  // 🎯 목적: CSS 변수명을 Tailwind 클래스명으로 변환
+  // 📝 로직:
+  //   - 단순 변수 (--primary) → bg-primary (Tailwind가 --color-primary 자동 참조)
+  //   - 복합 변수 (--primary-foreground) → bg-[var(--color-primary-foreground)]
+  const getBackgroundClass = (cssVariable: string): string => {
+    const varName = cssVariable.replace(/^--/, "");
+
+    // 복합 변수명 (하이픈 포함)은 @theme inline의 --color-* 형식으로 참조
+    if (varName.includes("-")) {
+      return `bg-[var(--color-${varName})]`;
+    }
+
+    // 단순 변수명은 Tailwind 기본 클래스 사용
+    return `bg-${varName}`;
+  };
+
+  const bgClass = getBackgroundClass(value);
 
   return (
     <div className="flex flex-col items-center gap-2">
