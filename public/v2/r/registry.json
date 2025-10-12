@@ -1251,6 +1251,39 @@
       ]
     },
     {
+      "name": "theme-preview-story",
+      "type": "registry:component",
+      "title": "Theme Preview Story",
+      "description": "OKLCH theme preview and design token visualization with light/dark mode switching",
+      "categories": [
+        "foundation",
+        "tokens",
+        "storybook",
+        "theme"
+      ],
+      "author": "Lloyd Richards <lloyd.d.richards@gmail.com>",
+      "registryDependencies": [
+        "card",
+        "button",
+        "badge",
+        "dropdown-menu"
+      ],
+      "dependencies": [
+        "next-themes",
+        "lucide-react"
+      ],
+      "files": [
+        {
+          "path": "src/registry/tokens/theme-preview-story/theme-preview.stories.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "src/components/theme-switcher.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
       "name": "typography-components-story",
       "type": "registry:component",
       "title": "Typography Components Story",
