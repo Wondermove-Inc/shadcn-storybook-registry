@@ -32,8 +32,15 @@ const meta = {
   component: Field,
   tags: ["autodocs"],
   parameters: {
-    layout: "padded",
+    layout: "centered",
   },
+  decorators: [
+    (Story) => (
+      <div className="mx-auto w-full max-w-2xl">
+        <Story />
+      </div>
+    ),
+  ],
 } satisfies Meta<typeof Field>;
 
 export default meta;
