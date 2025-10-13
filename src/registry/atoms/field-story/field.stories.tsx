@@ -32,7 +32,7 @@ const meta = {
   component: Field,
   tags: ["autodocs"],
   parameters: {
-    layout: "centered",
+    layout: "padded",
   },
 } satisfies Meta<typeof Field>;
 

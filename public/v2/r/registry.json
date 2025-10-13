@@ -2146,7 +2146,9 @@
       "registryDependencies": [
         "empty",
         "button",
-        "input"
+        "avatar",
+        "input-group",
+        "kbd"
       ],
       "dependencies": [
         "lucide-react"
@@ -2289,6 +2291,7 @@
         "select",
         "checkbox",
         "radio-group",
+        "switch",
         "button"
       ],
       "dependencies": [],
