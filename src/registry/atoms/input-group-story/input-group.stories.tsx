@@ -1,3 +1,11 @@
+import { Button } from "@/components/ui/button";
+import { ButtonGroup } from "@/components/ui/button-group";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import {
   InputGroup,
   InputGroupAddon,
@@ -6,27 +14,38 @@ import {
   InputGroupText,
   InputGroupTextarea,
 } from "@/components/ui/input-group";
+import { Label } from "@/components/ui/label";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import { Spinner } from "@/components/ui/spinner";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 import {
   Check,
+  ChevronDown,
   Copy,
   CreditCard,
+  HelpCircle,
   Info,
   Loader2,
   Mail,
+  Plus,
   Search,
   Star,
 } from "lucide-react";
 import * as React from "react";
 
 /**
- * A flexible container for grouping inputs with labels, icons, buttons, and more.
- * InputGroup provides consistent styling and layout for complex input compositions.
+ * Groups input elements with related buttons, icons, or text.
+ * Provides a consistent way to enhance inputs with additional functionality.
  */
 const meta = {
   title: "ui/InputGroup",
@@ -35,22 +54,17 @@ const meta = {
   parameters: {
     layout: "centered",
   },
+  decorators: [
+    (Story) => (
+      <TooltipProvider>
+        <Story />
+      </TooltipProvider>
+    ),
+  ],
 } satisfies Meta<typeof InputGroup>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
-
-/**
- * 기본 입력 그룹입니다.
- * 단순한 입력 필드를 보여줍니다.
- */
-export const Default: Story = {
-  render: () => (
-    <InputGroup className="w-[300px]">
-      <InputGroupInput placeholder="Enter text..." />
-    </InputGroup>
-  ),
-};
 
 /**
  * 아이콘과 함께 사용하는 입력 그룹입니다.
@@ -92,8 +106,8 @@ export const Icon: Story = {
 };
 
 /**
- * 텍스트 라벨과 함께 사용하는 입력 그룹입니다.
- * 통화, URL, 단위 등을 표시합니다.
+ * 텍스트와 함께 사용하는 입력 그룹입니다.
+ * 통화, URL, 이메일 도메인 등을 표시합니다.
  */
 export const Text: Story = {
   render: () => (
@@ -117,15 +131,17 @@ export const Text: Story = {
         </InputGroupAddon>
       </InputGroup>
       <InputGroup>
-        <InputGroupAddon>
-          <InputGroupText>@</InputGroupText>
+        <InputGroupInput placeholder="Enter your username" />
+        <InputGroupAddon align="inline-end">
+          <InputGroupText>@company.com</InputGroupText>
         </InputGroupAddon>
-        <InputGroupInput placeholder="username" />
       </InputGroup>
       <InputGroup>
-        <InputGroupInput placeholder="Weight" />
-        <InputGroupAddon align="inline-end">
-          <InputGroupText>kg</InputGroupText>
+        <InputGroupTextarea placeholder="Enter your message" />
+        <InputGroupAddon align="block-end">
+          <InputGroupText className="text-muted-foreground text-xs">
+            120 characters left
+          </InputGroupText>
         </InputGroupAddon>
       </InputGroup>
     </div>
@@ -136,14 +152,13 @@ export const Text: Story = {
  * 버튼과 함께 사용하는 입력 그룹입니다.
  * 복사, 정보 표시 등의 기능을 제공합니다.
  */
-export const Button: Story = {
+export const ButtonExample: Story = {
   render: () => {
     const [isCopied, setIsCopied] = React.useState(false);
-    const [isLoading, setIsLoading] = React.useState(false);
 
     const handleCopy = async () => {
       const input = document.querySelector(
-        "[data-input-group-input]",
+        "[data-input-1]",
       ) as HTMLInputElement;
       if (input) {
         await navigator.clipboard.writeText(input.value);
@@ -152,17 +167,13 @@ export const Button: Story = {
       }
     };
 
-    const handleSend = () => {
-      setIsLoading(true);
-      setTimeout(() => setIsLoading(false), 2000);
-    };
-
     return (
       <div className="grid w-full max-w-sm gap-6">
         <InputGroup>
           <InputGroupInput
-            placeholder="Enter text to copy"
-            data-input-group-input
+            placeholder="npm install @radix-ui/react-icons"
+            defaultValue="npm install @radix-ui/react-icons"
+            data-input-1
           />
           <InputGroupAddon align="inline-end">
             <InputGroupButton onClick={handleCopy} size="icon-xs">
@@ -171,22 +182,7 @@ export const Button: Story = {
           </InputGroupAddon>
         </InputGroup>
         <InputGroup>
-          <InputGroupInput placeholder="Enter message" />
-          <InputGroupAddon align="inline-end">
-            <InputGroupButton onClick={handleSend} disabled={isLoading}>
-              {isLoading ? (
-                <>
-                  <Loader2 className="animate-spin" />
-                  Sending...
-                </>
-              ) : (
-                "Send"
-              )}
-            </InputGroupButton>
-          </InputGroupAddon>
-        </InputGroup>
-        <InputGroup>
-          <InputGroupInput placeholder="Enter API key" />
+          <InputGroupInput placeholder="Enter your password" type="password" />
           <InputGroupAddon align="inline-end">
             <Popover>
               <PopoverTrigger asChild>
@@ -194,10 +190,17 @@ export const Button: Story = {
                   <Info />
                 </InputGroupButton>
               </PopoverTrigger>
-              <PopoverContent>
-                <p className="text-sm">
-                  Your API key is used to authenticate requests to our service.
-                </p>
+              <PopoverContent className="w-80">
+                <div className="space-y-2">
+                  <h4 className="leading-none font-medium">
+                    Password requirements
+                  </h4>
+                  <p className="text-muted-foreground text-sm">
+                    Your password must be at least 8 characters long and contain
+                    at least one uppercase letter, one lowercase letter, and one
+                    number.
+                  </p>
+                </div>
               </PopoverContent>
             </Popover>
           </InputGroupAddon>
@@ -208,38 +211,141 @@ export const Button: Story = {
 };
 
 /**
- * 블록 레이아웃 입력 그룹입니다.
- * 라벨이나 도움말을 입력 필드 위아래에 배치합니다.
+ * 툴팁과 함께 사용하는 입력 그룹입니다.
+ * 추가 정보를 제공합니다.
  */
-export const Block: Story = {
+export const TooltipExample: Story = {
   render: () => (
     <div className="grid w-full max-w-sm gap-6">
       <InputGroup>
-        <InputGroupAddon align="block-start">
-          <InputGroupText className="text-muted-foreground text-xs">
-            Label
-          </InputGroupText>
+        <InputGroupInput placeholder="API Key" />
+        <InputGroupAddon align="inline-end">
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <InputGroupButton size="icon-xs">
+                <HelpCircle />
+              </InputGroupButton>
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>Find your API key in your account settings</p>
+            </TooltipContent>
+          </Tooltip>
         </InputGroupAddon>
-        <InputGroupInput placeholder="Enter value" />
       </InputGroup>
       <InputGroup>
-        <InputGroupInput placeholder="Enter value" />
+        <InputGroupInput placeholder="Enter domain name" />
+        <InputGroupAddon align="inline-end">
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Info className="h-4 w-4" />
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>e.g., example.com</p>
+            </TooltipContent>
+          </Tooltip>
+        </InputGroupAddon>
+      </InputGroup>
+    </div>
+  ),
+};
+
+/**
+ * Textarea와 함께 사용하는 입력 그룹입니다.
+ * 여러 줄 입력을 지원합니다.
+ */
+export const TextareaExample: Story = {
+  render: () => (
+    <div className="grid w-full max-w-sm gap-6">
+      <InputGroup>
+        <InputGroupTextarea placeholder="Enter your message" rows={4} />
+      </InputGroup>
+      <InputGroup>
+        <InputGroupTextarea placeholder="Enter your message" />
         <InputGroupAddon align="block-end">
           <InputGroupText className="text-muted-foreground text-xs">
-            Helper text goes here
+            120 characters left
           </InputGroupText>
         </InputGroupAddon>
       </InputGroup>
       <InputGroup>
         <InputGroupAddon align="block-start">
-          <InputGroupText className="text-xs font-medium">
-            Email Address
+          <InputGroupText className="text-muted-foreground text-xs">
+            Bio
           </InputGroupText>
         </InputGroupAddon>
-        <InputGroupInput type="email" placeholder="email@example.com" />
+        <InputGroupTextarea placeholder="Tell us about yourself" />
+      </InputGroup>
+    </div>
+  ),
+};
+
+/**
+ * 스피너와 함께 사용하는 입력 그룹입니다.
+ * 로딩 상태를 표시합니다.
+ */
+export const SpinnerExample: Story = {
+  render: () => {
+    const [isLoading, setIsLoading] = React.useState(false);
+
+    return (
+      <div className="grid w-full max-w-sm gap-6">
+        <InputGroup>
+          <InputGroupInput placeholder="Checking availability..." />
+          <InputGroupAddon>
+            <Spinner className="h-4 w-4" />
+          </InputGroupAddon>
+        </InputGroup>
+        <InputGroup>
+          <InputGroupInput placeholder="Search users..." />
+          <InputGroupAddon align="inline-end">
+            <InputGroupButton
+              size="sm"
+              onClick={() => {
+                setIsLoading(true);
+                setTimeout(() => setIsLoading(false), 2000);
+              }}
+            >
+              {isLoading ? (
+                <Loader2 className="h-4 w-4 animate-spin" />
+              ) : (
+                "Search"
+              )}
+            </InputGroupButton>
+          </InputGroupAddon>
+        </InputGroup>
+      </div>
+    );
+  },
+};
+
+/**
+ * 라벨과 함께 사용하는 입력 그룹입니다.
+ * 폼 필드에 라벨을 추가합니다.
+ */
+export const LabelExample: Story = {
+  render: () => (
+    <div className="grid w-full max-w-sm gap-6">
+      <div className="space-y-2">
+        <Label htmlFor="email-1">Email</Label>
+        <InputGroup>
+          <InputGroupInput
+            id="email-1"
+            type="email"
+            placeholder="Enter your email"
+          />
+          <InputGroupAddon>
+            <Mail />
+          </InputGroupAddon>
+        </InputGroup>
+      </div>
+      <InputGroup>
+        <InputGroupAddon align="block-start">
+          <Label htmlFor="username-1">Username</Label>
+        </InputGroupAddon>
+        <InputGroupInput id="username-1" placeholder="Enter username" />
         <InputGroupAddon align="block-end">
           <InputGroupText className="text-muted-foreground text-xs">
-            We'll never share your email with anyone else.
+            Must be 3-20 characters
           </InputGroupText>
         </InputGroupAddon>
       </InputGroup>
@@ -248,10 +354,63 @@ export const Block: Story = {
 };
 
 /**
- * 혼합 레이아웃 입력 그룹입니다.
- * 다양한 요소를 조합하여 사용합니다.
+ * 드롭다운과 함께 사용하는 입력 그룹입니다.
+ * 추가 옵션을 제공합니다.
  */
-export const Mixed: Story = {
+export const DropdownExample: Story = {
+  render: () => (
+    <div className="grid w-full max-w-sm gap-6">
+      <InputGroup>
+        <InputGroupInput placeholder="Select action..." />
+        <InputGroupAddon align="inline-end">
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <InputGroupButton size="icon-xs">
+                <ChevronDown />
+              </InputGroupButton>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <DropdownMenuItem>Copy</DropdownMenuItem>
+              <DropdownMenuItem>Cut</DropdownMenuItem>
+              <DropdownMenuItem>Paste</DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </InputGroupAddon>
+      </InputGroup>
+    </div>
+  ),
+};
+
+/**
+ * 버튼 그룹과 함께 사용하는 입력 그룹입니다.
+ * 여러 액션을 그룹화합니다.
+ */
+export const ButtonGroupExample: Story = {
+  render: () => (
+    <div className="grid w-full max-w-sm gap-6">
+      <InputGroup>
+        <InputGroupInput
+          placeholder="Quantity"
+          type="number"
+          defaultValue="1"
+        />
+        <InputGroupAddon align="inline-end">
+          <ButtonGroup>
+            <Button size="icon" variant="outline">
+              <Plus className="h-4 w-4" />
+            </Button>
+          </ButtonGroup>
+        </InputGroupAddon>
+      </InputGroup>
+    </div>
+  ),
+};
+
+/**
+ * 커스텀 입력 예제입니다.
+ * 복잡한 입력 시나리오를 보여줍니다.
+ */
+export const CustomInput: Story = {
   render: () => {
     const [showPassword, setShowPassword] = React.useState(false);
 
@@ -259,30 +418,10 @@ export const Mixed: Story = {
       <div className="grid w-full max-w-sm gap-6">
         <InputGroup>
           <InputGroupAddon align="block-start">
-            <InputGroupText className="text-xs font-medium">
-              Price
-            </InputGroupText>
-          </InputGroupAddon>
-          <InputGroupAddon>
-            <InputGroupText>$</InputGroupText>
-          </InputGroupAddon>
-          <InputGroupInput placeholder="0.00" />
-          <InputGroupAddon align="inline-end">
-            <InputGroupText>USD</InputGroupText>
-          </InputGroupAddon>
-          <InputGroupAddon align="block-end">
-            <InputGroupText className="text-muted-foreground text-xs">
-              Including VAT
-            </InputGroupText>
-          </InputGroupAddon>
-        </InputGroup>
-        <InputGroup>
-          <InputGroupAddon align="block-start">
-            <InputGroupText className="text-xs font-medium">
-              Password
-            </InputGroupText>
+            <Label htmlFor="password-1">Password</Label>
           </InputGroupAddon>
           <InputGroupInput
+            id="password-1"
             type={showPassword ? "text" : "password"}
             placeholder="Enter password"
           />
@@ -300,99 +439,24 @@ export const Mixed: Story = {
             </InputGroupText>
           </InputGroupAddon>
         </InputGroup>
+        <InputGroup>
+          <InputGroupAddon align="block-start">
+            <Label htmlFor="price-1">Price</Label>
+          </InputGroupAddon>
+          <InputGroupAddon>
+            <InputGroupText>$</InputGroupText>
+          </InputGroupAddon>
+          <InputGroupInput id="price-1" placeholder="0.00" />
+          <InputGroupAddon align="inline-end">
+            <InputGroupText>USD</InputGroupText>
+          </InputGroupAddon>
+          <InputGroupAddon align="block-end">
+            <InputGroupText className="text-muted-foreground text-xs">
+              Including tax
+            </InputGroupText>
+          </InputGroupAddon>
+        </InputGroup>
       </div>
     );
   },
-};
-
-/**
- * Textarea와 함께 사용하는 입력 그룹입니다.
- * 여러 줄 입력을 위한 그룹입니다.
- */
-export const Textarea: Story = {
-  render: () => (
-    <div className="grid w-full max-w-sm gap-6">
-      <InputGroup>
-        <InputGroupTextarea placeholder="Enter your message..." rows={4} />
-      </InputGroup>
-      <InputGroup>
-        <InputGroupAddon align="block-start">
-          <InputGroupText className="text-xs font-medium">
-            Description
-          </InputGroupText>
-        </InputGroupAddon>
-        <InputGroupTextarea placeholder="Describe your issue..." rows={4} />
-        <InputGroupAddon align="block-end">
-          <InputGroupText className="text-muted-foreground text-xs">
-            Maximum 500 characters
-          </InputGroupText>
-        </InputGroupAddon>
-      </InputGroup>
-      <InputGroup>
-        <InputGroupTextarea placeholder="Write your comment..." rows={3} />
-        <InputGroupAddon align="inline-end">
-          <InputGroupButton size="sm">Post</InputGroupButton>
-        </InputGroupAddon>
-      </InputGroup>
-    </div>
-  ),
-};
-
-/**
- * 에러 상태의 입력 그룹입니다.
- * 유효성 검사 실패 시 표시됩니다.
- */
-export const Error: Story = {
-  render: () => (
-    <div className="grid w-full max-w-sm gap-6">
-      <InputGroup>
-        <InputGroupInput
-          placeholder="Enter email"
-          aria-invalid="true"
-          defaultValue="invalid-email"
-        />
-        <InputGroupAddon align="block-end">
-          <InputGroupText className="text-destructive text-xs">
-            Please enter a valid email address
-          </InputGroupText>
-        </InputGroupAddon>
-      </InputGroup>
-      <InputGroup>
-        <InputGroupAddon>
-          <Mail />
-        </InputGroupAddon>
-        <InputGroupInput
-          type="email"
-          placeholder="email@example.com"
-          aria-invalid="true"
-        />
-        <InputGroupAddon align="inline-end">
-          <Info className="text-destructive" />
-        </InputGroupAddon>
-      </InputGroup>
-    </div>
-  ),
-};
-
-/**
- * 비활성화된 입력 그룹입니다.
- * 사용자 입력을 받지 않는 상태입니다.
- */
-export const Disabled: Story = {
-  render: () => (
-    <div className="grid w-full max-w-sm gap-6">
-      <InputGroup>
-        <InputGroupInput placeholder="Disabled input" disabled />
-      </InputGroup>
-      <InputGroup>
-        <InputGroupAddon>
-          <InputGroupText>$</InputGroupText>
-        </InputGroupAddon>
-        <InputGroupInput placeholder="0.00" disabled />
-        <InputGroupAddon align="inline-end">
-          <InputGroupButton disabled>Copy</InputGroupButton>
-        </InputGroupAddon>
-      </InputGroup>
-    </div>
-  ),
 };
