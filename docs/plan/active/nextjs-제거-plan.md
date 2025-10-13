@@ -1,14 +1,11 @@
 # Next.js 제거 및 Vite 전환 계획
 
 **작성일**: 2025-01-15
-**최종 업데이트**: 2025-01-15 (react-router-dom 옵션 추가)
-**상태**: Active - 사용자 의사결정 대기
-**예상 시간**:
-- 옵션 A (`<a>` 태그): 5.5시간
-- 옵션 B (react-router-dom): 7.5시간
-**위험도**:
-- 옵션 A: 낮음
-- 옵션 B: 중간
+**최종 업데이트**: 2025-01-15 (react-router-dom 필수 적용으로 확정)
+**상태**: Active - 실행 준비 완료
+**예상 시간**: 7.5시간
+**위험도**: 낮음 (적용 대상 프로젝트가 react-router-dom을 이미 사용 중)
+**결정**: **react-router-dom 필수 사용** (사용자 프로젝트 환경에 맞춤)
 
 ---
 
@@ -16,6 +13,8 @@
 
 ### 목적
 Next.js 의존성을 완전히 제거하고 Storybook을 순수 Vite 환경으로 전환하여 webpack5와의 충돌 없이 shadcn/ui 컴포넌트를 사용할 수 있도록 합니다.
+
+**🎯 중요**: 사용자의 적용 대상 프로젝트가 **이미 react-router-dom을 사용하고 있으므로**, 이 Registry의 스토리도 react-router-dom을 사용하여 일관성을 유지합니다.
 
 ### 현재 상태
 - **프레임워크**: Next.js 15.5.4 + Storybook 9.1.8 (@storybook/nextjs-vite)
@@ -25,39 +24,62 @@ Next.js 의존성을 완전히 제거하고 Storybook을 순수 Vite 환경으�
 
 ### 목표 상태
 - **프레임워크**: Storybook 9.1.8 (@storybook/react-vite) 단독
+- **라우팅 라이브러리**: react-router-dom (사용자 프로젝트 환경과 일치)
 - **Next.js 의존성**: 완전 제거
 - **대체 방안**:
-  - `next/link` → 일반 `<a>` 태그
+  - `next/link` → react-router-dom의 `Link` 컴포넌트
   - `next/image` → 일반 `<img>` 태그
+
+### 핵심 이유 (Why react-router-dom)
+1. **사용자 프로젝트 호환성**: 적용 대상 프로젝트가 react-router-dom을 사용 중
+2. **일관성 유지**: 스토리를 설치한 프로젝트에서 동일한 라우팅 패턴 사용
+3. **즉시 사용 가능**: 별도 수정 없이 바로 프로젝트에 통합 가능
+4. **React 표준**: React 생태계에서 가장 널리 사용되는 라우팅 솔루션
 
 ---
 
 ## 🔍 변경 영향도 분석
 
 ### 영향받는 파일들
-1. `.storybook/main.ts` - Storybook 설정
-2. `package.json` - 의존성 및 스크립트
-3. `src/registry/atoms/button-story/button.stories.tsx`
-4. `src/registry/atoms/breadcrumb-story/breadcrumb.stories.tsx`
-5. `src/registry/atoms/navigation-menu-story/navigation-menu.stories.tsx`
-6. `src/registry/atoms/select-story/select.stories.tsx`
-7. `src/registry/atoms/aspect-ratio-story/aspect-ratio.stories.tsx`
-8. `src/registry/atoms/scroll-area-story/scroll-area.stories.tsx`
-9. `CLAUDE.md` - 프로젝트 문서
+1. `.storybook/main.ts` - Storybook 프레임워크 설정 (nextjs-vite → react-vite, addon 추가)
+2. `.storybook/preview.ts` - Router decorator 추가 (신규 또는 업데이트)
+3. `package.json` - 의존성 및 스크립트 (next 제거, react-router-dom + addon 추가)
+4. `src/registry/atoms/button-story/button.stories.tsx` - next/link → react-router-dom/Link
+5. `src/registry/atoms/breadcrumb-story/breadcrumb.stories.tsx` - next/link → react-router-dom/Link
+6. `src/registry/atoms/navigation-menu-story/navigation-menu.stories.tsx` - next/link → react-router-dom/Link
+7. `src/registry/atoms/select-story/select.stories.tsx` - next/link → react-router-dom/Link
+8. `src/registry/atoms/aspect-ratio-story/aspect-ratio.stories.tsx` - next/image → img
+9. `src/registry/atoms/scroll-area-story/scroll-area.stories.tsx` - next/image → img
+10. `CLAUDE.md` - 프로젝트 문서 업데이트
 
-**총 9개 파일 수정 예정**
+**총 10개 파일 수정 예정** (기존 9개 + .storybook/preview.ts 추가)
 
 ### 영향받는 컴포넌트
 - Button, Breadcrumb, Navigation Menu, Select, Aspect Ratio, Scroll Area 스토리
 
 ### Registry 의존성 변경
-- Registry 시스템 자체는 변경 없음
-- 스토리 파일 내용만 수정되므로 registry.json은 그대로 유지
+- **Registry 시스템**: 변경 없음 (registry.json 그대로 유지)
+- **스토리 dependencies**: react-router-dom 추가 필요
+  - 4개 링크 스토리의 `dependencies` 배열에 `"react-router-dom"` 추가
+  - button-story, breadcrumb-story, navigation-menu-story, select-story
 
-### 위험 요소
-- **호환성**: Storybook 9에서 @storybook/react-vite 공식 지원으로 위험 낮음
-- **브레이킹 체인지**: 스토리 렌더링 방식은 동일하므로 낮음
-- **Storybook 빌드 영향**: 프레임워크 변경으로 빌드 동작 차이 가능성 있으나 Vite가 더 빠름
+**registry.json 업데이트 예시**:
+```json
+{
+  "name": "button-story",
+  "dependencies": [
+    "lucide-react",
+    "react-router-dom"  // 추가
+  ]
+}
+```
+
+### 위험 요소 (매우 낮음)
+- **호환성**: ✅ Storybook 9에서 @storybook/react-vite 공식 지원
+- **브레이킹 체인지**: ✅ react-router-dom은 사용자 프로젝트에 이미 존재
+- **Storybook 빌드**: ✅ Vite가 Next.js보다 빠르고 안정적
+- **Addon 호환성**: ✅ storybook-addon-remix-react-router@5는 Storybook 9 지원
+- **사용자 프로젝트 통합**: ✅ 동일한 react-router-dom 사용으로 즉시 호환
 
 ### 필요한 테스트
 - Storybook 개발 서버 정상 작동 확인
@@ -118,12 +140,112 @@ package.json에서 Next.js 관련 패키지를 완전히 제거하고 관련 스
 
 ---
 
-### ✅ 작업 3: 스토리 파일의 next/link 교체
-**예상 시간**: 1.5시간
+### ✅ 작업 3: react-router-dom 및 Storybook Addon 설치
+**예상 시간**: 30분
 **위험도**: 낮음
 
 **상세 설명**:
-4개 스토리 파일에서 Next.js의 Link 컴포넌트를 일반 HTML `<a>` 태그로 교체합니다. Storybook은 문서화 도구이므로 SPA 라우팅 기능이 불필요하며, href 속성만으로 충분합니다.
+사용자 프로젝트와 동일한 라우팅 환경을 구성하기 위해 react-router-dom과 Storybook 통합 Addon을 설치합니다.
+
+**수행 내역**:
+```bash
+# react-router-dom 설치 (프로덕션 의존성)
+npm install react-router-dom
+
+# Storybook Addon 설치 (개발 의존성)
+npm install -D storybook-addon-remix-react-router
+```
+
+**검증 방법**:
+- `package.json`에 두 패키지가 올바르게 추가되었는지 확인
+  - `dependencies`에 `"react-router-dom": "^6.x.x"` 추가됨
+  - `devDependencies`에 `"storybook-addon-remix-react-router": "^5.x.x"` 추가됨
+- `npm list react-router-dom` 실행하여 설치 확인
+
+---
+
+### ✅ 작업 3-1: Storybook 설정에 Router Addon 추가
+**예상 시간**: 30분
+**위험도**: 낮음
+
+**상세 설명**:
+Storybook의 메인 설정과 프리뷰 설정을 업데이트하여 모든 스토리에서 react-router-dom을 사용할 수 있도록 합니다.
+
+**수행 내역**:
+
+**1) `.storybook/main.ts` 수정**:
+```typescript
+import type { StorybookConfig } from "@storybook/react-vite";
+
+const config: StorybookConfig = {
+  stories: [
+    "../src/docs/**/*.mdx",
+    "../src/registry/**/*.stories.@(js|jsx|mjs|ts|tsx)",
+  ],
+  addons: [
+    "@chromatic-com/storybook",
+    "@storybook/addon-docs",
+    "@storybook/addon-a11y",
+    "@storybook/addon-vitest",
+    "@storybook/addon-themes",
+    "storybook-addon-remix-react-router", // ⭐ 추가
+  ],
+  framework: {
+    name: "@storybook/react-vite",
+    options: {},
+  },
+  staticDirs: ["../public"],
+  typescript: {
+    reactDocgen: "react-docgen-typescript",
+    reactDocgenTypescriptOptions: {
+      shouldExtractLiteralValuesFromEnum: true,
+      propFilter: (prop) =>
+        prop.parent ? !/node_modules/.test(prop.parent.fileName) : true,
+    },
+  },
+};
+export default config;
+```
+
+**2) `.storybook/preview.ts` 파일 생성 또는 업데이트**:
+
+`.storybook/preview.ts` 파일이 없다면 새로 생성, 있다면 업데이트:
+
+```typescript
+import type { Preview } from "@storybook/react";
+import { withRouter } from 'storybook-addon-remix-react-router';
+
+const preview: Preview = {
+  decorators: [
+    withRouter, // ⭐ Router decorator 추가
+  ],
+  parameters: {
+    controls: {
+      matchers: {
+        color: /(background|color)$/i,
+        date: /Date$/i,
+      },
+    },
+  },
+};
+
+export default preview;
+```
+
+**검증 방법**:
+- TypeScript 컴파일 오류 없는지 확인
+- `npm run storybook` 실행하여 정상 구동 확인
+- 브라우저 콘솔에서 Router Context 오류 없는지 확인
+- 기존 스토리들이 모두 정상 렌더링되는지 확인
+
+---
+
+### ✅ 작업 3-2: next/link를 react-router-dom/Link로 교체
+**예상 시간**: 2시간
+**위험도**: 낮음
+
+**상세 설명**:
+4개 스토리 파일에서 Next.js의 Link를 react-router-dom의 Link로 교체합니다. 사용자 프로젝트와 동일한 라우팅 패턴을 사용하여 즉시 통합 가능합니다.
 
 **수행 내역**:
 각 파일에서 아래와 같은 변경 수행:
@@ -137,8 +259,9 @@ import Link from "next/link";
 </Button>
 
 // After
+import { Link } from 'react-router-dom';
 <Button asChild>
-  <a href="/login">Login</a>
+  <Link to="/login">Login</Link>
 </Button>
 ```
 
@@ -151,8 +274,9 @@ import Link from "next/link";
 </BreadcrumbLink>
 
 // After
+import { Link } from 'react-router-dom';
 <BreadcrumbLink asChild>
-  <a href="/">Home</a>
+  <Link to="/">Home</Link>
 </BreadcrumbLink>
 ```
 
@@ -165,8 +289,9 @@ import Link from "next/link";
 </NavigationMenuLink>
 
 // After
+import { Link } from 'react-router-dom';
 <NavigationMenuLink asChild>
-  <a href="/docs">Documentation</a>
+  <Link to="/docs">Documentation</Link>
 </NavigationMenuLink>
 ```
 
@@ -174,21 +299,25 @@ import Link from "next/link";
 ```tsx
 // Before
 import Link from "next/link";
-// 파일 내 Link 사용 패턴 확인 후 동일하게 교체
+// 파일 내 Link 사용 패턴 확인 후 교체
 
 // After
-// <a> 태그로 교체
+import { Link } from 'react-router-dom';
+// href → to prop 변경
 ```
 
 **주의사항**:
-- `asChild` prop은 Radix UI의 Slot 패턴으로, 자식 요소로 전달되므로 그대로 유지
-- href 속성값은 변경하지 않고 그대로 유지
+- **필수**: `href` → `to` prop 변경
+- `asChild` prop은 Radix UI의 Slot 패턴으로 그대로 유지
+- 경로 값은 변경하지 않음 ("/login" → "/login" 그대로)
 - 다른 props나 className도 변경하지 않음
+- import 문을 `import { Link } from 'react-router-dom'`으로 정확히 변경
 
 **검증 방법**:
 - TypeScript 컴파일 오류 없는지 확인
 - `npm run storybook`로 각 스토리 렌더링 확인
 - 링크가 정상적으로 표시되는지 시각적 확인
+- React Router Link의 기능 (hover effect, active state) 정상 작동 확인
 
 ---
 
@@ -252,12 +381,76 @@ import Image from "next/image";
 
 ---
 
-### ✅ 작업 5: Registry 빌드 및 검증
-**예상 시간**: 1시간
-**위험도**: 중간
+### ✅ 작업 5: registry.json에 react-router-dom 의존성 추가
+**예상 시간**: 30분
+**위험도**: 낮음
 
 **상세 설명**:
-변경된 스토리 파일들이 Registry 시스템에서 정상적으로 빌드되고, Storybook에서 올바르게 렌더링되는지 전체적으로 검증합니다. 이 단계에서는 시스템 전체의 통합성을 확인합니다.
+4개 링크 스토리의 registry.json 엔트리에 react-router-dom 의존성을 추가하여, 사용자가 스토리를 설치할 때 자동으로 react-router-dom이 함께 설치되도록 합니다.
+
+**수행 내역**:
+
+`registry.json` 파일에서 다음 4개 스토리의 `dependencies` 배열에 `"react-router-dom"` 추가:
+
+**1) button-story**:
+```json
+{
+  "name": "button-story",
+  "type": "registry:file",
+  "dependencies": [
+    "lucide-react",
+    "react-router-dom"  // ⭐ 추가
+  ]
+}
+```
+
+**2) breadcrumb-story**:
+```json
+{
+  "name": "breadcrumb-story",
+  "type": "registry:component",
+  "dependencies": [
+    "lucide-react",
+    "react-router-dom"  // ⭐ 추가
+  ]
+}
+```
+
+**3) navigation-menu-story**:
+```json
+{
+  "name": "navigation-menu-story",
+  "type": "registry:component",
+  "dependencies": [
+    "react-router-dom"  // ⭐ 추가 (기존 dependencies 없었다면 배열 생성)
+  ]
+}
+```
+
+**4) select-story**:
+```json
+{
+  "name": "select-story",
+  "type": "registry:component",
+  "dependencies": [
+    "react-router-dom"  // ⭐ 추가 (기존 dependencies 없었다면 배열 생성)
+  ]
+}
+```
+
+**검증 방법**:
+- `registry.json` 파일이 유효한 JSON 형식인지 확인
+- 4개 스토리에 모두 `"react-router-dom"` 의존성이 추가되었는지 확인
+- JSON linter로 문법 오류 없는지 검증
+
+---
+
+### ✅ 작업 6: Registry 빌드 및 전체 검증
+**예상 시간**: 1.5시간
+**위험도**: 낮음
+
+**상세 설명**:
+변경된 스토리 파일들과 registry.json이 Registry 시스템에서 정상적으로 빌드되고, Storybook에서 올바르게 렌더링되는지 전체적으로 검증합니다. 이 단계에서는 시스템 전체의 통합성을 확인합니다.
 
 **수행 내역**:
 
@@ -322,7 +515,7 @@ npm run format:check
 
 ---
 
-### ✅ 작업 6: 문서 업데이트 및 완료
+### ✅ 작업 7: 문서 업데이트 및 완료
 **예상 시간**: 30분
 **위험도**: 낮음
 
@@ -375,185 +568,32 @@ mv docs/plan/active/nextjs-제거-plan.md docs/plan/complete/2025-01-15-nextjs-�
 
 ---
 
-## ❓ 의사결정 사항
+## 💡 핵심 결정사항
 
-### 🔄 결정 1: next/link 교체 방법 (사용자 선택 필요)
+### 1. react-router-dom 사용 (확정)
+**이유**: 사용자의 적용 대상 프로젝트가 이미 react-router-dom을 사용 중이므로, Registry 스토리도 동일한 라우팅 라이브러리를 사용하여 즉시 통합 가능하도록 합니다.
 
-사용자가 react-router-dom 사용을 고려 중이므로 두 가지 옵션을 비교 분석합니다.
+### 2. next-themes 유지
+**이유**: `next-themes`는 Next.js 없이도 React에서 독립적으로 동작하며, theme-preview-story에서 이미 사용 중입니다. 테마 전환 기능이 정상 작동하므로 유지합니다.
 
-#### **옵션 A: 일반 `<a>` 태그로 교체** ⭐ 권장
-
-**장점**:
-- ✅ 최소 수정 원칙에 완벽히 부합
-- ✅ 외부 의존성 추가 불필요 (0 dependencies)
-- ✅ 간단하고 명확한 구현
-- ✅ 예상 시간: 1.5시간 (계획대로)
-- ✅ Storybook 문서화 목적에 충분
-
-**단점**:
-- ❌ SPA 라우팅 기능 없음 (하지만 Storybook에서는 불필요)
-
-**구현 방법**:
-```tsx
-// Before
-import Link from "next/link";
-<Button asChild>
-  <Link href="/login">Login</Link>
-</Button>
-
-// After (간단)
-<Button asChild>
-  <a href="/login">Login</a>
-</Button>
-```
-
----
-
-#### **옵션 B: react-router-dom + Storybook Addon 도입**
-
-**장점**:
-- ✅ SPA 라우팅 기능 제공 (Link, useNavigate 등)
-- ✅ 향후 확장성 (복잡한 라우팅 시나리오 대응)
-- ✅ React 생태계 표준 라우터
-
-**단점**:
-- ❌ 추가 의존성 필요 (2개 패키지)
-  - `react-router-dom` (필수)
-  - `storybook-addon-remix-react-router` (Storybook 통합용)
-- ❌ 추가 설정 필요 (.storybook/preview.ts에 decorator 추가)
-- ❌ 예상 시간 증가: **+2시간** (총 3.5시간)
-- ❌ 복잡도 증가 (Storybook에서 과도한 기능)
-- ❌ 최소 수정 원칙 위반 가능성
-
-**구현 방법**:
-```tsx
-// 1) 패키지 설치
-npm install react-router-dom
-npm install -D storybook-addon-remix-react-router
-
-// 2) .storybook/main.ts 수정
-export default {
-  addons: [
-    '@storybook/addon-themes',
-    'storybook-addon-remix-react-router', // 추가
-  ],
-}
-
-// 3) .storybook/preview.ts 수정
-import { withRouter } from 'storybook-addon-remix-react-router';
-export const decorators = [withRouter];
-
-// 4) 스토리 파일 수정
-import { Link } from 'react-router-dom';
-<Button asChild>
-  <Link to="/login">Login</Link>
-</Button>
-```
-
-**추가 영향 파일**:
-- `.storybook/main.ts` (addons 배열에 추가)
-- `.storybook/preview.ts` (decorators 추가)
-- `package.json` (2개 패키지 추가)
-- 4개 스토리 파일 (next/link → react-router-dom/Link)
-
-**위험 요소**:
-- Storybook Addon 버전 호환성 (Storybook 9 → storybook-addon-remix-react-router@5)
-- Router Context 설정 누락 시 오류 발생 가능
-- 과도한 기능으로 인한 불필요한 복잡도
-
----
-
-#### **📊 비교 분석표**
-
-| 항목 | 옵션 A: `<a>` 태그 | 옵션 B: react-router-dom |
-|------|-------------------|--------------------------|
-| **추가 의존성** | 0개 | 2개 (react-router-dom + addon) |
-| **설정 파일 수정** | 0개 | 2개 (.storybook/main.ts, preview.ts) |
-| **코드 복잡도** | 매우 낮음 | 중간 (Router Context 관리) |
-| **예상 작업 시간** | 1.5시간 | 3.5시간 (+2시간) |
-| **최소 수정 원칙** | ✅ 완벽 준수 | ❌ 위반 가능성 |
-| **Storybook 목적 부합** | ✅ 문서화에 충분 | ⚠️ 과도한 기능 |
-| **향후 확장성** | 제한적 | 높음 |
-| **위험도** | 낮음 | 중간 (호환성 이슈 가능) |
-
----
-
-#### **🎯 권장사항**
-
-**옵션 A (`<a>` 태그)**를 강력히 권장합니다.
-
-**이유**:
-1. **최소 수정 원칙 완벽 준수**: 사용자가 요청한 "Next.js 제거"라는 핵심 목적에만 집중
-2. **Storybook 문서화 목적에 충분**: SPA 라우팅이 필요하지 않음
-3. **빠른 구현**: 2시간 단축
-4. **복잡도 최소화**: 추가 설정 및 의존성 없음
-5. **위험도 낮음**: 검증된 HTML 표준 사용
-
-**옵션 B는 다음 경우에만 고려**:
-- 향후 복잡한 라우팅 기능이 필요한 경우 (현재 요구사항 없음)
-- SPA 동작 시연이 스토리의 핵심 목적인 경우 (현재 아님)
-
-**⚠️ 사용자 의사결정 필요**: 어떤 옵션을 선택하시겠습니까?
-- **A 선택 시**: 기존 계획대로 진행 (총 5.5시간)
-- **B 선택 시**: 계획 업데이트 필요 (총 7.5시간, 추가 작업 포함)
-
----
-
-### 결정 2: next-themes 처리
-**선택된 옵션**: next-themes 유지 (권장)
-
-**이유**:
-- `next-themes`는 Next.js 없이도 React에서 독립적으로 동작
-- theme-preview-story에서 이미 사용 중
-- 테마 전환 기능이 정상 작동
-- 교체 시 불필요한 작업 증가 (2-3시간)
-
-**대안 (선택 안 함)**: 다른 테마 라이브러리로 교체
-- 사용자 요청 범위를 벗어남
-- 기존 코드 대규모 수정 필요
-- 오버스펙 위험
-
----
-
-### 결정 3: 빌드 스크립트 구성
-**선택된 옵션**: Storybook 전용 스크립트 (권장)
-
-**변경 내용**:
-```json
-{
-  "scripts": {
-    "build": "npm run storybook:build",
-    "storybook": "storybook dev -p 6006",
-    "storybook:build": "storybook build",
-    "registry:build": "shadcn build -o ./public/v2/r",
-    "registry:dev": "shadcn build -o ./public/v2/r --watch"
-  }
-}
-```
-
-**이유**:
-- 이 프로젝트는 Storybook Registry 프로젝트
-- Storybook 개발 서버만으로 충분
-- 명확한 목적과 단순한 구조
-
-**대안 (선택 안 함)**: Vite dev server 추가
-- 사용자 요청 범위를 벗어남
-- 불필요한 Vite 설정 추가
-- 프로젝트 복잡도 증가
+### 3. Storybook 전용 빌드 스크립트
+**이유**: 이 프로젝트는 Storybook Registry 프로젝트이므로, Next.js dev 서버 제거 후 Storybook 개발 서버만 사용합니다.
 
 ---
 
 ## 📊 Relevant Files
 
-- `.storybook/main.ts` - Storybook 프레임워크 설정
-- `package.json` - 의존성 및 스크립트
-- `src/registry/atoms/button-story/button.stories.tsx` - Button 스토리
-- `src/registry/atoms/breadcrumb-story/breadcrumb.stories.tsx` - Breadcrumb 스토리
-- `src/registry/atoms/navigation-menu-story/navigation-menu.stories.tsx` - Navigation Menu 스토리
-- `src/registry/atoms/select-story/select.stories.tsx` - Select 스토리
-- `src/registry/atoms/aspect-ratio-story/aspect-ratio.stories.tsx` - Aspect Ratio 스토리
-- `src/registry/atoms/scroll-area-story/scroll-area.stories.tsx` - Scroll Area 스토리
-- `CLAUDE.md` - 프로젝트 개발 가이드 문서
+- `.storybook/main.ts` - Storybook 프레임워크 설정 및 addon 추가
+- `.storybook/preview.ts` - Router decorator 설정
+- `package.json` - 의존성 및 스크립트 변경
+- `registry.json` - 4개 스토리에 react-router-dom 의존성 추가
+- `src/registry/atoms/button-story/button.stories.tsx` - next/link → react-router-dom/Link
+- `src/registry/atoms/breadcrumb-story/breadcrumb.stories.tsx` - next/link → react-router-dom/Link
+- `src/registry/atoms/navigation-menu-story/navigation-menu.stories.tsx` - next/link → react-router-dom/Link
+- `src/registry/atoms/select-story/select.stories.tsx` - next/link → react-router-dom/Link
+- `src/registry/atoms/aspect-ratio-story/aspect-ratio.stories.tsx` - next/image → img
+- `src/registry/atoms/scroll-area-story/scroll-area.stories.tsx` - next/image → img
+- `CLAUDE.md` - 프로젝트 개발 가이드 문서 업데이트
 
 ---
 
@@ -582,207 +622,20 @@ import { Link } from 'react-router-dom';
 
 ## ✅ Tasks
 
-Phase 2 (세부 작업)는 사용자 승인 후 작성합니다.
+- [ ] 작업 1: Storybook 프레임워크 변경 (1시간)
+- [ ] 작업 2: Next.js 관련 패키지 제거 (30분)
+- [ ] 작업 3: react-router-dom 및 Storybook Addon 설치 (30분)
+- [ ] 작업 3-1: Storybook 설정에 Router Addon 추가 (30분)
+- [ ] 작업 3-2: next/link를 react-router-dom/Link로 교체 (2시간)
+- [ ] 작업 4: next/image 교체 (1시간)
+- [ ] 작업 5: registry.json에 react-router-dom 의존성 추가 (30분)
+- [ ] 작업 6: Registry 빌드 및 전체 검증 (1.5시간)
+- [ ] 작업 7: 문서 업데이트 및 완료 (30분)
 
-- [ ] 작업 1: Storybook 프레임워크 변경
-- [ ] 작업 2: Next.js 관련 패키지 제거
-- [ ] 작업 3: 스토리 파일의 next/link 교체
-- [ ] 작업 4: 스토리 파일의 next/image 교체
-- [ ] 작업 5: Registry 빌드 및 검증
-- [ ] 작업 6: 문서 업데이트 및 완료
-
----
-
----
-
-## 🔄 옵션 B 선택 시 추가 계획 (react-router-dom 사용)
-
-**⚠️ 이 섹션은 사용자가 옵션 B를 선택한 경우에만 적용됩니다.**
-
-### 추가 작업 3-1: react-router-dom 및 Storybook Addon 설치
-**예상 시간**: 30분
-**위험도**: 낮음
-
-**상세 설명**:
-react-router-dom과 Storybook 통합을 위한 공식 Addon을 설치하고 기본 설정을 수행합니다.
-
-**수행 내역**:
-```bash
-# 패키지 설치
-npm install react-router-dom
-npm install -D storybook-addon-remix-react-router
-```
-
-**검증 방법**:
-- `package.json`에 두 패키지가 올바르게 추가되었는지 확인
-- 버전 호환성 확인 (Storybook 9 → storybook-addon-remix-react-router@5)
+**총 예상 시간**: 7.5시간
 
 ---
 
-### 추가 작업 3-2: Storybook 설정 업데이트
-**예상 시간**: 30분
-**위험도**: 중간
-
-**상세 설명**:
-Storybook의 메인 설정과 프리뷰 설정을 업데이트하여 react-router-dom을 모든 스토리에서 사용할 수 있도록 합니다.
-
-**수행 내역**:
-
-**1) `.storybook/main.ts` 수정**:
-```typescript
-import type { StorybookConfig } from "@storybook/react-vite";
-
-const config: StorybookConfig = {
-  stories: [
-    "../src/docs/**/*.mdx",
-    "../src/registry/**/*.stories.@(js|jsx|mjs|ts|tsx)",
-  ],
-  addons: [
-    "@chromatic-com/storybook",
-    "@storybook/addon-docs",
-    "@storybook/addon-a11y",
-    "@storybook/addon-vitest",
-    "@storybook/addon-themes",
-    "storybook-addon-remix-react-router", // 추가
-  ],
-  framework: {
-    name: "@storybook/react-vite",
-    options: {},
-  },
-  staticDirs: ["../public"],
-  typescript: {
-    reactDocgen: "react-docgen-typescript",
-    reactDocgenTypescriptOptions: {
-      shouldExtractLiteralValuesFromEnum: true,
-      propFilter: (prop) =>
-        prop.parent ? !/node_modules/.test(prop.parent.fileName) : true,
-    },
-  },
-};
-export default config;
-```
-
-**2) `.storybook/preview.ts` 파일 확인 및 수정**:
-```typescript
-import type { Preview } from "@storybook/react";
-import { withRouter } from 'storybook-addon-remix-react-router';
-
-const preview: Preview = {
-  decorators: [
-    withRouter, // Router decorator 추가
-  ],
-  parameters: {
-    // 기존 parameters 유지
-  },
-};
-
-export default preview;
-```
-
-**검증 방법**:
-- TypeScript 컴파일 오류 없는지 확인
-- `npm run storybook` 실행하여 정상 구동 확인
-- 브라우저 콘솔에서 Router Context 오류 없는지 확인
-
----
-
-### 수정된 작업 3: next/link를 react-router-dom/Link로 교체
-**예상 시간**: 2시간 (기존 1.5시간 + 30분 추가)
-**위험도**: 중간
-
-**상세 설명**:
-4개 스토리 파일에서 Next.js의 Link를 react-router-dom의 Link로 교체합니다. href prop이 to prop으로 변경됩니다.
-
-**수행 내역**:
-
-**1) `src/registry/atoms/button-story/button.stories.tsx`**
-```tsx
-// Before
-import Link from "next/link";
-<Button asChild>
-  <Link href="/login">Login</Link>
-</Button>
-
-// After
-import { Link } from 'react-router-dom';
-<Button asChild>
-  <Link to="/login">Login</Link>
-</Button>
-```
-
-**2) `src/registry/atoms/breadcrumb-story/breadcrumb.stories.tsx`**
-```tsx
-// Before
-import Link from "next/link";
-<BreadcrumbLink asChild>
-  <Link href="/">Home</Link>
-</BreadcrumbLink>
-
-// After
-import { Link } from 'react-router-dom';
-<BreadcrumbLink asChild>
-  <Link to="/">Home</Link>
-</BreadcrumbLink>
-```
-
-**3) `src/registry/atoms/navigation-menu-story/navigation-menu.stories.tsx`**
-```tsx
-// Before
-import Link from "next/link";
-<NavigationMenuLink asChild>
-  <Link href="/docs">Documentation</Link>
-</NavigationMenuLink>
-
-// After
-import { Link } from 'react-router-dom';
-<NavigationMenuLink asChild>
-  <Link to="/docs">Documentation</Link>
-</NavigationMenuLink>
-```
-
-**4) `src/registry/atoms/select-story/select.stories.tsx`**
-```tsx
-// Before
-import Link from "next/link";
-// 파일 내 Link 사용 패턴 확인 후 동일하게 교체
-
-// After
-import { Link } from 'react-router-dom';
-// href → to prop 변경
-```
-
-**주의사항**:
-- `href` → `to` prop 변경 필수
-- `asChild` prop은 Radix UI의 Slot 패턴으로 그대로 유지
-- 경로 값은 변경하지 않음 ("/login" → "/login" 그대로)
-- 다른 props나 className도 변경하지 않음
-
-**검증 방법**:
-- TypeScript 컴파일 오류 없는지 확인
-- `npm run storybook`로 각 스토리 렌더링 확인
-- 링크가 정상적으로 표시되는지 시각적 확인
-- React Router Link가 제공하는 기능 (prefetch, active state 등)이 올바르게 작동하는지 확인
-
----
-
-### 옵션 B 선택 시 총 작업 시간 및 영향
-
-**총 예상 시간**: 7.5시간 (기존 5.5시간 + 2시간 추가)
-
-**추가 영향 파일**:
-- `.storybook/main.ts` (addon 추가)
-- `.storybook/preview.ts` (decorator 추가)
-- `package.json` (2개 패키지 추가)
-
-**총 영향 파일**: 11개 (기존 9개 + 2개)
-
-**추가 위험 요소**:
-- Storybook Addon 버전 호환성
-- Router Context 누락 시 런타임 오류
-- 복잡도 증가로 인한 유지보수 부담
-
----
-
-**마지막 업데이트**: 2025-01-15 (react-router-dom 옵션 분석 추가)
+**마지막 업데이트**: 2025-01-15 (react-router-dom 필수 적용으로 최종 확정)
 **작성자**: Claude Code
-**승인 상태**: 사용자 의사결정 대기 (옵션 A 또는 B 선택 필요)
+**승인 상태**: 실행 준비 완료 - 사용자 승인 대기
