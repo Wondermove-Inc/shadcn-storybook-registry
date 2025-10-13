@@ -1,35 +1,23 @@
-"use client"
+"use client";
 
-import * as React from "react"
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card"
+} from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { 
-  BarChart3, 
-  Search, 
-  Bell,
-  DollarSign,
-  Users,
-  CreditCard,
-  Activity,
-  Download,
-  ArrowUpRight,
-  ArrowDownRight
-} from "lucide-react"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+} from "@/components/ui/select";
 import {
   Table,
   TableBody,
@@ -37,18 +25,29 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table"
-import { Badge } from "@/components/ui/badge"
+} from "@/components/ui/table";
+import {
+  Activity,
+  ArrowDownRight,
+  ArrowUpRight,
+  BarChart3,
+  Bell,
+  CreditCard,
+  DollarSign,
+  Download,
+  Search,
+  Users,
+} from "lucide-react";
 
 export function DashboardTemplate() {
   return (
-    <div className="flex h-screen bg-gray-50/50 overflow-hidden">
+    <div className="bg-background flex h-screen overflow-hidden">
       {/* Sidebar */}
-      <aside className="w-64 bg-white border-r flex-shrink-0">
-        <div className="p-6 h-full overflow-y-auto">
-          <div className="flex items-center gap-2 mb-8">
+      <aside className="bg-card w-64 flex-shrink-0 border-r">
+        <div className="h-full overflow-y-auto p-6">
+          <div className="mb-8 flex items-center gap-2">
             <BarChart3 className="h-6 w-6" />
-            <span className="font-semibold text-lg">Dashboard</span>
+            <span className="text-lg font-semibold">Dashboard</span>
           </div>
           <nav className="space-y-2">
             <Button variant="secondary" className="w-full justify-start">
@@ -72,17 +71,14 @@ export function DashboardTemplate() {
       </aside>
 
       {/* Main Content */}
-      <div className="flex-1 flex flex-col h-screen overflow-hidden">
+      <div className="flex h-screen flex-1 flex-col overflow-hidden">
         {/* Header */}
-        <header className="bg-white border-b flex-shrink-0">
+        <header className="bg-card flex-shrink-0 border-b">
           <div className="flex items-center justify-between px-6 py-4">
-            <div className="flex items-center gap-4 flex-1">
+            <div className="flex flex-1 items-center gap-4">
               <div className="relative w-96">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
-                <Input
-                  placeholder="Search..."
-                  className="pl-10"
-                />
+                <Search className="text-muted-foreground absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 transform" />
+                <Input placeholder="Search..." className="pl-10" />
               </div>
             </div>
             <div className="flex items-center gap-4">
@@ -100,10 +96,12 @@ export function DashboardTemplate() {
         {/* Page Content */}
         <main className="flex-1 overflow-y-auto p-6">
           {/* Page Header */}
-          <div className="flex items-center justify-between mb-6">
+          <div className="mb-6 flex items-center justify-between">
             <div>
               <h1 className="text-3xl font-bold">Dashboard</h1>
-              <p className="text-gray-500">Welcome back! Here's what's happening with your business today.</p>
+              <p className="text-muted-foreground">
+                Welcome back! Here's what's happening with your business today.
+              </p>
             </div>
             <div className="flex gap-2">
               <Select defaultValue="7d">
@@ -125,17 +123,17 @@ export function DashboardTemplate() {
           </div>
 
           {/* Stats Grid */}
-          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4 mb-6">
+          <div className="mb-6 grid gap-4 md:grid-cols-2 lg:grid-cols-4">
             <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <CardTitle className="text-sm font-medium">
                   Total Revenue
                 </CardTitle>
-                <DollarSign className="h-4 w-4 text-muted-foreground" />
+                <DollarSign className="text-muted-foreground h-4 w-4" />
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold">$45,231.89</div>
-                <p className="text-xs text-muted-foreground flex items-center gap-1">
+                <p className="text-muted-foreground flex items-center gap-1 text-xs">
                   <ArrowUpRight className="h-3 w-3 text-green-500" />
                   <span className="text-green-500">+20.1%</span> from last month
                 </p>
@@ -146,24 +144,25 @@ export function DashboardTemplate() {
                 <CardTitle className="text-sm font-medium">
                   Subscriptions
                 </CardTitle>
-                <Users className="h-4 w-4 text-muted-foreground" />
+                <Users className="text-muted-foreground h-4 w-4" />
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold">+2350</div>
-                <p className="text-xs text-muted-foreground flex items-center gap-1">
+                <p className="text-muted-foreground flex items-center gap-1 text-xs">
                   <ArrowUpRight className="h-3 w-3 text-green-500" />
-                  <span className="text-green-500">+180.1%</span> from last month
+                  <span className="text-green-500">+180.1%</span> from last
+                  month
                 </p>
               </CardContent>
             </Card>
             <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <CardTitle className="text-sm font-medium">Sales</CardTitle>
-                <CreditCard className="h-4 w-4 text-muted-foreground" />
+                <CreditCard className="text-muted-foreground h-4 w-4" />
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold">+12,234</div>
-                <p className="text-xs text-muted-foreground flex items-center gap-1">
+                <p className="text-muted-foreground flex items-center gap-1 text-xs">
                   <ArrowUpRight className="h-3 w-3 text-green-500" />
                   <span className="text-green-500">+19%</span> from last month
                 </p>
@@ -174,11 +173,11 @@ export function DashboardTemplate() {
                 <CardTitle className="text-sm font-medium">
                   Active Now
                 </CardTitle>
-                <Activity className="h-4 w-4 text-muted-foreground" />
+                <Activity className="text-muted-foreground h-4 w-4" />
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold">+573</div>
-                <p className="text-xs text-muted-foreground flex items-center gap-1">
+                <p className="text-muted-foreground flex items-center gap-1 text-xs">
                   <ArrowDownRight className="h-3 w-3 text-red-500" />
                   <span className="text-red-500">-2%</span> from last hour
                 </p>
@@ -193,7 +192,7 @@ export function DashboardTemplate() {
                 <CardTitle>Overview</CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="h-[300px] flex items-center justify-center text-muted-foreground">
+                <div className="text-muted-foreground flex h-[300px] items-center justify-center">
                   [Revenue Chart Placeholder]
                 </div>
               </CardContent>
@@ -212,10 +211,10 @@ export function DashboardTemplate() {
                       <AvatarFallback>OM</AvatarFallback>
                     </Avatar>
                     <div className="ml-4 space-y-1">
-                      <p className="text-sm font-medium leading-none">
+                      <p className="text-sm leading-none font-medium">
                         Olivia Martin
                       </p>
-                      <p className="text-sm text-muted-foreground">
+                      <p className="text-muted-foreground text-sm">
                         olivia.martin@email.com
                       </p>
                     </div>
@@ -226,10 +225,10 @@ export function DashboardTemplate() {
                       <AvatarFallback>JL</AvatarFallback>
                     </Avatar>
                     <div className="ml-4 space-y-1">
-                      <p className="text-sm font-medium leading-none">
+                      <p className="text-sm leading-none font-medium">
                         Jackson Lee
                       </p>
-                      <p className="text-sm text-muted-foreground">
+                      <p className="text-muted-foreground text-sm">
                         jackson.lee@email.com
                       </p>
                     </div>
@@ -240,10 +239,10 @@ export function DashboardTemplate() {
                       <AvatarFallback>IN</AvatarFallback>
                     </Avatar>
                     <div className="ml-4 space-y-1">
-                      <p className="text-sm font-medium leading-none">
+                      <p className="text-sm leading-none font-medium">
                         Isabella Nguyen
                       </p>
-                      <p className="text-sm text-muted-foreground">
+                      <p className="text-muted-foreground text-sm">
                         isabella.nguyen@email.com
                       </p>
                     </div>
@@ -254,10 +253,10 @@ export function DashboardTemplate() {
                       <AvatarFallback>WK</AvatarFallback>
                     </Avatar>
                     <div className="ml-4 space-y-1">
-                      <p className="text-sm font-medium leading-none">
+                      <p className="text-sm leading-none font-medium">
                         William Kim
                       </p>
-                      <p className="text-sm text-muted-foreground">
+                      <p className="text-muted-foreground text-sm">
                         will@email.com
                       </p>
                     </div>
@@ -268,10 +267,10 @@ export function DashboardTemplate() {
                       <AvatarFallback>SD</AvatarFallback>
                     </Avatar>
                     <div className="ml-4 space-y-1">
-                      <p className="text-sm font-medium leading-none">
+                      <p className="text-sm leading-none font-medium">
                         Sofia Davis
                       </p>
-                      <p className="text-sm text-muted-foreground">
+                      <p className="text-muted-foreground text-sm">
                         sofia.davis@email.com
                       </p>
                     </div>
@@ -354,5 +353,5 @@ export function DashboardTemplate() {
         </main>
       </div>
     </div>
-  )
+  );
 }
