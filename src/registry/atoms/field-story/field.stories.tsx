@@ -34,13 +34,6 @@ const meta = {
   parameters: {
     layout: "centered",
   },
-  decorators: [
-    (Story) => (
-      <div className="mx-auto w-full max-w-lg">
-        <Story />
-      </div>
-    ),
-  ],
 } satisfies Meta<typeof Field>;
 
 export default meta;
@@ -52,7 +45,7 @@ type Story = StoryObj<typeof meta>;
  */
 export const Demo: Story = {
   render: () => (
-    <div className="w-full">
+    <div className="w-full max-w-md">
       <form>
         <FieldGroup>
           <FieldSet>
@@ -163,7 +156,7 @@ export const Demo: Story = {
               Save this information for next time
             </FieldLabel>
           </Field>
-          <Button type="submit" className="w-full">
+          <Button type="submit" className="w-full max-w-md">
             Complete Purchase
           </Button>
         </FieldGroup>
@@ -178,7 +171,7 @@ export const Demo: Story = {
  */
 export const FieldInput: Story = {
   render: () => (
-    <div className="w-full">
+    <div className="w-full max-w-md">
       <FieldSet>
         <FieldGroup>
           <Field>
@@ -207,7 +200,7 @@ export const FieldInput: Story = {
  */
 export const FieldTextarea: Story = {
   render: () => (
-    <div className="w-full">
+    <div className="w-full max-w-md">
       <FieldSet>
         <FieldGroup>
           <Field>
@@ -233,7 +226,7 @@ export const FieldTextarea: Story = {
  */
 export const FieldSelect: Story = {
   render: () => (
-    <div className="w-full">
+    <div className="w-full max-w-md">
       <FieldSet>
         <FieldGroup>
           <Field>
@@ -264,7 +257,7 @@ export const FieldSelect: Story = {
  */
 export const FieldCheckbox: Story = {
   render: () => (
-    <div className="w-full">
+    <div className="w-full max-w-md">
       <FieldSet>
         <FieldGroup>
           <Field orientation="horizontal" className="items-center">
@@ -291,7 +284,7 @@ export const FieldCheckbox: Story = {
  */
 export const FieldRadioGroup: Story = {
   render: () => (
-    <div className="w-full">
+    <div className="w-full max-w-md">
       <FieldSet>
         <FieldLegend>Notification Preferences</FieldLegend>
         <RadioGroup defaultValue="all">
@@ -321,7 +314,7 @@ export const FieldRadioGroup: Story = {
  */
 export const FieldSwitch: Story = {
   render: () => (
-    <div className="w-full">
+    <div className="w-full max-w-md">
       <FieldSet>
         <FieldGroup>
           <Field orientation="horizontal" className="items-center">
@@ -346,7 +339,7 @@ export const FieldSwitch: Story = {
  */
 export const WithError: Story = {
   render: () => (
-    <div className="w-full">
+    <div className="w-full max-w-md">
       <FieldSet>
         <FieldGroup>
           <Field>
