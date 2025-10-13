@@ -32,7 +32,8 @@
       "Bash(sed:*)",
       "mcp__serena__think_about_collected_information",
       "mcp__serena__find_file",
-      "WebFetch(domain:ui.shadcn.com)"
+      "WebFetch(domain:ui.shadcn.com)",
+      "Bash(mkdir:*)"
     ],
     "deny": [],
     "ask": []
