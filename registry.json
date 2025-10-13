@@ -2203,6 +2203,7 @@
       "registryDependencies": [
         "kbd",
         "button",
+        "button-group",
         "tooltip"
       ],
       "dependencies": [
