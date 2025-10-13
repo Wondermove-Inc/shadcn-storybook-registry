@@ -2230,9 +2230,11 @@
       "registryDependencies": [
         "spinner",
         "button",
+        "badge",
         "input",
-        "label",
-        "item"
+        "input-group",
+        "item",
+        "empty"
       ],
       "dependencies": [
         "lucide-react"
