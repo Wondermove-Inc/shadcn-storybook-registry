@@ -2233,7 +2233,11 @@
         "button-group",
         "button",
         "select",
-        "dropdown-menu"
+        "dropdown-menu",
+        "input",
+        "input-group",
+        "popover",
+        "tooltip"
       ],
       "dependencies": [
         "lucide-react"

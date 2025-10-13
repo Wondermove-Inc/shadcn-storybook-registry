@@ -11,6 +11,12 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";
 import {
+  InputGroup,
+  InputGroupAddon,
+  InputGroupButton,
+  InputGroupInput,
+} from "@/components/ui/input-group";
+import {
   Popover,
   PopoverContent,
   PopoverTrigger,
@@ -22,8 +28,23 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
-import { ArrowLeft, ArrowRight, ChevronDown, Minus, Plus } from "lucide-react";
+import {
+  ArrowLeft,
+  ArrowRight,
+  AudioLines,
+  ChevronDown,
+  Minus,
+  Plus,
+  Search,
+} from "lucide-react";
+import * as React from "react";
 
 /**
  * A container that groups related buttons together.
@@ -194,40 +215,68 @@ export const Split: Story = {
 
 /**
  * Input과 함께 사용하는 버튼 그룹입니다.
- * 검색 또는 필터 UI에 유용합니다.
+ * 검색 UI에 적합합니다.
  */
 export const WithInput: Story = {
   render: () => (
     <ButtonGroup>
-      <Input placeholder="Search..." className="w-[200px]" />
-      <Button variant="outline">Search</Button>
+      <Input placeholder="Search..." />
+      <Button variant="outline" aria-label="Search">
+        <Search />
+      </Button>
     </ButtonGroup>
   ),
 };
 
 /**
  * Input Group 예제입니다.
- * 여러 입력 필드와 버튼을 그룹화합니다.
+ * 복잡한 입력 필드와 버튼을 그룹화합니다.
  */
-export const InputGroup: Story = {
-  render: () => (
-    <div className="flex flex-col items-start gap-4">
-      <ButtonGroup>
-        <Input placeholder="First name" className="w-[150px]" />
-        <Input placeholder="Last name" className="w-[150px]" />
-        <Button variant="secondary">Submit</Button>
-      </ButtonGroup>
-      <ButtonGroup>
-        <Button variant="outline" size="icon">
-          <Plus />
-        </Button>
-        <Input placeholder="Quantity" className="w-[100px]" />
-        <Button variant="outline" size="icon">
-          <Minus />
-        </Button>
-      </ButtonGroup>
-    </div>
-  ),
+export const InputGroupExample: Story = {
+  render: () => {
+    const [voiceEnabled, setVoiceEnabled] = React.useState(false);
+
+    return (
+      <TooltipProvider>
+        <ButtonGroup className="[--radius:9999rem]">
+          <ButtonGroup>
+            <Button variant="outline" size="icon">
+              <Plus />
+            </Button>
+          </ButtonGroup>
+          <ButtonGroup>
+            <InputGroup>
+              <InputGroupInput
+                placeholder={
+                  voiceEnabled
+                    ? "Record and send audio..."
+                    : "Send a message..."
+                }
+                disabled={voiceEnabled}
+              />
+              <InputGroupAddon align="inline-end">
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <InputGroupButton
+                      onClick={() => setVoiceEnabled(!voiceEnabled)}
+                      size="icon-xs"
+                      data-active={voiceEnabled}
+                      className="data-[active=true]:bg-accent data-[active=true]:text-accent-foreground"
+                    >
+                      <AudioLines />
+                    </InputGroupButton>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    {voiceEnabled ? "Disable voice" : "Enable voice"}
+                  </TooltipContent>
+                </Tooltip>
+              </InputGroupAddon>
+            </InputGroup>
+          </ButtonGroup>
+        </ButtonGroup>
+      </TooltipProvider>
+    );
+  },
 };
 
 /**
@@ -237,17 +286,32 @@ export const InputGroup: Story = {
 export const WithDropdownMenu: Story = {
   render: () => (
     <ButtonGroup>
-      <Button>Save</Button>
+      <Button variant="outline">Follow</Button>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Button size="icon">
+          <Button variant="outline" className="!pl-2">
             <ChevronDown />
           </Button>
         </DropdownMenuTrigger>
-        <DropdownMenuContent align="end">
-          <DropdownMenuItem>Save as...</DropdownMenuItem>
-          <DropdownMenuItem>Save and close</DropdownMenuItem>
-          <DropdownMenuItem>Save all</DropdownMenuItem>
+        <DropdownMenuContent align="end" className="[--radius:1rem]">
+          <DropdownMenuItem>
+            <span>Mute Conversation</span>
+          </DropdownMenuItem>
+          <DropdownMenuItem>
+            <span>Mark as Read</span>
+          </DropdownMenuItem>
+          <DropdownMenuItem>
+            <span>Report Conversation</span>
+          </DropdownMenuItem>
+          <DropdownMenuItem>
+            <span>Block User</span>
+          </DropdownMenuItem>
+          <DropdownMenuItem>
+            <span>Share Conversation</span>
+          </DropdownMenuItem>
+          <DropdownMenuItem>
+            <span>Copy Conversation</span>
+          </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
     </ButtonGroup>
