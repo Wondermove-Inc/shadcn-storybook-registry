@@ -17,9 +17,8 @@
     "registry:build": "shadcn build -o ./public/v2/r",
     "registry:dev": "shadcn build -o ./public/v2/r --watch",
     "storybook": "storybook dev -p 6006",
-    "storybook:build": "storybook build -o public/storybook",
+    "storybook:build": "storybook build",
     "storybook:test": "test-storybook",
-    "build-storybook": "storybook build",
     "mcp:playwright": "npx @executeautomation/playwright-mcp-server"
   },
   "dependencies": {
