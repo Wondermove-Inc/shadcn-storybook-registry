@@ -2130,6 +2130,203 @@
           "type": "registry:component"
         }
       ]
+    },
+    {
+      "name": "empty-story",
+      "type": "registry:component",
+      "title": "Empty Story",
+      "description": "Interactive Storybook stories demonstrating empty state component usage with various icons and actions",
+      "categories": [
+        "atoms",
+        "storybook",
+        "empty",
+        "placeholder"
+      ],
+      "author": "Lloyd Richards <lloyd.d.richards@gmail.com>",
+      "registryDependencies": [
+        "empty",
+        "button",
+        "input"
+      ],
+      "dependencies": [
+        "lucide-react"
+      ],
+      "files": [
+        {
+          "path": "src/registry/atoms/empty-story/empty.stories.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "item-story",
+      "type": "registry:component",
+      "title": "Item Story",
+      "description": "Interactive Storybook stories demonstrating versatile item component for displaying content with consistent styling",
+      "categories": [
+        "atoms",
+        "storybook",
+        "item",
+        "list"
+      ],
+      "author": "Lloyd Richards <lloyd.d.richards@gmail.com>",
+      "registryDependencies": [
+        "item",
+        "avatar",
+        "badge",
+        "button"
+      ],
+      "dependencies": [
+        "lucide-react"
+      ],
+      "files": [
+        {
+          "path": "src/registry/atoms/item-story/item.stories.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "kbd-story",
+      "type": "registry:component",
+      "title": "Kbd Story",
+      "description": "Interactive Storybook stories demonstrating keyboard key display component for shortcuts and key combinations",
+      "categories": [
+        "atoms",
+        "storybook",
+        "kbd",
+        "keyboard"
+      ],
+      "author": "Lloyd Richards <lloyd.d.richards@gmail.com>",
+      "registryDependencies": [
+        "kbd",
+        "button",
+        "tooltip"
+      ],
+      "dependencies": [
+        "lucide-react"
+      ],
+      "files": [
+        {
+          "path": "src/registry/atoms/kbd-story/kbd.stories.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "spinner-story",
+      "type": "registry:component",
+      "title": "Spinner Story",
+      "description": "Interactive Storybook stories demonstrating loading spinner component with various sizes and usage patterns",
+      "categories": [
+        "atoms",
+        "storybook",
+        "spinner",
+        "loading"
+      ],
+      "author": "Lloyd Richards <lloyd.d.richards@gmail.com>",
+      "registryDependencies": [
+        "spinner",
+        "button",
+        "input",
+        "label",
+        "item"
+      ],
+      "dependencies": [
+        "lucide-react"
+      ],
+      "files": [
+        {
+          "path": "src/registry/atoms/spinner-story/spinner.stories.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "button-group-story",
+      "type": "registry:component",
+      "title": "Button Group Story",
+      "description": "Interactive Storybook stories demonstrating button group component with nested groups and various layouts",
+      "categories": [
+        "atoms",
+        "storybook",
+        "button-group",
+        "buttons"
+      ],
+      "author": "Lloyd Richards <lloyd.d.richards@gmail.com>",
+      "registryDependencies": [
+        "button-group",
+        "button",
+        "dropdown-menu",
+        "select"
+      ],
+      "dependencies": [
+        "lucide-react"
+      ],
+      "files": [
+        {
+          "path": "src/registry/atoms/button-group-story/button-group.stories.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "field-story",
+      "type": "registry:component",
+      "title": "Field Story",
+      "description": "Interactive Storybook stories demonstrating form field component with labels, descriptions, and error states",
+      "categories": [
+        "atoms",
+        "storybook",
+        "field",
+        "form"
+      ],
+      "author": "Lloyd Richards <lloyd.d.richards@gmail.com>",
+      "registryDependencies": [
+        "field",
+        "input",
+        "textarea",
+        "select",
+        "checkbox",
+        "radio-group",
+        "button"
+      ],
+      "dependencies": [],
+      "files": [
+        {
+          "path": "src/registry/atoms/field-story/field.stories.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "input-group-story",
+      "type": "registry:component",
+      "title": "Input Group Story",
+      "description": "Interactive Storybook stories demonstrating input group component with addons, buttons, and various layouts",
+      "categories": [
+        "atoms",
+        "storybook",
+        "input-group",
+        "input"
+      ],
+      "author": "Lloyd Richards <lloyd.d.richards@gmail.com>",
+      "registryDependencies": [
+        "input-group",
+        "kbd",
+        "dropdown-menu",
+        "tooltip",
+        "separator"
+      ],
+      "dependencies": [
+        "lucide-react"
+      ],
+      "files": [
+        {
+          "path": "src/registry/atoms/input-group-story/input-group.stories.tsx",
+          "type": "registry:component"
+        }
+      ]
     }
   ]
 }

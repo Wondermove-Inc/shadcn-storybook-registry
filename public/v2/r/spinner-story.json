@@ -1,0 +1,31 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "spinner-story",
+  "type": "registry:component",
+  "title": "Spinner Story",
+  "author": "Lloyd Richards <lloyd.d.richards@gmail.com>",
+  "description": "Interactive Storybook stories demonstrating loading spinner component with various sizes and usage patterns",
+  "dependencies": [
+    "lucide-react"
+  ],
+  "registryDependencies": [
+    "spinner",
+    "button",
+    "input",
+    "label",
+    "item"
+  ],
+  "files": [
+    {
+      "path": "src/registry/atoms/spinner-story/spinner.stories.tsx",
+      "content": "import { Button } from \"@/components/ui/button\";\nimport { Input } from \"@/components/ui/input\";\nimport { Item, ItemContent, ItemMedia, ItemTitle } from \"@/components/ui/item\";\nimport { Label } from \"@/components/ui/label\";\nimport { Spinner } from \"@/components/ui/spinner\";\nimport type { Meta, StoryObj } from \"@storybook/nextjs-vite\";\nimport { Search } from \"lucide-react\";\n\n/**\n * Displays an animated loading indicator.\n * Used to communicate ongoing processes or data fetching.\n */\nconst meta = {\n  title: \"ui/Spinner\",\n  component: Spinner,\n  tags: [\"autodocs\"],\n  parameters: {\n    layout: \"centered\",\n  },\n} satisfies Meta<typeof Spinner>;\n\nexport default meta;\ntype Story = StoryObj<typeof meta>;\n\n/**\n * 기본 스피너입니다.\n * 로딩 상태를 표시할 때 사용합니다.\n */\nexport const Default: Story = {\n  render: () => <Spinner />,\n};\n\n/**\n * SpinnerDemo 예제입니다.\n * 결제 처리 중과 같은 실제 사용 사례를 보여줍니다.\n */\nexport const Demo: Story = {\n  render: () => (\n    <div className=\"flex w-full max-w-xs flex-col gap-4 [--radius:1rem]\">\n      <Item variant=\"muted\">\n        <ItemMedia>\n          <Spinner />\n        </ItemMedia>\n        <ItemContent>\n          <ItemTitle className=\"line-clamp-1\">Processing payment...</ItemTitle>\n        </ItemContent>\n        <ItemContent className=\"flex-none justify-end\">\n          <span className=\"text-sm tabular-nums\">$100.00</span>\n        </ItemContent>\n      </Item>\n    </div>\n  ),\n};\n\n/**\n * 다양한 크기의 스피너입니다.\n * size-3부터 size-8까지 다양한 크기로 사용할 수 있습니다.\n */\nexport const SizeVariations: Story = {\n  render: () => (\n    <div className=\"flex items-center gap-6\">\n      <Spinner className=\"size-3\" />\n      <Spinner className=\"size-4\" />\n      <Spinner className=\"size-6\" />\n      <Spinner className=\"size-8\" />\n    </div>\n  ),\n};\n\n/**\n * 다양한 색상의 스피너입니다.\n * Tailwind 텍스트 색상 클래스를 사용하여 색상을 변경할 수 있습니다.\n */\nexport const ColorVariations: Story = {\n  render: () => (\n    <div className=\"flex items-center gap-6\">\n      <Spinner className=\"size-6 text-red-500\" />\n      <Spinner className=\"size-6 text-green-500\" />\n      <Spinner className=\"size-6 text-blue-500\" />\n      <Spinner className=\"size-6 text-yellow-500\" />\n      <Spinner className=\"size-6 text-purple-500\" />\n    </div>\n  ),\n};\n\n/**\n * 버튼과 함께 사용하는 예제입니다.\n * 버튼 내부에 로딩 상태를 표시합니다.\n */\nexport const ButtonExample: Story = {\n  render: () => (\n    <div className=\"flex flex-col gap-4\">\n      <Button disabled>\n        <Spinner className=\"mr-2 h-4 w-4\" />\n        Loading...\n      </Button>\n      <Button variant=\"outline\" disabled>\n        <Spinner className=\"mr-2 h-4 w-4\" />\n        Please wait\n      </Button>\n      <Button variant=\"secondary\" disabled>\n        <Spinner className=\"mr-2 h-4 w-4\" />\n        Saving changes\n      </Button>\n    </div>\n  ),\n};\n\n/**\n * 입력 필드와 함께 사용하는 예제입니다.\n * 검색이나 데이터 로딩 중임을 표시합니다.\n */\nexport const InputExample: Story = {\n  render: () => (\n    <div className=\"space-y-4\">\n      <div className=\"relative\">\n        <Search className=\"text-muted-foreground absolute top-1/2 left-2 h-4 w-4 -translate-y-1/2\" />\n        <Input\n          type=\"search\"\n          placeholder=\"Search...\"\n          className=\"pr-10 pl-8\"\n          disabled\n        />\n        <Spinner className=\"absolute top-1/2 right-2 h-4 w-4 -translate-y-1/2\" />\n      </div>\n      <div className=\"space-y-2\">\n        <Label htmlFor=\"email\">Email</Label>\n        <div className=\"relative\">\n          <Input\n            id=\"email\"\n            type=\"email\"\n            placeholder=\"name@example.com\"\n            disabled\n          />\n          <Spinner className=\"absolute top-1/2 right-2 h-4 w-4 -translate-y-1/2\" />\n        </div>\n      </div>\n    </div>\n  ),\n};\n\n/**\n * 텍스트와 함께 인라인으로 사용하는 예제입니다.\n * 문장 내에서 로딩 상태를 표시할 때 사용합니다.\n */\nexport const InlineTextExample: Story = {\n  render: () => (\n    <div className=\"space-y-4\">\n      <p className=\"text-muted-foreground flex items-center gap-2 text-sm\">\n        <Spinner className=\"size-3\" />\n        Loading user data...\n      </p>\n      <p className=\"flex items-center gap-2\">\n        Fetching results\n        <Spinner className=\"size-4\" />\n      </p>\n      <div className=\"flex items-center gap-2\">\n        <Spinner className=\"size-4\" />\n        <span className=\"text-sm font-medium\">Connecting to server</span>\n      </div>\n    </div>\n  ),\n};\n\n/**\n * 카드 또는 컨테이너 내부에서 중앙에 위치한 스피너입니다.\n * 전체 섹션이 로딩 중일 때 사용합니다.\n */\nexport const CenteredExample: Story = {\n  render: () => (\n    <div className=\"flex h-[200px] w-[400px] items-center justify-center rounded-lg border\">\n      <div className=\"flex flex-col items-center gap-2\">\n        <Spinner className=\"size-8\" />\n        <p className=\"text-muted-foreground text-sm\">Loading content...</p>\n      </div>\n    </div>\n  ),\n};\n\n/**\n * 오버레이와 함께 사용하는 예제입니다.\n * 콘텐츠 위에 로딩 오버레이를 표시합니다.\n */\nexport const OverlayExample: Story = {\n  render: () => (\n    <div className=\"relative h-[200px] w-[400px] rounded-lg border p-4\">\n      <div className=\"space-y-2\">\n        <h3 className=\"text-lg font-semibold\">Sample Content</h3>\n        <p className=\"text-muted-foreground\">\n          This content is being updated in the background.\n        </p>\n      </div>\n      <div className=\"bg-background/80 absolute inset-0 flex items-center justify-center rounded-lg backdrop-blur-sm\">\n        <Spinner className=\"size-8\" />\n      </div>\n    </div>\n  ),\n};\n",
+      "type": "registry:component"
+    }
+  ],
+  "categories": [
+    "atoms",
+    "storybook",
+    "spinner",
+    "loading"
+  ]
+}

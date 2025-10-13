@@ -19,6 +19,10 @@ const meta = {
   tags: ["autodocs"],
   parameters: {
     layout: "centered",
+    design: {
+      type: "figma",
+      url: "https://www.figma.com/file/Q7c53iozMSDxpPnunZsEM6/shadcn-ui-kit-for-Figma---August-2025?node-id=580-9181",
+    },
   },
   args: {
     children: "Button",
