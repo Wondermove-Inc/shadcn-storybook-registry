@@ -2291,6 +2291,7 @@
         "select",
         "checkbox",
         "radio-group",
+        "switch",
         "button"
       ],
       "dependencies": [],
