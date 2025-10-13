@@ -10,7 +10,10 @@ import {
 import { Input } from "@/components/ui/input";
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 import {
+  ArrowUpRight,
+  Cloud,
   FileX,
+  FolderCode,
   FolderOpen,
   Image,
   Inbox,
@@ -36,6 +39,43 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 /**
+ * 공식 문서의 기본 Demo 예제입니다.
+ * 프로젝트가 없을 때 표시되며 생성 및 가져오기 액션을 제공합니다.
+ */
+export const Demo: Story = {
+  render: () => (
+    <Empty>
+      <EmptyHeader>
+        <EmptyMedia variant="icon">
+          <FolderCode />
+        </EmptyMedia>
+        <EmptyTitle>No Projects Yet</EmptyTitle>
+        <EmptyDescription>
+          You haven't created any projects yet. Get started by creating your
+          first project.
+        </EmptyDescription>
+      </EmptyHeader>
+      <EmptyContent>
+        <div className="flex gap-2">
+          <Button>Create Project</Button>
+          <Button variant="outline">Import Project</Button>
+        </div>
+      </EmptyContent>
+      <Button
+        variant="link"
+        asChild
+        className="text-muted-foreground"
+        size="sm"
+      >
+        <a href="#">
+          Learn More <ArrowUpRight className="ml-1 h-3 w-3" />
+        </a>
+      </Button>
+    </Empty>
+  ),
+};
+
+/**
  * 기본 빈 상태입니다. 아이콘, 제목, 설명으로 구성되며
  * 데이터가 없을 때 사용자에게 안내를 제공합니다.
  */
@@ -53,6 +93,31 @@ export const Default: Story = {
       </EmptyHeader>
       <EmptyContent>
         <Button>Add your first product</Button>
+      </EmptyContent>
+    </Empty>
+  ),
+};
+
+/**
+ * 테두리가 있는 Outline 변형입니다.
+ * 점선 테두리로 빈 상태를 강조합니다.
+ */
+export const Outline: Story = {
+  render: () => (
+    <Empty className="border border-dashed">
+      <EmptyHeader>
+        <EmptyMedia variant="icon">
+          <Cloud />
+        </EmptyMedia>
+        <EmptyTitle>Cloud Storage Empty</EmptyTitle>
+        <EmptyDescription>
+          Upload files to your cloud storage to access them anywhere.
+        </EmptyDescription>
+      </EmptyHeader>
+      <EmptyContent>
+        <Button variant="outline" size="sm">
+          Upload Files
+        </Button>
       </EmptyContent>
     </Empty>
   ),
