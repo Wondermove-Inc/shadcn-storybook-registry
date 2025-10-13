@@ -2293,10 +2293,7 @@
       "author": "Lloyd Richards <lloyd.d.richards@gmail.com>",
       "registryDependencies": [
         "input-group",
-        "kbd",
-        "dropdown-menu",
-        "tooltip",
-        "separator"
+        "popover"
       ],
       "dependencies": [
         "lucide-react"
