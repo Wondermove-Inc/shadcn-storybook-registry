@@ -2,22 +2,23 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
   Empty,
+  EmptyContent,
   EmptyDescription,
   EmptyHeader,
   EmptyMedia,
   EmptyTitle,
 } from "@/components/ui/empty";
-import { Input } from "@/components/ui/input";
 import {
   InputGroup,
   InputGroupAddon,
+  InputGroupButton,
   InputGroupInput,
-  InputGroupText,
+  InputGroupTextarea,
 } from "@/components/ui/input-group";
 import { Item, ItemContent, ItemMedia, ItemTitle } from "@/components/ui/item";
 import { Spinner } from "@/components/ui/spinner";
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
-import { FileDown } from "lucide-react";
+import { ArrowUp as ArrowUpIcon, FileDown } from "lucide-react";
 
 /**
  * Displays an animated loading indicator.
@@ -138,18 +139,21 @@ export const BadgeLoading: Story = {
  */
 export const InputGroupExample: Story = {
   render: () => (
-    <div className="grid w-full max-w-sm gap-6">
+    <div className="flex w-full max-w-md flex-col gap-4">
       <InputGroup>
-        <InputGroupInput placeholder="Search..." />
+        <InputGroupInput placeholder="Send a message..." disabled />
         <InputGroupAddon align="inline-end">
-          <Spinner className="size-4" />
+          <Spinner />
         </InputGroupAddon>
       </InputGroup>
       <InputGroup>
-        <Input placeholder="Enter username..." />
+        <InputGroupTextarea placeholder="Send a message..." disabled />
         <InputGroupAddon align="block-end">
-          <Spinner className="size-4" />
-          <InputGroupText>Validating...</InputGroupText>
+          <Spinner /> Validating...
+          <InputGroupButton className="ml-auto" variant="default">
+            <ArrowUpIcon />
+            <span className="sr-only">Send</span>
+          </InputGroupButton>
         </InputGroupAddon>
       </InputGroup>
     </div>
@@ -162,16 +166,21 @@ export const InputGroupExample: Story = {
  */
 export const EmptyState: Story = {
   render: () => (
-    <Empty className="w-full max-w-md">
+    <Empty className="w-full">
       <EmptyHeader>
         <EmptyMedia variant="icon">
-          <Spinner className="size-8" />
+          <Spinner />
         </EmptyMedia>
-        <EmptyTitle>Loading files...</EmptyTitle>
+        <EmptyTitle>Processing your request</EmptyTitle>
         <EmptyDescription>
-          Please wait while we fetch your documents
+          Please wait while we process your request. Do not refresh the page.
         </EmptyDescription>
       </EmptyHeader>
+      <EmptyContent>
+        <Button variant="outline" disabled>
+          Cancel
+        </Button>
+      </EmptyContent>
     </Empty>
   ),
 };
