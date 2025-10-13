@@ -36,7 +36,7 @@ const meta = {
   },
   decorators: [
     (Story) => (
-      <div className="mx-auto w-full max-w-2xl">
+      <div className="mx-auto w-full max-w-lg">
         <Story />
       </div>
     ),
@@ -52,7 +52,7 @@ type Story = StoryObj<typeof meta>;
  */
 export const Demo: Story = {
   render: () => (
-    <div className="w-full max-w-md">
+    <div className="w-full">
       <form>
         <FieldGroup>
           <FieldSet>
@@ -178,7 +178,7 @@ export const Demo: Story = {
  */
 export const FieldInput: Story = {
   render: () => (
-    <div className="w-full max-w-md">
+    <div className="w-full">
       <FieldSet>
         <FieldGroup>
           <Field>
@@ -207,7 +207,7 @@ export const FieldInput: Story = {
  */
 export const FieldTextarea: Story = {
   render: () => (
-    <div className="w-full max-w-md">
+    <div className="w-full">
       <FieldSet>
         <FieldGroup>
           <Field>
@@ -233,7 +233,7 @@ export const FieldTextarea: Story = {
  */
 export const FieldSelect: Story = {
   render: () => (
-    <div className="w-full max-w-md">
+    <div className="w-full">
       <FieldSet>
         <FieldGroup>
           <Field>
@@ -264,7 +264,7 @@ export const FieldSelect: Story = {
  */
 export const FieldCheckbox: Story = {
   render: () => (
-    <div className="w-full max-w-md">
+    <div className="w-full">
       <FieldSet>
         <FieldGroup>
           <Field orientation="horizontal" className="items-center">
@@ -291,7 +291,7 @@ export const FieldCheckbox: Story = {
  */
 export const FieldRadioGroup: Story = {
   render: () => (
-    <div className="w-full max-w-md">
+    <div className="w-full">
       <FieldSet>
         <FieldLegend>Notification Preferences</FieldLegend>
         <RadioGroup defaultValue="all">
@@ -321,7 +321,7 @@ export const FieldRadioGroup: Story = {
  */
 export const FieldSwitch: Story = {
   render: () => (
-    <div className="w-full max-w-md">
+    <div className="w-full">
       <FieldSet>
         <FieldGroup>
           <Field orientation="horizontal" className="items-center">
@@ -346,7 +346,7 @@ export const FieldSwitch: Story = {
  */
 export const WithError: Story = {
   render: () => (
-    <div className="w-full max-w-md">
+    <div className="w-full">
       <FieldSet>
         <FieldGroup>
           <Field>
