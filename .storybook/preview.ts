@@ -53,6 +53,11 @@ const preview: Preview = {
           styles: { width: "1920px", height: "1080px" },
           type: "desktop",
         },
+        figmaDesktop: {
+          name: "Figma Desktop",
+          styles: { width: "1721px", height: "1080px" },
+          type: "desktop",
+        },
       },
       defaultViewport: "desktop",
     },

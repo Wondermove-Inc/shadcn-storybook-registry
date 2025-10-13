@@ -1,5 +1,10 @@
 import { Button } from "@/components/ui/button";
 import { ButtonGroup } from "@/components/ui/button-group";
+import {
+  InputGroup,
+  InputGroupAddon,
+  InputGroupInput,
+} from "@/components/ui/input-group";
 import { Kbd, KbdGroup } from "@/components/ui/kbd";
 import {
   Tooltip,
@@ -8,7 +13,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
-import { Bold, Code, Italic, Underline } from "lucide-react";
+import { Bold, Code, Italic, SearchIcon, Underline } from "lucide-react";
 
 /**
  * Used to display textual user input from keyboard.
@@ -117,5 +122,26 @@ export const TooltipExample: Story = {
         </TooltipContent>
       </Tooltip>
     </ButtonGroup>
+  ),
+};
+
+/**
+ * Input Group과 함께 Kbd를 사용하는 예제입니다.
+ * 검색 입력 필드에 키보드 단축키를 표시합니다.
+ */
+export const InputGroupExample: Story = {
+  render: () => (
+    <div className="flex w-full max-w-xs flex-col gap-6">
+      <InputGroup>
+        <InputGroupInput placeholder="Search..." />
+        <InputGroupAddon>
+          <SearchIcon />
+        </InputGroupAddon>
+        <InputGroupAddon align="inline-end">
+          <Kbd>⌘</Kbd>
+          <Kbd>K</Kbd>
+        </InputGroupAddon>
+      </InputGroup>
+    </div>
   ),
 };

@@ -23,6 +23,7 @@
     "mcp:playwright": "npx @executeautomation/playwright-mcp-server"
   },
   "dependencies": {
+    "@hapins/figma-mcp": "^0.1.2",
     "@hookform/resolvers": "^5.2.2",
     "@radix-ui/react-context-menu": "^2.2.16",
     "@radix-ui/react-dialog": "^1.1.15",

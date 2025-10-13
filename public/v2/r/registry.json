@@ -1306,37 +1306,6 @@
       ]
     },
     {
-      "name": "dashboard-template",
-      "type": "registry:component",
-      "title": "Dashboard Template",
-      "description": "A complete dashboard template showcasing various shadcn/ui components in a real-world layout",
-      "categories": [
-        "templates",
-        "storybook",
-        "dashboard"
-      ],
-      "author": "Lloyd Richards <lloyd.d.richards@gmail.com>",
-      "registryDependencies": [
-        "card",
-        "select",
-        "button",
-        "input",
-        "avatar",
-        "table",
-        "badge"
-      ],
-      "files": [
-        {
-          "path": "src/registry/templates/dashboard-template/dashboard-template.tsx",
-          "type": "registry:component"
-        },
-        {
-          "path": "src/registry/templates/dashboard-template/dashboard-template.stories.tsx",
-          "type": "registry:component"
-        }
-      ]
-    },
-    {
       "name": "all-stories",
       "type": "registry:component",
       "title": "All Stories",
@@ -2174,9 +2143,9 @@
       "author": "Lloyd Richards <lloyd.d.richards@gmail.com>",
       "registryDependencies": [
         "item",
+        "button",
         "avatar",
-        "badge",
-        "button"
+        "dropdown-menu"
       ],
       "dependencies": [
         "lucide-react"
@@ -2204,7 +2173,8 @@
         "kbd",
         "button",
         "button-group",
-        "tooltip"
+        "tooltip",
+        "input-group"
       ],
       "dependencies": [
         "lucide-react"
@@ -2262,7 +2232,8 @@
       "registryDependencies": [
         "button-group",
         "button",
-        "select"
+        "select",
+        "dropdown-menu"
       ],
       "dependencies": [
         "lucide-react"
@@ -2329,6 +2300,76 @@
       "files": [
         {
           "path": "src/registry/atoms/input-group-story/input-group.stories.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "test-settings-notifications",
+      "type": "registry:component",
+      "title": "Test Settings Notifications",
+      "description": "Complete settings page template with notifications configuration based on Figma design",
+      "categories": [
+        "templates",
+        "storybook",
+        "settings",
+        "forms"
+      ],
+      "author": "Lloyd Richards <lloyd.d.richards@gmail.com>",
+      "registryDependencies": [
+        "button",
+        "checkbox",
+        "label",
+        "radio-group",
+        "separator",
+        "switch"
+      ],
+      "dependencies": [],
+      "files": [
+        {
+          "path": "src/registry/templates/test-settings-notifications/settings-notifications.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "src/registry/templates/test-settings-notifications/settings-notifications.stories.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "test-dashboard",
+      "type": "registry:component",
+      "title": "Test Dashboard",
+      "description": "Complete dashboard template with data table, calendar, and charts based on Figma design",
+      "categories": [
+        "templates",
+        "storybook",
+        "dashboard",
+        "data-table",
+        "calendar",
+        "charts"
+      ],
+      "author": "Lloyd Richards <lloyd.d.richards@gmail.com>",
+      "registryDependencies": [
+        "badge",
+        "button",
+        "calendar",
+        "card",
+        "chart",
+        "checkbox",
+        "dropdown-menu",
+        "input",
+        "table"
+      ],
+      "dependencies": [
+        "lucide-react",
+        "recharts",
+        "react-day-picker",
+        "date-fns"
+      ],
+      "files": [
+        {
+          "path": "src/registry/templates/test-dashboard/figma-dashboard-template.stories.tsx",
           "type": "registry:component"
         }
       ]
