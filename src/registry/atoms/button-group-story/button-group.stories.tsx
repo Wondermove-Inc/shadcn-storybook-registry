@@ -5,41 +5,14 @@ import {
   ButtonGroupText,
 } from "@/components/ui/button-group";
 import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuGroup,
-  DropdownMenuItem,
-  DropdownMenuRadioGroup,
-  DropdownMenuRadioItem,
-  DropdownMenuSeparator,
-  DropdownMenuSub,
-  DropdownMenuSubContent,
-  DropdownMenuSubTrigger,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
+  SelectValue,
 } from "@/components/ui/select";
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
-import {
-  ArchiveIcon,
-  ArrowLeftIcon,
-  CalendarPlusIcon,
-  ClipboardIcon,
-  ClockIcon,
-  Copy,
-  ListFilterPlusIcon,
-  MailCheckIcon,
-  MinusIcon,
-  MoreHorizontalIcon,
-  PlusIcon,
-  TagIcon,
-  Trash2Icon,
-} from "lucide-react";
-import * as React from "react";
+import { ArrowLeft, ArrowRight, Minus, Plus } from "lucide-react";
 
 /**
  * A container that groups related buttons together.
@@ -61,127 +34,86 @@ type Story = StoryObj<typeof meta>;
  * 기본 버튼 그룹입니다.
  * 관련된 버튼들을 시각적으로 그룹화합니다.
  */
-export const Default: Story = {
+export const BasicUsage: Story = {
   render: () => (
     <ButtonGroup>
-      <Button variant="outline">Button 1</Button>
-      <Button variant="outline">Button 2</Button>
-      <Button variant="outline">Button 3</Button>
+      <Button>Button 1</Button>
+      <Button>Button 2</Button>
     </ButtonGroup>
   ),
 };
 
 /**
- * ButtonGroupDemo 예제입니다.
- * 중첩된 버튼 그룹과 드롭다운 메뉴를 포함한 복잡한 레이아웃을 보여줍니다.
+ * 수직 방향의 버튼 그룹입니다.
+ * 증가/감소 컨트롤에 적합합니다.
  */
-export const Demo: Story = {
-  render: function ButtonGroupDemo() {
-    const [label, setLabel] = React.useState("personal");
-
-    return (
-      <ButtonGroup>
-        <ButtonGroup className="hidden sm:flex">
-          <Button variant="outline" size="icon" aria-label="Go Back">
-            <ArrowLeftIcon />
-          </Button>
-        </ButtonGroup>
-        <ButtonGroup>
-          <Button variant="outline">Archive</Button>
-          <Button variant="outline">Report</Button>
-        </ButtonGroup>
-        <ButtonGroup>
-          <Button variant="outline">Snooze</Button>
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="outline" size="icon" aria-label="More Options">
-                <MoreHorizontalIcon />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-52">
-              <DropdownMenuGroup>
-                <DropdownMenuItem>
-                  <MailCheckIcon />
-                  Mark as read
-                </DropdownMenuItem>
-                <DropdownMenuItem>
-                  <ListFilterPlusIcon />
-                  Add to filter
-                </DropdownMenuItem>
-                <DropdownMenuItem>
-                  <ClockIcon />
-                  Snooze until
-                </DropdownMenuItem>
-                <DropdownMenuItem>
-                  <CalendarPlusIcon />
-                  Create event
-                </DropdownMenuItem>
-              </DropdownMenuGroup>
-              <DropdownMenuSeparator />
-              <DropdownMenuSub>
-                <DropdownMenuSubTrigger>
-                  <TagIcon />
-                  Apply label
-                </DropdownMenuSubTrigger>
-                <DropdownMenuSubContent>
-                  <DropdownMenuRadioGroup
-                    value={label}
-                    onValueChange={setLabel}
-                  >
-                    <DropdownMenuRadioItem value="work">
-                      Work
-                    </DropdownMenuRadioItem>
-                    <DropdownMenuRadioItem value="personal">
-                      Personal
-                    </DropdownMenuRadioItem>
-                    <DropdownMenuRadioItem value="important">
-                      Important
-                    </DropdownMenuRadioItem>
-                    <DropdownMenuRadioItem value="later">
-                      Later
-                    </DropdownMenuRadioItem>
-                  </DropdownMenuRadioGroup>
-                </DropdownMenuSubContent>
-              </DropdownMenuSub>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem className="text-destructive">
-                <Trash2Icon />
-                Delete
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        </ButtonGroup>
-      </ButtonGroup>
-    );
-  },
+export const Orientation: Story = {
+  render: () => (
+    <ButtonGroup orientation="vertical">
+      <Button variant="outline" size="icon">
+        <Plus />
+      </Button>
+      <Button variant="outline" size="icon">
+        <Minus />
+      </Button>
+    </ButtonGroup>
+  ),
 };
 
 /**
- * 수직 방향의 버튼 그룹입니다.
- * 미디어 컨트롤이나 수량 조절에 유용합니다.
+ * 다양한 크기의 버튼 그룹입니다.
+ * 작은 크기의 버튼과 아이콘 버튼을 포함합니다.
  */
-export const Vertical: Story = {
+export const SizeVariations: Story = {
   render: () => (
-    <ButtonGroup
-      orientation="vertical"
-      aria-label="Media controls"
-      className="h-fit"
-    >
-      <Button variant="outline" size="icon">
-        <PlusIcon />
+    <ButtonGroup>
+      <Button variant="outline" size="sm">
+        Small
       </Button>
-      <Button variant="outline" size="icon">
-        <MinusIcon />
+      <Button variant="outline" size="sm">
+        Button
       </Button>
+      <Button variant="outline" size="sm">
+        Group
+      </Button>
+      <Button variant="outline" size="icon-sm">
+        <Plus />
+      </Button>
+    </ButtonGroup>
+  ),
+};
+
+/**
+ * 중첩된 버튼 그룹입니다.
+ * 페이지네이션 컨트롤에 유용합니다.
+ */
+export const NestedGroups: Story = {
+  render: () => (
+    <ButtonGroup>
+      <ButtonGroup>
+        <Button size="sm">1</Button>
+        <Button size="sm">2</Button>
+        <Button size="sm">3</Button>
+        <Button size="sm">4</Button>
+        <Button size="sm">5</Button>
+      </ButtonGroup>
+      <ButtonGroup>
+        <Button size="icon-sm">
+          <ArrowLeft />
+        </Button>
+        <Button size="icon-sm">
+          <ArrowRight />
+        </Button>
+      </ButtonGroup>
     </ButtonGroup>
   ),
 };
 
 /**
  * 구분자를 포함한 버튼 그룹입니다.
- * 버튼 사이에 시각적 구분을 제공합니다.
+ * Copy와 Paste 버튼 사이에 구분선을 표시합니다.
  */
-export const WithSeparator: Story = {
+export const Separator: Story = {
   render: () => (
     <ButtonGroup>
       <Button variant="secondary" size="sm">
@@ -196,179 +128,60 @@ export const WithSeparator: Story = {
 };
 
 /**
- * 다양한 크기의 버튼 그룹입니다.
- * 작은 크기의 버튼을 그룹화할 때 사용합니다.
+ * 분할 버튼 예제입니다.
+ * 메인 버튼과 드롭다운 트리거를 구분합니다.
  */
-export const SizeVariations: Story = {
-  render: () => (
-    <div className="flex flex-col gap-4">
-      <ButtonGroup>
-        <Button variant="outline" size="sm">
-          Small
-        </Button>
-        <Button variant="outline" size="sm">
-          Button
-        </Button>
-        <Button variant="outline" size="sm">
-          Group
-        </Button>
-      </ButtonGroup>
-      <ButtonGroup>
-        <Button variant="outline">Default</Button>
-        <Button variant="outline">Button</Button>
-        <Button variant="outline">Group</Button>
-      </ButtonGroup>
-      <ButtonGroup>
-        <Button variant="outline" size="lg">
-          Large
-        </Button>
-        <Button variant="outline" size="lg">
-          Button
-        </Button>
-        <Button variant="outline" size="lg">
-          Group
-        </Button>
-      </ButtonGroup>
-    </div>
-  ),
-};
-
-/**
- * 중첩된 버튼 그룹입니다.
- * 복잡한 레이아웃을 위해 여러 그룹을 함께 사용할 수 있습니다.
- */
-export const NestedGroups: Story = {
+export const SplitButton: Story = {
   render: () => (
     <ButtonGroup>
-      <ButtonGroup>
-        <Button variant="outline" size="sm">
-          1
-        </Button>
-        <Button variant="outline" size="sm">
-          2
-        </Button>
-        <Button variant="outline" size="sm">
-          3
-        </Button>
-        <Button variant="outline" size="sm">
-          4
-        </Button>
-        <Button variant="outline" size="sm">
-          5
-        </Button>
-      </ButtonGroup>
-      <ButtonGroup>
-        <Button variant="outline" size="icon-sm">
-          <ArrowLeftIcon />
-        </Button>
-        <Button variant="outline" size="icon-sm">
-          <ArrowLeftIcon className="rotate-180" />
-        </Button>
-      </ButtonGroup>
-    </ButtonGroup>
-  ),
-};
-
-/**
- * ButtonGroupText를 포함한 예제입니다.
- * 버튼과 함께 텍스트 정보를 표시할 때 사용합니다.
- */
-export const WithText: Story = {
-  render: () => (
-    <ButtonGroup>
-      <ButtonGroupText>Page</ButtonGroupText>
-      <Button variant="outline" size="icon">
-        <ArrowLeftIcon />
-      </Button>
-      <Button variant="outline" size="sm">
-        1
-      </Button>
-      <Button variant="outline" size="sm">
-        2
-      </Button>
-      <Button variant="outline" size="sm">
-        3
-      </Button>
-      <Button variant="outline" size="icon">
-        <ArrowLeftIcon className="rotate-180" />
+      <Button variant="secondary">Button</Button>
+      <ButtonGroupSeparator />
+      <Button size="icon" variant="secondary">
+        <Plus />
       </Button>
     </ButtonGroup>
   ),
 };
 
 /**
- * 입력 요소와 함께 사용하는 예제입니다.
- * Select나 다른 입력 컴포넌트와 버튼을 그룹화할 수 있습니다.
+ * 입력 필드와 함께 사용하는 버튼 그룹입니다.
+ * Select 컴포넌트와 버튼을 결합합니다.
  */
 export const WithInput: Story = {
   render: () => (
     <ButtonGroup>
-      <Select defaultValue="1">
-        <SelectTrigger className="w-[100px]">10</SelectTrigger>
+      <Select>
+        <SelectTrigger className="w-[100px]">
+          <SelectValue placeholder="10" />
+        </SelectTrigger>
         <SelectContent>
-          <SelectItem value="1">10</SelectItem>
-          <SelectItem value="2">20</SelectItem>
-          <SelectItem value="3">50</SelectItem>
-          <SelectItem value="4">100</SelectItem>
+          <SelectItem value="10">10</SelectItem>
+          <SelectItem value="20">20</SelectItem>
+          <SelectItem value="50">50</SelectItem>
+          <SelectItem value="100">100</SelectItem>
         </SelectContent>
       </Select>
-      <Button variant="outline">Apply</Button>
+      <Button variant="secondary">Apply</Button>
     </ButtonGroup>
   ),
 };
 
 /**
- * 다양한 변형의 버튼 그룹입니다.
- * secondary, destructive 등 다른 variant와 함께 사용할 수 있습니다.
+ * 페이지네이션에 텍스트를 포함한 예제입니다.
+ * ButtonGroupText 컴포넌트를 사용합니다.
  */
-export const Variants: Story = {
-  render: () => (
-    <div className="flex flex-col gap-4">
-      <ButtonGroup>
-        <Button variant="default">Default</Button>
-        <Button variant="default">Button</Button>
-        <Button variant="default">Group</Button>
-      </ButtonGroup>
-      <ButtonGroup>
-        <Button variant="secondary">Secondary</Button>
-        <Button variant="secondary">Button</Button>
-        <Button variant="secondary">Group</Button>
-      </ButtonGroup>
-      <ButtonGroup>
-        <Button variant="destructive">Destructive</Button>
-        <Button variant="destructive">Button</Button>
-        <Button variant="destructive">Group</Button>
-      </ButtonGroup>
-      <ButtonGroup>
-        <Button variant="ghost">Ghost</Button>
-        <ButtonGroupSeparator />
-        <Button variant="ghost">Button</Button>
-        <ButtonGroupSeparator />
-        <Button variant="ghost">Group</Button>
-      </ButtonGroup>
-    </div>
-  ),
-};
-
-/**
- * 아이콘 버튼 그룹입니다.
- * 툴바나 액션 버튼 그룹에 적합합니다.
- */
-export const IconButtons: Story = {
+export const Pagination: Story = {
   render: () => (
     <ButtonGroup>
-      <Button variant="outline" size="icon">
-        <Copy className="h-4 w-4" />
+      <ButtonGroupText>Page</ButtonGroupText>
+      <Button size="icon-sm">
+        <ArrowLeft />
       </Button>
-      <Button variant="outline" size="icon">
-        <ClipboardIcon className="h-4 w-4" />
-      </Button>
-      <ButtonGroupSeparator />
-      <Button variant="outline" size="icon">
-        <ArchiveIcon className="h-4 w-4" />
-      </Button>
-      <Button variant="outline" size="icon">
-        <Trash2Icon className="h-4 w-4" />
+      <Button size="sm">1</Button>
+      <Button size="sm">2</Button>
+      <Button size="sm">3</Button>
+      <Button size="icon-sm">
+        <ArrowRight />
       </Button>
     </ButtonGroup>
   ),

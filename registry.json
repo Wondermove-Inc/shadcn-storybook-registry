@@ -2259,7 +2259,6 @@
       "registryDependencies": [
         "button-group",
         "button",
-        "dropdown-menu",
         "select"
       ],
       "dependencies": [
