@@ -1,4 +1,4 @@
-import { Meta } from '@storybook/addon-docs/blocks';
+import { Meta } from "@storybook/addon-docs/blocks";
 
 <Meta title="Introduction/Testing Guide" />
 
@@ -78,7 +78,7 @@ Play function 스토리는 **`Should...`** 패턴을 사용합니다:
 ### Tags Configuration
 
 ```typescript
-tags: ["!dev", "!autodocs"]
+tags: ["!dev", "!autodocs"];
 ```
 
 - `!dev`: Dev mode에서 숨김
@@ -188,7 +188,7 @@ await waitFor(
   () => {
     expect(canvas.getByText(/success/i)).toBeInTheDocument();
   },
-  { timeout: 3000 }
+  { timeout: 3000 },
 );
 ```
 
@@ -455,7 +455,7 @@ await waitFor(
   () => {
     expect(element).toBeInTheDocument();
   },
-  { timeout: 5000 }
+  { timeout: 5000 },
 );
 ```
 

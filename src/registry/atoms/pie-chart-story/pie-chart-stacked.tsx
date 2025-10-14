@@ -1,8 +1,7 @@
-"use client"
+"use client";
 
-import * as React from "react"
-import { TrendingUp } from "lucide-react"
-import { Pie, PieChart } from "recharts"
+import { TrendingUp } from "lucide-react";
+import { Pie, PieChart } from "recharts";
 
 import {
   Card,
@@ -11,15 +10,15 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card"
+} from "@/components/ui/card";
 import {
   ChartConfig,
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
-} from "@/components/ui/chart"
+} from "@/components/ui/chart";
 
-export const description = "A pie chart with stacked sections"
+export const description = "A pie chart with stacked sections";
 
 const desktopData = [
   { month: "january", desktop: 186, fill: "var(--color-january)" },
@@ -27,7 +26,7 @@ const desktopData = [
   { month: "march", desktop: 237, fill: "var(--color-march)" },
   { month: "april", desktop: 173, fill: "var(--color-april)" },
   { month: "may", desktop: 209, fill: "var(--color-may)" },
-]
+];
 
 const mobileData = [
   { month: "january", mobile: 80, fill: "var(--color-january)" },
@@ -35,7 +34,7 @@ const mobileData = [
   { month: "march", mobile: 120, fill: "var(--color-march)" },
   { month: "april", mobile: 190, fill: "var(--color-april)" },
   { month: "may", mobile: 130, fill: "var(--color-may)" },
-]
+];
 
 const chartConfig = {
   visitors: {
@@ -67,7 +66,7 @@ const chartConfig = {
     label: "May",
     color: "var(--chart-5)",
   },
-} satisfies ChartConfig
+} satisfies ChartConfig;
 
 export function ChartPieStacked() {
   return (
@@ -91,7 +90,7 @@ export function ChartPieStacked() {
                   labelFormatter={(_, payload) => {
                     return chartConfig[
                       payload?.[0].dataKey as keyof typeof chartConfig
-                    ].label
+                    ].label;
                   }}
                 />
               }
@@ -115,5 +114,5 @@ export function ChartPieStacked() {
         </div>
       </CardFooter>
     </Card>
-  )
+  );
 }
