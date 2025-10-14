@@ -1,4 +1,5 @@
-import type { StorybookConfig } from "@storybook/nextjs-vite";
+import type { StorybookConfig } from "@storybook/react-vite";
+import tsconfigPaths from "vite-tsconfig-paths";
 
 const config: StorybookConfig = {
   stories: [
@@ -11,9 +12,10 @@ const config: StorybookConfig = {
     "@storybook/addon-a11y",
     "@storybook/addon-vitest",
     "@storybook/addon-themes",
+    "storybook-addon-remix-react-router",
   ],
   framework: {
-    name: "@storybook/nextjs-vite",
+    name: "@storybook/react-vite",
     options: {},
   },
   staticDirs: ["../public"],
@@ -24,6 +26,10 @@ const config: StorybookConfig = {
       propFilter: (prop) =>
         prop.parent ? !/node_modules/.test(prop.parent.fileName) : true,
     },
+  },
+  viteFinal: async (config) => {
+    config.plugins?.push(tsconfigPaths());
+    return config;
   },
 };
 export default config;

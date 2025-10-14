@@ -1,7 +1,6 @@
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
-import type { Meta, StoryObj } from "@storybook/nextjs-vite";
-import Image from "next/image";
+import type { Meta, StoryObj } from "@storybook/react-vite";
 import * as React from "react";
 import { expect, waitFor, within } from "storybook/test";
 
@@ -54,12 +53,10 @@ export function ScrollAreaHorizontalDemo() {
         {works.map((artwork) => (
           <figure key={artwork.artist} className="shrink-0">
             <div className="overflow-hidden rounded-md">
-              <Image
+              <img
                 src={artwork.art}
                 alt={`Photo by ${artwork.artist}`}
                 className="aspect-[3/4] h-fit w-fit object-cover"
-                width={300}
-                height={400}
               />
             </div>
             <figcaption className="text-muted-foreground pt-2 text-xs">

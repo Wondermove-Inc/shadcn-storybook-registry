@@ -20,8 +20,8 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { zodResolver } from "@hookform/resolvers/zod";
-import type { Meta, StoryObj } from "@storybook/nextjs-vite";
-import Link from "next/link";
+import type { Meta, StoryObj } from "@storybook/react-vite";
+import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { expect, fn, userEvent, within } from "storybook/test";
@@ -296,7 +296,7 @@ export function SelectForm() {
               </Select>
               <FormDescription>
                 You can manage email addresses in your{" "}
-                <Link href="/examples/forms">email settings</Link>.
+                <Link to="/examples/forms">email settings</Link>.
               </FormDescription>
               <FormMessage />
             </FormItem>

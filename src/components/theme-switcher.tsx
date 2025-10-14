@@ -19,7 +19,6 @@ type UseGlobalsHook = () => UseGlobalsReturn;
 // Storybook globals hook (only available in Storybook environment)
 let useGlobals: UseGlobalsHook | undefined;
 try {
-  // eslint-disable-next-line @typescript-eslint/no-require-imports
   useGlobals = require("@storybook/preview-api").useGlobals as UseGlobalsHook;
 } catch {
   // Not in Storybook environment

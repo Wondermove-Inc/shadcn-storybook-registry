@@ -1,6 +1,6 @@
 "use client";
 
-import type { Meta, StoryObj } from "@storybook/nextjs-vite";
+import type { Meta, StoryObj } from "@storybook/react-vite";
 import { Minus, Plus } from "lucide-react";
 import * as React from "react";
 import { Bar, BarChart, ResponsiveContainer } from "recharts";

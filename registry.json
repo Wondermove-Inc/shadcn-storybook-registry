@@ -155,7 +155,8 @@
         "breadcrumb"
       ],
       "dependencies": [
-        "lucide-react"
+        "lucide-react",
+        "react-router-dom"
       ],
       "files": [
         {
@@ -180,7 +181,8 @@
         "button"
       ],
       "dependencies": [
-        "lucide-react"
+        "lucide-react",
+        "react-router-dom"
       ],
       "files": [
         {
@@ -672,6 +674,10 @@
       "registryDependencies": [
         "navigation-menu"
       ],
+      "dependencies": [
+        "lucide-react",
+        "react-router-dom"
+      ],
       "files": [
         {
           "path": "src/registry/atoms/navigation-menu-story/navigation-menu.stories.tsx",
@@ -826,6 +832,9 @@
       "author": "Lloyd Richards <lloyd.d.richards@gmail.com>",
       "registryDependencies": [
         "select"
+      ],
+      "dependencies": [
+        "react-router-dom"
       ],
       "files": [
         {

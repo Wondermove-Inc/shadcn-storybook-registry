@@ -1,6 +1,6 @@
 "use client";
 
-import type { Meta, StoryObj } from "@storybook/nextjs-vite";
+import type { Meta, StoryObj } from "@storybook/react-vite";
 import { parseDate } from "chrono-node";
 import { CalendarIcon } from "lucide-react";
 import * as React from "react";

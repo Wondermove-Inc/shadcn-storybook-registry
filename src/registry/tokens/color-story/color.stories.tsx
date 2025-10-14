@@ -6,7 +6,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import type { Meta, StoryObj } from "@storybook/nextjs-vite";
+import type { Meta, StoryObj } from "@storybook/react-vite";
 import { useEffect, useState } from "react";
 
 // 🎨 Tailwind 기본 색상 정의 (OKLCH 형식)

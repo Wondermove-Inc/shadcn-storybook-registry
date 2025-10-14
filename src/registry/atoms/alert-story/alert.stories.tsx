@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "@storybook/nextjs-vite";
+import type { Meta, StoryObj } from "@storybook/react-vite";
 import { AlertCircleIcon, CheckCircle2Icon, PopcornIcon } from "lucide-react";
 import { expect, within } from "storybook/test";
 

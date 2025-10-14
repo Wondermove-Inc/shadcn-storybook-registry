@@ -1,7 +1,7 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import type { Meta, StoryObj } from "@storybook/nextjs-vite";
+import type { Meta, StoryObj } from "@storybook/react-vite";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { expect, fn, userEvent, within } from "storybook/test";
