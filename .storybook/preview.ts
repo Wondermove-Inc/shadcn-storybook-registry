@@ -2,7 +2,7 @@ import { withThemeByClassName } from "@storybook/addon-themes";
 import type { Preview } from "@storybook/react-vite";
 import { withRouter } from "storybook-addon-remix-react-router";
 
-import "../app/globals.css";
+import "./globals.css";
 import "./preview.css";
 
 const preview: Preview = {
