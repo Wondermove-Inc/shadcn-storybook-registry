@@ -1,5 +1,6 @@
 "use client";
 
+import React from "react";
 import { Activity, TrendingUp } from "lucide-react";
 import { Area, AreaChart, CartesianGrid, XAxis } from "recharts";
 
