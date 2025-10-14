@@ -1,0 +1,23 @@
+import{r as m,e}from"./iframe-BiU2suBC.js";import{B as u}from"./button-o25yRkrR.js";import{L as o}from"./label-DQUVhDdS.js";import{a as p}from"./utils-DgWKjmuI.js";import"./preload-helper-PPVm8Dsz.js";import"./index-dSc6CJZX.js";import"./index-vBP3oNXZ.js";import"./jsx-runtime-D_zvdyIk.js";import"./index-DF-uitis.js";import"./index-Bjt_zW8z.js";import"./index-CtYre8eh.js";const t=m.forwardRef(({className:r,...n},l)=>m.createElement("textarea",{ref:l,"data-slot":"textarea",className:p("border-input placeholder:text-muted-foreground focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:bg-input/30 flex field-sizing-content min-h-16 w-full rounded-md border bg-transparent px-3 py-2 text-base shadow-xs transition-[color,box-shadow] outline-none focus-visible:ring-[3px] disabled:cursor-not-allowed disabled:opacity-50 md:text-sm",r),...n}));t.displayName="Textarea";try{t.displayName="Textarea",t.__docgenInfo={description:"",displayName:"Textarea",props:{}}}catch{}const{expect:h,userEvent:d,within:g}=__STORYBOOK_MODULE_TEST__;function M(){return e.createElement(t,{placeholder:"Type your message here."})}function x(){return e.createElement("div",{className:"grid w-full gap-3"},e.createElement(o,{htmlFor:"message"},"Your message"),e.createElement(t,{placeholder:"Type your message here.",id:"message"}))}function T(){return e.createElement("div",{className:"grid w-full gap-3"},e.createElement(o,{htmlFor:"message-2"},"Your Message"),e.createElement(t,{placeholder:"Type your message here.",id:"message-2"}),e.createElement("p",{className:"text-muted-foreground text-sm"},"Your message will be copied to the support team."))}function y(){return e.createElement("div",{className:"grid w-full gap-2"},e.createElement(t,{placeholder:"Type your message here."}),e.createElement(u,null,"Send message"))}function S(){return e.createElement(t,{placeholder:"Type your message here.",disabled:!0})}const k={title:"ui/Textarea",component:t,tags:["autodocs"],parameters:{layout:"centered",docs:{description:{component:"Displays a form textarea or a component that looks like a textarea."}}},args:{placeholder:"Type your message here.",disabled:!1},excludeStories:/.*Demo$|.*WithLabel$|.*WithText$|.*WithButton$|.*Disabled$/},a={},Y={render:()=>e.createElement(x,null)},O={render:()=>e.createElement(T,null)},$={render:()=>e.createElement(y,null)},F={args:{disabled:!0}},s={name:"when user enters multiline text, should see it in the textarea",tags:["!dev","!autodocs"],render:()=>e.createElement("div",{className:"grid w-full gap-3"},e.createElement(o,{htmlFor:"message-test"},"Your message"),e.createElement(t,{placeholder:"Type your message here.",id:"message-test"})),play:async({canvasElement:r,step:n})=>{const i=g(r).getByPlaceholderText(/type your message here/i),c=`This is line 1
+This is line 2
+This is line 3`;await n("focus and type multiline text into textarea",async()=>{await d.click(i),await d.type(i,c)}),h(i).toHaveValue(c)}};a.parameters={...a.parameters,docs:{...a.parameters?.docs,source:{originalSource:"{}",...a.parameters?.docs?.source},description:{story:"The default form of the textarea.",...a.parameters?.docs?.description}}};s.parameters={...s.parameters,docs:{...s.parameters?.docs,source:{originalSource:`{
+  name: "when user enters multiline text, should see it in the textarea",
+  tags: ["!dev", "!autodocs"],
+  render: () => <div className="grid w-full gap-3">
+      <Label htmlFor="message-test">Your message</Label>
+      <Textarea placeholder="Type your message here." id="message-test" />
+    </div>,
+  play: async ({
+    canvasElement,
+    step
+  }) => {
+    const canvas = within(canvasElement);
+    const textarea = canvas.getByPlaceholderText(/type your message here/i);
+    const multilineMessage = "This is line 1\\nThis is line 2\\nThis is line 3";
+    await step("focus and type multiline text into textarea", async () => {
+      await userEvent.click(textarea);
+      await userEvent.type(textarea, multilineMessage);
+    });
+    expect(textarea).toHaveValue(multilineMessage);
+  }
+}`,...s.parameters?.docs?.source}}};const H=["TextareaDemo","TextareaWithLabel","TextareaWithText","TextareaWithButton","TextareaDisabled","Default","WithLabel","WithText","WithButton","Disabled","ShouldEnterMultilineText"];export{a as Default,F as Disabled,s as ShouldEnterMultilineText,M as TextareaDemo,S as TextareaDisabled,y as TextareaWithButton,x as TextareaWithLabel,T as TextareaWithText,$ as WithButton,Y as WithLabel,O as WithText,H as __namedExportsOrder,k as default};

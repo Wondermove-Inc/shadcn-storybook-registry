@@ -7,13 +7,19 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 This is a shadcn/ui Storybook registry that serves as both documentation and a distribution system for shadcn components with Storybook stories. The registry allows users to install pre-built Storybook stories alongside shadcn/ui components via the shadcn CLI.
 
 **Tech Stack:**
-- **Framework**: React 18.3.1 with TypeScript
+- **Framework**: React 18.3.1 / 19.1.1 with TypeScript (dual version support)
 - **Router**: react-router-dom v7.9.4 (for Link components in stories)
 - **UI Library**: shadcn/ui (46/51 components with stories)
-- **Documentation**: Storybook 9 with Vite
+- **Documentation**: Storybook 9 with Vite (@storybook/react-vite)
 - **Testing**: Vitest with dual projects (unit + Storybook browser tests via Playwright)
 - **Styling**: Tailwind CSS v4 with design tokens
 - **Package Manager**: Supports both npm and bun (README uses bun, package.json scripts use npm/bun mixed)
+
+**React Version Compatibility:**
+- **Current Version**: React 18.3.1 (default)
+- **Supported Versions**: React 18.3.1 || React 19.1.1
+- **peerDependencies**: Configured to support both versions
+- **Compatibility**: All 46 UI components tested and working on both versions
 
 ## Essential Commands
 
@@ -152,6 +158,56 @@ Each story requires an entry in `registry.json`:
 ```
 
 **⚠️ CRITICAL**: Always use `@/components/ui/` imports in stories. The registry build system depends on this pattern.
+
+### React Version Switching
+
+The project supports both React 18.3.1 and React 19.1.1. To switch between versions:
+
+#### Switch to React 19
+```bash
+# 1. Update package.json React versions
+#    react: "19.1.1"
+#    react-dom: "19.1.1"
+#    @types/react: "^19.1.13"
+#    @types/react-dom: "^19.1.9"
+
+# 2. Reinstall dependencies
+rm -rf node_modules package-lock.json
+npm install
+
+# 3. Verify everything works
+npm run lint
+npm run type-check
+npm run registry:build
+npm run build
+```
+
+#### Switch to React 18
+```bash
+# 1. Update package.json React versions
+#    react: "18.3.1"
+#    react-dom: "18.3.1"
+#    @types/react: "18.3.3"
+#    @types/react-dom: "18.3.3"
+
+# 2. Reinstall dependencies
+rm -rf node_modules package-lock.json
+npm install
+
+# 3. Verify everything works
+npm run lint
+npm run type-check
+npm run registry:build
+npm run build
+```
+
+#### Compatibility Notes
+- **forwardRef**: Works in both versions (deprecated in React 19 but still functional)
+- **PropTypes/defaultProps**: Not used in this project
+- **TypeScript Types**: @types/react 18.x vs 19.x have minor differences
+- **All Components**: 46 shadcn/ui components tested and verified on both versions
+- **Build System**: Storybook 9 with Vite supports both React versions
+- **No Breaking Changes**: Code works identically on both versions
 
 ## Storybook Development
 
