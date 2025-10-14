@@ -1,7 +1,7 @@
+import React from "react";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import * as React from "react";
 import { expect, waitFor, within } from "storybook/test";
 
 const tags = Array.from({ length: 50 }).map(

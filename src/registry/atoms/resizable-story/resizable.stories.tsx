@@ -1,10 +1,10 @@
+import React from "react";
 import {
   ResizableHandle,
   ResizablePanel,
   ResizablePanelGroup,
 } from "@/components/ui/resizable";
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import * as React from "react";
 import { expect, within } from "storybook/test";
 
 /**

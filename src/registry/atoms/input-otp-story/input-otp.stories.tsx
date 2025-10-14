@@ -1,5 +1,6 @@
 "use client";
 
+import React from "react";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -19,7 +20,6 @@ import {
 import { zodResolver } from "@hookform/resolvers/zod";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { REGEXP_ONLY_DIGITS_AND_CHARS } from "input-otp";
-import * as React from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { expect, userEvent, waitFor, within } from "storybook/test";

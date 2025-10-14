@@ -1,5 +1,6 @@
 "use client";
 
+import React from "react";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
@@ -14,7 +15,6 @@ import {
 import { Label } from "@/components/ui/label";
 import { zodResolver } from "@hookform/resolvers/zod";
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import * as React from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { expect, fn, userEvent, within } from "storybook/test";

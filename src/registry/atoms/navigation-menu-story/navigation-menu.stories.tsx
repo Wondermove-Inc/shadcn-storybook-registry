@@ -1,8 +1,8 @@
 "use client";
 
+import React from "react";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { CircleCheckIcon, CircleHelpIcon, CircleIcon } from "lucide-react";
-import * as React from "react";
 import { Link } from "react-router-dom";
 import { expect, userEvent, within } from "storybook/test";
 

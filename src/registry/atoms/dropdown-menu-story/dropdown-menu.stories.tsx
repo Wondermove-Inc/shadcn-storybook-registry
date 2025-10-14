@@ -1,3 +1,4 @@
+import React from "react";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -17,7 +18,6 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import * as React from "react";
 import { expect, userEvent, waitFor, within } from "storybook/test";
 
 function DropdownMenuDemo() {

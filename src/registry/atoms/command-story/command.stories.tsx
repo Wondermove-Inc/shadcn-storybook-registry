@@ -1,5 +1,6 @@
 "use client";
 
+import React from "react";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import {
   Calculator,
@@ -9,7 +10,6 @@ import {
   Smile,
   User,
 } from "lucide-react";
-import * as React from "react";
 
 import {
   Command,
