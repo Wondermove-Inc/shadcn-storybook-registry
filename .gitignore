@@ -46,6 +46,7 @@ public/storybook
 *.log
 /build/storybook-static
 /build/*.log
+storybook-static
 
 # legacy
 /stories-legacy
