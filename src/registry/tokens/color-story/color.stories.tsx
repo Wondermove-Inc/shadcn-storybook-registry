@@ -7,7 +7,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 
 // 🎨 Tailwind 기본 색상 정의 (OKLCH 형식)
 // 📝 Tailwind CSS v4 공식 OKLCH 팔레트 사용

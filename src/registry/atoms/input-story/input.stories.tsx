@@ -1,3 +1,4 @@
+import React from "react";
 import { expect, fn, userEvent, within } from "storybook/test";
 // Replace nextjs-vite with the name of your framework
 import type { Meta, StoryObj } from "@storybook/react-vite";

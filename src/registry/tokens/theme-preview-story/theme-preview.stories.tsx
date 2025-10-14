@@ -18,7 +18,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { Moon, Sun } from "lucide-react";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 
 /**
  * 🎯 목적: OKLCH 테마 미리보기 및 디자인 토큰 시각화

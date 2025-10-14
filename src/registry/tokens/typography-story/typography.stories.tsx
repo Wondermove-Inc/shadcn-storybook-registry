@@ -8,7 +8,7 @@ import {
 } from "@/components/ui/table";
 // Replace nextjs-vite with the name of your framework
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import type { CSSProperties, ReactNode } from "react";
+import React, { type CSSProperties, type ReactNode } from "react";
 
 type Typography = {
   name: string;

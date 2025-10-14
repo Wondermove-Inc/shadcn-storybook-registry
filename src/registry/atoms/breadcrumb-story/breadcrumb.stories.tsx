@@ -1,3 +1,4 @@
+import React from "react";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { ChevronDownIcon, SlashIcon } from "lucide-react";
 import { Link } from "react-router-dom";
