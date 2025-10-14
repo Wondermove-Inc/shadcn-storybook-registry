@@ -1,7 +1,7 @@
 "use client";
 
+import React from "react";
 import { Collapsible as CollapsiblePrimitive } from "radix-ui";
-import * as React from "react";
 
 /**
  * 🎯 목적: Collapsible 컴포넌트에 forwardRef 적용하여 React 18/19 호환성 제공
