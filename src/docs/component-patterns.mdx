@@ -1,4 +1,4 @@
-import { Meta } from '@storybook/addon-docs/blocks';
+import { Meta } from "@storybook/addon-docs/blocks";
 
 <Meta title="Introduction/Component Patterns" />
 
@@ -8,7 +8,8 @@ shadcn-storybook-registry에서 사용하는 고급 컴포넌트 패턴입니다
 
 ## Compound Components
 
-**Compound Components** 패턴은 여러 컴포넌트가 암묵적으로 상태를 공유하는 패턴입니다.
+**Compound Components** 패턴은 여러 컴포넌트가 암묵적으로 상태를 공유하는
+패턴입니다.
 
 ### 개념
 
@@ -30,7 +31,7 @@ shadcn-storybook-registry에서 사용하는 고급 컴포넌트 패턴입니다
 ### 구현 예시: Dialog
 
 ```typescript
-import * as React from "react";
+import React from "react";
 
 // Context로 상태 공유
 const DialogContext = React.createContext<{
@@ -82,7 +83,8 @@ function DialogContent({ children }: { children: React.ReactNode }) {
 
 - **Dialog**: `<Dialog>`, `<DialogTrigger>`, `<DialogContent>`, `<DialogHeader>`
 - **Popover**: `<Popover>`, `<PopoverTrigger>`, `<PopoverContent>`
-- **Accordion**: `<Accordion>`, `<AccordionItem>`, `<AccordionTrigger>`, `<AccordionContent>`
+- **Accordion**: `<Accordion>`, `<AccordionItem>`, `<AccordionTrigger>`,
+  `<AccordionContent>`
 - **Tabs**: `<Tabs>`, `<TabsList>`, `<TabsTrigger>`, `<TabsContent>`
 - **Select**: `<Select>`, `<SelectTrigger>`, `<SelectContent>`, `<SelectItem>`
 
@@ -368,7 +370,8 @@ function UncontrolledInput() {
 
 ### Hybrid Pattern
 
-shadcn/ui는 **Controlled와 Uncontrolled를 모두 지원**하는 Hybrid 패턴을 사용합니다:
+shadcn/ui는 **Controlled와 Uncontrolled를 모두 지원**하는 Hybrid 패턴을
+사용합니다:
 
 ```typescript
 interface DialogProps {
@@ -407,11 +410,11 @@ function Dialog({ open, defaultOpen, onOpenChange }: DialogProps) {
 
 ### 선택 기준
 
-| Pattern | 사용 시기 | 예시 |
-|---------|----------|------|
-| **Controlled** | 부모가 상태를 관리해야 할 때 | Form validation, 동기화 |
-| **Uncontrolled** | 단순한 입력, 성능 최적화 | Simple forms, file inputs |
-| **Hybrid** | 양쪽 모두 지원하고 싶을 때 | shadcn/ui 컴포넌트들 |
+| Pattern          | 사용 시기                    | 예시                      |
+| ---------------- | ---------------------------- | ------------------------- |
+| **Controlled**   | 부모가 상태를 관리해야 할 때 | Form validation, 동기화   |
+| **Uncontrolled** | 단순한 입력, 성능 최적화     | Simple forms, file inputs |
+| **Hybrid**       | 양쪽 모두 지원하고 싶을 때   | shadcn/ui 컴포넌트들      |
 
 ## Higher-Order Components (HOC)
 
@@ -554,7 +557,8 @@ function CardTitle({ children, ...props }: React.HTMLAttributes<HTMLHeadingEleme
 
 ## Polymorphic Components
 
-**Polymorphic Components**는 `as` prop으로 렌더링할 HTML 태그를 동적으로 변경하는 패턴입니다.
+**Polymorphic Components**는 `as` prop으로 렌더링할 HTML 태그를 동적으로
+변경하는 패턴입니다.
 
 ### 개념
 

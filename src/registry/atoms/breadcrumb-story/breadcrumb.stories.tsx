@@ -1,6 +1,7 @@
-import type { Meta, StoryObj } from "@storybook/nextjs-vite";
+import React from "react";
+import type { Meta, StoryObj } from "@storybook/react-vite";
 import { ChevronDownIcon, SlashIcon } from "lucide-react";
-import Link from "next/link";
+import { Link } from "react-router-dom";
 import { expect, userEvent, within } from "storybook/test";
 
 import {
@@ -99,7 +100,7 @@ export const WithDropdown: Story = {
       <BreadcrumbList>
         <BreadcrumbItem>
           <BreadcrumbLink asChild>
-            <Link href="/">Home</Link>
+            <Link to="/">Home</Link>
           </BreadcrumbLink>
         </BreadcrumbItem>
         <BreadcrumbSeparator>
@@ -138,7 +139,7 @@ export const Collapsed: Story = {
       <BreadcrumbList>
         <BreadcrumbItem>
           <BreadcrumbLink asChild>
-            <Link href="/">Home</Link>
+            <Link to="/">Home</Link>
           </BreadcrumbLink>
         </BreadcrumbItem>
         <BreadcrumbSeparator />
@@ -148,7 +149,7 @@ export const Collapsed: Story = {
         <BreadcrumbSeparator />
         <BreadcrumbItem>
           <BreadcrumbLink asChild>
-            <Link href="/docs/components">Components</Link>
+            <Link to="/docs/components">Components</Link>
           </BreadcrumbLink>
         </BreadcrumbItem>
         <BreadcrumbSeparator />

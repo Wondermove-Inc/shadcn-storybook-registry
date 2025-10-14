@@ -1,5 +1,6 @@
 // Replace nextjs-vite with the name of your framework
-import type { Meta, StoryObj } from "@storybook/nextjs-vite";
+import React from "react";
+import type { Meta, StoryObj } from "@storybook/react-vite";
 import { expect, userEvent, within } from "storybook/test";
 
 import { Slider } from "@/components/ui/slider";

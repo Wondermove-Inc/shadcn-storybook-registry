@@ -1,14 +1,16 @@
-import { Meta } from '@storybook/addon-docs/blocks';
+import { Meta } from "@storybook/addon-docs/blocks";
 
 <Meta title="Introduction/Design Tokens" />
 
 # Design Tokens
 
-shadcn-storybook-registry의 디자인 토큰 시스템입니다. 일관된 디자인 언어를 위한 체계적인 토큰 구조를 제공합니다.
+shadcn-storybook-registry의 디자인 토큰 시스템입니다. 일관된 디자인 언어를 위한
+체계적인 토큰 구조를 제공합니다.
 
 ## Color System
 
 ### Primary Colors
+
 브랜드의 주요 색상으로 버튼, 링크 등 주요 인터랙티브 요소에 사용됩니다.
 
 ```css
@@ -18,13 +20,15 @@ shadcn-storybook-registry의 디자인 토큰 시스템입니다. 일관된 디�
 ```
 
 **사용 예시:**
+
 ```tsx
 import { Button } from "@/components/ui/button";
 
-<Button variant="default">Primary Button</Button>
+<Button variant="default">Primary Button</Button>;
 ```
 
 ### Secondary Colors
+
 보조 색상으로 덜 강조되는 요소에 사용됩니다.
 
 ```css
@@ -33,11 +37,13 @@ import { Button } from "@/components/ui/button";
 ```
 
 **사용 예시:**
+
 ```tsx
 <Button variant="secondary">Secondary Button</Button>
 ```
 
 ### Destructive Colors
+
 경고, 에러, 삭제 등 위험한 동작을 나타냅니다.
 
 ```css
@@ -46,12 +52,14 @@ import { Button } from "@/components/ui/button";
 ```
 
 **사용 예시:**
+
 ```tsx
 <Button variant="destructive">Delete</Button>
 <Alert variant="destructive">Error message</Alert>
 ```
 
 ### Muted Colors
+
 배경, 비활성 상태, 보조 텍스트에 사용됩니다.
 
 ```css
@@ -60,13 +68,13 @@ import { Button } from "@/components/ui/button";
 ```
 
 **사용 예시:**
+
 ```tsx
-<div className="bg-muted text-muted-foreground">
-  Muted content
-</div>
+<div className="bg-muted text-muted-foreground">Muted content</div>
 ```
 
 ### Accent Colors
+
 강조가 필요한 요소에 사용됩니다.
 
 ```css
@@ -77,6 +85,7 @@ import { Button } from "@/components/ui/button";
 ## Typography Scale
 
 ### Font Sizes
+
 일관된 타이포그래피 계층을 위한 크기 시스템입니다.
 
 ```css
@@ -93,6 +102,7 @@ text-5xl   /* 3rem (48px) */
 ```
 
 **사용 예시:**
+
 ```tsx
 <h1 className="text-4xl font-bold">Heading 1</h1>
 <h2 className="text-3xl font-semibold">Heading 2</h2>
@@ -101,6 +111,7 @@ text-5xl   /* 3rem (48px) */
 ```
 
 ### Font Weights
+
 ```css
 font-normal    /* 400 */
 font-medium    /* 500 */
@@ -109,6 +120,7 @@ font-bold      /* 700 */
 ```
 
 ### Line Heights
+
 ```css
 leading-none    /* 1 */
 leading-tight   /* 1.25 */
@@ -137,18 +149,18 @@ p-16   /* 4rem (64px) */
 ```
 
 **사용 예시:**
+
 ```tsx
 <Card className="p-6">
   <CardHeader className="pb-4">
     <CardTitle className="mb-2">Title</CardTitle>
   </CardHeader>
-  <CardContent className="pt-0">
-    Content with consistent spacing
-  </CardContent>
+  <CardContent className="pt-0">Content with consistent spacing</CardContent>
 </Card>
 ```
 
 ### Gap System
+
 ```css
 gap-0   /* 0px */
 gap-1   /* 0.25rem */
@@ -168,11 +180,13 @@ gap-8   /* 2rem */
 --shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
 --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
 --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
---shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+--shadow-xl:
+  0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
 --shadow-2xl: 0 25px 50px -12px rgb(0 0 0 / 0.25);
 ```
 
 **사용 예시:**
+
 ```tsx
 <div className="shadow-sm">Subtle elevation</div>
 <div className="shadow-md">Medium elevation</div>
@@ -184,7 +198,9 @@ gap-8   /* 2rem */
 ```
 
 ### Dark Mode Shadows
+
 Dark mode에서 그림자는 자동으로 조정됩니다:
+
 ```css
 .dark {
   --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.25);
@@ -199,10 +215,11 @@ Dark mode에서 그림자는 자동으로 조정됩니다:
 
 ```css
 /* CSS Variables */
---radius: 0.5rem;  /* Default radius (8px) */
+--radius: 0.5rem; /* Default radius (8px) */
 ```
 
 **Tailwind Classes:**
+
 ```css
 rounded-none  /* 0px */
 rounded-sm    /* calc(var(--radius) - 4px) */
@@ -213,6 +230,7 @@ rounded-full  /* 9999px */
 ```
 
 **사용 예시:**
+
 ```tsx
 <Button className="rounded-md">Default Radius</Button>
 <Button className="rounded-full">Fully Rounded</Button>
@@ -235,6 +253,7 @@ rounded-full  /* 9999px */
 ```
 
 **사용 예시:**
+
 ```tsx
 <Input className="border border-input focus-visible:ring-2 focus-visible:ring-ring" />
 
@@ -246,29 +265,32 @@ rounded-full  /* 9999px */
 ## Using Design Tokens
 
 ### Reading CSS Variables in JavaScript
+
 ```typescript
 const styles = getComputedStyle(document.documentElement);
-const primaryColor = styles.getPropertyValue('--primary');
-const radius = styles.getPropertyValue('--radius');
+const primaryColor = styles.getPropertyValue("--primary");
+const radius = styles.getPropertyValue("--radius");
 ```
 
 ### Customizing Tokens
+
 `app/globals.css`에서 토큰을 커스터마이징할 수 있습니다:
 
 ```css
 @layer base {
   :root {
-    --primary: 210 100% 50%;  /* Custom blue */
-    --radius: 1rem;           /* Larger default radius */
+    --primary: 210 100% 50%; /* Custom blue */
+    --radius: 1rem; /* Larger default radius */
   }
 
   .dark {
-    --primary: 210 100% 60%;  /* Lighter blue for dark mode */
+    --primary: 210 100% 60%; /* Lighter blue for dark mode */
   }
 }
 ```
 
 ### Tailwind Integration
+
 모든 디자인 토큰은 Tailwind CSS v4와 완벽하게 통합됩니다:
 
 ```tsx
@@ -291,6 +313,7 @@ const radius = styles.getPropertyValue('--radius');
 ## Best Practices
 
 ### 1. Use Semantic Tokens
+
 ```tsx
 // ✅ Good - semantic meaning
 <Button variant="destructive">Delete</Button>
@@ -300,6 +323,7 @@ const radius = styles.getPropertyValue('--radius');
 ```
 
 ### 2. Maintain Consistency
+
 ```tsx
 // ✅ Good - consistent spacing
 <div className="space-y-4">
@@ -315,6 +339,7 @@ const radius = styles.getPropertyValue('--radius');
 ```
 
 ### 3. Respect Dark Mode
+
 ```tsx
 // ✅ Good - uses theme-aware tokens
 <div className="bg-background text-foreground">Content</div>
@@ -324,6 +349,7 @@ const radius = styles.getPropertyValue('--radius');
 ```
 
 ### 4. Use Spacing Scale
+
 ```tsx
 // ✅ Good - uses spacing scale
 <div className="space-y-6">

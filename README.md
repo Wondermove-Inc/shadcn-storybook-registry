@@ -109,7 +109,7 @@ export function MyDialog() {
 
 - Node.js 18.x or 20.x
 - React 18.3.1+ or React 19.x
-- Next.js 15+ (recommended) or any React framework
+- Any React framework (or standalone React application)
 
 ### Using shadcn CLI
 
@@ -141,9 +141,6 @@ bun install
 # Start Storybook development server (port 6006)
 npm run storybook
 
-# Start Next.js development server (port 3000)
-npm run dev
-
 # Build registry
 npm run registry:build
 ```
@@ -153,11 +150,10 @@ npm run registry:build
 ```bash
 # Development
 npm run storybook          # Start Storybook dev server (port 6006)
-npm run dev                # Start Next.js dev server (turbopack)
 npm run registry:dev       # Watch mode for registry changes
 
 # Building
-npm run build              # Full production build (Next.js + Storybook + Registry)
+npm run build              # Build Storybook (= npm run storybook:build)
 npm run storybook:build    # Build Storybook only
 npm run registry:build     # Build registry JSON files
 
@@ -217,9 +213,10 @@ All components with Storybook stories and forwardRef support:
 
 ## Tech Stack
 
-- **Framework**: Next.js 15 with TypeScript
+- **Framework**: React 18.3.1 with TypeScript
+- **Build Tool**: Vite (via Storybook)
 - **UI Library**: shadcn/ui (46/51 components with stories)
-- **Documentation**: Storybook 9 with Vite
+- **Documentation**: Storybook 9 with @storybook/react-vite
 - **Testing**: Vitest (unit tests + Storybook browser tests via Playwright)
 - **Styling**: Tailwind CSS v4 with design tokens
 - **Package Manager**: npm / bun

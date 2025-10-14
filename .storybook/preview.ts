@@ -1,7 +1,8 @@
 import { withThemeByClassName } from "@storybook/addon-themes";
-import type { Preview } from "@storybook/nextjs-vite";
+import type { Preview } from "@storybook/react-vite";
+import { withRouter } from "storybook-addon-remix-react-router";
 
-import "../app/globals.css";
+import "./globals.css";
 import "./preview.css";
 
 const preview: Preview = {
@@ -65,6 +66,7 @@ const preview: Preview = {
 
   tags: ["autodocs"],
   decorators: [
+    withRouter,
     // 테마 및 모드 조합 선택 (7가지 색상 × 2가지 모드 = 14가지 조합)
     // 모든 컬러 테마는 다중 클래스 방식으로 default 테마로 폴백
     withThemeByClassName({

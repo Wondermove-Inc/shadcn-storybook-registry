@@ -1,7 +1,9 @@
-"use client"
+"use client";
 
-import { TrendingUp } from "lucide-react"
-import { Bar, BarChart, CartesianGrid, Cell, LabelList } from "recharts"
+import React from "react";
+
+import { TrendingUp } from "lucide-react";
+import { Bar, BarChart, CartesianGrid, Cell, LabelList } from "recharts";
 
 import {
   Card,
@@ -10,15 +12,15 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card"
+} from "@/components/ui/card";
 import {
   ChartConfig,
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
-} from "@/components/ui/chart"
+} from "@/components/ui/chart";
 
-export const description = "A bar chart with negative values"
+export const description = "A bar chart with negative values";
 
 const chartData = [
   { month: "January", visitors: 186 },
@@ -27,13 +29,13 @@ const chartData = [
   { month: "April", visitors: 173 },
   { month: "May", visitors: -209 },
   { month: "June", visitors: 214 },
-]
+];
 
 const chartConfig = {
   visitors: {
     label: "Visitors",
   },
-} satisfies ChartConfig
+} satisfies ChartConfig;
 
 export function ChartBarNegative() {
   return (
@@ -71,5 +73,5 @@ export function ChartBarNegative() {
         </div>
       </CardFooter>
     </Card>
-  )
+  );
 }

@@ -1,5 +1,6 @@
 "use client";
 
+import React from "react";
 import {
   ContextMenu,
   ContextMenuCheckboxItem,
@@ -15,7 +16,7 @@ import {
   ContextMenuSubTrigger,
   ContextMenuTrigger,
 } from "@/components/ui/context-menu";
-import type { Meta, StoryObj } from "@storybook/nextjs-vite";
+import type { Meta, StoryObj } from "@storybook/react-vite";
 import { expect, userEvent, waitFor, within } from "storybook/test";
 
 /**

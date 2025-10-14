@@ -1,14 +1,14 @@
 "use client";
 
+import React from "react";
 import { Button } from "@/components/ui/button";
 import {
   Collapsible,
   CollapsibleContent,
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
-import type { Meta, StoryObj } from "@storybook/nextjs-vite";
+import type { Meta, StoryObj } from "@storybook/react-vite";
 import { ChevronsUpDown } from "lucide-react";
-import * as React from "react";
 import { expect, userEvent } from "storybook/test";
 
 export function CollapsibleDemo() {

@@ -1,9 +1,9 @@
 "use client";
 
+import React from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
-import type { Meta, StoryObj } from "@storybook/nextjs-vite";
+import type { Meta, StoryObj } from "@storybook/react-vite";
 import { Check, ChevronsUpDown, MoreHorizontal } from "lucide-react";
-import * as React from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { expect, userEvent, within } from "storybook/test";

@@ -1,5 +1,5 @@
-import type { Meta, StoryObj } from "@storybook/nextjs-vite";
-import Image from "next/image";
+import React from "react";
+import type { Meta, StoryObj } from "@storybook/react-vite";
 import { expect, within } from "storybook/test";
 
 import { AspectRatio } from "@/components/ui/aspect-ratio";
@@ -8,10 +8,9 @@ export function AspectRatioDemo() {
   return (
     <div className="w-[450px]">
       <AspectRatio ratio={16 / 9} className="bg-muted rounded-lg">
-        <Image
+        <img
           src="https://images.unsplash.com/photo-1588345921523-c2dcdb7f1dcd?w=800&dpr=2&q=80"
           alt="Photo by Drew Beamer"
-          fill
           className="h-full w-full rounded-lg object-cover dark:brightness-[0.2] dark:grayscale"
         />
       </AspectRatio>
@@ -47,10 +46,9 @@ export const Default: Story = {
   render: (args) => (
     <div className="w-[450px]">
       <AspectRatio {...args}>
-        <Image
+        <img
           src="https://images.unsplash.com/photo-1588345921523-c2dcdb7f1dcd?w=800&dpr=2&q=80"
           alt="Photo by Drew Beamer"
-          fill
           className="h-full w-full rounded-lg object-cover dark:brightness-[0.2] dark:grayscale"
         />
       </AspectRatio>

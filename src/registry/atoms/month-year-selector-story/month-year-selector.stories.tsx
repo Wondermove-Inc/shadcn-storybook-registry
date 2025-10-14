@@ -1,7 +1,7 @@
 "use client";
 
-import type { Meta, StoryObj } from "@storybook/nextjs-vite";
-import * as React from "react";
+import React from "react";
+import type { Meta, StoryObj } from "@storybook/react-vite";
 import { expect, userEvent, waitFor, within } from "storybook/test";
 
 import { Calendar } from "@/components/ui/calendar";

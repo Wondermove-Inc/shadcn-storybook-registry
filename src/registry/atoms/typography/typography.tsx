@@ -1,3 +1,4 @@
+import React from "react";
 import { cn } from "@/lib/utils";
 import type { JSX } from "react";
 import { HTMLAttributes, forwardRef } from "react";

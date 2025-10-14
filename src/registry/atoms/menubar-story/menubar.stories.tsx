@@ -1,3 +1,4 @@
+import React from "react";
 import {
   Menubar,
   MenubarCheckboxItem,
@@ -13,7 +14,7 @@ import {
   MenubarSubTrigger,
   MenubarTrigger,
 } from "@/components/ui/menubar";
-import type { Meta, StoryObj } from "@storybook/nextjs-vite";
+import type { Meta, StoryObj } from "@storybook/react-vite";
 import { expect, userEvent, within } from "storybook/test";
 
 function MenubarDemo() {

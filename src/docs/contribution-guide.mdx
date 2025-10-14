@@ -1,4 +1,4 @@
-import { Meta } from '@storybook/addon-docs/blocks';
+import { Meta } from "@storybook/addon-docs/blocks";
 
 <Meta title="Introduction/Contribution Guide" />
 
@@ -47,8 +47,8 @@ type Story = StoryObj<typeof meta>;
  */
 export const Default: Story = {
   args: {
-    variant: 'default',
-    children: 'Example',
+    variant: "default",
+    children: "Example",
   },
 };
 ```
@@ -66,10 +66,12 @@ export const Default: Story = {
   "categories": ["atoms", "storybook"],
   "registryDependencies": ["component"],
   "dependencies": ["lucide-react"],
-  "files": [{
-    "path": "src/registry/atoms/component-story/component.stories.tsx",
-    "type": "registry:component"
-  }]
+  "files": [
+    {
+      "path": "src/registry/atoms/component-story/component.stories.tsx",
+      "type": "registry:component"
+    }
+  ]
 }
 ```
 
@@ -148,8 +150,8 @@ export const InteractionTest: Story = {
   tags: ["!dev", "!autodocs"],
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    await userEvent.click(canvas.getByRole('button'));
-    await expect(canvas.getByText('Success')).toBeInTheDocument();
+    await userEvent.click(canvas.getByRole("button"));
+    await expect(canvas.getByText("Success")).toBeInTheDocument();
   },
 };
 ```

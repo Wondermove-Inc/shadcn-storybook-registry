@@ -7,12 +7,19 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 This is a shadcn/ui Storybook registry that serves as both documentation and a distribution system for shadcn components with Storybook stories. The registry allows users to install pre-built Storybook stories alongside shadcn/ui components via the shadcn CLI.
 
 **Tech Stack:**
-- **Framework**: Next.js 15 with TypeScript
+- **Framework**: React 18.3.1 / 19.1.1 with TypeScript (dual version support)
+- **Router**: react-router-dom v7.9.4 (for Link components in stories)
 - **UI Library**: shadcn/ui (46/51 components with stories)
-- **Documentation**: Storybook 9 with Vite
+- **Documentation**: Storybook 9 with Vite (@storybook/react-vite)
 - **Testing**: Vitest with dual projects (unit + Storybook browser tests via Playwright)
 - **Styling**: Tailwind CSS v4 with design tokens
 - **Package Manager**: Supports both npm and bun (README uses bun, package.json scripts use npm/bun mixed)
+
+**React Version Compatibility:**
+- **Current Version**: React 18.3.1 (default)
+- **Supported Versions**: React 18.3.1 || React 19.1.1
+- **peerDependencies**: Configured to support both versions
+- **Compatibility**: All 46 UI components tested and working on both versions
 
 ## Essential Commands
 
@@ -21,23 +28,20 @@ This is a shadcn/ui Storybook registry that serves as both documentation and a d
 # Storybook development (primary workflow)
 npm run storybook                    # Port 6006
 
-# Next.js development server
-npm run dev                          # Turbopack enabled
-
 # Registry development with auto-rebuild
 npm run registry:dev                 # Watch mode for registry changes
 ```
 
 ### Building
 ```bash
-# Full production build (Next.js + Storybook + Registry)
-npm run build                        # Runs next build && bun run storybook:build
+# Full production build (Storybook + Registry)
+npm run build                        # Runs npm run storybook:build
 
 # Registry build (generates public/v2/r/*.json)
 npm run registry:build               # Required after story changes
 
 # Storybook only
-npm run storybook:build              # Outputs to public/storybook
+npm run storybook:build              # Outputs to storybook-static
 ```
 
 ### Testing
@@ -80,9 +84,6 @@ npx shadcn@latest add http://localhost:3000/v2/r/button-story.json
 ```bash
 # Storybook 백그라운드 실행
 nohup npm run storybook > storybook.log 2>&1 &
-
-# Next.js 백그라운드 실행
-nohup npm run dev > dev.log 2>&1 &
 
 # 프로세스 확인
 ps aux | grep storybook | grep -v grep
@@ -143,7 +144,9 @@ Each story requires an entry in `registry.json`:
 
 **Dependency Types:**
 - `registryDependencies`: shadcn/ui components (e.g., `["button", "form"]`)
-- `dependencies`: External npm packages (e.g., `["lucide-react", "zod", "recharts"]`)
+- `dependencies`: External npm packages (e.g., `["lucide-react", "zod", "recharts", "react-router-dom"]`)
+
+**Note**: Stories using `<Link>` components should include `"react-router-dom"` in dependencies.
 
 ### Path Aliases (Critical for Registry Build)
 ```typescript
@@ -156,11 +159,61 @@ Each story requires an entry in `registry.json`:
 
 **⚠️ CRITICAL**: Always use `@/components/ui/` imports in stories. The registry build system depends on this pattern.
 
+### React Version Switching
+
+The project supports both React 18.3.1 and React 19.1.1. To switch between versions:
+
+#### Switch to React 19
+```bash
+# 1. Update package.json React versions
+#    react: "19.1.1"
+#    react-dom: "19.1.1"
+#    @types/react: "^19.1.13"
+#    @types/react-dom: "^19.1.9"
+
+# 2. Reinstall dependencies
+rm -rf node_modules package-lock.json
+npm install
+
+# 3. Verify everything works
+npm run lint
+npm run type-check
+npm run registry:build
+npm run build
+```
+
+#### Switch to React 18
+```bash
+# 1. Update package.json React versions
+#    react: "18.3.1"
+#    react-dom: "18.3.1"
+#    @types/react: "18.3.3"
+#    @types/react-dom: "18.3.3"
+
+# 2. Reinstall dependencies
+rm -rf node_modules package-lock.json
+npm install
+
+# 3. Verify everything works
+npm run lint
+npm run type-check
+npm run registry:build
+npm run build
+```
+
+#### Compatibility Notes
+- **forwardRef**: Works in both versions (deprecated in React 19 but still functional)
+- **PropTypes/defaultProps**: Not used in this project
+- **TypeScript Types**: @types/react 18.x vs 19.x have minor differences
+- **All Components**: 46 shadcn/ui components tested and verified on both versions
+- **Build System**: Storybook 9 with Vite supports both React versions
+- **No Breaking Changes**: Code works identically on both versions
+
 ## Storybook Development
 
 ### Story Structure Pattern
 ```typescript
-import type { Meta, StoryObj } from "@storybook/nextjs-vite";
+import type { Meta, StoryObj } from "@storybook/react-vite";
 import { Component } from "@/components/ui/component";
 
 /**
@@ -218,9 +271,10 @@ export const InteractionTest: Story = {
 
 ### Storybook Configuration
 - **Port**: 6006
-- **Addons**: Docs, A11y (todo level), Vitest, Themes
+- **Addons**: Docs, A11y (todo level), Vitest, Themes, React Router (storybook-addon-remix-react-router)
 - **Theme Support**: Light/dark mode via `addon-themes`
 - **Story Sort**: foundation → design → ui → templates → alphabetical
+- **Path Aliases**: Configured via `vite-tsconfig-paths` plugin to resolve `@/*` imports
 
 ## Code Style Guidelines
 
@@ -232,7 +286,7 @@ export const InteractionTest: Story = {
 ### Imports
 ```typescript
 // Framework imports
-import type { Meta, StoryObj } from "@storybook/nextjs-vite";
+import type { Meta, StoryObj } from "@storybook/react-vite";
 
 // ALWAYS use @ imports for components
 import { Button } from "@/components/ui/button";
@@ -240,8 +294,8 @@ import { Button } from "@/components/ui/button";
 // Icons (standard library)
 import { ChevronRight, Loader2 } from "lucide-react";
 
-// Next.js specific
-import Link from "next/link";
+// Router (for navigation components)
+import { Link } from "react-router-dom";
 ```
 
 ### Common Patterns
@@ -503,7 +557,7 @@ Storybook registry 프로젝트 진행 상황을 추적하기 위한 작업 목�
 
 1. **절대로 추측하거나 가정하지 마세요**
 2. **웹 검색을 광범위하게 사용하여 정확한 정보를 수집합니다**
-3. **모범 사례와 현재 표준을 조사합니다** (Next.js, React, TypeScript, Storybook, shadcn/ui)
+3. **모범 사례와 현재 표준을 조사합니다** (React, TypeScript, Storybook, shadcn/ui, react-router-dom)
 4. **검증된 정보가 있을 때만 진행합니다**
 5. **조사 후에도 여전히 불확실한 경우, 사용자에게 명확한 설명을 요청합니다**
 
@@ -663,4 +717,4 @@ Storybook registry 프로젝트 진행 상황을 추적하기 위한 작업 목�
 ---
 
 **Last Updated**: 2025-01-15
-**Document Version**: 2.0
+**Document Version**: 2.1

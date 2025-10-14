@@ -1,7 +1,9 @@
-"use client"
+"use client";
 
-import { TrendingUp } from "lucide-react"
-import { Bar, BarChart, CartesianGrid, LabelList, XAxis } from "recharts"
+import React from "react";
+
+import { TrendingUp } from "lucide-react";
+import { Bar, BarChart, CartesianGrid, LabelList, XAxis } from "recharts";
 
 import {
   Card,
@@ -10,15 +12,15 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card"
+} from "@/components/ui/card";
 import {
   ChartConfig,
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
-} from "@/components/ui/chart"
+} from "@/components/ui/chart";
 
-export const description = "A bar chart with a label"
+export const description = "A bar chart with a label";
 
 const chartData = [
   { month: "January", desktop: 186 },
@@ -27,14 +29,14 @@ const chartData = [
   { month: "April", desktop: 73 },
   { month: "May", desktop: 209 },
   { month: "June", desktop: 214 },
-]
+];
 
 const chartConfig = {
   desktop: {
     label: "Desktop",
     color: "var(--chart-1)",
   },
-} satisfies ChartConfig
+} satisfies ChartConfig;
 
 export function ChartBarLabel() {
   return (
@@ -84,5 +86,5 @@ export function ChartBarLabel() {
         </div>
       </CardFooter>
     </Card>
-  )
+  );
 }

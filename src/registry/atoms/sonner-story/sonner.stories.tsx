@@ -1,6 +1,7 @@
 "use client";
 
-import type { Meta, StoryObj } from "@storybook/nextjs-vite";
+import React from "react";
+import type { Meta, StoryObj } from "@storybook/react-vite";
 import { toast } from "sonner";
 import { expect, userEvent, waitFor, within } from "storybook/test";
 

@@ -1,6 +1,6 @@
-import type { Meta, StoryObj } from "@storybook/nextjs-vite";
+import React from "react";
+import type { Meta, StoryObj } from "@storybook/react-vite";
 import { BadgeCheckIcon } from "lucide-react";
-import * as React from "react";
 import { expect, userEvent, within } from "storybook/test";
 
 import { Badge } from "@/components/ui/badge";

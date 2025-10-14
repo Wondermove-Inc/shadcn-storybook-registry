@@ -1,7 +1,8 @@
-import type { Meta, StoryObj } from "@storybook/nextjs-vite";
+import React from "react";
+import type { Meta, StoryObj } from "@storybook/react-vite";
 import { ChevronRight, Loader2, Mail } from "lucide-react";
-import Link from "next/link";
 import { useRef } from "react";
+import { Link } from "react-router-dom";
 
 import { Button } from "@/components/ui/button";
 import { expect, fn, userEvent, within } from "storybook/test";
@@ -143,7 +144,7 @@ export const Loading: Story = {
 export const AsChild: Story = {
   render: () => (
     <Button asChild>
-      <Link href="/login">Login</Link>
+      <Link to="/login">Login</Link>
     </Button>
   ),
 };
