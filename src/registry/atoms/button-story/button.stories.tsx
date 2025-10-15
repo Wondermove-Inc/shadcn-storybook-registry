@@ -1,16 +1,34 @@
 import React from "react";
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { ChevronRight, Loader2 } from "lucide-react";
+import { ArrowUpIcon, ChevronRight } from "lucide-react";
 import { IconGitBranch } from "@tabler/icons-react";
-import { useRef } from "react";
-import { Link } from "react-router-dom";
 import { withRouter } from "storybook-addon-remix-react-router";
 
 import { Button } from "@/components/ui/button";
-import { expect, fn, userEvent, within } from "storybook/test";
+import { Spinner } from "@/components/ui/spinner";
+import { fn } from "storybook/test";
 
 export function ButtonDemo() {
   return <Button>Button</Button>;
+}
+
+export function ButtonLoading() {
+  return (
+    <Button size="sm" variant="outline" disabled>
+      <Spinner />
+      Submit
+    </Button>
+  );
+}
+
+export function ButtonRounded() {
+  return (
+    <div className="flex flex-col gap-8">
+      <Button variant="outline" size="icon" className="rounded-full">
+        <ArrowUpIcon />
+      </Button>
+    </div>
+  );
 }
 
 /**
@@ -31,7 +49,7 @@ const meta = {
     disabled: false,
     onClick: fn(),
   },
-  excludeStories: /.*Demo$/,
+  excludeStories: /.*Demo$|.*Loading$|ButtonRounded$/,
 } satisfies Meta<typeof Button>;
 
 export default meta;
@@ -124,57 +142,17 @@ export const WithIcon: Story = {
 };
 
 /**
- * 로딩 상태를 표시하는 버튼입니다. disabled 상태와 함께 spinner 아이콘을 표시하여
+ * 로딩 상태를 표시하는 버튼입니다. disabled 상태와 함께 Spinner 컴포넌트를 사용하여
  * 비동기 작업이 진행 중임을 사용자에게 알립니다.
  */
-export const Loading: Story = {
-  render: () => (
-    <Button disabled>
-      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-      Please wait
-    </Button>
-  ),
+export const LoadingSpinner: Story = {
+  render: () => <ButtonLoading />,
 };
 
 /**
- * asChild prop을 사용하여 Button의 스타일을 다른 컴포넌트에 적용합니다.
- * Next.js Link나 React Router Link 등을 버튼처럼 스타일링할 때 유용합니다.
+ * 둥근 모양의 아이콘 버튼입니다. rounded-full 클래스를 사용하여
+ * 완전히 원형 모양의 버튼을 만들 수 있습니다.
  */
-export const AsChild: Story = {
-  render: () => (
-    <Button asChild>
-      <Link to="/login">Login</Link>
-    </Button>
-  ),
-};
-
-/**
- * Ref 사용 예제: Button에 ref를 전달하여 DOM 요소에 직접 접근합니다.
- * 이 예제는 ref를 통한 focus 제어를 보여줍니다.
- */
-export const WithRef: Story = {
-  render: () => {
-    // 🎯 목적: HTMLButtonElement에 대한 ref를 생성하여 focus() 메서드 접근
-    const buttonRef = useRef<HTMLButtonElement>(null);
-
-    return (
-      <div className="flex flex-col gap-4">
-        <Button ref={buttonRef}>Target Button</Button>
-        <Button variant="outline" onClick={() => buttonRef.current?.focus()}>
-          Focus Button Above
-        </Button>
-      </div>
-    );
-  },
-  play: async ({ canvasElement }) => {
-    // 🎯 목적: play function을 통해 ref 동작을 자동으로 테스트
-    const canvas = within(canvasElement);
-    const buttons = canvas.getAllByRole("button");
-
-    // "Focus Button Above" 버튼 클릭하여 첫 번째 버튼에 focus 트리거
-    await userEvent.click(buttons[1]);
-
-    // 첫 번째 버튼이 포커스를 받았는지 검증
-    await expect(buttons[0]).toHaveFocus();
-  },
+export const Rounded: Story = {
+  render: () => <ButtonRounded />,
 };

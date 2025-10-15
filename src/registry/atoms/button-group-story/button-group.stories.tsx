@@ -1,5 +1,111 @@
 import React from "react";
 import type { Meta, StoryObj } from "@storybook/react-vite";
+
+export function ButtonGroupOrientation() {
+  return (
+    <ButtonGroup
+      orientation="vertical"
+      aria-label="Media controls"
+      className="h-fit"
+    >
+      <Button variant="outline" size="icon">
+        <PlusIcon />
+      </Button>
+      <Button variant="outline" size="icon">
+        <MinusIcon />
+      </Button>
+    </ButtonGroup>
+  );
+}
+
+export function ButtonGroupSize() {
+  return (
+    <div className="flex flex-col items-start gap-8">
+      <ButtonGroup>
+        <Button variant="outline" size="sm">
+          Small
+        </Button>
+        <Button variant="outline" size="sm">
+          Button
+        </Button>
+        <Button variant="outline" size="sm">
+          Group
+        </Button>
+        <Button variant="outline" size="icon-sm">
+          <PlusIcon />
+        </Button>
+      </ButtonGroup>
+      <ButtonGroup>
+        <Button variant="outline">Default</Button>
+        <Button variant="outline">Button</Button>
+        <Button variant="outline">Group</Button>
+        <Button variant="outline" size="icon">
+          <PlusIcon />
+        </Button>
+      </ButtonGroup>
+      <ButtonGroup>
+        <Button variant="outline" size="lg">
+          Large
+        </Button>
+        <Button variant="outline" size="lg">
+          Button
+        </Button>
+        <Button variant="outline" size="lg">
+          Group
+        </Button>
+        <Button variant="outline" size="icon-lg">
+          <PlusIcon />
+        </Button>
+      </ButtonGroup>
+    </div>
+  );
+}
+
+export function ButtonGroupNested() {
+  return (
+    <ButtonGroup>
+      <ButtonGroup>
+        <Button variant="outline" size="sm">
+          1
+        </Button>
+        <Button variant="outline" size="sm">
+          2
+        </Button>
+        <Button variant="outline" size="sm">
+          3
+        </Button>
+        <Button variant="outline" size="sm">
+          4
+        </Button>
+        <Button variant="outline" size="sm">
+          5
+        </Button>
+      </ButtonGroup>
+      <ButtonGroup>
+        <Button variant="outline" size="icon-sm" aria-label="Previous">
+          <ArrowLeftIcon />
+        </Button>
+        <Button variant="outline" size="icon-sm" aria-label="Next">
+          <ArrowRightIcon />
+        </Button>
+      </ButtonGroup>
+    </ButtonGroup>
+  );
+}
+
+export function ButtonGroupSeparatorDemo() {
+  return (
+    <ButtonGroup>
+      <Button variant="secondary" size="sm">
+        Copy
+      </Button>
+      <ButtonGroupSeparator />
+      <Button variant="secondary" size="sm">
+        Paste
+      </Button>
+    </ButtonGroup>
+  );
+}
 import {
   ButtonGroup,
   ButtonGroupSeparator,
@@ -27,11 +133,11 @@ import {
 import {
   Archive,
   AlertTriangle,
+  ArrowLeftIcon,
+  ArrowRightIcon,
   Clock,
-  Plus,
-  Minus,
-  Copy,
-  Clipboard,
+  MinusIcon,
+  PlusIcon,
   Search,
   Mic,
   UserPlus,
@@ -57,6 +163,8 @@ const meta: Meta<typeof ButtonGroup> = {
       options: ["horizontal", "vertical"],
     },
   },
+  excludeStories:
+    /ButtonGroupOrientation$|ButtonGroupSize$|ButtonGroupNested$|ButtonGroupSeparatorDemo$/,
 } satisfies Meta<typeof ButtonGroup>;
 
 export default meta;
@@ -85,94 +193,35 @@ export const Default: Story = {
 };
 
 /**
- * 세로 방향 버튼 그룹 - Plus/Minus 아이콘 버튼
+ * 방향 설정 버튼 그룹 - vertical orientation을 사용한 Plus/Minus 아이콘 버튼
+ * aria-label과 className을 통해 접근성과 스타일링을 개선했습니다.
  */
-export const Vertical: Story = {
-  render: () => (
-    <ButtonGroup orientation="vertical">
-      <Button variant="outline" size="icon">
-        <Plus />
-      </Button>
-      <Button variant="outline" size="icon">
-        <Minus />
-      </Button>
-    </ButtonGroup>
-  ),
+export const Orientation: Story = {
+  render: () => <ButtonGroupOrientation />,
 };
 
 /**
- * 버튼 그룹 크기 - Small, Default, Large
+ * 버튼 그룹 크기 변형 - Small, Default, Large 크기별로 텍스트와 아이콘 버튼 조합
+ * 각 크기에 맞는 icon-sm, icon, icon-lg 사이즈를 사용합니다.
  */
 export const Sizes: Story = {
-  render: () => (
-    <div className="flex flex-col items-center gap-4">
-      <ButtonGroup>
-        <Button variant="outline" size="sm">
-          Small
-        </Button>
-        <Button variant="outline" size="sm">
-          Small
-        </Button>
-        <Button variant="outline" size="sm">
-          Small
-        </Button>
-      </ButtonGroup>
-      <ButtonGroup>
-        <Button variant="outline">Default</Button>
-        <Button variant="outline">Default</Button>
-        <Button variant="outline">Default</Button>
-      </ButtonGroup>
-      <ButtonGroup>
-        <Button variant="outline" size="lg">
-          Large
-        </Button>
-        <Button variant="outline" size="lg">
-          Large
-        </Button>
-        <Button variant="outline" size="lg">
-          Large
-        </Button>
-      </ButtonGroup>
-    </div>
-  ),
+  render: () => <ButtonGroupSize />,
 };
 
 /**
- * 중첩된 버튼 그룹 - 숫자 버튼과 네비게이션 버튼
+ * 중첩된 버튼 그룹 - 페이지네이션 스타일의 숫자 버튼(1-5)과 화살표 네비게이션 버튼
+ * 작은 크기(sm)를 사용하여 컴팩트한 디자인과 aria-label로 접근성을 개선했습니다.
  */
 export const Nested: Story = {
-  render: () => (
-    <ButtonGroup>
-      <ButtonGroup>
-        <Button variant="outline">1</Button>
-        <Button variant="outline">2</Button>
-        <Button variant="outline">3</Button>
-      </ButtonGroup>
-      <ButtonGroup>
-        <Button variant="outline">Previous</Button>
-        <Button variant="outline">Next</Button>
-      </ButtonGroup>
-    </ButtonGroup>
-  ),
+  render: () => <ButtonGroupNested />,
 };
 
 /**
  * 구분자가 있는 버튼 그룹 - Copy와 Paste 분리
+ * secondary variant와 sm 크기를 사용하여 깔끔한 디자인을 제공합니다.
  */
-export const WithSeparator: Story = {
-  render: () => (
-    <ButtonGroup>
-      <Button variant="outline">
-        <Copy />
-        Copy
-      </Button>
-      <ButtonGroupSeparator />
-      <Button variant="outline">
-        <Clipboard />
-        Paste
-      </Button>
-    </ButtonGroup>
-  ),
+export const Separator: Story = {
+  render: () => <ButtonGroupSeparatorDemo />,
 };
 
 /**
