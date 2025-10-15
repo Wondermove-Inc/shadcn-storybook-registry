@@ -106,6 +106,18 @@ export function ButtonGroupSeparatorDemo() {
     </ButtonGroup>
   );
 }
+
+export function ButtonGroupSplit() {
+  return (
+    <ButtonGroup>
+      <Button variant="secondary">Button</Button>
+      <ButtonGroupSeparator />
+      <Button size="icon" variant="secondary">
+        <IconPlus />
+      </Button>
+    </ButtonGroup>
+  );
+}
 import {
   ButtonGroup,
   ButtonGroupSeparator,
@@ -145,6 +157,7 @@ import {
   Send,
   MoreHorizontal,
 } from "lucide-react";
+import { IconPlus } from "@tabler/icons-react";
 
 /**
  * Button Group은 관련된 버튼들을 그룹화하여 하나의 단위로 표시하는 컴포넌트입니다.
@@ -164,7 +177,7 @@ const meta: Meta<typeof ButtonGroup> = {
     },
   },
   excludeStories:
-    /ButtonGroupOrientation$|ButtonGroupSize$|ButtonGroupNested$|ButtonGroupSeparatorDemo$/,
+    /ButtonGroupOrientation$|ButtonGroupSize$|ButtonGroupNested$|ButtonGroupSeparatorDemo$|ButtonGroupSplit$/,
 } satisfies Meta<typeof ButtonGroup>;
 
 export default meta;
@@ -225,17 +238,12 @@ export const Separator: Story = {
 };
 
 /**
- * 분할 버튼 - 메인 액션과 추가 액션
+ * 분할 버튼 - 메인 버튼과 추가 액션 아이콘
+ * ButtonGroupSeparator를 사용하여 버튼들을 시각적으로 분리하고
+ * secondary variant로 일관된 스타일을 제공합니다.
  */
-export const SplitButton: Story = {
-  render: () => (
-    <ButtonGroup>
-      <Button>Save</Button>
-      <Button variant="outline" size="icon">
-        <ChevronDown />
-      </Button>
-    </ButtonGroup>
-  ),
+export const Split: Story = {
+  render: () => <ButtonGroupSplit />,
 };
 
 /**
