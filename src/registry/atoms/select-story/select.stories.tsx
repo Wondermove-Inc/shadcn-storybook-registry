@@ -26,6 +26,7 @@ import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 import { toast } from "sonner";
 import { expect, fn, userEvent, within } from "storybook/test";
+import { withRouter } from "storybook-addon-remix-react-router";
 import { z } from "zod";
 
 export function SelectDemo() {
@@ -55,6 +56,7 @@ const meta = {
   title: "ui/Select",
   component: Select,
   tags: ["autodocs"],
+  decorators: [withRouter],
   parameters: {
     layout: "centered",
   },

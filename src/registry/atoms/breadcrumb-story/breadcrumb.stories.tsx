@@ -3,6 +3,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { ChevronDownIcon, SlashIcon } from "lucide-react";
 import { Link } from "react-router-dom";
 import { expect, userEvent, within } from "storybook/test";
+import { withRouter } from "storybook-addon-remix-react-router";
 
 import {
   Breadcrumb,
@@ -47,6 +48,7 @@ const meta = {
   title: "ui/Breadcrumb",
   component: Breadcrumb,
   tags: ["autodocs"],
+  decorators: [withRouter],
   parameters: {
     layout: "centered",
   },

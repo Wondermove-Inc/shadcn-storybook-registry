@@ -3,6 +3,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { ChevronRight, Loader2, Mail } from "lucide-react";
 import { useRef } from "react";
 import { Link } from "react-router-dom";
+import { withRouter } from "storybook-addon-remix-react-router";
 
 import { Button } from "@/components/ui/button";
 import { expect, fn, userEvent, within } from "storybook/test";
@@ -18,6 +19,7 @@ const meta = {
   title: "ui/Button",
   component: Button,
   tags: ["autodocs"],
+  decorators: [withRouter],
   parameters: {
     layout: "centered",
   },
