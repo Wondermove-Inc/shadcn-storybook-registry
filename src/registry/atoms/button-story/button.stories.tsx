@@ -1,6 +1,7 @@
 import React from "react";
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { ChevronRight, Loader2, Mail } from "lucide-react";
+import { ChevronRight, Loader2 } from "lucide-react";
+import { IconGitBranch } from "@tabler/icons-react";
 import { useRef } from "react";
 import { Link } from "react-router-dom";
 import { withRouter } from "storybook-addon-remix-react-router";
@@ -112,12 +113,12 @@ export const Icon: Story = {
 
 /**
  * 텍스트와 아이콘을 함께 표시하는 버튼입니다.
- * 아이콘을 텍스트 앞에 배치하여 버튼의 기능을 시각적으로 강조할 수 있습니다.
+ * 공식 문서 예제: @tabler/icons-react의 IconGitBranch를 사용합니다.
  */
 export const WithIcon: Story = {
   render: () => (
-    <Button>
-      <Mail className="mr-2 h-4 w-4" /> Login with Email
+    <Button variant="outline" size="sm">
+      <IconGitBranch /> New Branch
     </Button>
   ),
 };

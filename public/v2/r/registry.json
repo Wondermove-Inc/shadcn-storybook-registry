@@ -575,6 +575,63 @@
       ]
     },
     {
+      "name": "settings-notifications-template",
+      "type": "registry:component",
+      "title": "Settings Notifications Template",
+      "description": "A complete settings page template with notifications configuration using various shadcn/ui components",
+      "categories": [
+        "templates",
+        "storybook",
+        "settings",
+        "forms"
+      ],
+      "author": "Lloyd Richards <lloyd.d.richards@gmail.com>",
+      "registryDependencies": [
+        "button",
+        "checkbox",
+        "label",
+        "radio-group",
+        "separator",
+        "switch",
+        "card"
+      ],
+      "files": [
+        {
+          "path": "src/registry/templates/settings-notifications-template/settings-notifications-template.stories.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "field-story",
+      "type": "registry:component",
+      "title": "Field Story",
+      "description": "Interactive Storybook stories demonstrating field component usage and form composition",
+      "categories": [
+        "atoms",
+        "storybook",
+        "field",
+        "form"
+      ],
+      "author": "Lloyd Richards <lloyd.d.richards@gmail.com>",
+      "registryDependencies": [
+        "field",
+        "input",
+        "textarea",
+        "select",
+        "slider",
+        "checkbox",
+        "radio-group",
+        "switch"
+      ],
+      "files": [
+        {
+          "path": "src/registry/atoms/field-story/field.stories.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
       "name": "form-story",
       "type": "registry:component",
       "title": "Form Story",
@@ -649,6 +706,35 @@
       ]
     },
     {
+      "name": "input-group-story",
+      "type": "registry:component",
+      "title": "Input Group Story",
+      "description": "Interactive Storybook stories demonstrating input group component usage and variants",
+      "categories": [
+        "atoms",
+        "storybook",
+        "input",
+        "form"
+      ],
+      "author": "Lloyd Richards <lloyd.d.richards@gmail.com>",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "input-group",
+        "button",
+        "tooltip",
+        "dropdown-menu",
+        "separator"
+      ],
+      "files": [
+        {
+          "path": "src/registry/atoms/input-group-story/input-group.stories.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
       "name": "input-otp-story",
       "type": "registry:component",
       "title": "Input OTP Story",
@@ -675,6 +761,35 @@
       ]
     },
     {
+      "name": "item-story",
+      "type": "registry:component",
+      "title": "Item Story",
+      "description": "Interactive Storybook stories demonstrating item component usage and variants",
+      "categories": [
+        "atoms",
+        "storybook",
+        "item",
+        "layout"
+      ],
+      "author": "Lloyd Richards <lloyd.d.richards@gmail.com>",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "item",
+        "button",
+        "badge",
+        "avatar",
+        "separator"
+      ],
+      "files": [
+        {
+          "path": "src/registry/atoms/item-story/item.stories.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
       "name": "label-story",
       "type": "registry:component",
       "title": "Label Story",
@@ -692,6 +807,35 @@
       "files": [
         {
           "path": "src/registry/atoms/label-story/label.stories.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "kbd-story",
+      "type": "registry:component",
+      "title": "Kbd Story",
+      "description": "Interactive Storybook stories demonstrating keyboard key component usage and variants",
+      "categories": [
+        "atoms",
+        "storybook",
+        "kbd",
+        "keyboard"
+      ],
+      "author": "Lloyd Richards <lloyd.d.richards@gmail.com>",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "kbd",
+        "button",
+        "button-group",
+        "input-group",
+        "tooltip"
+      ],
+      "files": [
+        {
+          "path": "src/registry/atoms/kbd-story/kbd.stories.tsx",
           "type": "registry:component"
         }
       ]
@@ -1038,6 +1182,37 @@
       "files": [
         {
           "path": "src/registry/atoms/sonner-story/sonner.stories.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "spinner-story",
+      "type": "registry:component",
+      "title": "Spinner Story",
+      "description": "Interactive Storybook stories demonstrating spinner component usage and variants",
+      "categories": [
+        "atoms",
+        "storybook",
+        "spinner",
+        "loading"
+      ],
+      "author": "Lloyd Richards <lloyd.d.richards@gmail.com>",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "spinner",
+        "button",
+        "badge",
+        "input-group",
+        "empty",
+        "item",
+        "progress"
+      ],
+      "files": [
+        {
+          "path": "src/registry/atoms/spinner-story/spinner.stories.tsx",
           "type": "registry:component"
         }
       ]
