@@ -118,6 +118,17 @@ export function ButtonGroupSplit() {
     </ButtonGroup>
   );
 }
+
+export function ButtonGroupInput() {
+  return (
+    <ButtonGroup>
+      <Input placeholder="Search..." />
+      <Button variant="outline" aria-label="Search">
+        <SearchIcon />
+      </Button>
+    </ButtonGroup>
+  );
+}
 import {
   ButtonGroup,
   ButtonGroupSeparator,
@@ -150,7 +161,7 @@ import {
   Clock,
   MinusIcon,
   PlusIcon,
-  Search,
+  SearchIcon,
   Mic,
   UserPlus,
   ChevronDown,
@@ -177,7 +188,7 @@ const meta: Meta<typeof ButtonGroup> = {
     },
   },
   excludeStories:
-    /ButtonGroupOrientation$|ButtonGroupSize$|ButtonGroupNested$|ButtonGroupSeparatorDemo$|ButtonGroupSplit$/,
+    /ButtonGroupOrientation$|ButtonGroupSize$|ButtonGroupNested$|ButtonGroupSeparatorDemo$|ButtonGroupSplit$|ButtonGroupInput$/,
 } satisfies Meta<typeof ButtonGroup>;
 
 export default meta;
@@ -247,17 +258,12 @@ export const Split: Story = {
 };
 
 /**
- * 입력과 통합 - 검색 입력과 검색 버튼
+ * 입력과 통합 - 검색 입력 필드와 검색 버튼
+ * 검색 기능을 위한 Input과 Button의 조합으로, 깔끔한 통합 인터페이스를 제공합니다.
+ * aria-label을 통해 접근성을 개선했습니다.
  */
 export const WithInput: Story = {
-  render: () => (
-    <ButtonGroup>
-      <Input placeholder="Search..." className="rounded-r-none" />
-      <Button variant="outline">
-        <Search />
-      </Button>
-    </ButtonGroup>
-  ),
+  render: () => <ButtonGroupInput />,
 };
 
 /**
