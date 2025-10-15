@@ -192,6 +192,37 @@
       ]
     },
     {
+      "name": "button-group-story",
+      "type": "registry:component",
+      "title": "Button Group Story",
+      "description": "Interactive Storybook stories demonstrating button group component usage and variants",
+      "categories": [
+        "atoms",
+        "storybook",
+        "button",
+        "interaction",
+        "group"
+      ],
+      "author": "Lloyd Richards <lloyd.d.richards@gmail.com>",
+      "registryDependencies": [
+        "button-group",
+        "button",
+        "input",
+        "select",
+        "dropdown-menu",
+        "popover"
+      ],
+      "dependencies": [
+        "lucide-react"
+      ],
+      "files": [
+        {
+          "path": "src/registry/atoms/button-group-story/button-group.stories.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
       "name": "calendar-story",
       "type": "registry:component",
       "title": "Calendar Story",
@@ -511,6 +542,34 @@
       "files": [
         {
           "path": "src/registry/atoms/dropdown-menu-story/dropdown-menu.stories.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "empty-story",
+      "type": "registry:component",
+      "title": "Empty Story",
+      "description": "Interactive Storybook stories demonstrating empty state component usage and variants",
+      "categories": [
+        "atoms",
+        "storybook",
+        "empty",
+        "state"
+      ],
+      "author": "Lloyd Richards <lloyd.d.richards@gmail.com>",
+      "registryDependencies": [
+        "empty",
+        "button",
+        "input",
+        "avatar"
+      ],
+      "dependencies": [
+        "lucide-react"
+      ],
+      "files": [
+        {
+          "path": "src/registry/atoms/empty-story/empty.stories.tsx",
           "type": "registry:component"
         }
       ]
