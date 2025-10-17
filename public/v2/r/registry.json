@@ -2373,6 +2373,38 @@
           "type": "registry:component"
         }
       ]
+    },
+    {
+      "name": "base-structure-template",
+      "type": "registry:component",
+      "title": "Base Structure Template",
+      "description": "A comprehensive file explorer interface template with sidebar navigation, file tree, search functionality, and AI assistant panel",
+      "categories": [
+        "templates",
+        "storybook",
+        "layout",
+        "navigation",
+        "file-explorer"
+      ],
+      "author": "Lloyd Richards <lloyd.d.richards@gmail.com>",
+      "registryDependencies": [
+        "sidebar",
+        "input",
+        "button",
+        "card",
+        "badge",
+        "collapsible",
+        "separator"
+      ],
+      "dependencies": [
+        "lucide-react"
+      ],
+      "files": [
+        {
+          "path": "src/registry/templates/base-structure-template/base-structure-template.tsx",
+          "type": "registry:component"
+        }
+      ]
     }
   ]
 }
