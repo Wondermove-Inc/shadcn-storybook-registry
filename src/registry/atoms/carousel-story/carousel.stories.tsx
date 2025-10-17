@@ -43,7 +43,7 @@ const meta = {
   parameters: {
     layout: "centered",
   },
-  excludeStories: /.*Demo$/,
+  excludeStories: /.*Demo$|.*Size$|.*Spacing$/,
   render: () => <CarouselDemo />,
 } satisfies Meta<typeof Carousel>;
 
@@ -56,11 +56,8 @@ type Story = StoryObj<typeof meta>;
  */
 export const Default: Story = {};
 
-/**
- * Carousel with different sized items.
- */
-export const Sizes: Story = {
-  render: () => (
+export function CarouselSize() {
+  return (
     <Carousel
       opts={{
         align: "start",
@@ -83,18 +80,22 @@ export const Sizes: Story = {
       <CarouselPrevious />
       <CarouselNext />
     </Carousel>
-  ),
-};
+  );
+}
 
 /**
- * Carousel with custom spacing between items.
+ * Carousel with different sized items.
  */
-export const Spacing: Story = {
-  render: () => (
+export const Sizes: Story = {
+  render: () => <CarouselSize />,
+};
+
+export function CarouselSpacing() {
+  return (
     <Carousel className="w-full max-w-sm">
-      <CarouselContent className="-ml-2 md:-ml-4">
+      <CarouselContent className="-ml-1">
         {Array.from({ length: 5 }).map((_, index) => (
-          <CarouselItem key={index} className="pl-2 md:pl-4">
+          <CarouselItem key={index} className="pl-1 md:basis-1/2 lg:basis-1/3">
             <div className="p-1">
               <Card>
                 <CardContent className="flex aspect-square items-center justify-center p-6">
@@ -108,7 +109,14 @@ export const Spacing: Story = {
       <CarouselPrevious />
       <CarouselNext />
     </Carousel>
-  ),
+  );
+}
+
+/**
+ * Carousel with custom spacing between items.
+ */
+export const Spacing: Story = {
+  render: () => <CarouselSpacing />,
 };
 
 /**
