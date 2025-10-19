@@ -45,9 +45,26 @@ src/registry/
 
 ### ⚠️ 중요: 디자인 토큰 사용 원칙
 **모든 컴포넌트와 템플릿은 반드시 Storybook에 정의된 디자인 토큰을 사용해야 합니다.**
-- ❌ 임의의 값 사용 금지: `text-[28px]`, `h-[400px]`, `max-w-[1625px]` 등
-- ✅ 디자인 토큰 사용: `text-2xl`, `text-3xl`, `p-4`, `gap-6` 등
-- 일관성과 유지보수성을 위해 하드코딩된 값은 피하고 표준 토큰을 활용하세요.
+
+#### 🚫 하드코딩 금지 사항
+- ❌ **임의의 크기 값**: `text-[28px]`, `h-[400px]`, `w-[1220px]`, `max-w-[1625px]` 등
+- ❌ **임의의 색상 값**: `bg-[#0A0A0A]`, `text-[#FAFAFA]`, `border-[#262626]` 등
+- ❌ **임의의 간격 값**: `gap-[10px]`, `px-[4.8px]`, `py-[3.2px]` 등
+- ❌ **CSS calc() 함수**: `width: calc(100vw - 700px)` 등
+- ❌ **인라인 스타일**: `style={{ width: '1220px' }}` 등
+
+#### ✅ 올바른 사용법
+- ✅ **표준 크기 토큰**: `text-sm`, `text-base`, `text-lg`, `text-xl`, `text-2xl`, `text-3xl` 등
+- ✅ **테마 색상 토큰**: `bg-background`, `bg-foreground`, `bg-muted`, `text-primary` 등
+- ✅ **간격 토큰**: `p-1`, `p-2`, `p-4`, `p-6`, `gap-2`, `gap-4`, `gap-6` 등
+- ✅ **Flexbox 유틸리티**: `flex-1`, `min-w-0`, `w-full`, `h-full` 등
+- ✅ **shadcn/ui 컴포넌트**: 기존 컴포넌트 재사용 및 조합
+
+#### 🎯 일관성 유지 원칙
+- **shadcn/ui 컴포넌트**: 새로운 컴포넌트보다는 기존 컴포넌트 조합 우선
+- **디자인 토큰**: 사용자 정의 값 대신 표준화된 토큰 사용
+- **테마 지원**: light/dark 테마에서 모두 작동하는 색상 토큰 사용
+- **반응형 디자인**: 하드코딩된 크기 대신 Tailwind responsive 유틸리티 사용
 
 ### Typography 토큰
 - **Font Size**: `text-xs` (12px), `text-sm` (14px), `text-base` (16px), `text-lg` (18px), `text-xl` (20px), `text-2xl` (24px), `text-3xl` (30px), `text-4xl` (36px), `text-5xl` (48px), `text-6xl` (60px)

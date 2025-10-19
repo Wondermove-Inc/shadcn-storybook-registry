@@ -2375,26 +2375,102 @@
       ]
     },
     {
+      "name": "ai-assistant",
+      "type": "registry:component",
+      "title": "AI Assistant Template",
+      "description": "AI Assistant setup panel template with provider selection, API key input, and dark theme optimization",
+      "categories": [
+        "templates",
+        "storybook",
+        "ai",
+        "assistant",
+        "settings"
+      ],
+      "author": "Lloyd Richards <lloyd.d.richards@gmail.com>",
+      "registryDependencies": [
+        "button",
+        "input",
+        "label",
+        "select"
+      ],
+      "dependencies": [
+        "lucide-react"
+      ],
+      "files": [
+        {
+          "path": "src/registry/templates/ai-assistant/ai-assistant.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "header-template",
+      "type": "registry:component",
+      "title": "Header Template",
+      "description": "Modular header component with search functionality and button groups using shadcn/ui components",
+      "categories": [
+        "templates",
+        "storybook",
+        "layout",
+        "header",
+        "navigation"
+      ],
+      "author": "Lloyd Richards <lloyd.d.richards@gmail.com>",
+      "registryDependencies": [
+        "input-group",
+        "button",
+        "sidebar"
+      ],
+      "dependencies": [
+        "lucide-react"
+      ],
+      "files": [
+        {
+          "path": "src/registry/templates/header/header.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "sidebar-template",
+      "type": "registry:component",
+      "title": "Sidebar Template",
+      "description": "Clean sidebar layout template using shadcn/ui sidebar components with customizable content area",
+      "categories": [
+        "templates",
+        "storybook",
+        "layout",
+        "sidebar",
+        "navigation"
+      ],
+      "author": "Lloyd Richards <lloyd.d.richards@gmail.com>",
+      "registryDependencies": [
+        "sidebar"
+      ],
+      "dependencies": [],
+      "files": [
+        {
+          "path": "src/registry/templates/sidebar/sidebar.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
       "name": "base-structure-template",
       "type": "registry:component",
       "title": "Base Structure Template",
-      "description": "A comprehensive file explorer interface template with sidebar navigation, file tree, search functionality, and AI assistant panel",
+      "description": "Modular base structure template combining header and sidebar templates for complete layout solutions",
       "categories": [
         "templates",
         "storybook",
         "layout",
         "navigation",
-        "file-explorer"
+        "modular"
       ],
       "author": "Lloyd Richards <lloyd.d.richards@gmail.com>",
       "registryDependencies": [
-        "sidebar",
-        "input",
-        "button",
-        "card",
-        "badge",
-        "collapsible",
-        "separator"
+        "header-template",
+        "sidebar-template"
       ],
       "dependencies": [
         "lucide-react"
