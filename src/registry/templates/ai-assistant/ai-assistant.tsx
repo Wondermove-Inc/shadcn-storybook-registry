@@ -48,7 +48,7 @@ export function AIAssistant({ onClose, onStart, className }: AIAssistantProps) {
 
   return (
     <aside
-      className={`border-border bg-background flex h-auto w-full shrink-0 flex-col gap-9 border-l p-6 ${className || ""} `.trim()}
+      className={`border-border bg-background flex h-auto  shrink-0 flex-col gap-9 border-l p-6 ${className || ""} `.trim()}
     >
       {/* 🎯 목적: 헤더 섹션 */}
       <div className="relative flex flex-col gap-2">
