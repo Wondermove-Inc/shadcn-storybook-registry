@@ -2459,7 +2459,7 @@
       "name": "base-structure-template",
       "type": "registry:component",
       "title": "Base Structure Template",
-      "description": "Modular base structure template combining header and sidebar templates for complete layout solutions",
+      "description": "Modular base structure template combining header, sidebar, and AI assistant templates for complete 3-column layout solutions",
       "categories": [
         "templates",
         "storybook",
@@ -2470,7 +2470,8 @@
       "author": "Lloyd Richards <lloyd.d.richards@gmail.com>",
       "registryDependencies": [
         "header-template",
-        "sidebar-template"
+        "ai-assistant",
+        "sidebar"
       ],
       "dependencies": [
         "lucide-react"

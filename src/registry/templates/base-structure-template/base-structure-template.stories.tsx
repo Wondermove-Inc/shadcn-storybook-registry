@@ -5,12 +5,14 @@ import { BaseStructureTemplate } from "./base-structure-template";
 /**
  * 모듈화된 베이스 구조 템플릿을 보여주는 Storybook 스토리입니다.
  *
- * 🎯 목적: Header와 Sidebar 템플릿을 조합한 완전한 레이아웃 데모
+ * 🎯 목적: Header, Sidebar, AI Assistant 템플릿을 조합한 완전한 3열 레이아웃 데모
  *
  * 특징:
- * - Header 템플릿의 검색 기능과 버튼 그룹
+ * - Header 템플릿의 검색 기능과 버튼 그룹 (AI Assistant 토글 버튼 포함)
  * - Sidebar 템플릿의 파일 트리와 네비게이션
+ * - AI Assistant 템플릿의 설정 패널과 인터랙션
  * - 커스터마이징 가능한 메인 콘텐츠 영역
+ * - UIDL 명세서에 따른 3열 레이아웃 구조
  */
 const meta = {
   title: "templates/BaseStructure",
@@ -20,7 +22,7 @@ const meta = {
     layout: "fullscreen",
     docs: {
       description: {
-        component: `Header와 Sidebar 템플릿을 조합한 모듈화된 베이스 구조 템플릿입니다. 각 템플릿은 독립적으로 사용할 수도 있고, 조합하여 완전한 레이아웃을 구성할 수도 있습니다.`,
+        component: `Header, Sidebar, AI Assistant 템플릿을 조합한 모듈화된 베이스 구조 템플릿입니다. 3열 레이아웃 구조로 구성되며, 각 템플릿은 독립적으로 사용할 수도 있고 조합하여 완전한 레이아웃을 구성할 수도 있습니다.`,
       },
     },
   },
