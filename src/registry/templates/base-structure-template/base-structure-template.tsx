@@ -3,6 +3,7 @@
 import React from "react";
 import { Header } from "@/registry/templates/header/header";
 import { AppSidebar } from "@/components/app-sidebar";
+import { SidebarProvider } from "@/components/ui/sidebar";
 import { AIAssistant } from "@/registry/templates/ai-assistant/ai-assistant";
 
 /**
@@ -77,8 +78,8 @@ export function BaseStructureTemplate({
         onAiAssistantToggle={handleAIAssistantToggle}
       />
 
-      {/* 🎯 목적: 3열 레이아웃 - Sidebar + Contents + AI Assistant */}
-      <div className="flex flex-1">
+      {/* 🎯 목적: SidebarProvider로 감싸진 3열 레이아웃 */}
+      <SidebarProvider className="flex flex-1">
         {/* 🎯 목적: 왼쪽 사이드바 영역 - 조건부 렌더링 */}
         {isSidebarVisible && <AppSidebar className="border-r" />}
 
@@ -115,7 +116,7 @@ export function BaseStructureTemplate({
             className="w-[400px] shrink-0"
           />
         )}
-      </div>
+      </SidebarProvider>
     </div>
   );
 }
