@@ -2404,6 +2404,37 @@
           "type": "registry:component"
         }
       ]
+    },
+    {
+      "name": "welcome-story",
+      "type": "registry:component",
+      "title": "Welcome Story",
+      "description": "Interactive Storybook stories for Kubernetes IDE welcome page content with tab navigation, brand header, action cards, and help section",
+      "categories": [
+        "templates",
+        "storybook",
+        "welcome",
+        "contents"
+      ],
+      "author": "Lloyd Richards <lloyd.d.richards@gmail.com>",
+      "registryDependencies": [
+        "button",
+        "card",
+        "separator"
+      ],
+      "dependencies": [
+        "lucide-react"
+      ],
+      "files": [
+        {
+          "path": "src/registry/templates/contents/welcome.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "src/registry/templates/contents/welcome.stories.tsx",
+          "type": "registry:component"
+        }
+      ]
     }
   ]
 }
