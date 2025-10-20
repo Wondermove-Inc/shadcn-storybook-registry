@@ -56,7 +56,7 @@ export const Default: Story = {};
  */
 export const HeaderOnly: Story = {
   render: () => (
-    <div className="h-screen w-full">
+    <div className="bg-background h-screen w-full">
       <Header
         searchQuery=""
         onSearchChange={() => {}}
