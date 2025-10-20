@@ -336,15 +336,15 @@ html.theme-violet-dark {
  */
 @layer utilities {
   .border-input {
-    border-color: var(--color-border) !important;
+    border-color: var(--color-border);
   }
   
   .bg-input {
-    background-color: var(--color-input) !important;
+    background-color: var(--color-input);
   }
   
   .bg-input\/80 {
-    background-color: oklch(from var(--color-input) l c h / 0.8) !important;
+    background-color: oklch(from var(--color-input) l c h / 0.8);
   }
 }
 

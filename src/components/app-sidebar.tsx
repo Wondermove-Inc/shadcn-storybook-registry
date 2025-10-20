@@ -141,11 +141,11 @@ function Tree({ item, onFileSelect }: TreeProps) {
         <Collapsible
           open={isOpen}
           onOpenChange={setIsOpen}
-          className="group/collapsible"
+          className="group/collapsible [&[data-state=open]>button>svg:first-child]:rotate-90"
         >
           <CollapsibleTrigger asChild>
             <SidebarMenuButton>
-              <ChevronRight className="transition-transform group-data-[state=open]/collapsible:rotate-90" />
+              <ChevronRight className="transition-transform" />
               {isOpen ? (
                 <FolderOpen className="h-4 w-4" />
               ) : (
