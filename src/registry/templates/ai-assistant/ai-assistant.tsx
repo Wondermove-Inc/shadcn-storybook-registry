@@ -48,7 +48,7 @@ export function AIAssistant({ onClose, onStart, className }: AIAssistantProps) {
 
   return (
     <aside
-      className={`border-border bg-background flex h-auto  shrink-0 flex-col gap-9 border-l p-6 ${className || ""} `.trim()}
+      className={`border-border bg-sidebar flex h-auto shrink-0 flex-col gap-9 border-l p-6 ${className || ""} `.trim()}
     >
       {/* 🎯 목적: 헤더 섹션 */}
       <div className="relative flex flex-col gap-2">
@@ -83,7 +83,7 @@ export function AIAssistant({ onClose, onStart, className }: AIAssistantProps) {
             AI Provider
           </Label>
           <Select value={provider} onValueChange={setProvider}>
-            <SelectTrigger className="border-input bg-input text-muted-foreground w-full">
+            <SelectTrigger className="text-muted-foreground w-full">
               <SelectValue placeholder="Select AI Provider" />
             </SelectTrigger>
             <SelectContent>
@@ -102,7 +102,7 @@ export function AIAssistant({ onClose, onStart, className }: AIAssistantProps) {
             placeholder="Please enter the API key"
             value={apiKey}
             onChange={(e) => setApiKey(e.target.value)}
-            className="text-muted-foreground placeholder:text-muted-foreground border-white/15 bg-white/[0.045]"
+            className="text-muted-foreground placeholder:text-muted-foreground"
           />
         </div>
 

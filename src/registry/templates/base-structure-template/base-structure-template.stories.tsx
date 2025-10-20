@@ -1,6 +1,9 @@
 import React from "react";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { BaseStructureTemplate } from "./base-structure-template";
+import { Header } from "@/registry/templates/header/header";
+import { SidebarTemplate } from "@/registry/templates/sidebar/sidebar";
+import { AIAssistant } from "@/registry/templates/ai-assistant/ai-assistant";
 
 /**
  * 모듈화된 베이스 구조 템플릿을 보여주는 Storybook 스토리입니다.
@@ -28,7 +31,7 @@ const meta = {
   },
   decorators: [
     (Story) => (
-      <div >
+      <div>
         <Story />
       </div>
     ),
@@ -47,44 +50,74 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {};
 
 /**
- * 커스텀 콘텐츠가 포함된 베이스 구조 템플릿입니다.
+ * Header 템플릿만 독립적으로 표시하는 스토리입니다.
  *
- * 🎯 목적: children prop을 통한 콘텐츠 커스터마이징 예시
+ * 🎯 목적: Header 컴포넌트의 독립적인 사용법 데모
  */
-export const WithCustomContent: Story = {
+export const HeaderOnly: Story = {
   render: () => (
-    <BaseStructureTemplate>
-      <main className="flex flex-1 flex-col gap-4 p-4 lg:gap-6 lg:p-6">
-        <div className="flex items-center justify-between">
-          <h1 className="text-lg font-semibold">커스텀 콘텐츠 영역</h1>
+    <div className="h-screen w-full">
+      <Header
+        searchQuery=""
+        onSearchChange={() => {}}
+        onPanelLeftToggle={() => {}}
+        onAiAssistantToggle={() => {}}
+      />
+      <div className="flex h-full items-center justify-center p-8">
+        <div className="text-center">
+          <h2 className="mb-2 text-lg font-semibold">Header 템플릿</h2>
+          <p className="text-muted-foreground text-sm">
+            Header 컴포넌트만 독립적으로 사용하는 예시입니다.
+          </p>
         </div>
-        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-          <div className="rounded-lg border p-4">
-            <h3 className="mb-2 text-sm font-semibold">카드 1</h3>
-            <p className="text-muted-foreground text-xs">
-              이곳에 실제 애플리케이션 콘텐츠를 배치할 수 있습니다.
-            </p>
-          </div>
-          <div className="rounded-lg border p-4">
-            <h3 className="mb-2 text-sm font-semibold">카드 2</h3>
-            <p className="text-muted-foreground text-xs">
-              Header와 Sidebar는 독립적으로 동작합니다.
-            </p>
-          </div>
-          <div className="rounded-lg border p-4">
-            <h3 className="mb-2 text-sm font-semibold">카드 3</h3>
-            <p className="text-muted-foreground text-xs">
-              모든 shadcn/ui 컴포넌트와 호환됩니다.
-            </p>
-          </div>
-          <div className="rounded-lg border p-4">
-            <h3 className="mb-2 text-sm font-semibold">카드 4</h3>
-            <p className="text-muted-foreground text-xs">
-              반응형 디자인을 지원합니다.
+      </div>
+    </div>
+  ),
+};
+
+/**
+ * Sidebar 템플릿만 독립적으로 표시하는 스토리입니다.
+ *
+ * 🎯 목적: Sidebar 컴포넌트의 독립적인 사용법 데모
+ */
+export const SidebarOnly: Story = {
+  render: () => (
+    <div className="h-screen w-full">
+      <SidebarTemplate>
+        <div className="flex h-full items-center justify-center p-8">
+          <div className="text-center">
+            <h2 className="mb-2 text-lg font-semibold">Sidebar 템플릿</h2>
+            <p className="text-muted-foreground text-sm">
+              Sidebar 컴포넌트만 독립적으로 사용하는 예시입니다.
             </p>
           </div>
         </div>
-      </main>
-    </BaseStructureTemplate>
+      </SidebarTemplate>
+    </div>
+  ),
+};
+
+/**
+ * AI Assistant 템플릿만 독립적으로 표시하는 스토리입니다.
+ *
+ * 🎯 목적: AI Assistant 컴포넌트의 독립적인 사용법 데모
+ */
+export const AIAssistantOnly: Story = {
+  render: () => (
+    <div className="bg-background flex h-screen w-full">
+      <div className="flex flex-1 items-center justify-center p-8">
+        <div className="text-center">
+          <h2 className="mb-2 text-lg font-semibold">AI Assistant 템플릿</h2>
+          <p className="text-muted-foreground text-sm">
+            AI Assistant 컴포넌트만 독립적으로 사용하는 예시입니다.
+          </p>
+        </div>
+      </div>
+      <AIAssistant
+        onClose={() => {}}
+        onStart={() => {}}
+        className="w-[400px] shrink-0"
+      />
+    </div>
   ),
 };

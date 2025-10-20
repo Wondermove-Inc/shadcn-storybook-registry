@@ -94,15 +94,6 @@ export function BaseStructureTemplate({
                 <p className="text-muted-foreground text-sm">
                   이 영역은 children prop으로 커스터마이징할 수 있습니다.
                 </p>
-                <p className="text-muted-foreground text-xs">
-                  검색 쿼리: "{searchQuery}"
-                </p>
-                <p className="text-muted-foreground text-xs">
-                  사이드바: {isSidebarVisible ? "표시됨" : "숨김"}
-                </p>
-                <p className="text-muted-foreground text-xs">
-                  AI Assistant: {isAIAssistantVisible ? "표시됨" : "숨김"}
-                </p>
               </div>
             </div>
           )}

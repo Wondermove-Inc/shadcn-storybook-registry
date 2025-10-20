@@ -32,7 +32,7 @@ function SearchInputGroup({
   onSearchChange?: (value: string) => void;
 }) {
   return (
-    <InputGroup className="border-input bg-input w-[373px] shrink-0 shadow-sm">
+    <InputGroup className="w-[373px] shrink-0">
       <InputGroupAddon align="inline-start">
         <Search className="h-4 w-4" />
       </InputGroupAddon>
@@ -220,7 +220,7 @@ export function Header({
   onSettingsClick,
 }: HeaderProps) {
   return (
-    <header className="border-border bg-background flex h-auto w-full shrink-0 items-center justify-between gap-[10px] border-b p-2">
+    <header className="border-border bg-sidebar flex h-auto w-full shrink-0 items-center justify-between gap-[10px] border-b p-2">
       {/* 왼쪽 여백 */}
       <div className="flex items-center"></div>
 
