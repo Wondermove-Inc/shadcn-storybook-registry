@@ -330,6 +330,24 @@ html.theme-violet-dark {
   }
 }
 
+/* 🎯 목적: border-input과 bg-input 클래스 강제 정의
+ * 📝 이유: Tailwind v4에서 이 클래스들이 자동 생성되지 않는 문제 해결
+ * 🔧 해결책: utilities 레이어에서 직접 정의하여 강제 적용
+ */
+@layer utilities {
+  .border-input {
+    border-color: var(--color-border) !important;
+  }
+  
+  .bg-input {
+    background-color: var(--color-input) !important;
+  }
+  
+  .bg-input\/80 {
+    background-color: oklch(from var(--color-input) l c h / 0.8) !important;
+  }
+}
+
 /* 🎯 목적: Tailwind v4 동적 테마 시스템 - 모든 색상 변수를 동적 참조로 정의
  * 📝 주의: @theme inline은 CSS 변수 참조를 허용하여 html.theme-* 클래스로 값 변경 가능
  * 🔄 동작 원리: --color-primary: var(--primary) → html.theme-red-dark에서 --primary 오버라이드
