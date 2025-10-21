@@ -7,7 +7,7 @@ import { DashboardTemplate } from "./dashboard-template";
  * Based on the Figma design from shadcn UI Kit.
  */
 const meta = {
-  title: "templates/Dashboard",
+  title: "templates/Test/Dashboard",
   component: DashboardTemplate,
   tags: ["autodocs"],
   parameters: {

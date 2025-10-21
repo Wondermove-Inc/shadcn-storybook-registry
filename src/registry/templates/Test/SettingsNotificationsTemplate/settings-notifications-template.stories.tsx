@@ -15,7 +15,7 @@ import { Card, CardContent } from "@/components/ui/card";
  * 사이드바 네비게이션, 라디오 그룹, 스위치, 체크박스 등을 포함합니다.
  */
 const meta: Meta = {
-  title: "templates/SettingsNotificationsTemplate",
+  title: "templates/Test/SettingsNotificationsTemplate",
   parameters: {
     layout: "fullscreen",
   },

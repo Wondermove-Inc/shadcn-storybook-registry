@@ -597,7 +597,7 @@
       ],
       "files": [
         {
-          "path": "src/registry/templates/settings-notifications-template/settings-notifications-template.stories.tsx",
+          "path": "src/registry/templates/Test/SettingsNotificationsTemplate/settings-notifications-template.stories.tsx",
           "type": "registry:component"
         }
       ]
@@ -1570,11 +1570,11 @@
       ],
       "files": [
         {
-          "path": "src/registry/templates/dashboard-template/dashboard-template.tsx",
+          "path": "src/registry/templates/Test/Dashboard/dashboard-template.tsx",
           "type": "registry:component"
         },
         {
-          "path": "src/registry/templates/dashboard-template/dashboard-template.stories.tsx",
+          "path": "src/registry/templates/Test/Dashboard/dashboard-template.stories.tsx",
           "type": "registry:component"
         }
       ]
