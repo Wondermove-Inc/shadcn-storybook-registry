@@ -8,6 +8,7 @@ import {
   Folder,
   FolderOpen,
   GalleryVerticalEnd,
+  Plus,
 } from "lucide-react";
 
 import {
@@ -19,6 +20,7 @@ import {
   Sidebar,
   SidebarContent,
   SidebarGroup,
+  SidebarGroupAction,
   SidebarGroupContent,
   SidebarGroupLabel,
   SidebarHeader,
@@ -40,90 +42,81 @@ interface FileTreeItem {
   extension?: string;
 }
 
-// 🎯 목적: JSON 명세서에 따른 파일 트리 데이터 - 프로젝트 문서화 구조
+// 🎯 목적: JSON 명세서에 따른 Changes 섹션 메뉴 아이템들
 const changedFiles: FileTreeItem[] = [
-  { id: "readme", name: "README.md", type: "file", extension: "md" },
-  {
-    id: "api-hello-route",
-    name: "api/hello/route.ts",
-    type: "file",
-    extension: "ts",
-  },
-  { id: "app-layout", name: "app/layout.tsx", type: "file", extension: "tsx" },
+  { id: "overview", name: "Overview", type: "file", extension: "" },
+  { id: "settings", name: "Settings", type: "file", extension: "" },
+  { id: "logs", name: "Logs", type: "file", extension: "" },
 ];
 
 const projectFiles: FileTreeItem[] = [
   {
-    id: "app",
-    name: "app",
+    id: "cluster-1",
+    name: "Cluster-1",
     type: "folder",
     children: [
       {
-        id: "api",
-        name: "api",
+        id: "workloads",
+        name: "Workloads",
         type: "folder",
         children: [
           {
-            id: "hello",
-            name: "hello",
+            id: "config",
+            name: "Config",
             type: "folder",
             children: [
               { id: "route", name: "route.ts", type: "file", extension: "ts" },
             ],
           },
+          { id: "page", name: "page.tsx", type: "file", extension: "tsx" },
+          { id: "layout", name: "layout.tsx", type: "file", extension: "tsx" },
+          { id: "network", name: "Network", type: "folder", children: [] },
         ],
       },
-      { id: "favicon", name: "favicon.ico", type: "file", extension: "ico" },
-      { id: "globals", name: "globals.css", type: "file", extension: "css" },
-      { id: "layout", name: "layout.tsx", type: "file", extension: "tsx" },
-      { id: "page", name: "page.tsx", type: "file", extension: "tsx" },
     ],
   },
   {
-    id: "components",
-    name: "components",
+    id: "cluster-2",
+    name: "Cluster-2",
     type: "folder",
     children: [
       {
-        id: "ui",
-        name: "ui",
+        id: "storage",
+        name: "Storage",
         type: "folder",
         children: [
-          { id: "button", name: "button.tsx", type: "file", extension: "tsx" },
-          { id: "card", name: "card.ts", type: "file", extension: "ts" },
+          {
+            id: "pvc",
+            name: "Persistent Volume Claims",
+            type: "file",
+            extension: "",
+          },
+          { id: "pv", name: "Persistent Volumes", type: "file", extension: "" },
         ],
       },
+      { id: "header", name: "header.tsx", type: "file", extension: "tsx" },
+      { id: "footer", name: "footer.tsx", type: "file", extension: "tsx" },
     ],
   },
   {
-    id: "lib",
-    name: "lib",
+    id: "cluster-3",
+    name: "Cluster-3",
     type: "folder",
-    children: [
-      { id: "utils", name: "utils.ts", type: "file", extension: "ts" },
-    ],
+    children: [],
   },
   {
-    id: "public",
-    name: "public",
+    id: "cluster-4",
+    name: "Cluster-4",
     type: "folder",
     children: [
-      { id: "next", name: "next.svg", type: "file", extension: "svg" },
+      { id: "favicon", name: "favicon.ico", type: "file", extension: "ico" },
       { id: "vercel", name: "vercel.svg", type: "file", extension: "svg" },
     ],
   },
-  { id: "gitignore", name: ".gitignore", type: "file", extension: "" },
-  { id: "eslintrc", name: ".eslintrc.json", type: "file", extension: "json" },
-  { id: "nextconfig", name: "next.config.js", type: "file", extension: "js" },
-  { id: "package", name: "package.json", type: "file", extension: "json" },
-  { id: "readme", name: "README.md", type: "file", extension: "md" },
-  {
-    id: "tailwindconfig",
-    name: "tailwind.config.js",
-    type: "file",
-    extension: "js",
-  },
-  { id: "tsconfig", name: "tsconfig.json", type: "file", extension: "json" },
+  { id: "file-1", name: "file-1", type: "file", extension: "" },
+  { id: "file-2", name: "file-2", type: "file", extension: "" },
+  { id: "file-3", name: "file-3", type: "file", extension: "" },
+  { id: "file-4", name: "file-4", type: "file", extension: "" },
 ];
 
 // 🎯 목적: 재귀적 파일 트리 렌더링 컴포넌트
@@ -194,16 +187,20 @@ export function AppSidebar({ onFileSelect, ...props }: AppSidebarProps) {
 
   return (
     <Sidebar {...props}>
-      <SidebarHeader className="p-4">
-        <SidebarMenu>
+      <SidebarHeader>
+        <SidebarMenu className="p-2">
           <SidebarMenuItem>
-            <SidebarMenuButton className="gap-2">
-              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-blue-600 p-2.5">
+            <SidebarMenuButton className="gap-2 p-2">
+              <div className="flex h-8 w-8 items-center justify-center gap-2 rounded-lg bg-blue-600 p-2.5">
                 <GalleryVerticalEnd className="h-4 w-4 text-white" />
               </div>
               <div className="flex flex-1 flex-col items-start gap-0.5">
-                <span className="text-sm font-semibold">Documentation</span>
-                <span className="text-muted-foreground text-xs">v1.0.1</span>
+                <span className="text-sm leading-none font-semibold">
+                  Catalog
+                </span>
+                <span className="text-muted-foreground text-xs leading-none">
+                  app
+                </span>
               </div>
               <ChevronsUpDown className="h-4 w-4" />
             </SidebarMenuButton>
@@ -212,7 +209,7 @@ export function AppSidebar({ onFileSelect, ...props }: AppSidebarProps) {
       </SidebarHeader>
       <SidebarContent>
         <SidebarGroup>
-          <SidebarGroupLabel>Changes</SidebarGroupLabel>
+          <SidebarGroupLabel>Application</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
               {changedFiles.map((item) => (
@@ -227,7 +224,10 @@ export function AppSidebar({ onFileSelect, ...props }: AppSidebarProps) {
           </SidebarGroupContent>
         </SidebarGroup>
         <SidebarGroup>
-          <SidebarGroupLabel>Files</SidebarGroupLabel>
+          <SidebarGroupLabel>Your Clusters</SidebarGroupLabel>
+          <SidebarGroupAction>
+            <Plus /> <span className="sr-only">Add Cluster</span>
+          </SidebarGroupAction>
           <SidebarGroupContent>
             <SidebarMenu>
               {projectFiles.map((item) => (
