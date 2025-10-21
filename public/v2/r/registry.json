@@ -2200,6 +2200,120 @@
       ]
     },
     {
+      "name": "radial-chart-story",
+      "type": "registry:component",
+      "title": "Radial Chart Story",
+      "description": "Interactive Storybook stories demonstrating radial chart component usage with various configurations including simple, label, grid, text, shape, and stacked variants",
+      "categories": [
+        "atoms",
+        "storybook",
+        "chart",
+        "radial",
+        "data-visualization"
+      ],
+      "author": "Lloyd Richards <lloyd.d.richards@gmail.com>",
+      "registryDependencies": [
+        "chart"
+      ],
+      "dependencies": [
+        "recharts",
+        "lucide-react"
+      ],
+      "files": [
+        {
+          "path": "src/registry/atoms/radial-chart-story/radial-charts.stories.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "src/registry/atoms/radial-chart-story/radial-chart-simple.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "src/registry/atoms/radial-chart-story/radial-chart-label.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "src/registry/atoms/radial-chart-story/radial-chart-grid.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "src/registry/atoms/radial-chart-story/radial-chart-text.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "src/registry/atoms/radial-chart-story/radial-chart-shape.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "src/registry/atoms/radial-chart-story/radial-chart-stacked.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "tooltip-story",
+      "type": "registry:component",
+      "title": "Tooltip Story",
+      "description": "Interactive Storybook stories demonstrating chart tooltip component variations including default, line indicator, no indicator, custom label, label formatter, no label, formatter, icons, and advanced configurations",
+      "categories": [
+        "atoms",
+        "storybook",
+        "chart",
+        "tooltip",
+        "data-visualization"
+      ],
+      "author": "Lloyd Richards <lloyd.d.richards@gmail.com>",
+      "registryDependencies": [
+        "chart"
+      ],
+      "dependencies": [
+        "recharts",
+        "lucide-react"
+      ],
+      "files": [
+        {
+          "path": "src/registry/atoms/tooltip-story/tooltips.stories.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "src/registry/atoms/tooltip-story/tooltip-default.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "src/registry/atoms/tooltip-story/tooltip-line-indicator.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "src/registry/atoms/tooltip-story/tooltip-no-indicator.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "src/registry/atoms/tooltip-story/tooltip-custom-label.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "src/registry/atoms/tooltip-story/tooltip-label-formatter.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "src/registry/atoms/tooltip-story/tooltip-no-label.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "src/registry/atoms/tooltip-story/tooltip-formatter.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "src/registry/atoms/tooltip-story/tooltip-icons.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "src/registry/atoms/tooltip-story/tooltip-advanced.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
       "name": "range-calendar-story",
       "type": "registry:component",
       "title": "Range Calendar Story",
