@@ -5,9 +5,8 @@ import { Header } from "@/registry/templates/header/header";
 import { SidebarTemplate } from "@/registry/templates/sidebar/sidebar";
 import { AIAssistant } from "@/registry/templates/ai-assistant/ai-assistant";
 import { Button } from "@/components/ui/button";
-import { ButtonGroup } from "@/components/ui/button-group";
 import { Separator } from "@/components/ui/separator";
-import { ChevronLeft, ChevronRight, X } from "lucide-react";
+import { X } from "lucide-react";
 
 /**
  * 모듈화된 베이스 구조 템플릿을 보여주는 Storybook 스토리입니다.
@@ -145,18 +144,6 @@ export const TabOnly: Story = {
       <div className="bg-sidebar flex w-full items-center overflow-hidden">
         {/* 첫 번째 Separator - 탭 영역 시작 구분선 (Figma API 기반: 20px 높이) */}
         <Separator orientation="vertical" className="h-px w-5" />
-
-        {/* 좌측 ButtonGroup 영역 */}
-        <div className="border-border/10 bg-sidebar flex h-10 items-center border-b px-1">
-          <ButtonGroup>
-            <Button variant="ghost" size="icon" aria-label="Previous">
-              <ChevronLeft className="h-4 w-4" />
-            </Button>
-            <Button variant="ghost" size="icon" aria-label="Next">
-              <ChevronRight className="h-4 w-4" />
-            </Button>
-          </ButtonGroup>
-        </div>
 
         {/* 중앙 활성 탭 */}
         <div className="bg-background border-primary flex flex-col border-b-2">
