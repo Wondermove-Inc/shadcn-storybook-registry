@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { Search, ChevronLeft, ChevronRight } from "lucide-react";
+import { Search, ArrowLeft, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ButtonGroup } from "@/components/ui/button-group";
 import {
@@ -170,7 +170,7 @@ function NavigationButtonGroup({
           aria-label="Previous"
           className="h-9 w-9 rounded-lg rounded-r-none bg-transparent p-2"
         >
-          <ChevronLeft className="h-4 w-4" />
+          <ArrowLeft className="h-4 w-4" />
         </Button>
         <Button
           variant="ghost"
@@ -179,7 +179,7 @@ function NavigationButtonGroup({
           aria-label="Next"
           className="h-9 w-9 rounded-lg rounded-l-none bg-transparent p-2"
         >
-          <ChevronRight className="h-4 w-4" />
+          <ArrowRight className="h-4 w-4" />
         </Button>
       </ButtonGroup>
     </div>
@@ -262,14 +262,15 @@ export function Header({
 }: HeaderProps) {
   return (
     <header className="border-border bg-sidebar flex h-auto w-full shrink-0 items-center justify-between gap-[10px] overflow-hidden border-b p-2">
-      {/* 좌측 네비게이션 ButtonGroup - UIDL 구조에 따른 구현 */}
-      <NavigationButtonGroup
-        onNavigationBack={onNavigationBack}
-        onNavigationForward={onNavigationForward}
-      />
+      {/* 좌측 여백 영역 */}
+      <div className="flex items-center"></div>
 
-      {/* 중앙 검색 영역 */}
+      {/* 중앙 검색 영역 - ButtonGroup과 SearchInput */}
       <div className="flex flex-grow items-center justify-center gap-3">
+        <NavigationButtonGroup
+          onNavigationBack={onNavigationBack}
+          onNavigationForward={onNavigationForward}
+        />
         <SearchInputGroup
           searchQuery={searchQuery}
           onSearchChange={onSearchChange}
