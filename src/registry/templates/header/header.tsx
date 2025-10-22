@@ -266,7 +266,7 @@ export function Header({
       <div className="flex items-center"></div>
 
       {/* 중앙 검색 영역 - ButtonGroup과 SearchInput */}
-      <div className="flex flex-grow items-center justify-center gap-3">
+      <div className="flex flex-grow items-center justify-center gap-2">
         <NavigationButtonGroup
           onNavigationBack={onNavigationBack}
           onNavigationForward={onNavigationForward}
