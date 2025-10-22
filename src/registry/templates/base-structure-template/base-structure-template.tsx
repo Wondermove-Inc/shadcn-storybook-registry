@@ -59,6 +59,18 @@ export function BaseStructureTemplate({
     setIsAIAssistantVisible(false);
   }, []);
 
+  // 🎯 목적: 네비게이션 뒤로 가기 핸들러
+  const handleNavigationBack = React.useCallback(() => {
+    console.log("Navigation: Back button clicked");
+    // 실제 구현에서는 브라우저 히스토리 뒤로 가기 또는 앱 내 네비게이션 로직 추가
+  }, []);
+
+  // 🎯 목적: 네비게이션 앞으로 가기 핸들러
+  const handleNavigationForward = React.useCallback(() => {
+    console.log("Navigation: Forward button clicked");
+    // 실제 구현에서는 브라우저 히스토리 앞으로 가기 또는 앱 내 네비게이션 로직 추가
+  }, []);
+
   // 🎯 목적: AI Assistant 시작 핸들러
   const handleAIAssistantStart = React.useCallback(
     (provider: string, apiKey: string) => {
@@ -74,6 +86,8 @@ export function BaseStructureTemplate({
       <Header
         searchQuery={searchQuery}
         onSearchChange={handleSearchChange}
+        onNavigationBack={handleNavigationBack}
+        onNavigationForward={handleNavigationForward}
         onPanelLeftToggle={handlePanelLeftToggle}
         onAiAssistantToggle={handleAIAssistantToggle}
       />

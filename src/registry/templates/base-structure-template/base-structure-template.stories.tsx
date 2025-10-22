@@ -64,6 +64,8 @@ export const HeaderOnly: Story = {
       <Header
         searchQuery=""
         onSearchChange={() => {}}
+        onNavigationBack={() => {}}
+        onNavigationForward={() => {}}
         onPanelLeftToggle={() => {}}
         onAiAssistantToggle={() => {}}
       />

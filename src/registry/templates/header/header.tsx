@@ -1,8 +1,9 @@
 "use client";
 
 import React from "react";
-import { Search } from "lucide-react";
+import { Search, ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { ButtonGroup } from "@/components/ui/button-group";
 import {
   InputGroup,
   InputGroupAddon,
@@ -15,6 +16,8 @@ import {
 interface HeaderProps {
   searchQuery?: string;
   onSearchChange?: (value: string) => void;
+  onNavigationBack?: () => void;
+  onNavigationForward?: () => void;
   onPanelLeftToggle?: () => void;
   onPanelBottomToggle?: () => void;
   onAiAssistantToggle?: () => void;
@@ -148,6 +151,42 @@ function SettingsIcon() {
 }
 
 /**
+ * 🎯 목적: 헤더 좌측 네비게이션 ButtonGroup 컴포넌트 - UIDL 구조에 따른 구현
+ */
+function NavigationButtonGroup({
+  onNavigationBack,
+  onNavigationForward,
+}: {
+  onNavigationBack?: () => void;
+  onNavigationForward?: () => void;
+}) {
+  return (
+    <div className="border-border/10 bg-sidebar flex h-10 items-center border-b px-1">
+      <ButtonGroup>
+        <Button
+          variant="ghost"
+          size="icon"
+          onClick={onNavigationBack}
+          aria-label="Previous"
+          className="h-9 w-9 rounded-lg rounded-r-none bg-transparent p-2"
+        >
+          <ChevronLeft className="h-4 w-4" />
+        </Button>
+        <Button
+          variant="ghost"
+          size="icon"
+          onClick={onNavigationForward}
+          aria-label="Next"
+          className="h-9 w-9 rounded-lg rounded-l-none bg-transparent p-2"
+        >
+          <ChevronRight className="h-4 w-4" />
+        </Button>
+      </ButtonGroup>
+    </div>
+  );
+}
+
+/**
  * 🎯 목적: 헤더 우측 버튼 그룹 컴포넌트
  */
 function HeaderButtonGroup({
@@ -214,18 +253,23 @@ function HeaderButtonGroup({
 export function Header({
   searchQuery = "",
   onSearchChange,
+  onNavigationBack,
+  onNavigationForward,
   onPanelLeftToggle,
   onPanelBottomToggle,
   onAiAssistantToggle,
   onSettingsClick,
 }: HeaderProps) {
   return (
-    <header className="border-border bg-sidebar flex h-auto w-full shrink-0 items-center justify-between gap-[10px] border-b p-2">
-      {/* 왼쪽 여백 */}
-      <div className="flex items-center"></div>
+    <header className="border-border bg-sidebar flex h-auto w-full shrink-0 items-center justify-between gap-[10px] overflow-hidden border-b p-2">
+      {/* 좌측 네비게이션 ButtonGroup - UIDL 구조에 따른 구현 */}
+      <NavigationButtonGroup
+        onNavigationBack={onNavigationBack}
+        onNavigationForward={onNavigationForward}
+      />
 
       {/* 중앙 검색 영역 */}
-      <div className="flex flex-grow items-center justify-center gap-2">
+      <div className="flex flex-grow items-center justify-center gap-3">
         <SearchInputGroup
           searchQuery={searchQuery}
           onSearchChange={onSearchChange}
