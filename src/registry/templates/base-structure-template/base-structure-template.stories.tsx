@@ -4,6 +4,10 @@ import { BaseStructureTemplate } from "./base-structure-template";
 import { Header } from "@/registry/templates/header/header";
 import { SidebarTemplate } from "@/registry/templates/sidebar/sidebar";
 import { AIAssistant } from "@/registry/templates/ai-assistant/ai-assistant";
+import { Button } from "@/components/ui/button";
+import { ButtonGroup } from "@/components/ui/button-group";
+import { Separator } from "@/components/ui/separator";
+import { ChevronLeft, ChevronRight, X } from "lucide-react";
 
 /**
  * 모듈화된 베이스 구조 템플릿을 보여주는 Storybook 스토리입니다.
@@ -118,6 +122,88 @@ export const AIAssistantOnly: Story = {
         onStart={() => {}}
         className="w-[400px] shrink-0"
       />
+    </div>
+  ),
+};
+
+/**
+ * Figma 디자인 기반 탭 인터페이스만 독립적으로 표시하는 스토리입니다.
+ *
+ * 🎯 목적: Skuber Management의 실제 탭 네비게이션 구조 정확히 재현 (UIDL + shadcn 컴포넌트 기반)
+ * ✨ 특징:
+ * - 좌측: Separator + Button Group (ChevronLeft/ChevronRight 아이콘)
+ * - 중앙: 활성 탭 (dark 배경, primary 하단 보더, X 아이콘)
+ * - 우측: Disabled 탭들 + Separator 구분선
+ * - 디자인 토큰 사용 (하드코딩 금지), shadcn 컴포넌트만 활용
+ */
+export const TabOnly: Story = {
+  render: () => (
+    <div className="bg-background h-screen w-full">
+      {/* UIDL 기반 탭 네비게이션 바 - shadcn 컴포넌트 사용 */}
+      <div className="bg-sidebar flex w-full items-center overflow-hidden">
+        {/* 첫 번째 Separator - 탭 영역 시작 구분선 (Figma API 기반: 20px 높이) */}
+        <Separator orientation="vertical" className="h-px w-5" />
+
+        {/* 좌측 ButtonGroup 영역 */}
+        <div className="border-border/10 bg-sidebar flex h-10 items-center border-b px-1">
+          <ButtonGroup>
+            <Button variant="ghost" size="icon" aria-label="Previous">
+              <ChevronLeft className="h-4 w-4" />
+            </Button>
+            <Button variant="ghost" size="icon" aria-label="Next">
+              <ChevronRight className="h-4 w-4" />
+            </Button>
+          </ButtonGroup>
+        </div>
+
+        {/* 중앙 활성 탭 */}
+        <div className="bg-background border-primary flex flex-col border-b-2">
+          <Button
+            variant="ghost"
+            className="text-foreground h-10 justify-between gap-2 rounded-lg bg-transparent px-6 py-2 hover:bg-transparent"
+          >
+            <span className="text-sm font-medium">tabname</span>
+            <X className="h-4 w-4" />
+          </Button>
+        </div>
+
+        {/* 두 번째 Separator - 활성 탭과 비활성 탭 사이 구분선 (Figma API 기반: 20px 높이) */}
+        <Separator orientation="vertical" className="h-px w-5" />
+
+        {/* 우측 영역 - Disabled 탭들 */}
+        <div className="border-border/10 bg-sidebar flex flex-1 items-center border-b">
+          {/* 첫 번째 Disabled 탭 */}
+          <Button
+            variant="ghost"
+            disabled
+            className="text-foreground h-10 rounded-lg bg-transparent px-6 py-2 opacity-50 hover:bg-transparent"
+          >
+            <span className="text-sm font-medium">tabname</span>
+          </Button>
+
+          {/* 세 번째 Separator - 비활성 탭 사이 구분선 (Figma API 기반: 20px 높이) */}
+          <Separator orientation="vertical" className="h-px w-5" />
+
+          {/* 두 번째 Disabled 탭 */}
+          <Button
+            variant="ghost"
+            disabled
+            className="text-foreground h-10 rounded-lg bg-transparent px-6 py-2 opacity-50 hover:bg-transparent"
+          >
+            <span className="text-sm font-medium">tabname</span>
+          </Button>
+        </div>
+      </div>
+
+      {/* 메인 콘텐츠 영역 */}
+      <div className="flex h-full items-center justify-center p-8">
+        <div className="text-center">
+          <h2 className="mb-2 text-lg font-semibold">Tab 템플릿</h2>
+          <p className="text-muted-foreground text-sm">
+            Tab 컴포넌트만 독립적으로 사용하는 예시입니다.
+          </p>
+        </div>
+      </div>
     </div>
   ),
 };

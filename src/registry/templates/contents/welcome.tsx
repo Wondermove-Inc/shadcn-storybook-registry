@@ -37,7 +37,7 @@ interface WelcomeProps {
  * - 하드코딩된 크기나 색상 없이 shadcn/ui 시스템 활용
  */
 export function Welcome({
-  showTabs = true,
+  showTabs = false,
   showHeader = true,
   showCards = true,
   showHelp = true,
@@ -207,8 +207,8 @@ export function Welcome({
             </div>
 
             {/* 액션 영역 */}
-            <div className="flex items-center gap-2">
-              <Button variant="secondary" size="sm">
+            <div className="flex items-center justify-center gap-2">
+              <Button variant="outline" size="sm">
                 Get help
               </Button>
             </div>
