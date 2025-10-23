@@ -165,7 +165,7 @@ export const Default: Story = {
                 {isAIAssistantVisible && (
                   <>
                     <ResizableHandle className="w-1 cursor-col-resize bg-transparent transition-colors hover:bg-blue-500/20 active:bg-blue-500/30" />
-                    <ResizablePanel defaultSize={30} minSize={20} maxSize={40}>
+                    <ResizablePanel defaultSize={25} minSize={20} maxSize={40}>
                       <AIAssistant
                         onClose={handleAIAssistantClose}
                         onStart={() => {}}
@@ -240,20 +240,34 @@ export const SidebarOnly: Story = {
  */
 export const AIAssistantOnly: Story = {
   render: () => (
-    <div className="bg-background flex h-screen w-full">
-      <div className="flex flex-1 items-center justify-center p-8">
-        <div className="text-center">
-          <h2 className="mb-2 text-lg font-semibold">AI Assistant 템플릿</h2>
-          <p className="text-muted-foreground text-sm">
-            AI Assistant 컴포넌트만 독립적으로 사용하는 예시입니다.
-          </p>
-        </div>
-      </div>
-      <AIAssistant
-        onClose={() => {}}
-        onStart={() => {}}
-        className="w-[400px] shrink-0"
-      />
+    <div className="bg-background h-screen w-full">
+      <ResizablePanelGroup direction="horizontal" className="h-full w-full">
+        {/* 메인 콘텐츠 영역 */}
+        <ResizablePanel>
+          <div className="flex h-full items-center justify-center p-8">
+            <div className="text-center">
+              <h2 className="mb-2 text-lg font-semibold">
+                AI Assistant 템플릿
+              </h2>
+              <p className="text-muted-foreground text-sm">
+                AI Assistant 컴포넌트만 독립적으로 사용하는 예시입니다.
+              </p>
+            </div>
+          </div>
+        </ResizablePanel>
+
+        {/* AI Assistant 리사이즈 핸들 */}
+        <ResizableHandle className="w-1 cursor-col-resize bg-transparent transition-colors hover:bg-blue-500/20 active:bg-blue-500/30" />
+
+        {/* AI Assistant 패널 (Default 스토리와 동일한 사이즈 정책) */}
+        <ResizablePanel defaultSize={25} minSize={20} maxSize={40}>
+          <AIAssistant
+            onClose={() => {}}
+            onStart={() => {}}
+            className="h-full w-full"
+          />
+        </ResizablePanel>
+      </ResizablePanelGroup>
     </div>
   ),
 };
