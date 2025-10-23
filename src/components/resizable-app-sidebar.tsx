@@ -124,7 +124,7 @@ function Tree({ item, onFileSelect }: TreeProps) {
           <CollapsibleTrigger asChild>
             <Button
               variant="ghost"
-              className="hover:bg-sidebar-accent hover:text-sidebar-accent-foreground h-8 w-full justify-start gap-2 p-2 text-sm"
+              className="hover:bg-sidebar-accent hover:text-sidebar-accent-foreground h-8 w-full min-w-0 justify-start gap-2 p-2 text-sm"
             >
               <ChevronRight className="transition-transform" />
               {isOpen ? (
@@ -132,7 +132,7 @@ function Tree({ item, onFileSelect }: TreeProps) {
               ) : (
                 <Folder className="h-4 w-4" />
               )}
-              <span>{item.name}</span>
+              <span className="truncate">{item.name}</span>
             </Button>
           </CollapsibleTrigger>
           <CollapsibleContent>
@@ -156,10 +156,10 @@ function Tree({ item, onFileSelect }: TreeProps) {
       <Button
         variant="ghost"
         onClick={() => onFileSelect?.(item)}
-        className="hover:bg-sidebar-accent hover:text-sidebar-accent-foreground h-7 w-full justify-start gap-2 px-2 text-sm"
+        className="hover:bg-sidebar-accent hover:text-sidebar-accent-foreground h-7 w-full min-w-0 justify-start gap-2 px-2 text-sm"
       >
         <File className="h-4 w-4" />
-        <span>{item.name}</span>
+        <span className="truncate">{item.name}</span>
       </Button>
     </li>
   );
@@ -225,10 +225,10 @@ export function ResizableAppSidebar({
                   <Button
                     variant="ghost"
                     onClick={() => handleFileSelect(item)}
-                    className="hover:bg-sidebar-accent hover:text-sidebar-accent-foreground h-8 w-full justify-start gap-2 p-2 text-sm"
+                    className="hover:bg-sidebar-accent hover:text-sidebar-accent-foreground h-8 w-full min-w-0 justify-start gap-2 p-2 text-sm"
                   >
                     <File className="h-4 w-4" />
-                    <span>{item.name}</span>
+                    <span className="truncate">{item.name}</span>
                   </Button>
                 </li>
               ))}
@@ -237,17 +237,20 @@ export function ResizableAppSidebar({
         </div>
 
         {/* Your Clusters 그룹 */}
-        <div className="relative flex w-full min-w-0 flex-col p-2">
-          <div className="text-sidebar-foreground/70 ring-sidebar-ring flex h-8 shrink-0 items-center rounded-md px-2 text-xs font-medium outline-hidden transition-[margin,opacity] duration-200 ease-linear focus-visible:ring-2 [&>svg]:size-4 [&>svg]:shrink-0">
-            Your Clusters
+        <div className="flex w-full min-w-0 flex-col p-2">
+          <div className="flex h-8 items-center justify-between rounded-md px-2">
+            <span className="text-sidebar-foreground/70 text-xs font-medium">
+              Your Clusters
+            </span>
+            <Button
+              variant="ghost"
+              size="sm"
+              className="hover:bg-sidebar-accent hover:text-sidebar-accent-foreground h-4 w-4 p-0"
+            >
+              <Plus className="h-3 w-3" />
+              <span className="sr-only">Add Cluster</span>
+            </Button>
           </div>
-          <Button
-            variant="ghost"
-            className="text-sidebar-foreground ring-sidebar-ring hover:bg-sidebar-accent hover:text-sidebar-accent-foreground absolute top-3.5 right-3 flex aspect-square w-5 items-center justify-center rounded-md p-0 outline-hidden transition-transform focus-visible:ring-2 [&>svg]:size-4 [&>svg]:shrink-0"
-          >
-            <Plus />
-            <span className="sr-only">Add Cluster</span>
-          </Button>
           <div className="w-full text-sm">
             <ul className="flex w-full min-w-0 flex-col gap-1">
               {projectFiles.map((item) => (
