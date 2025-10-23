@@ -110,7 +110,7 @@ export const Default: Story = {
         />
         <div className="h-[calc(100vh-40px)] w-full">
           <ResizablePanelGroup direction="horizontal" className="h-full w-full">
-            {/* 핫바 패널 (고정 크기) */}
+            {/* 핫바 패널 (완전 고정 크기 - VS Code Activity Bar와 동일) */}
             <ResizablePanel defaultSize={3} minSize={3} maxSize={3}>
               <Hotbar
                 activeItem={activeHotbarItem}
@@ -119,14 +119,14 @@ export const Default: Story = {
               />
             </ResizablePanel>
 
-            {/* 사이드바 패널 - 조건부 렌더링 */}
+            {/* 사이드바 패널 - 조건부 렌더링, 독립적 리사이즈 */}
             {isSidebarVisible && (
               <>
-                <ResizablePanel defaultSize={12} minSize={12} maxSize={40}>
+                <ResizablePanel defaultSize={12} minSize={8} maxSize={40}>
                   <ResizableAppSidebar className="border-r" />
                 </ResizablePanel>
 
-                {/* 사이드바 리사이즈 핸들 */}
+                {/* 사이드바 전용 리사이즈 핸들 */}
                 <ResizableHandle className="w-1 cursor-col-resize bg-transparent transition-colors hover:bg-blue-500/20 active:bg-blue-500/30" />
               </>
             )}
@@ -140,8 +140,8 @@ export const Default: Story = {
                   </div>
                   <div className="text-center">
                     <p className="text-muted-foreground text-sm">
-                      Header, Hotbar, 리사이즈 가능한 Sidebar, AI Assistant가
-                      결합된 완전한 4열 레이아웃입니다.
+                      Header, 고정 Hotbar, 독립 리사이즈 Sidebar, AI Assistant가
+                      결합된 완전한 VS Code 스타일 레이아웃입니다.
                     </p>
                     <p className="text-muted-foreground mt-2 text-xs">
                       현재 활성 핫바 아이템:{" "}
