@@ -111,7 +111,7 @@ export const Default: Story = {
         <div className="h-[calc(100vh-40px)] w-full">
           <ResizablePanelGroup direction="horizontal" className="h-full w-full">
             {/* 핫바 패널 (완전 고정 크기 - VS Code Activity Bar와 동일) */}
-            <ResizablePanel defaultSize={3} minSize={3} maxSize={3}>
+            <ResizablePanel defaultSize={4} minSize={4} maxSize={4}>
               <Hotbar
                 activeItem={activeHotbarItem}
                 onItemClick={handleHotbarItemClick}
@@ -122,11 +122,11 @@ export const Default: Story = {
             {/* 사이드바 패널 - 조건부 렌더링, 독립적 리사이즈 */}
             {isSidebarVisible && (
               <>
-                <ResizablePanel defaultSize={12} minSize={8} maxSize={40}>
+                <ResizablePanel defaultSize={15} minSize={15} maxSize={50}>
                   <ResizableAppSidebar className="border-r" />
                 </ResizablePanel>
 
-                {/* 사이드바 전용 리사이즈 핸들 */}
+                {/* 사이드바 전용 리사이즈 핸들 (SidebarTemplate과 동일한 설정) */}
                 <ResizableHandle className="w-1 cursor-col-resize bg-transparent transition-colors hover:bg-blue-500/20 active:bg-blue-500/30" />
               </>
             )}
