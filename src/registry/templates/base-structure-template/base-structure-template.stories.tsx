@@ -115,7 +115,7 @@ export const Default: Story = {
               <Hotbar
                 activeItem={activeHotbarItem}
                 onItemClick={handleHotbarItemClick}
-                className="h-full"
+                className="border-sidebar-border h-full border-r"
               />
             </div>
 
