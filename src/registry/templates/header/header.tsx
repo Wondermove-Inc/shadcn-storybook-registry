@@ -135,19 +135,19 @@ function NavigationButtonGroup({
       <ButtonGroup>
         <Button
           variant="ghost"
-          size="icon"
+          size="icon-sm"
           onClick={onNavigationBack}
           aria-label="Previous"
-          className="h-9 w-9 rounded-lg rounded-r-none bg-transparent p-2"
+          className="h-7 w-7 rounded-lg rounded-r-none bg-transparent p-1"
         >
           <ArrowLeft className="h-4 w-4" />
         </Button>
         <Button
           variant="ghost"
-          size="icon"
+          size="icon-sm"
           onClick={onNavigationForward}
           aria-label="Next"
-          className="h-9 w-9 rounded-lg rounded-l-none bg-transparent p-2"
+          className="h-7 w-7 rounded-lg rounded-l-none bg-transparent p-1"
         >
           <ArrowRight className="h-4 w-4" />
         </Button>
@@ -219,9 +219,6 @@ export function Header({
 }: HeaderProps) {
   return (
     <header className="border-border bg-sidebar flex h-10 w-full shrink-0 items-center justify-between gap-[10px] overflow-hidden border-b p-2">
-      {/* 좌측 여백 영역 */}
-      <div className="flex items-center"></div>
-
       {/* 중앙 검색 영역 - ButtonGroup과 SearchInput */}
       <div className="flex flex-grow items-center justify-center gap-2">
         <NavigationButtonGroup
