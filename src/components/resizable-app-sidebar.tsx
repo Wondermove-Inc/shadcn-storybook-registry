@@ -37,7 +37,7 @@ const changedFiles: FileTreeItem[] = [
 const projectFiles: FileTreeItem[] = [
   {
     id: "cluster-1",
-    name: "Cluster-1",
+    name: "kubernetes-admin@starlord-nfs-testcluster",
     type: "folder",
     children: [
       {
