@@ -13,6 +13,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { X } from "lucide-react";
+import { Hotbar } from "@/components/hotbar";
 
 /**
  * 모듈화된 베이스 구조 템플릿을 보여주는 Storybook 스토리입니다.
@@ -54,7 +55,12 @@ type Story = StoryObj<typeof meta>;
 /**
  * 기본 베이스 구조 템플릿입니다.
  *
- * 🎯 목적: Header, 리사이즈 가능한 Sidebar, AI Assistant가 결합된 완전한 3열 레이아웃 데모
+ * 🎯 목적: Header, VS Code Activity Bar 스타일 Hotbar, 리사이즈 가능한 Sidebar, AI Assistant가 결합된 완전한 4열 레이아웃 데모
+ * ✨ 특징:
+ * - VS Code Activity Bar 스타일의 좌측 핫바 (Explorer, Search, Git 등)
+ * - 핫바 아이템 클릭 시 사이드바 자동 표시
+ * - Header의 PanelLeft 버튼으로 사이드바 토글
+ * - AI Assistant 패널 토글 및 닫기 기능
  */
 export const Default: Story = {
   render: () => {
@@ -64,6 +70,9 @@ export const Default: Story = {
 
     // 🎯 목적: 사이드바 표시 상태 관리
     const [isSidebarVisible, setIsSidebarVisible] = React.useState(true);
+
+    // 🎯 목적: 핫바 활성 아이템 상태 관리
+    const [activeHotbarItem, setActiveHotbarItem] = React.useState("explorer");
 
     // 🎯 목적: AI Assistant 토글 핸들러
     const handleAIAssistantToggle = () => {
@@ -80,6 +89,15 @@ export const Default: Story = {
       setIsSidebarVisible((prev) => !prev);
     };
 
+    // 🎯 목적: 핫바 아이템 클릭 핸들러
+    const handleHotbarItemClick = (itemId: string) => {
+      setActiveHotbarItem(itemId);
+      // 사이드바가 숨겨져 있다면 다시 표시
+      if (!isSidebarVisible) {
+        setIsSidebarVisible(true);
+      }
+    };
+
     return (
       <div className="bg-background h-screen w-full">
         <Header
@@ -92,11 +110,20 @@ export const Default: Story = {
         />
         <div className="h-[calc(100vh-40px)] w-full">
           <ResizablePanelGroup direction="horizontal" className="h-full w-full">
+            {/* 핫바 패널 (고정 크기) */}
+            <ResizablePanel defaultSize={3} minSize={3} maxSize={3}>
+              <Hotbar
+                activeItem={activeHotbarItem}
+                onItemClick={handleHotbarItemClick}
+                className="h-full"
+              />
+            </ResizablePanel>
+
             {/* 사이드바 패널 - 조건부 렌더링 */}
             {isSidebarVisible && (
               <>
-                <ResizablePanel defaultSize={15} minSize={15} maxSize={50}>
-                  <ResizableAppSidebar className="border-r" />
+                <ResizablePanel defaultSize={12} minSize={12} maxSize={40}>
+                  <ResizableAppSidebar />
                 </ResizablePanel>
 
                 {/* 사이드바 리사이즈 핸들 */}
@@ -113,8 +140,12 @@ export const Default: Story = {
                   </div>
                   <div className="text-center">
                     <p className="text-muted-foreground text-sm">
-                      Header, 리사이즈 가능한 Sidebar, AI Assistant가 결합된
-                      완전한 3열 레이아웃입니다.
+                      Header, Hotbar, 리사이즈 가능한 Sidebar, AI Assistant가
+                      결합된 완전한 4열 레이아웃입니다.
+                    </p>
+                    <p className="text-muted-foreground mt-2 text-xs">
+                      현재 활성 핫바 아이템:{" "}
+                      <span className="font-medium">{activeHotbarItem}</span>
                     </p>
                   </div>
                 </div>
@@ -284,4 +315,47 @@ export const TabOnly: Story = {
       </div>
     </div>
   ),
+};
+
+/**
+ * VS Code Activity Bar 스타일의 Hotbar만 독립적으로 표시하는 스토리입니다.
+ *
+ * 🎯 목적: Hotbar 컴포넌트의 독립적인 사용법 데모
+ * ✨ 특징:
+ * - VS Code Activity Bar와 동일한 세로 아이콘 바
+ * - Explorer, Search, Git, Extensions 등 주요 기능 아이콘
+ * - 활성/비활성 상태 시각적 표시
+ * - 하단에 Settings, Account 아이콘 배치
+ */
+export const HotbarOnly: Story = {
+  render: () => {
+    // 🎯 목적: 활성 아이템 상태 관리
+    const [activeItem, setActiveItem] = React.useState("explorer");
+
+    // 🎯 목적: 핫바 아이템 클릭 핸들러
+    const handleItemClick = (itemId: string) => {
+      setActiveItem(itemId);
+    };
+
+    return (
+      <div className="bg-background flex h-screen w-full">
+        {/* VS Code Activity Bar 스타일 핫바 */}
+        <Hotbar activeItem={activeItem} onItemClick={handleItemClick} />
+
+        {/* 메인 콘텐츠 영역 */}
+        <div className="flex flex-1 items-center justify-center p-8">
+          <div className="text-center">
+            <h2 className="mb-2 text-lg font-semibold">Hotbar 템플릿</h2>
+            <p className="text-muted-foreground text-sm">
+              VS Code Activity Bar 스타일의 Hotbar 컴포넌트입니다.
+            </p>
+            <p className="text-muted-foreground mt-2 text-xs">
+              현재 활성 아이템:{" "}
+              <span className="font-medium">{activeItem}</span>
+            </p>
+          </div>
+        </div>
+      </div>
+    );
+  },
 };
