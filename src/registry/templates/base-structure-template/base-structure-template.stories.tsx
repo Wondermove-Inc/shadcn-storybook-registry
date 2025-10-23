@@ -145,7 +145,7 @@ export const Structure: Story = {
                     </ResizablePanel>
 
                     {/* 사이드바 리사이즈 핸들 */}
-                    <ResizableHandle className="w-1 cursor-col-resize bg-transparent transition-colors hover:bg-blue-500/20 active:bg-blue-500/30" />
+                    <ResizableHandle className="w-0 cursor-col-resize bg-transparent transition-colors hover:bg-blue-500/20 active:bg-blue-500/30" />
                   </>
                 )}
 
@@ -158,7 +158,7 @@ export const Structure: Story = {
                     >
                       {/* 상단: 메인 콘텐츠 영역 */}
                       <ResizablePanel defaultSize={75} minSize={50}>
-                        <div className="flex h-full flex-1 flex-col gap-4 p-4 lg:gap-6 lg:p-6">
+                        <div className="flex h-full flex-1 flex-col gap-4 lg:gap-6">
                           <div className="flex h-full w-full flex-col items-center justify-center gap-4">
                             <div className="bg-muted text-muted-foreground flex items-center justify-center gap-2 rounded-md px-3 py-2">
                               <span className="font-mono text-sm">
@@ -251,7 +251,7 @@ export const Structure: Story = {
                     </ResizablePanelGroup>
                   ) : (
                     // 패널이 닫혔을 때: 전체 화면 콘텐츠 영역
-                    <div className="flex h-full flex-1 flex-col gap-4 p-4 lg:gap-6 lg:p-6">
+                    <div className="flex h-full flex-1 flex-col gap-4 lg:gap-6">
                       <div className="flex h-full w-full flex-col items-center justify-center gap-4">
                         <div className="bg-muted text-muted-foreground flex items-center justify-center gap-2 rounded-md px-3 py-2">
                           <span className="font-mono text-sm">
@@ -274,7 +274,7 @@ export const Structure: Story = {
                 {/* AI Assistant 패널 */}
                 {isAIAssistantVisible && (
                   <>
-                    <ResizableHandle className="w-1 cursor-col-resize bg-transparent transition-colors hover:bg-blue-500/20 active:bg-blue-500/30" />
+                    <ResizableHandle className="w-0 cursor-col-resize bg-transparent transition-colors hover:bg-blue-500/20 active:bg-blue-500/30" />
                     <ResizablePanel defaultSize={25} minSize={20} maxSize={40}>
                       <AIAssistant
                         onClose={handleAIAssistantClose}
