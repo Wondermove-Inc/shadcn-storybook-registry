@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/resizable";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import { X, Maximize2 } from "lucide-react";
+import { X, Maximize2, Bell } from "lucide-react";
 import { Hotbar } from "@/components/hotbar";
 
 /**
@@ -120,7 +120,7 @@ export const Structure: Story = {
           isPanelBottomActive={isPanelVisible}
           isAiAssistantActive={isAIAssistantVisible}
         />
-        <div className="h-[calc(100vh-40px)] w-full">
+        <div className="h-[calc(100vh-64px)] w-full">
           <div className="flex h-full">
             {/* 핫바 영역 (고정 크기) */}
             <div className="w-12 flex-shrink-0">
@@ -157,7 +157,7 @@ export const Structure: Story = {
                       className="h-full"
                     >
                       {/* 상단: 메인 콘텐츠 영역 */}
-                      <ResizablePanel defaultSize={75} minSize={10}>
+                      <ResizablePanel defaultSize={60} minSize={10}>
                         <div className="flex h-full flex-1 flex-col gap-4 lg:gap-6">
                           <div className="flex h-full w-full flex-col items-center justify-center gap-4">
                             <div className="bg-muted text-muted-foreground flex items-center justify-center gap-2 rounded-md px-3 py-2">
@@ -182,7 +182,7 @@ export const Structure: Story = {
 
                       {/* 하단: VS Code 스타일 패널 */}
                       <ResizablePanel
-                        defaultSize={25}
+                        defaultSize={40}
                         minSize={15}
                         maxSize={90}
                       >
@@ -288,6 +288,54 @@ export const Structure: Story = {
             </div>
           </div>
         </div>
+
+        {/* Footer - 최하단 고정 */}
+        <footer className="bg-sidebar border-border flex h-6 w-full shrink-0 items-center justify-between gap-2 overflow-hidden border-t px-2">
+          {/* 좌측: 텍스트 */}
+          <span className="text-muted-foreground text-sm leading-5">
+            *temporary footer
+          </span>
+
+          {/* 우측: 버튼 그룹 */}
+          <div className="flex items-center">
+            {/* PanelBottom 아이콘 버튼 */}
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={handlePanelBottomToggle}
+              className={`text-muted-foreground hover:text-foreground h-6 w-6 rounded-lg bg-transparent p-1 ${
+                isPanelVisible ? "" : "opacity-50"
+              }`}
+              title="Panel Bottom"
+            >
+              <svg
+                width="14"
+                height="14"
+                viewBox="0 0 16 16"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M2 10H14M3.33333 2H12.6667C13.403 2 14 2.59695 14 3.33333V12.6667C14 13.403 13.403 14 12.6667 14H3.33333C2.59695 14 2 13.403 2 12.6667V3.33333C2 2.59695 2.59695 2 3.33333 2Z"
+                  stroke="currentColor"
+                  strokeWidth="1.33"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+            </Button>
+
+            {/* Bell 아이콘 버튼 */}
+            <Button
+              variant="ghost"
+              size="icon"
+              className="text-muted-foreground hover:text-foreground h-6 w-6 rounded-lg bg-transparent p-1"
+              title="Notifications"
+            >
+              <Bell className="h-3 w-3" />
+            </Button>
+          </div>
+        </footer>
       </div>
     );
   },
@@ -502,6 +550,81 @@ export const StructureHotbar: Story = {
 };
 
 /**
+ * VS Code 스타일의 Footer만 독립적으로 표시하는 스토리입니다.
+ *
+ * 🎯 목적: UIDL 기반 Footer 컴포넌트의 독립적인 사용법 데모
+ * ✨ 특징:
+ * - UIDL 명세서에 따른 Footer 레이아웃 구조
+ * - 좌측: "*temporary footer" 텍스트
+ * - 우측: PanelBottom, Bell 아이콘 버튼
+ * - shadcn/ui 컴포넌트 활용 (Button, lucide-react 아이콘)
+ */
+export const StructureFooter: Story = {
+  render: () => {
+    return (
+      <div className="bg-background h-screen w-full">
+        {/* 메인 콘텐츠 영역 */}
+        <div className="flex h-full flex-col">
+          <div className="flex flex-1 items-center justify-center p-8">
+            <div className="text-center">
+              <h2 className="mb-2 text-lg font-semibold">Footer 템플릿</h2>
+              <p className="text-muted-foreground text-sm">
+                UIDL 기반 Footer 컴포넌트만 독립적으로 사용하는 예시입니다.
+              </p>
+            </div>
+          </div>
+
+          {/* UIDL 기반 Footer */}
+          <footer className="bg-sidebar border-border flex h-6 w-full shrink-0 items-center justify-between gap-2 overflow-hidden border-t px-2">
+            {/* 좌측: 텍스트 */}
+            <span className="text-muted-foreground text-sm leading-5">
+              *temporary footer
+            </span>
+
+            {/* 우측: 버튼 그룹 */}
+            <div className="flex items-center">
+              {/* PanelBottom 아이콘 버튼 */}
+              <Button
+                variant="ghost"
+                size="icon"
+                className="text-muted-foreground hover:text-foreground h-8 w-8 rounded-lg bg-transparent p-2"
+                title="Panel Bottom"
+              >
+                <svg
+                  width="16"
+                  height="16"
+                  viewBox="0 0 16 16"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M2 10H14M3.33333 2H12.6667C13.403 2 14 2.59695 14 3.33333V12.6667C14 13.403 13.403 14 12.6667 14H3.33333C2.59695 14 2 13.403 2 12.6667V3.33333C2 2.59695 2.59695 2 3.33333 2Z"
+                    stroke="currentColor"
+                    strokeWidth="1.33"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
+              </Button>
+
+              {/* Bell 아이콘 버튼 */}
+              <Button
+                variant="ghost"
+                size="icon"
+                className="text-muted-foreground hover:text-foreground h-8 w-8 rounded-lg bg-transparent p-2"
+                title="Notifications"
+              >
+                <Bell className="h-4 w-4" />
+              </Button>
+            </div>
+          </footer>
+        </div>
+      </div>
+    );
+  },
+};
+
+/**
  * VS Code 스타일의 하단 패널만 독립적으로 표시하는 스토리입니다.
  *
  * 🎯 목적: UIDL 기반 Panel 컴포넌트의 독립적인 사용법 데모
@@ -561,7 +684,7 @@ export const StructurePanel: Story = {
         {/* 🎯 목적: VS Code 스타일 패널 컨테이너 - 리사이징 가능 */}
         <ResizablePanelGroup direction="vertical" className="h-full">
           {/* 상단: 메인 콘텐츠 영역 */}
-          <ResizablePanel defaultSize={75} minSize={10}>
+          <ResizablePanel defaultSize={60} minSize={10}>
             <div className="flex h-full items-center justify-center p-8">
               <div className="text-center">
                 <h2 className="mb-2 text-lg font-semibold">Panel 템플릿</h2>
@@ -579,7 +702,7 @@ export const StructurePanel: Story = {
           <ResizableHandle className="h-1 cursor-row-resize bg-transparent transition-colors hover:bg-blue-500/20 active:bg-blue-500/30" />
 
           {/* 하단: VS Code 스타일 패널 - 리사이징 가능 */}
-          <ResizablePanel defaultSize={25} minSize={15} maxSize={90}>
+          <ResizablePanel defaultSize={40} minSize={15} maxSize={90}>
             <div className="bg-background border-border flex h-full w-full flex-col border-t">
               {/* 패널 헤더 - 탭 버튼들과 컨트롤 버튼들 */}
               <div className="bg-background flex h-10 w-full items-center justify-between px-2">
