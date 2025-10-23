@@ -109,63 +109,74 @@ export const Default: Story = {
           onAiAssistantToggle={handleAIAssistantToggle}
         />
         <div className="h-[calc(100vh-40px)] w-full">
-          <ResizablePanelGroup direction="horizontal" className="h-full w-full">
-            {/* 핫바 패널 (완전 고정 크기 - VS Code Activity Bar와 동일) */}
-            <ResizablePanel defaultSize={4} minSize={4} maxSize={4}>
+          <div className="flex h-full">
+            {/* 핫바 영역 (고정 크기) */}
+            <div className="w-12 flex-shrink-0">
               <Hotbar
                 activeItem={activeHotbarItem}
                 onItemClick={handleHotbarItemClick}
                 className="h-full"
               />
-            </ResizablePanel>
+            </div>
 
-            {/* 사이드바 패널 - 조건부 렌더링, 독립적 리사이즈 */}
-            {isSidebarVisible && (
-              <>
-                <ResizablePanel defaultSize={15} minSize={15} maxSize={50}>
-                  <ResizableAppSidebar className="border-r" />
+            {/* 사이드바 + 메인 콘텐츠 + AI Assistant 영역 (리사이즈 가능) */}
+            <div className="flex-1">
+              <ResizablePanelGroup
+                direction="horizontal"
+                className="h-full w-full"
+              >
+                {/* 사이드바 패널 - 조건부 렌더링 */}
+                {isSidebarVisible && (
+                  <>
+                    <ResizablePanel defaultSize={25} minSize={15} maxSize={50}>
+                      <ResizableAppSidebar className="border-r" />
+                    </ResizablePanel>
+
+                    {/* 사이드바 리사이즈 핸들 */}
+                    <ResizableHandle className="w-1 cursor-col-resize bg-transparent transition-colors hover:bg-blue-500/20 active:bg-blue-500/30" />
+                  </>
+                )}
+
+                {/* 메인 콘텐츠 패널 */}
+                <ResizablePanel>
+                  <div className="flex h-full flex-1 flex-col gap-4 p-4 lg:gap-6 lg:p-6">
+                    <div className="flex h-full w-full flex-col items-center justify-center gap-4">
+                      <div className="bg-muted text-muted-foreground flex items-center justify-center gap-2 rounded-md px-3 py-2">
+                        <span className="font-mono text-sm">contents-area</span>
+                      </div>
+                      <div className="text-center">
+                        <p className="text-muted-foreground text-sm">
+                          Header, 고정 Hotbar, 독립 리사이즈 Sidebar, AI
+                          Assistant가 결합된 완전한 VS Code 스타일
+                          레이아웃입니다.
+                        </p>
+                        <p className="text-muted-foreground mt-2 text-xs">
+                          현재 활성 핫바 아이템:{" "}
+                          <span className="font-medium">
+                            {activeHotbarItem}
+                          </span>
+                        </p>
+                      </div>
+                    </div>
+                  </div>
                 </ResizablePanel>
 
-                {/* 사이드바 전용 리사이즈 핸들 (SidebarTemplate과 동일한 설정) */}
-                <ResizableHandle className="w-1 cursor-col-resize bg-transparent transition-colors hover:bg-blue-500/20 active:bg-blue-500/30" />
-              </>
-            )}
-
-            {/* 메인 콘텐츠 패널 */}
-            <ResizablePanel>
-              <div className="flex h-full flex-1 flex-col gap-4 p-4 lg:gap-6 lg:p-6">
-                <div className="flex h-full w-full flex-col items-center justify-center gap-4">
-                  <div className="bg-muted text-muted-foreground flex items-center justify-center gap-2 rounded-md px-3 py-2">
-                    <span className="font-mono text-sm">contents-area</span>
-                  </div>
-                  <div className="text-center">
-                    <p className="text-muted-foreground text-sm">
-                      Header, 고정 Hotbar, 독립 리사이즈 Sidebar, AI Assistant가
-                      결합된 완전한 VS Code 스타일 레이아웃입니다.
-                    </p>
-                    <p className="text-muted-foreground mt-2 text-xs">
-                      현재 활성 핫바 아이템:{" "}
-                      <span className="font-medium">{activeHotbarItem}</span>
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </ResizablePanel>
-
-            {/* AI Assistant 패널 */}
-            {isAIAssistantVisible && (
-              <>
-                <ResizableHandle className="w-1 cursor-col-resize bg-transparent transition-colors hover:bg-blue-500/20 active:bg-blue-500/30" />
-                <ResizablePanel defaultSize={25} minSize={20} maxSize={40}>
-                  <AIAssistant
-                    onClose={handleAIAssistantClose}
-                    onStart={() => {}}
-                    className="h-full w-full"
-                  />
-                </ResizablePanel>
-              </>
-            )}
-          </ResizablePanelGroup>
+                {/* AI Assistant 패널 */}
+                {isAIAssistantVisible && (
+                  <>
+                    <ResizableHandle className="w-1 cursor-col-resize bg-transparent transition-colors hover:bg-blue-500/20 active:bg-blue-500/30" />
+                    <ResizablePanel defaultSize={30} minSize={20} maxSize={40}>
+                      <AIAssistant
+                        onClose={handleAIAssistantClose}
+                        onStart={() => {}}
+                        className="h-full w-full"
+                      />
+                    </ResizablePanel>
+                  </>
+                )}
+              </ResizablePanelGroup>
+            </div>
+          </div>
         </div>
       </div>
     );
