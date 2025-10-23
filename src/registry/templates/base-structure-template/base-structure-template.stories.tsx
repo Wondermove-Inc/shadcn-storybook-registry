@@ -128,7 +128,7 @@ export const Default: Story = {
                 {/* 사이드바 패널 - 조건부 렌더링 */}
                 {isSidebarVisible && (
                   <>
-                    <ResizablePanel defaultSize={25} minSize={15} maxSize={50}>
+                    <ResizablePanel defaultSize={15} minSize={15} maxSize={50}>
                       <ResizableAppSidebar className="border-r" />
                     </ResizablePanel>
 
