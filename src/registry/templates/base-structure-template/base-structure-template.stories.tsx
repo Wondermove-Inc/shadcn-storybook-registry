@@ -58,15 +58,26 @@ type Story = StoryObj<typeof meta>;
  */
 export const Default: Story = {
   render: () => {
+    // 🎯 목적: AI Assistant 표시 상태 관리
     const [isAIAssistantVisible, setIsAIAssistantVisible] =
       React.useState(true);
 
+    // 🎯 목적: 사이드바 표시 상태 관리
+    const [isSidebarVisible, setIsSidebarVisible] = React.useState(true);
+
+    // 🎯 목적: AI Assistant 토글 핸들러
     const handleAIAssistantToggle = () => {
       setIsAIAssistantVisible((prev) => !prev);
     };
 
+    // 🎯 목적: AI Assistant 닫기 핸들러
     const handleAIAssistantClose = () => {
       setIsAIAssistantVisible(false);
+    };
+
+    // 🎯 목적: 사이드바 토글 핸들러 (Header의 PanelLeft 버튼용)
+    const handlePanelLeftToggle = () => {
+      setIsSidebarVisible((prev) => !prev);
     };
 
     return (
@@ -76,18 +87,22 @@ export const Default: Story = {
           onSearchChange={() => {}}
           onNavigationBack={() => {}}
           onNavigationForward={() => {}}
-          onPanelLeftToggle={() => {}}
+          onPanelLeftToggle={handlePanelLeftToggle}
           onAiAssistantToggle={handleAIAssistantToggle}
         />
         <div className="h-[calc(100vh-40px)] w-full">
           <ResizablePanelGroup direction="horizontal" className="h-full w-full">
-            {/* 사이드바 패널 */}
-            <ResizablePanel defaultSize={15} minSize={15} maxSize={50}>
-              <ResizableAppSidebar className="border-r" />
-            </ResizablePanel>
+            {/* 사이드바 패널 - 조건부 렌더링 */}
+            {isSidebarVisible && (
+              <>
+                <ResizablePanel defaultSize={15} minSize={15} maxSize={50}>
+                  <ResizableAppSidebar className="border-r" />
+                </ResizablePanel>
 
-            {/* 사이드바 리사이즈 핸들 */}
-            <ResizableHandle className="w-1 cursor-col-resize bg-transparent transition-colors hover:bg-blue-500/20 active:bg-blue-500/30" />
+                {/* 사이드바 리사이즈 핸들 */}
+                <ResizableHandle className="w-1 cursor-col-resize bg-transparent transition-colors hover:bg-blue-500/20 active:bg-blue-500/30" />
+              </>
+            )}
 
             {/* 메인 콘텐츠 패널 */}
             <ResizablePanel>
