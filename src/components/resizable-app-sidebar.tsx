@@ -124,7 +124,7 @@ function Tree({ item, onFileSelect }: TreeProps) {
           <CollapsibleTrigger asChild>
             <Button
               variant="ghost"
-              className="ring-sidebar-ring active:bg-sidebar-accent active:text-sidebar-accent-foreground data-[active=true]:bg-sidebar-accent data-[active=true]:text-sidebar-accent-foreground data-[state=open]:hover:bg-sidebar-accent data-[state=open]:hover:text-sidebar-accent-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground flex h-8 w-full items-center gap-2 overflow-hidden rounded-md p-2 text-left text-sm outline-hidden transition-[width,height,padding] focus-visible:ring-2 disabled:pointer-events-none disabled:opacity-50 aria-disabled:pointer-events-none aria-disabled:opacity-50 data-[active=true]:font-medium [&>span:last-child]:truncate [&>svg]:size-4 [&>svg]:shrink-0"
+              className="hover:bg-sidebar-accent hover:text-sidebar-accent-foreground h-8 w-full justify-start gap-2 p-2 text-sm"
             >
               <ChevronRight className="transition-transform" />
               {isOpen ? (
@@ -136,7 +136,7 @@ function Tree({ item, onFileSelect }: TreeProps) {
             </Button>
           </CollapsibleTrigger>
           <CollapsibleContent>
-            <ul className="flex w-full min-w-0 flex-col gap-1 pl-4">
+            <ul className="border-sidebar-border ml-2 flex w-full min-w-0 flex-col gap-1 border-l pl-4">
               {item.children?.map((subItem) => (
                 <Tree
                   key={subItem.id}
@@ -156,7 +156,7 @@ function Tree({ item, onFileSelect }: TreeProps) {
       <Button
         variant="ghost"
         onClick={() => onFileSelect?.(item)}
-        className="text-sidebar-foreground ring-sidebar-ring hover:bg-sidebar-accent hover:text-sidebar-accent-foreground active:bg-sidebar-accent active:text-sidebar-accent-foreground data-[active=true]:bg-sidebar-accent data-[active=true]:text-sidebar-accent-foreground flex h-7 w-full min-w-0 items-center gap-2 overflow-hidden rounded-md px-2 text-sm outline-hidden focus-visible:ring-2 disabled:pointer-events-none disabled:opacity-50 aria-disabled:pointer-events-none aria-disabled:opacity-50 [&>span:last-child]:truncate [&>svg]:size-4 [&>svg]:shrink-0"
+        className="hover:bg-sidebar-accent hover:text-sidebar-accent-foreground h-7 w-full justify-start gap-2 px-2 text-sm"
       >
         <File className="h-4 w-4" />
         <span>{item.name}</span>
@@ -225,7 +225,7 @@ export function ResizableAppSidebar({
                   <Button
                     variant="ghost"
                     onClick={() => handleFileSelect(item)}
-                    className="peer/menu-button ring-sidebar-ring active:bg-sidebar-accent active:text-sidebar-accent-foreground data-[active=true]:bg-sidebar-accent data-[active=true]:text-sidebar-accent-foreground data-[state=open]:hover:bg-sidebar-accent data-[state=open]:hover:text-sidebar-accent-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground flex h-8 w-full items-center gap-2 overflow-hidden rounded-md p-2 text-left text-sm outline-hidden transition-[width,height,padding] focus-visible:ring-2 disabled:pointer-events-none disabled:opacity-50 aria-disabled:pointer-events-none aria-disabled:opacity-50 data-[active=true]:font-medium [&>span:last-child]:truncate [&>svg]:size-4 [&>svg]:shrink-0"
+                    className="hover:bg-sidebar-accent hover:text-sidebar-accent-foreground h-8 w-full justify-start gap-2 p-2 text-sm"
                   >
                     <File className="h-4 w-4" />
                     <span>{item.name}</span>
