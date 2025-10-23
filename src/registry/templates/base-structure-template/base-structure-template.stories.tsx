@@ -157,7 +157,7 @@ export const Structure: Story = {
                       className="h-full"
                     >
                       {/* 상단: 메인 콘텐츠 영역 */}
-                      <ResizablePanel defaultSize={75} minSize={50}>
+                      <ResizablePanel defaultSize={75} minSize={10}>
                         <div className="flex h-full flex-1 flex-col gap-4 lg:gap-6">
                           <div className="flex h-full w-full flex-col items-center justify-center gap-4">
                             <div className="bg-muted text-muted-foreground flex items-center justify-center gap-2 rounded-md px-3 py-2">
@@ -184,7 +184,7 @@ export const Structure: Story = {
                       <ResizablePanel
                         defaultSize={25}
                         minSize={15}
-                        maxSize={50}
+                        maxSize={90}
                       >
                         <div className="bg-background border-border flex h-full w-full flex-col border-t">
                           {/* 패널 헤더 - 탭 버튼들과 컨트롤 버튼들 */}
@@ -558,78 +558,85 @@ export const StructurePanel: Story = {
 
     return (
       <div className="bg-background h-screen w-full">
-        {/* 🎯 목적: VS Code 스타일 패널 컨테이너 */}
-        <div className="flex h-full w-full flex-col">
-          {/* 메인 콘텐츠 영역 (패널 위쪽) */}
-          <div className="flex flex-1 items-center justify-center p-8">
-            <div className="text-center">
-              <h2 className="mb-2 text-lg font-semibold">Panel 템플릿</h2>
-              <p className="text-muted-foreground text-sm">
-                VS Code 스타일의 하단 패널 컴포넌트입니다.
-              </p>
-              <p className="text-muted-foreground mt-2 text-xs">
-                현재 활성 탭: <span className="font-medium">{activeTab}</span>
-              </p>
+        {/* 🎯 목적: VS Code 스타일 패널 컨테이너 - 리사이징 가능 */}
+        <ResizablePanelGroup direction="vertical" className="h-full">
+          {/* 상단: 메인 콘텐츠 영역 */}
+          <ResizablePanel defaultSize={75} minSize={10}>
+            <div className="flex h-full items-center justify-center p-8">
+              <div className="text-center">
+                <h2 className="mb-2 text-lg font-semibold">Panel 템플릿</h2>
+                <p className="text-muted-foreground text-sm">
+                  VS Code 스타일의 하단 패널 컴포넌트입니다.
+                </p>
+                <p className="text-muted-foreground mt-2 text-xs">
+                  현재 활성 탭: <span className="font-medium">{activeTab}</span>
+                </p>
+              </div>
             </div>
-          </div>
+          </ResizablePanel>
 
-          {/* 🎯 목적: VS Code 스타일 하단 패널 */}
-          <div className="bg-background border-border flex w-full flex-col border-t">
-            {/* 패널 헤더 - 탭 버튼들과 컨트롤 버튼들 */}
-            <div className="bg-background flex h-10 w-full items-center justify-between px-2">
-              {/* 좌측: 패널 탭 버튼들 */}
-              <div className="flex items-center gap-1">
-                {panelTabs.map((tab) => (
+          {/* 상하 구분 리사이즈 핸들 */}
+          <ResizableHandle className="h-1 cursor-row-resize bg-transparent transition-colors hover:bg-blue-500/20 active:bg-blue-500/30" />
+
+          {/* 하단: VS Code 스타일 패널 - 리사이징 가능 */}
+          <ResizablePanel defaultSize={25} minSize={15} maxSize={90}>
+            <div className="bg-background border-border flex h-full w-full flex-col border-t">
+              {/* 패널 헤더 - 탭 버튼들과 컨트롤 버튼들 */}
+              <div className="bg-background flex h-10 w-full items-center justify-between px-2">
+                {/* 좌측: 패널 탭 버튼들 */}
+                <div className="flex items-center gap-1">
+                  {panelTabs.map((tab) => (
+                    <Button
+                      key={tab.id}
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => handleTabClick(tab.id)}
+                      className={`text-foreground h-8 px-3 text-xs font-medium transition-colors ${
+                        activeTab === tab.id
+                          ? "bg-sidebar-accent text-sidebar-accent-foreground"
+                          : "hover:bg-sidebar-accent/50"
+                      }`}
+                    >
+                      {tab.label}
+                    </Button>
+                  ))}
+                </div>
+
+                {/* 우측: 컨트롤 버튼들 */}
+                <div className="flex items-center gap-1">
+                  {/* 확장 버튼 */}
                   <Button
-                    key={tab.id}
                     variant="ghost"
-                    size="sm"
-                    onClick={() => handleTabClick(tab.id)}
-                    className={`text-foreground h-8 px-3 text-xs font-medium transition-colors ${
-                      activeTab === tab.id
-                        ? "bg-sidebar-accent text-sidebar-accent-foreground"
-                        : "hover:bg-sidebar-accent/50"
-                    }`}
+                    size="icon"
+                    onClick={handlePanelExpand}
+                    className="text-muted-foreground hover:text-foreground h-8 w-8"
+                    title="Maximize Panel Size"
                   >
-                    {tab.label}
+                    <Maximize2 className="h-4 w-4" />
                   </Button>
-                ))}
+
+                  {/* 닫기 버튼 */}
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    onClick={handlePanelClose}
+                    className="text-muted-foreground hover:text-foreground h-8 w-8"
+                    title="Close Panel"
+                  >
+                    <X className="h-4 w-4" />
+                  </Button>
+                </div>
               </div>
 
-              {/* 우측: 컨트롤 버튼들 */}
-              <div className="flex items-center gap-1">
-                {/* 확장 버튼 */}
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  onClick={handlePanelExpand}
-                  className="text-muted-foreground hover:text-foreground h-8 w-8"
-                  title="Maximize Panel Size"
-                >
-                  <Maximize2 className="h-4 w-4" />
-                </Button>
-
-                {/* 닫기 버튼 */}
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  onClick={handlePanelClose}
-                  className="text-muted-foreground hover:text-foreground h-8 w-8"
-                  title="Close Panel"
-                >
-                  <X className="h-4 w-4" />
-                </Button>
+              {/* 패널 콘텐츠 영역 */}
+              <div className="bg-background flex w-full flex-1 items-center justify-center p-6">
+                <div className="bg-muted text-muted-foreground flex items-center justify-center rounded-md px-3 py-2">
+                  <span className="font-mono text-sm">panel-area</span>
+                </div>
               </div>
             </div>
-
-            {/* 패널 콘텐츠 영역 */}
-            <div className="bg-background flex h-80 w-full items-center justify-center p-6">
-              <div className="bg-muted text-muted-foreground flex items-center justify-center rounded-md px-3 py-2">
-                <span className="font-mono text-sm">panel-area</span>
-              </div>
-            </div>
-          </div>
-        </div>
+          </ResizablePanel>
+        </ResizablePanelGroup>
       </div>
     );
   },
