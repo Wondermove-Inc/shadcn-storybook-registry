@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/resizable";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import { X } from "lucide-react";
+import { X, Maximize2 } from "lucide-react";
 import { Hotbar } from "@/components/hotbar";
 
 /**
@@ -62,7 +62,7 @@ type Story = StoryObj<typeof meta>;
  * - Header의 PanelLeft 버튼으로 사이드바 토글
  * - AI Assistant 패널 토글 및 닫기 기능
  */
-export const Default: Story = {
+export const Structure: Story = {
   render: () => {
     // 🎯 목적: AI Assistant 표시 상태 관리
     const [isAIAssistantVisible, setIsAIAssistantVisible] =
@@ -137,28 +137,97 @@ export const Default: Story = {
                   </>
                 )}
 
-                {/* 메인 콘텐츠 패널 */}
+                {/* 메인 콘텐츠 패널 - VS Code 스타일로 패널을 포함하는 상하 분할 */}
                 <ResizablePanel>
-                  <div className="flex h-full flex-1 flex-col gap-4 p-4 lg:gap-6 lg:p-6">
-                    <div className="flex h-full w-full flex-col items-center justify-center gap-4">
-                      <div className="bg-muted text-muted-foreground flex items-center justify-center gap-2 rounded-md px-3 py-2">
-                        <span className="font-mono text-sm">contents-area</span>
+                  <ResizablePanelGroup direction="vertical" className="h-full">
+                    {/* 상단: 메인 콘텐츠 영역 */}
+                    <ResizablePanel defaultSize={75} minSize={50}>
+                      <div className="flex h-full flex-1 flex-col gap-4 p-4 lg:gap-6 lg:p-6">
+                        <div className="flex h-full w-full flex-col items-center justify-center gap-4">
+                          <div className="bg-muted text-muted-foreground flex items-center justify-center gap-2 rounded-md px-3 py-2">
+                            <span className="font-mono text-sm">
+                              contents-area
+                            </span>
+                          </div>
+                          <div className="text-center">
+                            <p className="text-muted-foreground mt-2 text-xs">
+                              현재 활성 핫바 아이템:{" "}
+                              <span className="font-medium">
+                                {activeHotbarItem}
+                              </span>
+                            </p>
+                          </div>
+                        </div>
                       </div>
-                      <div className="text-center">
-                        <p className="text-muted-foreground text-sm">
-                          Header, 고정 Hotbar, 독립 리사이즈 Sidebar, AI
-                          Assistant가 결합된 완전한 VS Code 스타일
-                          레이아웃입니다.
-                        </p>
-                        <p className="text-muted-foreground mt-2 text-xs">
-                          현재 활성 핫바 아이템:{" "}
-                          <span className="font-medium">
-                            {activeHotbarItem}
-                          </span>
-                        </p>
+                    </ResizablePanel>
+
+                    {/* 상하 구분 리사이즈 핸들 */}
+                    <ResizableHandle className="h-1 cursor-row-resize bg-transparent transition-colors hover:bg-blue-500/20 active:bg-blue-500/30" />
+
+                    {/* 하단: VS Code 스타일 패널 */}
+                    <ResizablePanel defaultSize={25} minSize={15} maxSize={50}>
+                      <div className="bg-background border-border flex h-full w-full flex-col border-t">
+                        {/* 패널 헤더 - 탭 버튼들과 컨트롤 버튼들 */}
+                        <div className="bg-background flex h-10 w-full items-center justify-between px-2">
+                          {/* 좌측: 패널 탭 버튼들 */}
+                          <div className="flex items-center gap-1">
+                            {[
+                              { id: "PROBLEMS", label: "PROBLEMS" },
+                              { id: "OUTPUT", label: "OUTPUT" },
+                              { id: "DEBUG_CONSOLE", label: "DEBUG CONSOLE" },
+                              { id: "TERMINAL", label: "TERMINAL" },
+                              { id: "PORTS", label: "PORTS" },
+                            ].map((tab) => (
+                              <Button
+                                key={tab.id}
+                                variant="ghost"
+                                size="sm"
+                                className={`text-foreground h-8 px-3 text-xs font-medium transition-colors ${
+                                  tab.id === "TERMINAL"
+                                    ? "bg-sidebar-accent text-sidebar-accent-foreground"
+                                    : "hover:bg-sidebar-accent/50"
+                                }`}
+                              >
+                                {tab.label}
+                              </Button>
+                            ))}
+                          </div>
+
+                          {/* 우측: 컨트롤 버튼들 */}
+                          <div className="flex items-center gap-1">
+                            {/* 확장 버튼 */}
+                            <Button
+                              variant="ghost"
+                              size="icon"
+                              className="text-muted-foreground hover:text-foreground h-8 w-8"
+                              title="Maximize Panel Size"
+                            >
+                              <Maximize2 className="h-4 w-4" />
+                            </Button>
+
+                            {/* 닫기 버튼 */}
+                            <Button
+                              variant="ghost"
+                              size="icon"
+                              className="text-muted-foreground hover:text-foreground h-8 w-8"
+                              title="Close Panel"
+                            >
+                              <X className="h-4 w-4" />
+                            </Button>
+                          </div>
+                        </div>
+
+                        {/* 패널 콘텐츠 영역 */}
+                        <div className="bg-background flex w-full flex-1 items-center justify-center p-6">
+                          <div className="bg-muted text-muted-foreground flex items-center justify-center rounded-md px-3 py-2">
+                            <span className="font-mono text-sm">
+                              panel-area
+                            </span>
+                          </div>
+                        </div>
                       </div>
-                    </div>
-                  </div>
+                    </ResizablePanel>
+                  </ResizablePanelGroup>
                 </ResizablePanel>
 
                 {/* AI Assistant 패널 */}
@@ -188,7 +257,7 @@ export const Default: Story = {
  *
  * 🎯 목적: Header 컴포넌트의 독립적인 사용법 데모
  */
-export const HeaderOnly: Story = {
+export const StructureHeader: Story = {
   render: () => (
     <div className="bg-background h-screen w-full">
       <Header
@@ -216,7 +285,7 @@ export const HeaderOnly: Story = {
  *
  * 🎯 목적: Sidebar 컴포넌트의 독립적인 사용법 데모
  */
-export const SidebarOnly: Story = {
+export const StructureSidebar: Story = {
   render: () => (
     <div className="h-screen w-full">
       <SidebarTemplate defaultSidebarSize={15}>
@@ -238,7 +307,7 @@ export const SidebarOnly: Story = {
  *
  * 🎯 목적: AI Assistant 컴포넌트의 독립적인 사용법 데모
  */
-export const AIAssistantOnly: Story = {
+export const StructureAIAssistant: Story = {
   render: () => (
     <div className="bg-background h-screen w-full">
       <ResizablePanelGroup direction="horizontal" className="h-full w-full">
@@ -282,7 +351,7 @@ export const AIAssistantOnly: Story = {
  * - 우측: Disabled 탭들 + Separator 구분선
  * - 디자인 토큰 사용 (하드코딩 금지), shadcn 컴포넌트만 활용
  */
-export const TabOnly: Story = {
+export const StructureTab: Story = {
   render: () => (
     <div className="bg-background h-screen w-full">
       {/* UIDL 기반 탭 네비게이션 바 - shadcn 컴포넌트 사용 */}
@@ -352,7 +421,7 @@ export const TabOnly: Story = {
  * - 활성/비활성 상태 시각적 표시
  * - 하단에 Settings, Account 아이콘 배치
  */
-export const HotbarOnly: Story = {
+export const StructureHotbar: Story = {
   render: () => {
     // 🎯 목적: 활성 아이템 상태 관리
     const [activeItem, setActiveItem] = React.useState("explorer");
@@ -382,6 +451,140 @@ export const HotbarOnly: Story = {
               현재 활성 아이템:{" "}
               <span className="font-medium">{activeItem}</span>
             </p>
+          </div>
+        </div>
+      </div>
+    );
+  },
+};
+
+/**
+ * VS Code 스타일의 하단 패널만 독립적으로 표시하는 스토리입니다.
+ *
+ * 🎯 목적: UIDL 기반 Panel 컴포넌트의 독립적인 사용법 데모
+ * ✨ 특징:
+ * - VS Code 하단 패널 스타일의 탭 인터페이스
+ * - PROBLEMS, OUTPUT, DEBUG CONSOLE, TERMINAL, PORTS 탭
+ * - 활성/비활성 탭 상태 시각적 표시
+ * - 우측에 확장/닫기 버튼 배치
+ */
+export const StructurePanel: Story = {
+  render: () => {
+    // 🎯 목적: 활성 탭 상태 관리
+    const [activeTab, setActiveTab] = React.useState("TERMINAL");
+
+    // 🎯 목적: 패널 표시 상태 관리
+    const [isPanelVisible, setIsPanelVisible] = React.useState(true);
+
+    // 🎯 목적: 패널 탭 목록 정의
+    const panelTabs = [
+      { id: "PROBLEMS", label: "PROBLEMS" },
+      { id: "OUTPUT", label: "OUTPUT" },
+      { id: "DEBUG_CONSOLE", label: "DEBUG CONSOLE" },
+      { id: "TERMINAL", label: "TERMINAL" },
+      { id: "PORTS", label: "PORTS" },
+    ];
+
+    // 🎯 목적: 탭 클릭 핸들러
+    const handleTabClick = (tabId: string) => {
+      setActiveTab(tabId);
+    };
+
+    // 🎯 목적: 패널 닫기 핸들러
+    const handlePanelClose = () => {
+      setIsPanelVisible(false);
+    };
+
+    // 🎯 목적: 패널 확장 핸들러
+    const handlePanelExpand = () => {
+      console.log("Panel expand clicked");
+    };
+
+    if (!isPanelVisible) {
+      return (
+        <div className="bg-background flex h-screen w-full items-center justify-center">
+          <div className="text-center">
+            <h2 className="mb-2 text-lg font-semibold">Panel 템플릿</h2>
+            <p className="text-muted-foreground text-sm">
+              패널이 닫혔습니다. 새로고침하여 다시 확인하세요.
+            </p>
+          </div>
+        </div>
+      );
+    }
+
+    return (
+      <div className="bg-background h-screen w-full">
+        {/* 🎯 목적: VS Code 스타일 패널 컨테이너 */}
+        <div className="flex h-full w-full flex-col">
+          {/* 메인 콘텐츠 영역 (패널 위쪽) */}
+          <div className="flex flex-1 items-center justify-center p-8">
+            <div className="text-center">
+              <h2 className="mb-2 text-lg font-semibold">Panel 템플릿</h2>
+              <p className="text-muted-foreground text-sm">
+                VS Code 스타일의 하단 패널 컴포넌트입니다.
+              </p>
+              <p className="text-muted-foreground mt-2 text-xs">
+                현재 활성 탭: <span className="font-medium">{activeTab}</span>
+              </p>
+            </div>
+          </div>
+
+          {/* 🎯 목적: VS Code 스타일 하단 패널 */}
+          <div className="bg-background border-border flex w-full flex-col border-t">
+            {/* 패널 헤더 - 탭 버튼들과 컨트롤 버튼들 */}
+            <div className="bg-background flex h-10 w-full items-center justify-between px-2">
+              {/* 좌측: 패널 탭 버튼들 */}
+              <div className="flex items-center gap-1">
+                {panelTabs.map((tab) => (
+                  <Button
+                    key={tab.id}
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => handleTabClick(tab.id)}
+                    className={`text-foreground h-8 px-3 text-xs font-medium transition-colors ${
+                      activeTab === tab.id
+                        ? "bg-sidebar-accent text-sidebar-accent-foreground"
+                        : "hover:bg-sidebar-accent/50"
+                    }`}
+                  >
+                    {tab.label}
+                  </Button>
+                ))}
+              </div>
+
+              {/* 우측: 컨트롤 버튼들 */}
+              <div className="flex items-center gap-1">
+                {/* 확장 버튼 */}
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={handlePanelExpand}
+                  className="text-muted-foreground hover:text-foreground h-8 w-8"
+                  title="Maximize Panel Size"
+                >
+                  <Maximize2 className="h-4 w-4" />
+                </Button>
+
+                {/* 닫기 버튼 */}
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={handlePanelClose}
+                  className="text-muted-foreground hover:text-foreground h-8 w-8"
+                  title="Close Panel"
+                >
+                  <X className="h-4 w-4" />
+                </Button>
+              </div>
+            </div>
+
+            {/* 패널 콘텐츠 영역 */}
+            <div className="bg-background flex h-80 w-full items-center justify-center p-6">
+              <div className="bg-muted text-muted-foreground flex items-center justify-center rounded-md px-3 py-2">
+                <span className="font-mono text-sm">panel-area</span>
+              </div>
+            </div>
           </div>
         </div>
       </div>
