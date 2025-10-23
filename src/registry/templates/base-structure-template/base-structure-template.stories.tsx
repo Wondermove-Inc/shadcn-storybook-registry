@@ -74,6 +74,9 @@ export const Structure: Story = {
     // 🎯 목적: 핫바 활성 아이템 상태 관리
     const [activeHotbarItem, setActiveHotbarItem] = React.useState("explorer");
 
+    // 🎯 목적: 하단 패널 표시 상태 관리
+    const [isPanelVisible, setIsPanelVisible] = React.useState(true);
+
     // 🎯 목적: AI Assistant 토글 핸들러
     const handleAIAssistantToggle = () => {
       setIsAIAssistantVisible((prev) => !prev);
@@ -87,6 +90,11 @@ export const Structure: Story = {
     // 🎯 목적: 사이드바 토글 핸들러 (Header의 PanelLeft 버튼용)
     const handlePanelLeftToggle = () => {
       setIsSidebarVisible((prev) => !prev);
+    };
+
+    // 🎯 목적: 하단 패널 토글 핸들러
+    const handlePanelBottomToggle = () => {
+      setIsPanelVisible((prev) => !prev);
     };
 
     // 🎯 목적: 핫바 아이템 클릭 핸들러
@@ -106,7 +114,11 @@ export const Structure: Story = {
           onNavigationBack={() => {}}
           onNavigationForward={() => {}}
           onPanelLeftToggle={handlePanelLeftToggle}
+          onPanelBottomToggle={handlePanelBottomToggle}
           onAiAssistantToggle={handleAIAssistantToggle}
+          isPanelLeftActive={isSidebarVisible}
+          isPanelBottomActive={isPanelVisible}
+          isAiAssistantActive={isAIAssistantVisible}
         />
         <div className="h-[calc(100vh-40px)] w-full">
           <div className="flex h-full">
@@ -139,95 +151,124 @@ export const Structure: Story = {
 
                 {/* 메인 콘텐츠 패널 - VS Code 스타일로 패널을 포함하는 상하 분할 */}
                 <ResizablePanel>
-                  <ResizablePanelGroup direction="vertical" className="h-full">
-                    {/* 상단: 메인 콘텐츠 영역 */}
-                    <ResizablePanel defaultSize={75} minSize={50}>
-                      <div className="flex h-full flex-1 flex-col gap-4 p-4 lg:gap-6 lg:p-6">
-                        <div className="flex h-full w-full flex-col items-center justify-center gap-4">
-                          <div className="bg-muted text-muted-foreground flex items-center justify-center gap-2 rounded-md px-3 py-2">
-                            <span className="font-mono text-sm">
-                              contents-area
-                            </span>
-                          </div>
-                          <div className="text-center">
-                            <p className="text-muted-foreground mt-2 text-xs">
-                              현재 활성 핫바 아이템:{" "}
-                              <span className="font-medium">
-                                {activeHotbarItem}
+                  {isPanelVisible ? (
+                    <ResizablePanelGroup
+                      direction="vertical"
+                      className="h-full"
+                    >
+                      {/* 상단: 메인 콘텐츠 영역 */}
+                      <ResizablePanel defaultSize={75} minSize={50}>
+                        <div className="flex h-full flex-1 flex-col gap-4 p-4 lg:gap-6 lg:p-6">
+                          <div className="flex h-full w-full flex-col items-center justify-center gap-4">
+                            <div className="bg-muted text-muted-foreground flex items-center justify-center gap-2 rounded-md px-3 py-2">
+                              <span className="font-mono text-sm">
+                                contents-area
                               </span>
-                            </p>
+                            </div>
+                            <div className="text-center">
+                              <p className="text-muted-foreground mt-2 text-xs">
+                                현재 활성 핫바 아이템:{" "}
+                                <span className="font-medium">
+                                  {activeHotbarItem}
+                                </span>
+                              </p>
+                            </div>
                           </div>
                         </div>
-                      </div>
-                    </ResizablePanel>
+                      </ResizablePanel>
 
-                    {/* 상하 구분 리사이즈 핸들 */}
-                    <ResizableHandle className="h-1 cursor-row-resize bg-transparent transition-colors hover:bg-blue-500/20 active:bg-blue-500/30" />
+                      {/* 상하 구분 리사이즈 핸들 */}
+                      <ResizableHandle className="h-1 cursor-row-resize bg-transparent transition-colors hover:bg-blue-500/20 active:bg-blue-500/30" />
 
-                    {/* 하단: VS Code 스타일 패널 */}
-                    <ResizablePanel defaultSize={25} minSize={15} maxSize={50}>
-                      <div className="bg-background border-border flex h-full w-full flex-col border-t">
-                        {/* 패널 헤더 - 탭 버튼들과 컨트롤 버튼들 */}
-                        <div className="bg-background flex h-10 w-full items-center justify-between px-2">
-                          {/* 좌측: 패널 탭 버튼들 */}
-                          <div className="flex items-center gap-1">
-                            {[
-                              { id: "PROBLEMS", label: "PROBLEMS" },
-                              { id: "OUTPUT", label: "OUTPUT" },
-                              { id: "DEBUG_CONSOLE", label: "DEBUG CONSOLE" },
-                              { id: "TERMINAL", label: "TERMINAL" },
-                              { id: "PORTS", label: "PORTS" },
-                            ].map((tab) => (
+                      {/* 하단: VS Code 스타일 패널 */}
+                      <ResizablePanel
+                        defaultSize={25}
+                        minSize={15}
+                        maxSize={50}
+                      >
+                        <div className="bg-background border-border flex h-full w-full flex-col border-t">
+                          {/* 패널 헤더 - 탭 버튼들과 컨트롤 버튼들 */}
+                          <div className="bg-background flex h-10 w-full items-center justify-between px-2">
+                            {/* 좌측: 패널 탭 버튼들 */}
+                            <div className="flex items-center gap-1">
+                              {[
+                                { id: "PROBLEMS", label: "PROBLEMS" },
+                                { id: "OUTPUT", label: "OUTPUT" },
+                                { id: "DEBUG_CONSOLE", label: "DEBUG CONSOLE" },
+                                { id: "TERMINAL", label: "TERMINAL" },
+                                { id: "PORTS", label: "PORTS" },
+                              ].map((tab) => (
+                                <Button
+                                  key={tab.id}
+                                  variant="ghost"
+                                  size="sm"
+                                  className={`text-foreground h-8 px-3 text-xs font-medium transition-colors ${
+                                    tab.id === "TERMINAL"
+                                      ? "bg-sidebar-accent text-sidebar-accent-foreground"
+                                      : "hover:bg-sidebar-accent/50"
+                                  }`}
+                                >
+                                  {tab.label}
+                                </Button>
+                              ))}
+                            </div>
+
+                            {/* 우측: 컨트롤 버튼들 */}
+                            <div className="flex items-center gap-1">
+                              {/* 확장 버튼 */}
                               <Button
-                                key={tab.id}
                                 variant="ghost"
-                                size="sm"
-                                className={`text-foreground h-8 px-3 text-xs font-medium transition-colors ${
-                                  tab.id === "TERMINAL"
-                                    ? "bg-sidebar-accent text-sidebar-accent-foreground"
-                                    : "hover:bg-sidebar-accent/50"
-                                }`}
+                                size="icon"
+                                className="text-muted-foreground hover:text-foreground h-8 w-8"
+                                title="Maximize Panel Size"
                               >
-                                {tab.label}
+                                <Maximize2 className="h-4 w-4" />
                               </Button>
-                            ))}
+
+                              {/* 닫기 버튼 */}
+                              <Button
+                                variant="ghost"
+                                size="icon"
+                                onClick={handlePanelBottomToggle}
+                                className="text-muted-foreground hover:text-foreground h-8 w-8"
+                                title="Close Panel"
+                              >
+                                <X className="h-4 w-4" />
+                              </Button>
+                            </div>
                           </div>
 
-                          {/* 우측: 컨트롤 버튼들 */}
-                          <div className="flex items-center gap-1">
-                            {/* 확장 버튼 */}
-                            <Button
-                              variant="ghost"
-                              size="icon"
-                              className="text-muted-foreground hover:text-foreground h-8 w-8"
-                              title="Maximize Panel Size"
-                            >
-                              <Maximize2 className="h-4 w-4" />
-                            </Button>
-
-                            {/* 닫기 버튼 */}
-                            <Button
-                              variant="ghost"
-                              size="icon"
-                              className="text-muted-foreground hover:text-foreground h-8 w-8"
-                              title="Close Panel"
-                            >
-                              <X className="h-4 w-4" />
-                            </Button>
+                          {/* 패널 콘텐츠 영역 */}
+                          <div className="bg-background flex w-full flex-1 items-center justify-center p-6">
+                            <div className="bg-muted text-muted-foreground flex items-center justify-center rounded-md px-3 py-2">
+                              <span className="font-mono text-sm">
+                                panel-area
+                              </span>
+                            </div>
                           </div>
                         </div>
-
-                        {/* 패널 콘텐츠 영역 */}
-                        <div className="bg-background flex w-full flex-1 items-center justify-center p-6">
-                          <div className="bg-muted text-muted-foreground flex items-center justify-center rounded-md px-3 py-2">
-                            <span className="font-mono text-sm">
-                              panel-area
+                      </ResizablePanel>
+                    </ResizablePanelGroup>
+                  ) : (
+                    // 패널이 닫혔을 때: 전체 화면 콘텐츠 영역
+                    <div className="flex h-full flex-1 flex-col gap-4 p-4 lg:gap-6 lg:p-6">
+                      <div className="flex h-full w-full flex-col items-center justify-center gap-4">
+                        <div className="bg-muted text-muted-foreground flex items-center justify-center gap-2 rounded-md px-3 py-2">
+                          <span className="font-mono text-sm">
+                            contents-area
+                          </span>
+                        </div>
+                        <div className="text-center">
+                          <p className="text-muted-foreground mt-2 text-xs">
+                            현재 활성 핫바 아이템:{" "}
+                            <span className="font-medium">
+                              {activeHotbarItem}
                             </span>
-                          </div>
+                          </p>
                         </div>
                       </div>
-                    </ResizablePanel>
-                  </ResizablePanelGroup>
+                    </div>
+                  )}
                 </ResizablePanel>
 
                 {/* AI Assistant 패널 */}
@@ -266,7 +307,9 @@ export const StructureHeader: Story = {
         onNavigationBack={() => {}}
         onNavigationForward={() => {}}
         onPanelLeftToggle={() => {}}
+        onPanelBottomToggle={() => {}}
         onAiAssistantToggle={() => {}}
+        isPanelBottomActive={true}
       />
       <div className="flex h-full items-center justify-center p-8">
         <div className="text-center">

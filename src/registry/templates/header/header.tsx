@@ -22,6 +22,12 @@ interface HeaderProps {
   onPanelBottomToggle?: () => void;
   onAiAssistantToggle?: () => void;
   onSettingsClick?: () => void;
+  /** 🎯 목적: 왼쪽 패널 활성화 상태 */
+  isPanelLeftActive?: boolean;
+  /** 🎯 목적: 하단 패널 활성화 상태 */
+  isPanelBottomActive?: boolean;
+  /** 🎯 목적: AI Assistant 활성화 상태 */
+  isAiAssistantActive?: boolean;
 }
 
 /**
@@ -163,10 +169,16 @@ function HeaderButtonGroup({
   onPanelLeftToggle,
   onPanelBottomToggle,
   onAiAssistantToggle,
+  isPanelLeftActive = false,
+  isPanelBottomActive = false,
+  isAiAssistantActive = false,
 }: {
   onPanelLeftToggle?: () => void;
   onPanelBottomToggle?: () => void;
   onAiAssistantToggle?: () => void;
+  isPanelLeftActive?: boolean;
+  isPanelBottomActive?: boolean;
+  isAiAssistantActive?: boolean;
 }) {
   return (
     <div className="flex items-center">
@@ -176,17 +188,21 @@ function HeaderButtonGroup({
           variant="ghost"
           size="icon"
           onClick={onPanelLeftToggle}
-          className="flex h-8 w-8 shrink-0 items-center justify-center gap-2 rounded-lg bg-transparent p-2"
+          className={`flex h-8 w-8 shrink-0 items-center justify-center gap-2 rounded-lg bg-transparent p-2 ${
+            isPanelLeftActive ? "" : "opacity-50"
+          }`}
         >
           <PanelLeftIcon />
         </Button>
 
-        {/* 하단 패널 토글 버튼 (비활성화) */}
+        {/* 하단 패널 토글 버튼 */}
         <Button
           variant="ghost"
           size="icon"
           onClick={onPanelBottomToggle}
-          className="flex h-8 w-8 shrink-0 items-center justify-center gap-2 rounded-lg bg-transparent p-2 opacity-50"
+          className={`flex h-8 w-8 shrink-0 items-center justify-center gap-2 rounded-lg bg-transparent p-2 ${
+            isPanelBottomActive ? "" : "opacity-50"
+          }`}
         >
           <PanelBottomIcon />
         </Button>
@@ -196,7 +212,9 @@ function HeaderButtonGroup({
           variant="ghost"
           size="icon"
           onClick={onAiAssistantToggle}
-          className="flex h-8 w-8 shrink-0 items-center justify-center gap-2 rounded-lg bg-transparent p-2"
+          className={`flex h-8 w-8 shrink-0 items-center justify-center gap-2 rounded-lg bg-transparent p-2 ${
+            isAiAssistantActive ? "" : "opacity-50"
+          }`}
         >
           <AiAssistantIcon />
         </Button>
@@ -216,6 +234,9 @@ export function Header({
   onPanelLeftToggle,
   onPanelBottomToggle,
   onAiAssistantToggle,
+  isPanelLeftActive = false,
+  isPanelBottomActive = false,
+  isAiAssistantActive = false,
 }: HeaderProps) {
   return (
     <header className="border-border bg-sidebar flex h-10 w-full shrink-0 items-center justify-between gap-[10px] overflow-hidden border-b p-2">
@@ -236,6 +257,9 @@ export function Header({
         onPanelLeftToggle={onPanelLeftToggle}
         onPanelBottomToggle={onPanelBottomToggle}
         onAiAssistantToggle={onAiAssistantToggle}
+        isPanelLeftActive={isPanelLeftActive}
+        isPanelBottomActive={isPanelBottomActive}
+        isAiAssistantActive={isAiAssistantActive}
       />
     </header>
   );
