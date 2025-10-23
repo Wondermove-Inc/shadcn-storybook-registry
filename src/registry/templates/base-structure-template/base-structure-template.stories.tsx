@@ -88,7 +88,7 @@ export const HeaderOnly: Story = {
 export const SidebarOnly: Story = {
   render: () => (
     <div className="h-screen w-full">
-      <SidebarTemplate>
+      <SidebarTemplate defaultSidebarSize={15}>
         <div className="flex h-full items-center justify-center p-8">
           <div className="text-center">
             <h2 className="mb-2 text-lg font-semibold">Sidebar 템플릿</h2>
