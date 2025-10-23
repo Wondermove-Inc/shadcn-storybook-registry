@@ -48,9 +48,39 @@ type Story = StoryObj<typeof meta>;
 /**
  * 기본 베이스 구조 템플릿입니다.
  *
- * 🎯 목적: 모듈화된 Header와 Sidebar가 결합된 완전한 레이아웃 데모
+ * 🎯 목적: Header와 리사이즈 가능한 Sidebar가 결합된 완전한 레이아웃 데모
  */
-export const Default: Story = {};
+export const Default: Story = {
+  render: () => (
+    <div className="bg-background h-screen w-full">
+      <Header
+        searchQuery=""
+        onSearchChange={() => {}}
+        onNavigationBack={() => {}}
+        onNavigationForward={() => {}}
+        onPanelLeftToggle={() => {}}
+        onAiAssistantToggle={() => {}}
+      />
+      <div className="flex h-[calc(100vh-40px)] w-full">
+        <SidebarTemplate defaultSidebarSize={15}>
+          <div className="flex flex-1 flex-col gap-4 p-4 lg:gap-6 lg:p-6">
+            <div className="flex h-full w-full flex-col items-center justify-center gap-4">
+              <div className="bg-muted text-muted-foreground flex items-center justify-center gap-2 rounded-md px-3 py-2">
+                <span className="font-mono text-sm">contents-area</span>
+              </div>
+              <div className="text-center">
+                <p className="text-muted-foreground text-sm">
+                  Header와 리사이즈 가능한 Sidebar가 결합된 완전한
+                  레이아웃입니다.
+                </p>
+              </div>
+            </div>
+          </div>
+        </SidebarTemplate>
+      </div>
+    </div>
+  ),
+};
 
 /**
  * Header 템플릿만 독립적으로 표시하는 스토리입니다.
