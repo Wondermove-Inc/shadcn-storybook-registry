@@ -4,6 +4,12 @@ import { BaseStructureTemplate } from "./base-structure-template";
 import { Header } from "@/registry/templates/header/header";
 import { SidebarTemplate } from "@/registry/templates/sidebar/sidebar";
 import { AIAssistant } from "@/registry/templates/ai-assistant/ai-assistant";
+import { ResizableAppSidebar } from "@/components/resizable-app-sidebar";
+import {
+  ResizableHandle,
+  ResizablePanel,
+  ResizablePanelGroup,
+} from "@/components/ui/resizable";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { X } from "lucide-react";
@@ -48,38 +54,76 @@ type Story = StoryObj<typeof meta>;
 /**
  * 기본 베이스 구조 템플릿입니다.
  *
- * 🎯 목적: Header와 리사이즈 가능한 Sidebar가 결합된 완전한 레이아웃 데모
+ * 🎯 목적: Header, 리사이즈 가능한 Sidebar, AI Assistant가 결합된 완전한 3열 레이아웃 데모
  */
 export const Default: Story = {
-  render: () => (
-    <div className="bg-background h-screen w-full">
-      <Header
-        searchQuery=""
-        onSearchChange={() => {}}
-        onNavigationBack={() => {}}
-        onNavigationForward={() => {}}
-        onPanelLeftToggle={() => {}}
-        onAiAssistantToggle={() => {}}
-      />
-      <div className="flex h-[calc(100vh-40px)] w-full">
-        <SidebarTemplate defaultSidebarSize={15}>
-          <div className="flex flex-1 flex-col gap-4 p-4 lg:gap-6 lg:p-6">
-            <div className="flex h-full w-full flex-col items-center justify-center gap-4">
-              <div className="bg-muted text-muted-foreground flex items-center justify-center gap-2 rounded-md px-3 py-2">
-                <span className="font-mono text-sm">contents-area</span>
+  render: () => {
+    const [isAIAssistantVisible, setIsAIAssistantVisible] =
+      React.useState(true);
+
+    const handleAIAssistantToggle = () => {
+      setIsAIAssistantVisible((prev) => !prev);
+    };
+
+    const handleAIAssistantClose = () => {
+      setIsAIAssistantVisible(false);
+    };
+
+    return (
+      <div className="bg-background h-screen w-full">
+        <Header
+          searchQuery=""
+          onSearchChange={() => {}}
+          onNavigationBack={() => {}}
+          onNavigationForward={() => {}}
+          onPanelLeftToggle={() => {}}
+          onAiAssistantToggle={handleAIAssistantToggle}
+        />
+        <div className="h-[calc(100vh-40px)] w-full">
+          <ResizablePanelGroup direction="horizontal" className="h-full w-full">
+            {/* 사이드바 패널 */}
+            <ResizablePanel defaultSize={15} minSize={15} maxSize={50}>
+              <ResizableAppSidebar className="border-r" />
+            </ResizablePanel>
+
+            {/* 사이드바 리사이즈 핸들 */}
+            <ResizableHandle className="w-1 cursor-col-resize bg-transparent transition-colors hover:bg-blue-500/20 active:bg-blue-500/30" />
+
+            {/* 메인 콘텐츠 패널 */}
+            <ResizablePanel>
+              <div className="flex h-full flex-1 flex-col gap-4 p-4 lg:gap-6 lg:p-6">
+                <div className="flex h-full w-full flex-col items-center justify-center gap-4">
+                  <div className="bg-muted text-muted-foreground flex items-center justify-center gap-2 rounded-md px-3 py-2">
+                    <span className="font-mono text-sm">contents-area</span>
+                  </div>
+                  <div className="text-center">
+                    <p className="text-muted-foreground text-sm">
+                      Header, 리사이즈 가능한 Sidebar, AI Assistant가 결합된
+                      완전한 3열 레이아웃입니다.
+                    </p>
+                  </div>
+                </div>
               </div>
-              <div className="text-center">
-                <p className="text-muted-foreground text-sm">
-                  Header와 리사이즈 가능한 Sidebar가 결합된 완전한
-                  레이아웃입니다.
-                </p>
-              </div>
-            </div>
-          </div>
-        </SidebarTemplate>
+            </ResizablePanel>
+
+            {/* AI Assistant 패널 */}
+            {isAIAssistantVisible && (
+              <>
+                <ResizableHandle className="w-1 cursor-col-resize bg-transparent transition-colors hover:bg-blue-500/20 active:bg-blue-500/30" />
+                <ResizablePanel defaultSize={25} minSize={20} maxSize={40}>
+                  <AIAssistant
+                    onClose={handleAIAssistantClose}
+                    onStart={() => {}}
+                    className="h-full w-full"
+                  />
+                </ResizablePanel>
+              </>
+            )}
+          </ResizablePanelGroup>
+        </div>
       </div>
-    </div>
-  ),
+    );
+  },
 };
 
 /**
