@@ -44,9 +44,9 @@ interface FileTreeItem {
 
 // 🎯 목적: JSON 명세서에 따른 Changes 섹션 메뉴 아이템들
 const changedFiles: FileTreeItem[] = [
-  { id: "overview", name: "Overview", type: "file", extension: "" },
-  { id: "settings", name: "Settings", type: "file", extension: "" },
-  { id: "logs", name: "Logs", type: "file", extension: "" },
+  { id: "overview", name: "Clusters", type: "file", extension: "" },
+  { id: "settings", name: "Nodes", type: "file", extension: "" },
+  { id: "logs", name: "Workspaces", type: "file", extension: "" },
 ];
 
 const projectFiles: FileTreeItem[] = [
@@ -209,7 +209,7 @@ export function AppSidebar({ onFileSelect, ...props }: AppSidebarProps) {
       </SidebarHeader>
       <SidebarContent>
         <SidebarGroup>
-          <SidebarGroupLabel>Application</SidebarGroupLabel>
+          <SidebarGroupLabel>Overview</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
               {changedFiles.map((item) => (
