@@ -110,25 +110,34 @@ export const Default: Story = {
         />
         <div className="h-[calc(100vh-40px)] w-full">
           <ResizablePanelGroup direction="horizontal" className="h-full w-full">
-            {/* 핫바 패널 (고정 크기) */}
-            <ResizablePanel defaultSize={3} minSize={3} maxSize={3}>
-              <Hotbar
-                activeItem={activeHotbarItem}
-                onItemClick={handleHotbarItemClick}
-                className="h-full"
-              />
-            </ResizablePanel>
-
-            {/* 사이드바 패널 - 조건부 렌더링 */}
-            {isSidebarVisible && (
+            {/* 핫바 + 사이드바 결합 패널 - 조건부 렌더링 */}
+            {isSidebarVisible ? (
               <>
-                <ResizablePanel defaultSize={12} minSize={12} maxSize={40}>
-                  <ResizableAppSidebar />
+                <ResizablePanel defaultSize={15} minSize={15} maxSize={50}>
+                  <div className="flex h-full">
+                    {/* 핫바 (고정 크기) */}
+                    <Hotbar
+                      activeItem={activeHotbarItem}
+                      onItemClick={handleHotbarItemClick}
+                      className="h-full flex-shrink-0"
+                    />
+                    {/* 사이드바 (나머지 공간) */}
+                    <ResizableAppSidebar className="flex-1" />
+                  </div>
                 </ResizablePanel>
 
                 {/* 사이드바 리사이즈 핸들 */}
                 <ResizableHandle className="w-1 cursor-col-resize bg-transparent transition-colors hover:bg-blue-500/20 active:bg-blue-500/30" />
               </>
+            ) : (
+              /* 사이드바가 숨겨진 경우 핫바만 표시 */
+              <ResizablePanel defaultSize={3} minSize={3} maxSize={3}>
+                <Hotbar
+                  activeItem={activeHotbarItem}
+                  onItemClick={handleHotbarItemClick}
+                  className="h-full"
+                />
+              </ResizablePanel>
             )}
 
             {/* 메인 콘텐츠 패널 */}
