@@ -84,7 +84,7 @@ export function Hotbar({
   return (
     <div
       className={cn(
-        "bg-sidebar border-sidebar-border flex w-12 flex-col items-center border-r py-2",
+        "bg-sidebar flex w-12 flex-col items-center py-2",
         className,
       )}
     >
