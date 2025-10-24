@@ -14,7 +14,6 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Textarea } from "@/components/ui/textarea";
 
 /**
  * 🎯 목적: Kubeconfig 클러스터 추가 Dialog 템플릿
@@ -85,7 +84,7 @@ users:
       <DialogTrigger asChild>
         <Button variant="outline">Trigger</Button>
       </DialogTrigger>
-      <DialogContent className="bg-background border-border sm:max-w-[600px]">
+      <DialogContent className="bg-background border-border flex h-[85%] max-w-[70%] flex-col sm:h-[90%] sm:max-w-[65%] lg:max-w-[60%] xl:max-w-[55%]">
         {/* Dialog Header */}
         <DialogHeader className="gap-1.5">
           <DialogTitle className="text-foreground text-lg font-semibold">
@@ -98,14 +97,25 @@ users:
         </DialogHeader>
 
         {/* Textarea Container */}
-        <div className="bg-muted/30 border-border rounded-lg border shadow-sm">
-          <ScrollArea className="h-80">
-            <Textarea
-              value={configText}
-              onChange={(e) => setConfigText(e.target.value)}
-              placeholder="Paste your kubeconfig content here..."
-              className="overflow-wrap-anywhere min-h-80 resize-none border-0 bg-transparent font-mono text-sm break-all whitespace-pre-wrap focus-visible:ring-0"
-            />
+        <div className="bg-muted/30 border-border flex min-h-0 flex-1 flex-col rounded-lg border shadow-sm">
+          <ScrollArea className="min-h-0 flex-1">
+            <div className="p-3">
+              <pre
+                className="overflow-wrap-anywhere text-foreground w-full resize-none border-0 bg-transparent font-mono text-sm break-all whitespace-pre-wrap outline-none focus-visible:ring-0"
+                contentEditable
+                suppressContentEditableWarning={true}
+                onInput={(e) =>
+                  setConfigText(e.currentTarget.textContent || "")
+                }
+                style={{
+                  fontFamily:
+                    'ui-monospace, SFMono-Regular, "SF Mono", Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace',
+                  lineHeight: "1.5",
+                }}
+              >
+                {configText}
+              </pre>
+            </div>
           </ScrollArea>
 
           {/* Input Group Addon - Status Bar */}
