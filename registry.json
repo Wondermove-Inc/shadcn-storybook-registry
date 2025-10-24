@@ -2520,6 +2520,35 @@
       ]
     },
     {
+      "name": "dialog-template",
+      "type": "registry:component",
+      "title": "Dialog",
+      "description": "Advanced dialog template based on UIDL specifications featuring kubeconfig cluster addition with textarea input, validation, and dark theme optimization",
+      "categories": [
+        "templates",
+        "storybook",
+        "dialog",
+        "forms",
+        "configuration"
+      ],
+      "author": "Lloyd Richards <lloyd.d.richards@gmail.com>",
+      "registryDependencies": [
+        "dialog",
+        "button",
+        "textarea",
+        "scroll-area"
+      ],
+      "dependencies": [
+        "lucide-react"
+      ],
+      "files": [
+        {
+          "path": "src/registry/templates/dialog-template/dialog-template.stories.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
       "name": "welcome-story",
       "type": "registry:component",
       "title": "Welcome Story",
