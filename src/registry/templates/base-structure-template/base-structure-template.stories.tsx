@@ -509,18 +509,18 @@ export const StructureTab: Story = {
                 >
                   <tab.icon className="h-4 w-4" />
                   <span className="text-sm font-medium">{tab.name}</span>
-                  {/* 호버 시에만 X 아이콘 표시 */}
-                  {hoveredTab === tab.id && (
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleTabClose(tab.id);
-                      }}
-                      className="hover:bg-muted/50 rounded-sm p-0.5 transition-colors"
-                    >
-                      <X className="h-4 w-4" />
-                    </button>
-                  )}
+                  {/* 🎯 목적: X 버튼을 항상 렌더링하여 공간 확보, hover 시에만 표시 */}
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleTabClose(tab.id);
+                    }}
+                    className={`hover:bg-muted/50 rounded-sm p-0.5 transition-all ${
+                      hoveredTab === tab.id ? "opacity-100" : "opacity-0"
+                    }`}
+                  >
+                    <X className="h-4 w-4" />
+                  </button>
                 </Button>
               )}
             </React.Fragment>
