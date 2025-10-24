@@ -11,7 +11,15 @@ import {
   ResizablePanelGroup,
 } from "@/components/ui/resizable";
 import { Button } from "@/components/ui/button";
-import { X, Maximize2, Bell, FileText, FileJson } from "lucide-react";
+import {
+  X,
+  Bell,
+  FileText,
+  FileJson,
+  Terminal,
+  Plus,
+  Expand,
+} from "lucide-react";
 import { Hotbar } from "@/components/hotbar";
 
 /**
@@ -186,42 +194,44 @@ export const Structure: Story = {
                         maxSize={90}
                       >
                         <div className="bg-background border-border flex h-full w-full flex-col border-t">
-                          {/* 패널 헤더 - 탭 버튼들과 컨트롤 버튼들 */}
-                          <div className="bg-background flex h-10 w-full items-center justify-between px-2">
-                            {/* 좌측: 패널 탭 버튼들 */}
-                            <div className="flex items-center gap-1">
-                              {[
-                                { id: "PROBLEMS", label: "PROBLEMS" },
-                                { id: "OUTPUT", label: "OUTPUT" },
-                                { id: "DEBUG_CONSOLE", label: "DEBUG CONSOLE" },
-                                { id: "TERMINAL", label: "TERMINAL" },
-                                { id: "PORTS", label: "PORTS" },
-                              ].map((tab) => (
+                          {/* UIDL 기반 패널 헤더 - 단일 활성 탭 + Plus 버튼 + 컨트롤 버튼들 */}
+                          <div className="bg-background flex h-10 w-full items-center justify-between overflow-hidden">
+                            {/* 좌측: 활성 탭 + Plus 버튼 */}
+                            <div className="flex items-center">
+                              {/* 활성 TERMINAL 탭 - Primary 색상 하단 보더 */}
+                              <div className="border-primary flex flex-col border-b-2">
                                 <Button
-                                  key={tab.id}
                                   variant="ghost"
-                                  size="sm"
-                                  className={`text-foreground h-8 px-3 text-xs font-medium transition-colors ${
-                                    tab.id === "TERMINAL"
-                                      ? "bg-sidebar-accent text-sidebar-accent-foreground"
-                                      : "hover:bg-sidebar-accent/50"
-                                  }`}
+                                  className="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive hover:text-accent-foreground dark:hover:bg-accent/50 text-foreground hover:bg-muted/50 flex h-10 shrink-0 items-center justify-center gap-2 rounded-md bg-transparent px-6 py-2 text-sm font-medium whitespace-nowrap transition-all outline-none focus-visible:ring-[3px] disabled:pointer-events-none disabled:opacity-50 has-[>svg]:px-3 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4"
                                 >
-                                  {tab.label}
+                                  <Terminal className="h-4 w-4" />
+                                  <span className="text-sm font-medium">
+                                    TERMINAL
+                                  </span>
                                 </Button>
-                              ))}
-                            </div>
+                              </div>
 
-                            {/* 우측: 컨트롤 버튼들 */}
-                            <div className="flex items-center gap-1">
-                              {/* 확장 버튼 */}
+                              {/* Plus 버튼 - 새 탭 추가 */}
                               <Button
                                 variant="ghost"
                                 size="icon"
-                                className="text-muted-foreground hover:text-foreground h-8 w-8"
-                                title="Maximize Panel Size"
+                                className="text-foreground hover:bg-muted/50 h-10 w-10 bg-transparent"
+                                title="Add New Terminal"
                               >
-                                <Maximize2 className="h-4 w-4" />
+                                <Plus className="h-3 w-3" />
+                              </Button>
+                            </div>
+
+                            {/* 우측: 컨트롤 버튼들 */}
+                            <div className="flex items-center">
+                              {/* 확장 버튼 - Expand 아이콘 사용 */}
+                              <Button
+                                variant="ghost"
+                                size="icon"
+                                className="text-muted-foreground hover:text-foreground hover:bg-muted/50 h-8 w-8 bg-transparent"
+                                title="Expand Panel"
+                              >
+                                <Expand className="h-4 w-4" />
                               </Button>
 
                               {/* 닫기 버튼 */}
@@ -229,7 +239,7 @@ export const Structure: Story = {
                                 variant="ghost"
                                 size="icon"
                                 onClick={handlePanelBottomToggle}
-                                className="text-muted-foreground hover:text-foreground h-8 w-8"
+                                className="text-muted-foreground hover:text-foreground hover:bg-muted/50 h-8 w-8 bg-transparent"
                                 title="Close Panel"
                               >
                                 <X className="h-4 w-4" />
@@ -673,25 +683,11 @@ export const StructureFooter: Story = {
  */
 export const StructurePanel: Story = {
   render: () => {
-    // 🎯 목적: 활성 탭 상태 관리
-    const [activeTab, setActiveTab] = React.useState("TERMINAL");
-
     // 🎯 목적: 패널 표시 상태 관리
     const [isPanelVisible, setIsPanelVisible] = React.useState(true);
 
-    // 🎯 목적: 패널 탭 목록 정의
-    const panelTabs = [
-      { id: "PROBLEMS", label: "PROBLEMS" },
-      { id: "OUTPUT", label: "OUTPUT" },
-      { id: "DEBUG_CONSOLE", label: "DEBUG CONSOLE" },
-      { id: "TERMINAL", label: "TERMINAL" },
-      { id: "PORTS", label: "PORTS" },
-    ];
-
-    // 🎯 목적: 탭 클릭 핸들러
-    const handleTabClick = (tabId: string) => {
-      setActiveTab(tabId);
-    };
+    // 🎯 목적: UIDL 기반 단일 활성 탭 설정 (TERMINAL 고정)
+    // 기존 다중 탭 구조에서 단일 활성 탭으로 변경
 
     // 🎯 목적: 패널 닫기 핸들러
     const handlePanelClose = () => {
@@ -729,7 +725,8 @@ export const StructurePanel: Story = {
                   VS Code 스타일의 하단 패널 컴포넌트입니다.
                 </p>
                 <p className="text-muted-foreground mt-2 text-xs">
-                  현재 활성 탭: <span className="font-medium">{activeTab}</span>
+                  UIDL 기반 활성 탭:{" "}
+                  <span className="font-medium">TERMINAL</span>
                 </p>
               </div>
             </div>
@@ -741,38 +738,43 @@ export const StructurePanel: Story = {
           {/* 하단: VS Code 스타일 패널 - 리사이징 가능 */}
           <ResizablePanel defaultSize={40} minSize={15} maxSize={90}>
             <div className="bg-background border-border flex h-full w-full flex-col border-t">
-              {/* 패널 헤더 - 탭 버튼들과 컨트롤 버튼들 */}
-              <div className="bg-background flex h-10 w-full items-center justify-between px-2">
-                {/* 좌측: 패널 탭 버튼들 */}
-                <div className="flex items-center gap-1">
-                  {panelTabs.map((tab) => (
+              {/* UIDL 기반 패널 헤더 - 단일 활성 탭 + Plus 버튼 + 컨트롤 버튼들 */}
+              <div className="bg-background flex h-10 w-full items-center justify-between overflow-hidden">
+                {/* 좌측: 활성 탭 + Plus 버튼 */}
+                <div className="flex items-center">
+                  {/* 활성 TERMINAL 탭 - Primary 색상 하단 보더 */}
+                  <div className="border-primary flex flex-col border-b-2">
                     <Button
-                      key={tab.id}
                       variant="ghost"
-                      size="sm"
-                      onClick={() => handleTabClick(tab.id)}
-                      className={`text-foreground h-8 px-3 text-xs font-medium transition-colors ${
-                        activeTab === tab.id
-                          ? "bg-sidebar-accent text-sidebar-accent-foreground"
-                          : "hover:bg-sidebar-accent/50"
-                      }`}
+                      className="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive hover:text-accent-foreground dark:hover:bg-accent/50 text-foreground hover:bg-muted/50 flex h-10 shrink-0 items-center justify-center gap-2 rounded-md bg-transparent px-6 py-2 text-sm font-medium whitespace-nowrap transition-all outline-none focus-visible:ring-[3px] disabled:pointer-events-none disabled:opacity-50 has-[>svg]:px-3 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4"
                     >
-                      {tab.label}
+                      <Terminal className="h-4 w-4" />
+                      <span className="text-sm font-medium">TERMINAL</span>
                     </Button>
-                  ))}
+                  </div>
+
+                  {/* Plus 버튼 - 새 탭 추가 */}
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className="text-foreground hover:bg-muted/50 h-10 w-10 bg-transparent"
+                    title="Add New Terminal"
+                  >
+                    <Plus className="h-3 w-3" />
+                  </Button>
                 </div>
 
                 {/* 우측: 컨트롤 버튼들 */}
-                <div className="flex items-center gap-1">
-                  {/* 확장 버튼 */}
+                <div className="flex items-center">
+                  {/* 확장 버튼 - Expand 아이콘 사용 */}
                   <Button
                     variant="ghost"
                     size="icon"
                     onClick={handlePanelExpand}
-                    className="text-muted-foreground hover:text-foreground h-8 w-8"
-                    title="Maximize Panel Size"
+                    className="text-muted-foreground hover:text-foreground hover:bg-muted/50 h-8 w-8 bg-transparent"
+                    title="Expand Panel"
                   >
-                    <Maximize2 className="h-4 w-4" />
+                    <Expand className="h-4 w-4" />
                   </Button>
 
                   {/* 닫기 버튼 */}
@@ -780,7 +782,7 @@ export const StructurePanel: Story = {
                     variant="ghost"
                     size="icon"
                     onClick={handlePanelClose}
-                    className="text-muted-foreground hover:text-foreground h-8 w-8"
+                    className="text-muted-foreground hover:text-foreground hover:bg-muted/50 h-8 w-8 bg-transparent"
                     title="Close Panel"
                   >
                     <X className="h-4 w-4" />
