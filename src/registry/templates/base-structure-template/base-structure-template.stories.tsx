@@ -11,6 +11,7 @@ import {
   ResizablePanelGroup,
 } from "@/components/ui/resizable";
 import { Button } from "@/components/ui/button";
+import { Separator } from "@/components/ui/separator";
 import {
   X,
   Bell,
@@ -71,6 +72,9 @@ type Story = StoryObj<typeof meta>;
  */
 export const Structure: Story = {
   render: () => {
+    // 🎯 목적: 클러스터 이름 설정
+    const clusterName = "CLUSTER-01";
+
     // 🎯 목적: AI Assistant 표시 상태 관리
     const [isAIAssistantVisible, setIsAIAssistantVisible] =
       React.useState(true);
@@ -200,30 +204,33 @@ export const Structure: Story = {
                             <div className="flex items-center">
                               {/* 활성 TERMINAL 탭 - Primary 색상 하단 보더 */}
                               <div className="border-primary flex flex-col border-b-2">
-                                <Button
-                                  variant="ghost"
-                                  className="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive hover:text-accent-foreground dark:hover:bg-accent/50 text-foreground hover:bg-muted/50 flex h-10 shrink-0 items-center justify-center gap-2 rounded-md bg-transparent px-6 py-2 text-sm font-medium whitespace-nowrap transition-all outline-none focus-visible:ring-[3px] disabled:pointer-events-none disabled:opacity-50 has-[>svg]:px-3 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4"
-                                >
+                                <Button variant="ghost" size="sm">
                                   <Terminal className="h-4 w-4" />
                                   <span className="text-sm font-medium">
-                                    TERMINAL
+                                    {clusterName}
                                   </span>
                                 </Button>
                               </div>
+                            </div>
 
-                              {/* Plus 버튼 - 새 탭 추가 */}
+                            {/* 우측: + 버튼, Separator, 컨트롤 버튼들 (UIDL 기반) */}
+                            <div className="flex min-h-[40px] items-center gap-2">
+                              {/* + 버튼 - UIDL 기반 */}
                               <Button
                                 variant="ghost"
                                 size="icon"
-                                className="text-foreground hover:bg-muted/50 h-10 w-10 bg-transparent"
+                                className="text-muted-foreground hover:text-foreground hover:bg-muted/50 h-8 w-8 bg-transparent"
                                 title="Add New Terminal"
                               >
-                                <Plus className="h-3 w-3" />
+                                <Plus className="h-4 w-4" />
                               </Button>
-                            </div>
 
-                            {/* 우측: 컨트롤 버튼들 */}
-                            <div className="flex items-center">
+                              {/* UIDL 기반 Separator - 세로 구분선 (sm 버튼에 맞춘 높이) */}
+                              <Separator
+                                orientation="vertical"
+                                className="bg-border h-6 w-px"
+                                style={{ height: "24px", width: "1px" }}
+                              />
                               {/* 확장 버튼 - Expand 아이콘 사용 */}
                               <Button
                                 variant="ghost"
@@ -472,9 +479,9 @@ export const StructureTab: Story = {
     return (
       <div className="bg-background h-screen w-full">
         {/* UIDL 기반 탭 네비게이션 바 */}
-        <div className="bg-sidebar border-border flex w-full items-center overflow-hidden border-b">
+        <div className="bg-sidebar border-border flex min-h-[40px] w-full items-center overflow-hidden border-b">
           {/* 동적 탭 렌더링 */}
-          {tabs.map((tab) => (
+          {tabs.map((tab, index) => (
             <React.Fragment key={tab.id}>
               {/* 활성 탭 또는 비활성 탭 */}
               {tab.type === "active" ? (
@@ -522,6 +529,15 @@ export const StructureTab: Story = {
                     <X className="h-4 w-4" />
                   </button>
                 </Button>
+              )}
+
+              {/* 탭 사이에 Separator 추가 (마지막 탭 제외) */}
+              {index < tabs.length - 1 && (
+                <Separator
+                  orientation="vertical"
+                  className="bg-border h-10 w-px"
+                  style={{ height: "40px", width: "1px" }}
+                />
               )}
             </React.Fragment>
           ))}
@@ -683,6 +699,9 @@ export const StructureFooter: Story = {
  */
 export const StructurePanel: Story = {
   render: () => {
+    // 🎯 목적: 클러스터 이름 설정
+    const clusterName = "CLUSTER-01";
+
     // 🎯 목적: 패널 표시 상태 관리
     const [isPanelVisible, setIsPanelVisible] = React.useState(true);
 
@@ -726,7 +745,7 @@ export const StructurePanel: Story = {
                 </p>
                 <p className="text-muted-foreground mt-2 text-xs">
                   UIDL 기반 활성 탭:{" "}
-                  <span className="font-medium">TERMINAL</span>
+                  <span className="font-medium">{clusterName}</span>
                 </p>
               </div>
             </div>
@@ -744,28 +763,31 @@ export const StructurePanel: Story = {
                 <div className="flex items-center">
                   {/* 활성 TERMINAL 탭 - Primary 색상 하단 보더 */}
                   <div className="border-primary flex flex-col border-b-2">
-                    <Button
-                      variant="ghost"
-                      className="focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive hover:text-accent-foreground dark:hover:bg-accent/50 text-foreground hover:bg-muted/50 flex h-10 shrink-0 items-center justify-center gap-2 rounded-md bg-transparent px-6 py-2 text-sm font-medium whitespace-nowrap transition-all outline-none focus-visible:ring-[3px] disabled:pointer-events-none disabled:opacity-50 has-[>svg]:px-3 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4"
-                    >
+                    <Button variant="ghost" size="sm">
                       <Terminal className="h-4 w-4" />
-                      <span className="text-sm font-medium">TERMINAL</span>
+                      <span className="text-sm font-medium">{clusterName}</span>
                     </Button>
                   </div>
+                </div>
 
-                  {/* Plus 버튼 - 새 탭 추가 */}
+                {/* 우측: + 버튼, Separator, 컨트롤 버튼들 (UIDL 기반) */}
+                <div className="flex min-h-[40px] items-center gap-2">
+                  {/* + 버튼 - UIDL 기반 */}
                   <Button
                     variant="ghost"
                     size="icon"
-                    className="text-foreground hover:bg-muted/50 h-10 w-10 bg-transparent"
+                    className="text-muted-foreground hover:text-foreground hover:bg-muted/50 h-8 w-8 bg-transparent"
                     title="Add New Terminal"
                   >
-                    <Plus className="h-3 w-3" />
+                    <Plus className="h-4 w-4" />
                   </Button>
-                </div>
 
-                {/* 우측: 컨트롤 버튼들 */}
-                <div className="flex items-center">
+                  {/* UIDL 기반 Separator - 세로 구분선 (sm 버튼에 맞춘 높이) */}
+                  <Separator
+                    orientation="vertical"
+                    className="bg-border h-6 w-px"
+                    style={{ height: "24px", width: "1px" }}
+                  />
                   {/* 확장 버튼 - Expand 아이콘 사용 */}
                   <Button
                     variant="ghost"

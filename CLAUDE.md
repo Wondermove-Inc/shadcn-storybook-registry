@@ -331,6 +331,43 @@ const styles = getComputedStyle(document.documentElement);
 const value = styles.getPropertyValue('--radius');
 ```
 
+#### Separator (세로 구분선)
+**🚨 중요**: 세로 Separator는 반드시 부모 컨테이너에 명시적 높이가 필요합니다.
+
+**문제**: Radix UI Separator의 `data-[orientation=vertical]:h-full` CSS가 사용자 설정 높이를 덮어써서 부모 높이가 없으면 0이 됩니다.
+
+```typescript
+// ❌ 잘못된 사용 - 높이가 0이 되어 보이지 않음
+<div className="flex items-center gap-2">
+  <Separator orientation="vertical" className="h-5" />
+</div>
+
+// ✅ 올바른 사용 - 부모에 높이 + 인라인 스타일 백업
+<div className="flex items-center gap-2 min-h-[40px]">
+  <Separator 
+    orientation="vertical" 
+    className="h-5 w-px bg-border"
+    style={{ height: '20px', width: '1px' }}
+  />
+</div>
+
+// ✅ 툴바/버튼 그룹에서 사용
+<div className="flex items-center rounded-md border px-3">
+  <button className="h-10 px-2">Bold</button>
+  <Separator 
+    orientation="vertical" 
+    className="mx-2 h-6"
+    style={{ height: '24px', width: '1px' }}
+  />
+  <button className="h-10 px-2">Italic</button>
+</div>
+```
+
+**핵심 규칙**:
+1. 부모 컨테이너에 `min-h-[Npx]` 또는 `h-[Npx]` 필수
+2. Separator에 `style={{ height: 'Npx', width: '1px' }}` 백업 적용
+3. `bg-border` 클래스로 테마 일관성 유지
+
 ## Testing Strategy
 
 ### Vitest Dual Project Setup

@@ -27,7 +27,13 @@ export function SeparatorDemo() {
 }
 
 /**
- * Visually or semantically separates content.
+ * 시각적 또는 의미적으로 콘텐츠를 분리하는 구분선 컴포넌트입니다.
+ *
+ * ⚠️ **세로 Separator 사용 시 주의사항**:
+ * - 부모 컨테이너에 반드시 명시적 높이(`min-h-[Npx]` 또는 `h-[Npx]`)가 필요합니다
+ * - Radix UI의 CSS가 사용자 높이 설정을 덮어쓸 수 있으므로 인라인 스타일을 백업으로 사용하세요
+ *
+ * 자세한 사용법은 아래 스토리 예시들을 참고하세요.
  */
 const meta = {
   title: "ui/Separator",
@@ -35,6 +41,29 @@ const meta = {
   tags: ["autodocs"],
   parameters: {
     layout: "centered",
+    docs: {
+      description: {
+        component: `
+**중요**: 세로 Separator 사용 시 부모 컨테이너에 명시적 높이 설정이 필요합니다.
+
+\`\`\`tsx
+// ❌ 잘못된 사용 - 높이가 0이 되어 보이지 않음
+<div className="flex items-center gap-2">
+  <Separator orientation="vertical" className="h-5" />
+</div>
+
+// ✅ 올바른 사용 - 부모에 높이 + 인라인 스타일 백업
+<div className="flex items-center gap-2 min-h-[40px]">
+  <Separator 
+    orientation="vertical" 
+    className="h-5 w-px bg-border"
+    style={{ height: '20px', width: '1px' }}
+  />
+</div>
+\`\`\`
+        `,
+      },
+    },
   },
   args: {
     orientation: "horizontal",
@@ -74,40 +103,53 @@ export const Default: Story = {
  * Basic horizontal separator.
  */
 export const Horizontal: Story = {
-  args: {
-    orientation: "horizontal",
-    className: "w-64",
-  },
+  render: () => (
+    <div className="space-y-4">
+      <div className="text-muted-foreground text-sm">Content above</div>
+      <Separator orientation="horizontal" className="w-64" />
+      <div className="text-muted-foreground text-sm">Content below</div>
+    </div>
+  ),
 };
 
 /**
  * Vertical separator.
  */
 export const Vertical: Story = {
-  args: {
-    orientation: "vertical",
-    className: "h-16",
-  },
+  render: () => (
+    <div className="border-muted flex h-20 items-center space-x-4 rounded border border-dashed p-4 text-sm">
+      <span className="bg-muted rounded px-2 py-1">Left content</span>
+      <Separator orientation="vertical" className="bg-border h-16" />
+      <span className="bg-muted rounded px-2 py-1">Right content</span>
+    </div>
+  ),
 };
 
 /**
  * Horizontal separator with custom width.
  */
 export const CustomWidth: Story = {
-  args: {
-    orientation: "horizontal",
-    className: "w-96",
-  },
+  render: () => (
+    <div className="space-y-4">
+      <div className="text-muted-foreground text-sm">Wide separator (w-96)</div>
+      <Separator orientation="horizontal" className="w-96" />
+      <div className="text-muted-foreground text-sm">Content below</div>
+    </div>
+  ),
 };
 
 /**
  * Vertical separator with custom height.
  */
 export const CustomHeight: Story = {
-  args: {
-    orientation: "vertical",
-    className: "h-24",
-  },
+  render: () => (
+    <div className="flex h-28 items-center space-x-4 text-sm">
+      <span>Left content</span>
+      <Separator orientation="vertical" className="h-24" />
+      <span>Right content</span>
+      <div className="text-muted-foreground ml-4 text-xs">(h-24)</div>
+    </div>
+  ),
 };
 
 /**
