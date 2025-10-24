@@ -11,8 +11,7 @@ import {
   ResizablePanelGroup,
 } from "@/components/ui/resizable";
 import { Button } from "@/components/ui/button";
-import { Separator } from "@/components/ui/separator";
-import { X, Maximize2, Bell } from "lucide-react";
+import { X, Maximize2, Bell, FileText, FileJson } from "lucide-react";
 import { Hotbar } from "@/components/hotbar";
 
 /**
@@ -433,73 +432,111 @@ export const StructureAIAssistant: Story = {
 };
 
 /**
- * Figma 디자인 기반 탭 인터페이스만 독립적으로 표시하는 스토리입니다.
+ * UIDL 기반 탭 인터페이스만 독립적으로 표시하는 스토리입니다.
  *
- * 🎯 목적: Skuber Management의 실제 탭 네비게이션 구조 정확히 재현 (UIDL + shadcn 컴포넌트 기반)
+ * 🎯 목적: UIDL 명세서에 따른 실제 탭 네비게이션 구조 정확히 재현
  * ✨ 특징:
- * - 좌측: Separator + Button Group (ChevronLeft/ChevronRight 아이콘)
- * - 중앙: 활성 탭 (dark 배경, primary 하단 보더, X 아이콘)
- * - 우측: Disabled 탭들 + Separator 구분선
- * - 디자인 토큰 사용 (하드코딩 금지), shadcn 컴포넌트만 활용
+ * - 각 탭 왼쪽에 파일 타입별 아이콘 (FileText, FileJson)
+ * - 모든 탭 사이에 세로 Separator 구분선
+ * - 활성 탭: 어두운 배경, 파란색 하단 보더, 닫기 X 버튼
+ * - 비활성 탭: 투명도 적용, 호버 시 우측에 X 아이콘 표시
+ * - gap-6 (24px) 내부 요소 간격으로 UIDL 데이터 기반 정확한 구조
  */
 export const StructureTab: Story = {
-  render: () => (
-    <div className="bg-background h-screen w-full">
-      {/* UIDL 기반 탭 네비게이션 바 - shadcn 컴포넌트 사용 */}
-      <div className="bg-sidebar flex w-full items-center overflow-hidden">
-        {/* 첫 번째 Separator - 탭 영역 시작 구분선 (Figma API 기반: 20px 높이) */}
-        <Separator orientation="vertical" className="h-px w-5" />
+  render: () => {
+    // 🎯 목적: 탭 목록 상태 관리 (탭 제거 기능을 위해)
+    const [tabs, setTabs] = React.useState([
+      { id: "active", name: "main.tsx", type: "active", icon: FileText },
+      { id: "tab1", name: "config.json", type: "inactive", icon: FileJson },
+      { id: "tab2", name: "data.json", type: "inactive", icon: FileJson },
+    ]);
 
-        {/* 중앙 활성 탭 */}
-        <div className="bg-background border-primary flex flex-col border-b-2">
-          <Button
-            variant="ghost"
-            className="text-foreground h-10 justify-between gap-2 rounded-lg bg-transparent px-6 py-2 hover:bg-transparent"
-          >
-            <span className="text-sm font-medium">tabname</span>
-            <X className="h-4 w-4" />
-          </Button>
+    // 🎯 목적: 각 탭의 호버 상태 관리
+    const [hoveredTab, setHoveredTab] = React.useState<string | null>(null);
+
+    // 🎯 목적: 탭 제거 핸들러
+    const handleTabClose = (tabId: string) => {
+      setTabs((prevTabs) => prevTabs.filter((tab) => tab.id !== tabId));
+    };
+
+    return (
+      <div className="bg-background h-screen w-full">
+        {/* UIDL 기반 탭 네비게이션 바 */}
+        <div className="bg-sidebar border-border flex w-full items-center overflow-hidden border-b">
+          {/* 동적 탭 렌더링 */}
+          {tabs.map((tab) => (
+            <React.Fragment key={tab.id}>
+              {/* 활성 탭 또는 비활성 탭 */}
+              {tab.type === "active" ? (
+                // 활성 탭 - 어두운 배경과 파란색 하단 보더
+                <div className="bg-background border-primary flex flex-col border-b-2">
+                  <Button
+                    variant="ghost"
+                    onMouseEnter={() => setHoveredTab(tab.id)}
+                    onMouseLeave={() => setHoveredTab(null)}
+                    className="text-foreground hover:bg-sidebar/50 h-10 justify-center rounded-lg bg-transparent px-3 py-2"
+                  >
+                    <tab.icon className="h-4 w-4" />
+                    <span className="text-sm font-medium">{tab.name}</span>
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleTabClose(tab.id);
+                      }}
+                      className="hover:bg-muted/50 rounded-sm p-0.5 transition-colors"
+                    >
+                      <X className="h-4 w-4" />
+                    </button>
+                  </Button>
+                </div>
+              ) : (
+                // 비활성 탭 - 투명도 적용, 호버 시 배경 변경
+                <Button
+                  variant="ghost"
+                  onMouseEnter={() => setHoveredTab(tab.id)}
+                  onMouseLeave={() => setHoveredTab(null)}
+                  className="text-foreground hover:bg-sidebar-accent/30 h-10 rounded-lg bg-transparent px-3 py-2 opacity-70 transition-all duration-200 hover:opacity-100"
+                >
+                  <tab.icon className="h-4 w-4" />
+                  <span className="text-sm font-medium">{tab.name}</span>
+                  {/* 호버 시에만 X 아이콘 표시 */}
+                  {hoveredTab === tab.id && (
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleTabClose(tab.id);
+                      }}
+                      className="hover:bg-muted/50 rounded-sm p-0.5 transition-colors"
+                    >
+                      <X className="h-4 w-4" />
+                    </button>
+                  )}
+                </Button>
+              )}
+            </React.Fragment>
+          ))}
         </div>
 
-        {/* 두 번째 Separator - 활성 탭과 비활성 탭 사이 구분선 (Figma API 기반: 20px 높이) */}
-        <Separator orientation="vertical" className="h-px w-5" />
-
-        {/* 우측 영역 - Disabled 탭들 */}
-        <div className="border-border/10 bg-sidebar flex flex-1 items-center border-b">
-          {/* 첫 번째 Disabled 탭 */}
-          <Button
-            variant="ghost"
-            disabled
-            className="text-foreground h-10 rounded-lg bg-transparent px-6 py-2 opacity-50 hover:bg-transparent"
-          >
-            <span className="text-sm font-medium">tabname</span>
-          </Button>
-
-          {/* 세 번째 Separator - 비활성 탭 사이 구분선 (Figma API 기반: 20px 높이) */}
-          <Separator orientation="vertical" className="h-px w-5" />
-
-          {/* 두 번째 Disabled 탭 */}
-          <Button
-            variant="ghost"
-            disabled
-            className="text-foreground h-10 rounded-lg bg-transparent px-6 py-2 opacity-50 hover:bg-transparent"
-          >
-            <span className="text-sm font-medium">tabname</span>
-          </Button>
+        {/* 메인 콘텐츠 영역 */}
+        <div className="flex h-full items-center justify-center p-8">
+          <div className="text-center">
+            <h2 className="mb-2 text-lg font-semibold">Tab 템플릿</h2>
+            <p className="text-muted-foreground text-sm">
+              UIDL 기반 Tab 컴포넌트 - 파일 아이콘과 Separator가 포함된 VS Code
+              스타일 탭 인터페이스입니다.
+            </p>
+            <p className="text-muted-foreground mt-2 text-xs">
+              탭에 마우스를 올려보세요. 비활성 탭은 호버 시 X 아이콘이 나타나고,
+              X 버튼을 클릭하면 탭이 제거됩니다.
+            </p>
+            <p className="text-muted-foreground mt-1 text-xs">
+              남은 탭 수: <span className="font-medium">{tabs.length}</span>개
+            </p>
+          </div>
         </div>
       </div>
-
-      {/* 메인 콘텐츠 영역 */}
-      <div className="flex h-full items-center justify-center p-8">
-        <div className="text-center">
-          <h2 className="mb-2 text-lg font-semibold">Tab 템플릿</h2>
-          <p className="text-muted-foreground text-sm">
-            Tab 컴포넌트만 독립적으로 사용하는 예시입니다.
-          </p>
-        </div>
-      </div>
-    </div>
-  ),
+    );
+  },
 };
 
 /**
