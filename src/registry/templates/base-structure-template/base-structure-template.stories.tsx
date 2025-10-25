@@ -283,14 +283,17 @@ export const Structure: Story = {
                           {/* UIDL 기반 패널 헤더 - 다중 클러스터 탭 + Plus 버튼 + 컨트롤 버튼들 */}
                           <div className="bg-background flex h-10 w-full items-center">
                             {/* 좌측: 클러스터 탭들 */}
-                            <div className="flex flex-1 items-center gap-0 overflow-x-auto pr-px">
+                            <div className="flex flex-1 items-center gap-0 overflow-x-auto pt-[7px] pr-px">
                               {tabs.map((tab, index) => (
                                 <div
                                   key={tab.id}
                                   ref={tab.isActive ? selectedTabRef : null}
                                   className={cn(
                                     tab.isActive
-                                      ? "bg-muted/20 border-t-primary z-[1] -ml-px flex flex-shrink-0 items-center border-t-2 border-r"
+                                      ? cn(
+                                          "bg-muted/20 border-t-primary z-[1] flex flex-shrink-0 items-center border-t-2 border-r",
+                                          index > 0 && "-ml-px",
+                                        )
                                       : cn(
                                           "flex flex-shrink-0 items-center",
                                           index > 0 && "-ml-px",
@@ -312,7 +315,9 @@ export const Structure: Story = {
                                     <Terminal
                                       className={cn(
                                         "h-4 w-4 flex-shrink-0",
-                                        tab.isActive && "text-primary",
+                                        tab.isActive
+                                          ? "text-primary"
+                                          : "opacity-50",
                                       )}
                                     />
                                     <span
@@ -962,14 +967,17 @@ export const StructurePanel: Story = {
               {/* UIDL 기반 패널 헤더 - 다중 클러스터 탭 + Plus 버튼 + 컨트롤 버튼들 */}
               <div className="bg-background flex h-10 w-full items-center">
                 {/* 좌측: 클러스터 탭들 */}
-                <div className="flex flex-1 items-center gap-0 overflow-x-auto pr-px">
+                <div className="flex flex-1 items-center gap-0 overflow-x-auto pt-[7px] pr-px">
                   {tabs.map((tab, index) => (
                     <div
                       key={tab.id}
                       ref={tab.isActive ? selectedTabRef : null}
                       className={cn(
                         tab.isActive
-                          ? "bg-muted/20 border-t-primary z-[1] -ml-px flex flex-shrink-0 items-center border-t-2 border-r"
+                          ? cn(
+                              "bg-muted/20 border-t-primary z-[1] flex flex-shrink-0 items-center border-t-2 border-r",
+                              index > 0 && "-ml-px",
+                            )
                           : cn(
                               "flex flex-shrink-0 items-center",
                               index > 0 && "-ml-px",
@@ -991,7 +999,7 @@ export const StructurePanel: Story = {
                         <Terminal
                           className={cn(
                             "h-4 w-4 flex-shrink-0",
-                            tab.isActive && "text-primary",
+                            tab.isActive ? "text-primary" : "opacity-50",
                           )}
                         />
                         <span
