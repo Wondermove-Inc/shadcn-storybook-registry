@@ -46,28 +46,28 @@ html.dark .docs-story {
   background-color: var(--color-background);
 }
 
-/* 얇은 가로 스크롤바 스타일 (기본 크기의 30%) */
+/* 얇은 가로 스크롤바 스타일 (최소 크기 2px, 모든 이벤트에서 일관된 높이 보장) */
 .overflow-x-auto::-webkit-scrollbar {
-  height: 4px;
+  height: 2px !important;
 }
 
 .overflow-x-auto::-webkit-scrollbar-track {
-  background: transparent;
+  background: transparent !important;
 }
 
 .overflow-x-auto::-webkit-scrollbar-thumb {
-  background: hsl(var(--border));
-  border-radius: 2px;
+  background: hsl(var(--border)) !important;
+  border-radius: 2px !important;
 }
 
 .overflow-x-auto::-webkit-scrollbar-thumb:hover {
-  background: hsl(var(--muted-foreground));
+  background: hsl(var(--muted-foreground)) !important;
 }
 
-/* Firefox용 얇은 스크롤바 */
+/* Firefox용 얇은 스크롤바 (thin이 최소값이므로 유지, 일관성 보장) */
 .overflow-x-auto {
-  scrollbar-width: thin;
-  scrollbar-color: hsl(var(--border)) transparent;
+  scrollbar-width: thin !important;
+  scrollbar-color: hsl(var(--border)) transparent !important;
 }
 
 /* 테마 스위처를 라디오 버튼 스타일로 변경 */
