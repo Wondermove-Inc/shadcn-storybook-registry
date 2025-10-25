@@ -108,6 +108,11 @@ export const Structure: Story = {
     // 🎯 목적: 선택된 탭 참조 (자동 스크롤용)
     const selectedTabRef = React.useRef<HTMLDivElement>(null);
 
+    // 🎯 목적: 이전 활성 탭 ID 추적 (탭 닫기 시 복원용)
+    const [previousActiveTabId, setPreviousActiveTabId] = React.useState<
+      string | null
+    >(null);
+
     // 🎯 목적: AI Assistant 표시 상태 관리
     const [isAIAssistantVisible, setIsAIAssistantVisible] =
       React.useState(true);
@@ -168,11 +173,26 @@ export const Structure: Story = {
       if (tabs.length === 1) return;
 
       setTabs((prev) => {
+        const closedTabIndex = prev.findIndex((tab) => tab.id === tabId);
+        const closedTab = prev[closedTabIndex];
         const newTabs = prev.filter((tab) => tab.id !== tabId);
-        const closedTab = prev.find((tab) => tab.id === tabId);
-        // 삭제된 탭이 활성 탭이었다면 첫 번째 탭 활성화
+
+        // 삭제된 탭이 활성 탭이었다면
         if (closedTab?.isActive && newTabs.length > 0) {
-          newTabs[0].isActive = true;
+          // 1순위: 이전 활성 탭이 남아있으면 그것을 활성화
+          const previousTab = newTabs.find(
+            (tab) => tab.id === previousActiveTabId,
+          );
+          if (previousTab) {
+            previousTab.isActive = true;
+          } else {
+            // 2순위: 인접 탭 활성화 (오른쪽 우선, 없으면 왼쪽)
+            const newIndex =
+              closedTabIndex >= newTabs.length
+                ? newTabs.length - 1
+                : closedTabIndex;
+            newTabs[newIndex].isActive = true;
+          }
         }
         return newTabs;
       });
@@ -180,12 +200,16 @@ export const Structure: Story = {
 
     // 🎯 목적: 탭 클릭 시 활성 탭 전환 핸들러
     const handleTabClick = (tabId: string) => {
-      setTabs((prev) =>
-        prev.map((tab) => ({
+      setTabs((prev) => {
+        const currentActiveTab = prev.find((tab) => tab.isActive);
+        if (currentActiveTab && currentActiveTab.id !== tabId) {
+          setPreviousActiveTabId(currentActiveTab.id);
+        }
+        return prev.map((tab) => ({
           ...tab,
           isActive: tab.id === tabId,
-        })),
-      );
+        }));
+      });
     };
 
     // 🎯 목적: 선택된 탭으로 자동 스크롤 (클러스터 이름 전체 표시)
@@ -858,6 +882,11 @@ export const StructurePanel: Story = {
     // 🎯 목적: 선택된 탭 참조 (자동 스크롤용)
     const selectedTabRef = React.useRef<HTMLDivElement>(null);
 
+    // 🎯 목적: 이전 활성 탭 ID 추적 (탭 닫기 시 복원용)
+    const [previousActiveTabId, setPreviousActiveTabId] = React.useState<
+      string | null
+    >(null);
+
     // 🎯 목적: 패널 표시 상태 관리
     const [isPanelVisible, setIsPanelVisible] = React.useState(true);
 
@@ -879,11 +908,26 @@ export const StructurePanel: Story = {
       if (tabs.length === 1) return;
 
       setTabs((prev) => {
+        const closedTabIndex = prev.findIndex((tab) => tab.id === tabId);
+        const closedTab = prev[closedTabIndex];
         const newTabs = prev.filter((tab) => tab.id !== tabId);
-        const closedTab = prev.find((tab) => tab.id === tabId);
-        // 삭제된 탭이 활성 탭이었다면 첫 번째 탭 활성화
+
+        // 삭제된 탭이 활성 탭이었다면
         if (closedTab?.isActive && newTabs.length > 0) {
-          newTabs[0].isActive = true;
+          // 1순위: 이전 활성 탭이 남아있으면 그것을 활성화
+          const previousTab = newTabs.find(
+            (tab) => tab.id === previousActiveTabId,
+          );
+          if (previousTab) {
+            previousTab.isActive = true;
+          } else {
+            // 2순위: 인접 탭 활성화 (오른쪽 우선, 없으면 왼쪽)
+            const newIndex =
+              closedTabIndex >= newTabs.length
+                ? newTabs.length - 1
+                : closedTabIndex;
+            newTabs[newIndex].isActive = true;
+          }
         }
         return newTabs;
       });
@@ -891,12 +935,16 @@ export const StructurePanel: Story = {
 
     // 🎯 목적: 탭 클릭 시 활성 탭 전환 핸들러
     const handleTabClick = (tabId: string) => {
-      setTabs((prev) =>
-        prev.map((tab) => ({
+      setTabs((prev) => {
+        const currentActiveTab = prev.find((tab) => tab.isActive);
+        if (currentActiveTab && currentActiveTab.id !== tabId) {
+          setPreviousActiveTabId(currentActiveTab.id);
+        }
+        return prev.map((tab) => ({
           ...tab,
           isActive: tab.id === tabId,
-        })),
-      );
+        }));
+      });
     };
 
     // 🎯 목적: 선택된 탭으로 자동 스크롤 (클러스터 이름 전체 표시)
