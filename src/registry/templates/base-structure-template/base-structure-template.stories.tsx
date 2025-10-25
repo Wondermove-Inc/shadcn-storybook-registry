@@ -333,23 +333,20 @@ export const Structure: Story = {
                                     onClick={() => handleTabClick(tab.id)}
                                     className={cn(
                                       "group relative h-10 gap-2 px-3 py-2",
-                                      !tab.isActive && "bg-muted/20",
+                                      !tab.isActive &&
+                                        "bg-muted/20 hover:bg-sidebar-accent/30 opacity-50 transition-all duration-200 hover:opacity-100",
                                     )}
                                   >
                                     <Terminal
                                       className={cn(
                                         "h-4 w-4 flex-shrink-0",
-                                        tab.isActive
-                                          ? "text-primary"
-                                          : "opacity-50",
+                                        tab.isActive && "text-primary",
                                       )}
                                     />
                                     <span
                                       className={cn(
                                         "text-sm font-medium whitespace-nowrap",
-                                        tab.isActive
-                                          ? "font-bold italic"
-                                          : "opacity-50",
+                                        tab.isActive && "font-bold italic",
                                       )}
                                       title={tab.clusterName}
                                     >
@@ -1041,19 +1038,20 @@ export const StructurePanel: Story = {
                         onClick={() => handleTabClick(tab.id)}
                         className={cn(
                           "group relative h-10 gap-2 px-3 py-2",
-                          !tab.isActive && "bg-muted/20",
+                          !tab.isActive &&
+                            "bg-muted/20 hover:bg-sidebar-accent/30 opacity-50 transition-all duration-200 hover:opacity-100",
                         )}
                       >
                         <Terminal
                           className={cn(
                             "h-4 w-4 flex-shrink-0",
-                            tab.isActive ? "text-primary" : "opacity-50",
+                            tab.isActive && "text-primary",
                           )}
                         />
                         <span
                           className={cn(
                             "text-sm font-medium whitespace-nowrap",
-                            tab.isActive ? "font-bold italic" : "opacity-50",
+                            tab.isActive && "font-bold italic",
                           )}
                           title={tab.clusterName}
                         >
