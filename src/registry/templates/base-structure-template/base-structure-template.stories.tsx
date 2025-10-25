@@ -105,13 +105,6 @@ export const Structure: Story = {
     // 🎯 목적: 각 탭의 호버 상태 관리
     const [hoveredTab, setHoveredTab] = React.useState<string | null>(null);
 
-    // 🎯 목적: 동적 너비 계산 관련 상태
-    const [shouldTruncate, setShouldTruncate] = React.useState(false);
-    const [maxTabWidth, setMaxTabWidth] = React.useState<number | undefined>(
-      undefined,
-    );
-    const tabsContainerRef = React.useRef<HTMLDivElement>(null);
-
     // 🎯 목적: AI Assistant 표시 상태 관리
     const [isAIAssistantVisible, setIsAIAssistantVisible] =
       React.useState(true);
@@ -190,51 +183,6 @@ export const Structure: Story = {
         })),
       );
     };
-
-    // 🎯 목적: 동적 너비 계산 및 truncate 처리
-    React.useEffect(() => {
-      if (!tabsContainerRef.current) return;
-
-      const updateTruncation = () => {
-        const container = tabsContainerRef.current;
-        if (!container) return;
-
-        const containerWidth = container.offsetWidth;
-        const controlsWidth = 150; // Plus, Separator, Expand, Close 버튼들의 대략적인 너비
-        const availableWidth = containerWidth - controlsWidth;
-
-        // 각 탭의 실제 텍스트 너비 측정 (임시 span 사용)
-        const tempSpan = document.createElement("span");
-        tempSpan.style.visibility = "hidden";
-        tempSpan.style.position = "absolute";
-        tempSpan.style.fontSize = "0.875rem"; // text-sm
-        tempSpan.style.fontWeight = "500"; // font-medium
-        document.body.appendChild(tempSpan);
-
-        let totalWidth = 0;
-        tabs.forEach((tab) => {
-          tempSpan.textContent = tab.clusterName;
-          totalWidth += tempSpan.offsetWidth + 80; // + icon + padding + X button
-        });
-
-        document.body.removeChild(tempSpan);
-
-        if (totalWidth > availableWidth) {
-          setShouldTruncate(true);
-          setMaxTabWidth(Math.max(100, availableWidth / tabs.length - 10));
-        } else {
-          setShouldTruncate(false);
-          setMaxTabWidth(undefined);
-        }
-      };
-
-      updateTruncation();
-
-      const observer = new ResizeObserver(updateTruncation);
-      observer.observe(tabsContainerRef.current);
-
-      return () => observer.disconnect();
-    }, [tabs]);
 
     return (
       <div className="bg-background h-screen w-full">
@@ -318,24 +266,16 @@ export const Structure: Story = {
                       >
                         <div className="bg-background border-border flex h-full w-full flex-col border-t">
                           {/* UIDL 기반 패널 헤더 - 다중 클러스터 탭 + Plus 버튼 + 컨트롤 버튼들 */}
-                          <div
-                            ref={tabsContainerRef}
-                            className="bg-background flex h-10 w-full items-center justify-between overflow-hidden"
-                          >
+                          <div className="bg-background flex h-10 w-full items-center overflow-hidden">
                             {/* 좌측: 클러스터 탭들 */}
-                            <div className="flex items-center gap-1 overflow-hidden">
+                            <div className="flex flex-1 items-center gap-1 overflow-x-auto">
                               {tabs.map((tab) => (
                                 <div
                                   key={tab.id}
                                   className={cn(
-                                    "flex items-center",
+                                    "flex flex-shrink-0 items-center",
                                     tab.isActive && "border-primary border-b-2",
                                   )}
-                                  style={
-                                    shouldTruncate && maxTabWidth
-                                      ? { maxWidth: `${maxTabWidth}px` }
-                                      : undefined
-                                  }
                                   onMouseEnter={() => setHoveredTab(tab.id)}
                                   onMouseLeave={() => setHoveredTab(null)}
                                 >
@@ -347,10 +287,7 @@ export const Structure: Story = {
                                   >
                                     <Terminal className="h-4 w-4 flex-shrink-0" />
                                     <span
-                                      className={cn(
-                                        "text-sm font-medium",
-                                        shouldTruncate && "truncate",
-                                      )}
+                                      className="text-sm font-medium whitespace-nowrap"
                                       title={tab.clusterName}
                                     >
                                       {tab.clusterName}
@@ -361,7 +298,7 @@ export const Structure: Story = {
                                         handleCloseTab(tab.id);
                                       }}
                                       className={cn(
-                                        "hover:bg-muted/50 rounded-sm p-0.5 transition-opacity",
+                                        "hover:bg-muted/50 flex-shrink-0 rounded-sm p-0.5 transition-opacity",
                                         hoveredTab === tab.id
                                           ? "opacity-100"
                                           : "opacity-0",
@@ -375,7 +312,7 @@ export const Structure: Story = {
                             </div>
 
                             {/* 우측: + 버튼, Separator, 컨트롤 버튼들 (UIDL 기반) */}
-                            <div className="flex min-h-[40px] items-center gap-2">
+                            <div className="controls-buttons flex min-h-[40px] flex-shrink-0 items-center gap-2">
                               {/* + 버튼 - UIDL 기반 */}
                               <Button
                                 variant="ghost"
@@ -877,13 +814,6 @@ export const StructurePanel: Story = {
     // 🎯 목적: 각 탭의 호버 상태 관리
     const [hoveredTab, setHoveredTab] = React.useState<string | null>(null);
 
-    // 🎯 목적: 동적 너비 계산 관련 상태
-    const [shouldTruncate, setShouldTruncate] = React.useState(false);
-    const [maxTabWidth, setMaxTabWidth] = React.useState<number | undefined>(
-      undefined,
-    );
-    const tabsContainerRef = React.useRef<HTMLDivElement>(null);
-
     // 🎯 목적: 패널 표시 상태 관리
     const [isPanelVisible, setIsPanelVisible] = React.useState(true);
 
@@ -923,51 +853,6 @@ export const StructurePanel: Story = {
         })),
       );
     };
-
-    // 🎯 목적: 동적 너비 계산 및 truncate 처리
-    React.useEffect(() => {
-      if (!tabsContainerRef.current) return;
-
-      const updateTruncation = () => {
-        const container = tabsContainerRef.current;
-        if (!container) return;
-
-        const containerWidth = container.offsetWidth;
-        const controlsWidth = 150; // Plus, Separator, Expand, Close 버튼들의 대략적인 너비
-        const availableWidth = containerWidth - controlsWidth;
-
-        // 각 탭의 실제 텍스트 너비 측정 (임시 span 사용)
-        const tempSpan = document.createElement("span");
-        tempSpan.style.visibility = "hidden";
-        tempSpan.style.position = "absolute";
-        tempSpan.style.fontSize = "0.875rem"; // text-sm
-        tempSpan.style.fontWeight = "500"; // font-medium
-        document.body.appendChild(tempSpan);
-
-        let totalWidth = 0;
-        tabs.forEach((tab) => {
-          tempSpan.textContent = tab.clusterName;
-          totalWidth += tempSpan.offsetWidth + 80; // + icon + padding + X button
-        });
-
-        document.body.removeChild(tempSpan);
-
-        if (totalWidth > availableWidth) {
-          setShouldTruncate(true);
-          setMaxTabWidth(Math.max(100, availableWidth / tabs.length - 10));
-        } else {
-          setShouldTruncate(false);
-          setMaxTabWidth(undefined);
-        }
-      };
-
-      updateTruncation();
-
-      const observer = new ResizeObserver(updateTruncation);
-      observer.observe(tabsContainerRef.current);
-
-      return () => observer.disconnect();
-    }, [tabs]);
 
     // 🎯 목적: 패널 닫기 핸들러
     const handlePanelClose = () => {
@@ -1024,24 +909,16 @@ export const StructurePanel: Story = {
           <ResizablePanel defaultSize={40} minSize={15} maxSize={90}>
             <div className="bg-background border-border flex h-full w-full flex-col border-t">
               {/* UIDL 기반 패널 헤더 - 다중 클러스터 탭 + Plus 버튼 + 컨트롤 버튼들 */}
-              <div
-                ref={tabsContainerRef}
-                className="bg-background flex h-10 w-full items-center justify-between overflow-hidden"
-              >
+              <div className="bg-background flex h-10 w-full items-center overflow-hidden">
                 {/* 좌측: 클러스터 탭들 */}
-                <div className="flex items-center gap-1 overflow-hidden">
+                <div className="flex flex-1 items-center gap-1 overflow-x-auto">
                   {tabs.map((tab) => (
                     <div
                       key={tab.id}
                       className={cn(
-                        "flex items-center",
+                        "flex flex-shrink-0 items-center",
                         tab.isActive && "border-primary border-b-2",
                       )}
-                      style={
-                        shouldTruncate && maxTabWidth
-                          ? { maxWidth: `${maxTabWidth}px` }
-                          : undefined
-                      }
                       onMouseEnter={() => setHoveredTab(tab.id)}
                       onMouseLeave={() => setHoveredTab(null)}
                     >
@@ -1053,10 +930,7 @@ export const StructurePanel: Story = {
                       >
                         <Terminal className="h-4 w-4 flex-shrink-0" />
                         <span
-                          className={cn(
-                            "text-sm font-medium",
-                            shouldTruncate && "truncate",
-                          )}
+                          className="text-sm font-medium whitespace-nowrap"
                           title={tab.clusterName}
                         >
                           {tab.clusterName}
@@ -1067,7 +941,7 @@ export const StructurePanel: Story = {
                             handleCloseTab(tab.id);
                           }}
                           className={cn(
-                            "hover:bg-muted/50 rounded-sm p-0.5 transition-opacity",
+                            "hover:bg-muted/50 flex-shrink-0 rounded-sm p-0.5 transition-opacity",
                             hoveredTab === tab.id ? "opacity-100" : "opacity-0",
                           )}
                         >
@@ -1079,7 +953,7 @@ export const StructurePanel: Story = {
                 </div>
 
                 {/* 우측: + 버튼, Separator, 컨트롤 버튼들 (UIDL 기반) */}
-                <div className="flex min-h-[40px] items-center gap-2">
+                <div className="controls-buttons flex min-h-[40px] flex-shrink-0 items-center gap-2">
                   {/* + 버튼 - UIDL 기반 */}
                   <Button
                     variant="ghost"
