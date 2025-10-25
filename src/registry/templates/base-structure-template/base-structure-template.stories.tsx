@@ -307,7 +307,7 @@ export const Structure: Story = {
                           {/* UIDL 기반 패널 헤더 - 다중 클러스터 탭 + Plus 버튼 + 컨트롤 버튼들 */}
                           <div className="bg-background flex h-10 w-full items-center">
                             {/* 좌측: 클러스터 탭들 */}
-                            <div className="flex flex-1 items-center gap-0 overflow-x-auto pt-[7px] pr-px">
+                            <div className="flex flex-1 items-start gap-0 overflow-x-auto pt-[7px] pr-px">
                               {tabs.map((tab, index) => (
                                 <div
                                   key={tab.id}
@@ -315,11 +315,11 @@ export const Structure: Story = {
                                   className={cn(
                                     tab.isActive
                                       ? cn(
-                                          "bg-muted/20 border-t-primary z-[1] flex flex-shrink-0 items-center border-t-2 border-r",
+                                          "bg-muted/20 border-t-primary z-[1] flex flex-shrink-0 items-start border-t-2 border-r",
                                           index > 0 && "-ml-px",
                                         )
                                       : cn(
-                                          "flex flex-shrink-0 items-center",
+                                          "flex flex-shrink-0 items-start",
                                           index > 0 && "-ml-px",
                                           "bg-muted/20 border-t border-r border-l",
                                         ),
@@ -1012,7 +1012,7 @@ export const StructurePanel: Story = {
               {/* UIDL 기반 패널 헤더 - 다중 클러스터 탭 + Plus 버튼 + 컨트롤 버튼들 */}
               <div className="bg-background flex h-10 w-full items-center">
                 {/* 좌측: 클러스터 탭들 */}
-                <div className="flex flex-1 items-center gap-0 overflow-x-auto pt-[7px] pr-px">
+                <div className="flex flex-1 items-start gap-0 overflow-x-auto pt-[7px] pr-px">
                   {tabs.map((tab, index) => (
                     <div
                       key={tab.id}
@@ -1020,11 +1020,11 @@ export const StructurePanel: Story = {
                       className={cn(
                         tab.isActive
                           ? cn(
-                              "bg-muted/20 border-t-primary z-[1] flex flex-shrink-0 items-center border-t-2 border-r",
+                              "bg-muted/20 border-t-primary z-[1] flex flex-shrink-0 items-start border-t-2 border-r",
                               index > 0 && "-ml-px",
                             )
                           : cn(
-                              "flex flex-shrink-0 items-center",
+                              "flex flex-shrink-0 items-start",
                               index > 0 && "-ml-px",
                               "bg-muted/20 border-t border-r border-l",
                             ),
