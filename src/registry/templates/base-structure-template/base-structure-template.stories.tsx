@@ -105,6 +105,9 @@ export const Structure: Story = {
     // 🎯 목적: 각 탭의 호버 상태 관리
     const [hoveredTab, setHoveredTab] = React.useState<string | null>(null);
 
+    // 🎯 목적: 선택된 탭 참조 (자동 스크롤용)
+    const selectedTabRef = React.useRef<HTMLDivElement>(null);
+
     // 🎯 목적: AI Assistant 표시 상태 관리
     const [isAIAssistantVisible, setIsAIAssistantVisible] =
       React.useState(true);
@@ -147,15 +150,16 @@ export const Structure: Story = {
       }
     };
 
-    // 🎯 목적: 새 탭 추가 핸들러
+    // 🎯 목적: 새 탭 추가 핸들러 (추가된 탭을 활성화)
     const handleAddTab = () => {
       const newTab: Tab = {
         id: Date.now().toString(),
         clusterName:
           EXAMPLE_CLUSTERS[nextClusterIndex % EXAMPLE_CLUSTERS.length],
-        isActive: false,
+        isActive: true,
       };
-      setTabs([...tabs, newTab]);
+      // 기존 탭들은 비활성화하고 새 탭 추가
+      setTabs([...tabs.map((tab) => ({ ...tab, isActive: false })), newTab]);
       setNextClusterIndex(nextClusterIndex + 1);
     };
 
@@ -183,6 +187,17 @@ export const Structure: Story = {
         })),
       );
     };
+
+    // 🎯 목적: 선택된 탭으로 자동 스크롤 (클러스터 이름 전체 표시)
+    React.useEffect(() => {
+      if (selectedTabRef.current) {
+        selectedTabRef.current.scrollIntoView({
+          behavior: "smooth",
+          block: "nearest",
+          inline: "center",
+        });
+      }
+    }, [tabs]);
 
     return (
       <div className="bg-background h-screen w-full">
@@ -268,13 +283,19 @@ export const Structure: Story = {
                           {/* UIDL 기반 패널 헤더 - 다중 클러스터 탭 + Plus 버튼 + 컨트롤 버튼들 */}
                           <div className="bg-background flex h-10 w-full items-center overflow-hidden">
                             {/* 좌측: 클러스터 탭들 */}
-                            <div className="flex flex-1 items-center gap-1 overflow-x-auto">
-                              {tabs.map((tab) => (
+                            <div className="flex flex-1 items-center gap-0 overflow-x-auto pr-px">
+                              {tabs.map((tab, index) => (
                                 <div
                                   key={tab.id}
+                                  ref={tab.isActive ? selectedTabRef : null}
                                   className={cn(
-                                    "flex flex-shrink-0 items-center",
-                                    tab.isActive && "border-primary border-b-2",
+                                    tab.isActive
+                                      ? "bg-muted/20 border-t-primary z-[1] -ml-px flex flex-shrink-0 items-center border-t-2 border-r"
+                                      : cn(
+                                          "flex flex-shrink-0 items-center",
+                                          index > 0 && "-ml-px",
+                                          "bg-muted/20 border-t border-r border-l",
+                                        ),
                                   )}
                                   onMouseEnter={() => setHoveredTab(tab.id)}
                                   onMouseLeave={() => setHoveredTab(null)}
@@ -283,11 +304,24 @@ export const Structure: Story = {
                                     variant="ghost"
                                     size="sm"
                                     onClick={() => handleTabClick(tab.id)}
-                                    className="group relative h-10 gap-2 px-3 py-2"
+                                    className={cn(
+                                      "group relative h-10 gap-2 px-3 py-2",
+                                      !tab.isActive && "bg-muted/20",
+                                    )}
                                   >
-                                    <Terminal className="h-4 w-4 flex-shrink-0" />
+                                    <Terminal
+                                      className={cn(
+                                        "h-4 w-4 flex-shrink-0",
+                                        tab.isActive && "text-primary",
+                                      )}
+                                    />
                                     <span
-                                      className="text-sm font-medium whitespace-nowrap"
+                                      className={cn(
+                                        "text-sm font-medium whitespace-nowrap",
+                                        tab.isActive
+                                          ? "font-bold italic"
+                                          : "opacity-50",
+                                      )}
                                       title={tab.clusterName}
                                     >
                                       {tab.clusterName}
@@ -584,16 +618,18 @@ export const StructureTab: Story = {
             <React.Fragment key={tab.id}>
               {/* 활성 탭 또는 비활성 탭 */}
               {tab.type === "active" ? (
-                // 활성 탭 - 어두운 배경과 파란색 하단 보더
-                <div className="bg-background border-primary flex flex-col border-b-2">
+                // 활성 탭 - 어두운 배경과 파란색 상단 보더, primary 아이콘, bold italic 텍스트
+                <div className="bg-background border-primary flex flex-col border-t-2">
                   <Button
                     variant="ghost"
                     onMouseEnter={() => setHoveredTab(tab.id)}
                     onMouseLeave={() => setHoveredTab(null)}
                     className="text-foreground hover:bg-sidebar/50 h-10 justify-center rounded-lg bg-transparent px-3 py-2"
                   >
-                    <tab.icon className="h-4 w-4" />
-                    <span className="text-sm font-medium">{tab.name}</span>
+                    <tab.icon className="text-primary h-4 w-4" />
+                    <span className="text-sm font-bold font-medium italic">
+                      {tab.name}
+                    </span>
                     <button
                       onClick={(e) => {
                         e.stopPropagation();
@@ -606,12 +642,12 @@ export const StructureTab: Story = {
                   </Button>
                 </div>
               ) : (
-                // 비활성 탭 - 투명도 적용, 호버 시 배경 변경
+                // 비활성 탭 - 더 약한 투명도와 배경, 호버 시 배경 변경, 상단/좌우 보더
                 <Button
                   variant="ghost"
                   onMouseEnter={() => setHoveredTab(tab.id)}
                   onMouseLeave={() => setHoveredTab(null)}
-                  className="text-foreground hover:bg-sidebar-accent/30 h-10 rounded-lg bg-transparent px-3 py-2 opacity-70 transition-all duration-200 hover:opacity-100"
+                  className="text-foreground hover:bg-sidebar-accent/30 bg-muted/20 h-10 rounded-lg border-t border-r border-l px-3 py-2 opacity-50 transition-all duration-200 hover:opacity-100"
                 >
                   <tab.icon className="h-4 w-4" />
                   <span className="text-sm font-medium">{tab.name}</span>
@@ -814,18 +850,22 @@ export const StructurePanel: Story = {
     // 🎯 목적: 각 탭의 호버 상태 관리
     const [hoveredTab, setHoveredTab] = React.useState<string | null>(null);
 
+    // 🎯 목적: 선택된 탭 참조 (자동 스크롤용)
+    const selectedTabRef = React.useRef<HTMLDivElement>(null);
+
     // 🎯 목적: 패널 표시 상태 관리
     const [isPanelVisible, setIsPanelVisible] = React.useState(true);
 
-    // 🎯 목적: 새 탭 추가 핸들러
+    // 🎯 목적: 새 탭 추가 핸들러 (추가된 탭을 활성화)
     const handleAddTab = () => {
       const newTab: Tab = {
         id: Date.now().toString(),
         clusterName:
           EXAMPLE_CLUSTERS[nextClusterIndex % EXAMPLE_CLUSTERS.length],
-        isActive: false,
+        isActive: true,
       };
-      setTabs([...tabs, newTab]);
+      // 기존 탭들은 비활성화하고 새 탭 추가
+      setTabs([...tabs.map((tab) => ({ ...tab, isActive: false })), newTab]);
       setNextClusterIndex(nextClusterIndex + 1);
     };
 
@@ -853,6 +893,17 @@ export const StructurePanel: Story = {
         })),
       );
     };
+
+    // 🎯 목적: 선택된 탭으로 자동 스크롤 (클러스터 이름 전체 표시)
+    React.useEffect(() => {
+      if (selectedTabRef.current) {
+        selectedTabRef.current.scrollIntoView({
+          behavior: "smooth",
+          block: "nearest",
+          inline: "center",
+        });
+      }
+    }, [tabs]);
 
     // 🎯 목적: 패널 닫기 핸들러
     const handlePanelClose = () => {
@@ -911,13 +962,19 @@ export const StructurePanel: Story = {
               {/* UIDL 기반 패널 헤더 - 다중 클러스터 탭 + Plus 버튼 + 컨트롤 버튼들 */}
               <div className="bg-background flex h-10 w-full items-center overflow-hidden">
                 {/* 좌측: 클러스터 탭들 */}
-                <div className="flex flex-1 items-center gap-1 overflow-x-auto">
-                  {tabs.map((tab) => (
+                <div className="flex flex-1 items-center gap-0 overflow-x-auto">
+                  {tabs.map((tab, index) => (
                     <div
                       key={tab.id}
+                      ref={tab.isActive ? selectedTabRef : null}
                       className={cn(
-                        "flex flex-shrink-0 items-center",
-                        tab.isActive && "border-primary border-b-2",
+                        tab.isActive
+                          ? "bg-muted/20 border-t-primary z-[1] -ml-px flex flex-shrink-0 items-center border-t-2 border-r"
+                          : cn(
+                              "flex flex-shrink-0 items-center",
+                              index > 0 && "-ml-px",
+                              "bg-muted/20 border-t border-r border-l",
+                            ),
                       )}
                       onMouseEnter={() => setHoveredTab(tab.id)}
                       onMouseLeave={() => setHoveredTab(null)}
@@ -926,11 +983,22 @@ export const StructurePanel: Story = {
                         variant="ghost"
                         size="sm"
                         onClick={() => handleTabClick(tab.id)}
-                        className="group relative h-10 gap-2 px-3 py-2"
+                        className={cn(
+                          "group relative h-10 gap-2 px-3 py-2",
+                          !tab.isActive && "bg-muted/20",
+                        )}
                       >
-                        <Terminal className="h-4 w-4 flex-shrink-0" />
+                        <Terminal
+                          className={cn(
+                            "h-4 w-4 flex-shrink-0",
+                            tab.isActive && "text-primary",
+                          )}
+                        />
                         <span
-                          className="text-sm font-medium whitespace-nowrap"
+                          className={cn(
+                            "text-sm font-medium whitespace-nowrap",
+                            tab.isActive ? "font-bold italic" : "opacity-50",
+                          )}
                           title={tab.clusterName}
                         >
                           {tab.clusterName}

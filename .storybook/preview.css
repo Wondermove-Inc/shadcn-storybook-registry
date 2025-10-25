@@ -56,18 +56,19 @@ html.dark .docs-story {
 }
 
 .overflow-x-auto::-webkit-scrollbar-thumb {
-  background: hsl(var(--border)) !important;
+  background: hsl(var(--primary)) !important;
   border-radius: 2px !important;
 }
 
 .overflow-x-auto::-webkit-scrollbar-thumb:hover {
-  background: hsl(var(--muted-foreground)) !important;
+  background: hsl(var(--primary)) !important;
+  opacity: 0.8;
 }
 
 /* Firefox용 얇은 스크롤바 (thin이 최소값이므로 유지, 일관성 보장) */
 .overflow-x-auto {
   scrollbar-width: thin !important;
-  scrollbar-color: hsl(var(--border)) transparent !important;
+  scrollbar-color: hsl(var(--primary)) transparent !important;
 }
 
 /* 테마 스위처를 라디오 버튼 스타일로 변경 */
