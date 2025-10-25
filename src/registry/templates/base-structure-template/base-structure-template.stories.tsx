@@ -281,7 +281,7 @@ export const Structure: Story = {
                       >
                         <div className="bg-background border-border flex h-full w-full flex-col border-t">
                           {/* UIDL 기반 패널 헤더 - 다중 클러스터 탭 + Plus 버튼 + 컨트롤 버튼들 */}
-                          <div className="bg-background flex h-10 w-full items-center overflow-hidden">
+                          <div className="bg-background flex h-10 w-full items-center">
                             {/* 좌측: 클러스터 탭들 */}
                             <div className="flex flex-1 items-center gap-0 overflow-x-auto pr-px">
                               {tabs.map((tab, index) => (
@@ -333,7 +333,7 @@ export const Structure: Story = {
                                       }}
                                       className={cn(
                                         "hover:bg-muted/50 flex-shrink-0 rounded-sm p-0.5 transition-opacity",
-                                        hoveredTab === tab.id
+                                        tab.isActive || hoveredTab === tab.id
                                           ? "opacity-100"
                                           : "opacity-0",
                                       )}
@@ -960,9 +960,9 @@ export const StructurePanel: Story = {
           <ResizablePanel defaultSize={40} minSize={15} maxSize={90}>
             <div className="bg-background border-border flex h-full w-full flex-col border-t">
               {/* UIDL 기반 패널 헤더 - 다중 클러스터 탭 + Plus 버튼 + 컨트롤 버튼들 */}
-              <div className="bg-background flex h-10 w-full items-center overflow-hidden">
+              <div className="bg-background flex h-10 w-full items-center">
                 {/* 좌측: 클러스터 탭들 */}
-                <div className="flex flex-1 items-center gap-0 overflow-x-auto">
+                <div className="flex flex-1 items-center gap-0 overflow-x-auto pr-px">
                   {tabs.map((tab, index) => (
                     <div
                       key={tab.id}
@@ -1010,7 +1010,9 @@ export const StructurePanel: Story = {
                           }}
                           className={cn(
                             "hover:bg-muted/50 flex-shrink-0 rounded-sm p-0.5 transition-opacity",
-                            hoveredTab === tab.id ? "opacity-100" : "opacity-0",
+                            tab.isActive || hoveredTab === tab.id
+                              ? "opacity-100"
+                              : "opacity-0",
                           )}
                         >
                           <X className="h-4 w-4" />
