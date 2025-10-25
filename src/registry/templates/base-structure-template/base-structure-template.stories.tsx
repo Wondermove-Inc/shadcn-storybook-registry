@@ -22,6 +22,23 @@ import {
   Expand,
 } from "lucide-react";
 import { Hotbar } from "@/components/hotbar";
+import { cn } from "@/lib/utils";
+
+/**
+ * 🎭 실제 적용 시 mock data 삭제 필수
+ *
+ * 🎯 목적: 다양한 길이의 클러스터 이름 테스트를 위한 예시 데이터
+ * - 짧은 이름: docker-desktop
+ * - 중간 이름: kubernetes-admin@...
+ * - 긴 AWS ARN: arn:aws:eks:...
+ */
+const EXAMPLE_CLUSTERS = [
+  "docker-desktop",
+  "kubernetes-admin@starlord-nfs",
+  "kubernetes-admin@cluster.local",
+  "arn:aws:eks:ap-northeast-2:585748631694:cluster/funny-metal-pumpkin",
+  "arn:aws:eks:ap-southeast-1:585748631694:cluster/dev-cluster-bp",
+];
 
 /**
  * 모듈화된 베이스 구조 템플릿을 보여주는 Storybook 스토리입니다.
@@ -72,8 +89,28 @@ type Story = StoryObj<typeof meta>;
  */
 export const Structure: Story = {
   render: () => {
-    // 🎯 목적: 클러스터 이름 설정
-    const clusterName = "CLUSTER-01";
+    // 🎯 목적: 클러스터 탭 목록 상태 관리
+    interface Tab {
+      id: string;
+      clusterName: string;
+      isActive: boolean;
+    }
+    const [tabs, setTabs] = React.useState<Tab[]>([
+      { id: "1", clusterName: EXAMPLE_CLUSTERS[0], isActive: true },
+    ]);
+
+    // 🎯 목적: 다음 추가할 클러스터 인덱스 추적
+    const [nextClusterIndex, setNextClusterIndex] = React.useState(1);
+
+    // 🎯 목적: 각 탭의 호버 상태 관리
+    const [hoveredTab, setHoveredTab] = React.useState<string | null>(null);
+
+    // 🎯 목적: 동적 너비 계산 관련 상태
+    const [shouldTruncate, setShouldTruncate] = React.useState(false);
+    const [maxTabWidth, setMaxTabWidth] = React.useState<number | undefined>(
+      undefined,
+    );
+    const tabsContainerRef = React.useRef<HTMLDivElement>(null);
 
     // 🎯 목적: AI Assistant 표시 상태 관리
     const [isAIAssistantVisible, setIsAIAssistantVisible] =
@@ -116,6 +153,88 @@ export const Structure: Story = {
         setIsSidebarVisible(true);
       }
     };
+
+    // 🎯 목적: 새 탭 추가 핸들러
+    const handleAddTab = () => {
+      const newTab: Tab = {
+        id: Date.now().toString(),
+        clusterName:
+          EXAMPLE_CLUSTERS[nextClusterIndex % EXAMPLE_CLUSTERS.length],
+        isActive: false,
+      };
+      setTabs([...tabs, newTab]);
+      setNextClusterIndex(nextClusterIndex + 1);
+    };
+
+    // 🎯 목적: 탭 제거 핸들러 (최소 1개 유지)
+    const handleCloseTab = (tabId: string) => {
+      if (tabs.length === 1) return;
+
+      setTabs((prev) => {
+        const newTabs = prev.filter((tab) => tab.id !== tabId);
+        const closedTab = prev.find((tab) => tab.id === tabId);
+        // 삭제된 탭이 활성 탭이었다면 첫 번째 탭 활성화
+        if (closedTab?.isActive && newTabs.length > 0) {
+          newTabs[0].isActive = true;
+        }
+        return newTabs;
+      });
+    };
+
+    // 🎯 목적: 탭 클릭 시 활성 탭 전환 핸들러
+    const handleTabClick = (tabId: string) => {
+      setTabs((prev) =>
+        prev.map((tab) => ({
+          ...tab,
+          isActive: tab.id === tabId,
+        })),
+      );
+    };
+
+    // 🎯 목적: 동적 너비 계산 및 truncate 처리
+    React.useEffect(() => {
+      if (!tabsContainerRef.current) return;
+
+      const updateTruncation = () => {
+        const container = tabsContainerRef.current;
+        if (!container) return;
+
+        const containerWidth = container.offsetWidth;
+        const controlsWidth = 150; // Plus, Separator, Expand, Close 버튼들의 대략적인 너비
+        const availableWidth = containerWidth - controlsWidth;
+
+        // 각 탭의 실제 텍스트 너비 측정 (임시 span 사용)
+        const tempSpan = document.createElement("span");
+        tempSpan.style.visibility = "hidden";
+        tempSpan.style.position = "absolute";
+        tempSpan.style.fontSize = "0.875rem"; // text-sm
+        tempSpan.style.fontWeight = "500"; // font-medium
+        document.body.appendChild(tempSpan);
+
+        let totalWidth = 0;
+        tabs.forEach((tab) => {
+          tempSpan.textContent = tab.clusterName;
+          totalWidth += tempSpan.offsetWidth + 80; // + icon + padding + X button
+        });
+
+        document.body.removeChild(tempSpan);
+
+        if (totalWidth > availableWidth) {
+          setShouldTruncate(true);
+          setMaxTabWidth(Math.max(100, availableWidth / tabs.length - 10));
+        } else {
+          setShouldTruncate(false);
+          setMaxTabWidth(undefined);
+        }
+      };
+
+      updateTruncation();
+
+      const observer = new ResizeObserver(updateTruncation);
+      observer.observe(tabsContainerRef.current);
+
+      return () => observer.disconnect();
+    }, [tabs]);
 
     return (
       <div className="bg-background h-screen w-full">
@@ -198,19 +317,61 @@ export const Structure: Story = {
                         maxSize={90}
                       >
                         <div className="bg-background border-border flex h-full w-full flex-col border-t">
-                          {/* UIDL 기반 패널 헤더 - 단일 활성 탭 + Plus 버튼 + 컨트롤 버튼들 */}
-                          <div className="bg-background flex h-10 w-full items-center justify-between overflow-hidden">
-                            {/* 좌측: 활성 탭 + Plus 버튼 */}
-                            <div className="flex items-center">
-                              {/* 활성 TERMINAL 탭 - Primary 색상 하단 보더 */}
-                              <div className="border-primary flex flex-col border-b-2">
-                                <Button variant="ghost" size="sm">
-                                  <Terminal className="h-4 w-4" />
-                                  <span className="text-sm font-medium">
-                                    {clusterName}
-                                  </span>
-                                </Button>
-                              </div>
+                          {/* UIDL 기반 패널 헤더 - 다중 클러스터 탭 + Plus 버튼 + 컨트롤 버튼들 */}
+                          <div
+                            ref={tabsContainerRef}
+                            className="bg-background flex h-10 w-full items-center justify-between overflow-hidden"
+                          >
+                            {/* 좌측: 클러스터 탭들 */}
+                            <div className="flex items-center gap-1 overflow-hidden">
+                              {tabs.map((tab) => (
+                                <div
+                                  key={tab.id}
+                                  className={cn(
+                                    "flex items-center",
+                                    tab.isActive && "border-primary border-b-2",
+                                  )}
+                                  style={
+                                    shouldTruncate && maxTabWidth
+                                      ? { maxWidth: `${maxTabWidth}px` }
+                                      : undefined
+                                  }
+                                  onMouseEnter={() => setHoveredTab(tab.id)}
+                                  onMouseLeave={() => setHoveredTab(null)}
+                                >
+                                  <Button
+                                    variant="ghost"
+                                    size="sm"
+                                    onClick={() => handleTabClick(tab.id)}
+                                    className="group relative h-10 gap-2 px-3 py-2"
+                                  >
+                                    <Terminal className="h-4 w-4 flex-shrink-0" />
+                                    <span
+                                      className={cn(
+                                        "text-sm font-medium",
+                                        shouldTruncate && "truncate",
+                                      )}
+                                      title={tab.clusterName}
+                                    >
+                                      {tab.clusterName}
+                                    </span>
+                                    <button
+                                      onClick={(e) => {
+                                        e.stopPropagation();
+                                        handleCloseTab(tab.id);
+                                      }}
+                                      className={cn(
+                                        "hover:bg-muted/50 rounded-sm p-0.5 transition-opacity",
+                                        hoveredTab === tab.id
+                                          ? "opacity-100"
+                                          : "opacity-0",
+                                      )}
+                                    >
+                                      <X className="h-4 w-4" />
+                                    </button>
+                                  </Button>
+                                </div>
+                              ))}
                             </div>
 
                             {/* 우측: + 버튼, Separator, 컨트롤 버튼들 (UIDL 기반) */}
@@ -219,6 +380,7 @@ export const Structure: Story = {
                               <Button
                                 variant="ghost"
                                 size="icon"
+                                onClick={handleAddTab}
                                 className="text-muted-foreground hover:text-foreground hover:bg-muted/50 h-8 w-8 bg-transparent"
                                 title="Add New Terminal"
                               >
@@ -699,14 +861,113 @@ export const StructureFooter: Story = {
  */
 export const StructurePanel: Story = {
   render: () => {
-    // 🎯 목적: 클러스터 이름 설정
-    const clusterName = "CLUSTER-01";
+    // 🎯 목적: 클러스터 탭 목록 상태 관리
+    interface Tab {
+      id: string;
+      clusterName: string;
+      isActive: boolean;
+    }
+    const [tabs, setTabs] = React.useState<Tab[]>([
+      { id: "1", clusterName: EXAMPLE_CLUSTERS[0], isActive: true },
+    ]);
+
+    // 🎯 목적: 다음 추가할 클러스터 인덱스 추적
+    const [nextClusterIndex, setNextClusterIndex] = React.useState(1);
+
+    // 🎯 목적: 각 탭의 호버 상태 관리
+    const [hoveredTab, setHoveredTab] = React.useState<string | null>(null);
+
+    // 🎯 목적: 동적 너비 계산 관련 상태
+    const [shouldTruncate, setShouldTruncate] = React.useState(false);
+    const [maxTabWidth, setMaxTabWidth] = React.useState<number | undefined>(
+      undefined,
+    );
+    const tabsContainerRef = React.useRef<HTMLDivElement>(null);
 
     // 🎯 목적: 패널 표시 상태 관리
     const [isPanelVisible, setIsPanelVisible] = React.useState(true);
 
-    // 🎯 목적: UIDL 기반 단일 활성 탭 설정 (TERMINAL 고정)
-    // 기존 다중 탭 구조에서 단일 활성 탭으로 변경
+    // 🎯 목적: 새 탭 추가 핸들러
+    const handleAddTab = () => {
+      const newTab: Tab = {
+        id: Date.now().toString(),
+        clusterName:
+          EXAMPLE_CLUSTERS[nextClusterIndex % EXAMPLE_CLUSTERS.length],
+        isActive: false,
+      };
+      setTabs([...tabs, newTab]);
+      setNextClusterIndex(nextClusterIndex + 1);
+    };
+
+    // 🎯 목적: 탭 제거 핸들러 (최소 1개 유지)
+    const handleCloseTab = (tabId: string) => {
+      if (tabs.length === 1) return;
+
+      setTabs((prev) => {
+        const newTabs = prev.filter((tab) => tab.id !== tabId);
+        const closedTab = prev.find((tab) => tab.id === tabId);
+        // 삭제된 탭이 활성 탭이었다면 첫 번째 탭 활성화
+        if (closedTab?.isActive && newTabs.length > 0) {
+          newTabs[0].isActive = true;
+        }
+        return newTabs;
+      });
+    };
+
+    // 🎯 목적: 탭 클릭 시 활성 탭 전환 핸들러
+    const handleTabClick = (tabId: string) => {
+      setTabs((prev) =>
+        prev.map((tab) => ({
+          ...tab,
+          isActive: tab.id === tabId,
+        })),
+      );
+    };
+
+    // 🎯 목적: 동적 너비 계산 및 truncate 처리
+    React.useEffect(() => {
+      if (!tabsContainerRef.current) return;
+
+      const updateTruncation = () => {
+        const container = tabsContainerRef.current;
+        if (!container) return;
+
+        const containerWidth = container.offsetWidth;
+        const controlsWidth = 150; // Plus, Separator, Expand, Close 버튼들의 대략적인 너비
+        const availableWidth = containerWidth - controlsWidth;
+
+        // 각 탭의 실제 텍스트 너비 측정 (임시 span 사용)
+        const tempSpan = document.createElement("span");
+        tempSpan.style.visibility = "hidden";
+        tempSpan.style.position = "absolute";
+        tempSpan.style.fontSize = "0.875rem"; // text-sm
+        tempSpan.style.fontWeight = "500"; // font-medium
+        document.body.appendChild(tempSpan);
+
+        let totalWidth = 0;
+        tabs.forEach((tab) => {
+          tempSpan.textContent = tab.clusterName;
+          totalWidth += tempSpan.offsetWidth + 80; // + icon + padding + X button
+        });
+
+        document.body.removeChild(tempSpan);
+
+        if (totalWidth > availableWidth) {
+          setShouldTruncate(true);
+          setMaxTabWidth(Math.max(100, availableWidth / tabs.length - 10));
+        } else {
+          setShouldTruncate(false);
+          setMaxTabWidth(undefined);
+        }
+      };
+
+      updateTruncation();
+
+      const observer = new ResizeObserver(updateTruncation);
+      observer.observe(tabsContainerRef.current);
+
+      return () => observer.disconnect();
+    }, [tabs]);
 
     // 🎯 목적: 패널 닫기 핸들러
     const handlePanelClose = () => {
@@ -744,8 +1005,13 @@ export const StructurePanel: Story = {
                   VS Code 스타일의 하단 패널 컴포넌트입니다.
                 </p>
                 <p className="text-muted-foreground mt-2 text-xs">
-                  UIDL 기반 활성 탭:{" "}
-                  <span className="font-medium">{clusterName}</span>
+                  활성 탭:{" "}
+                  <span className="font-medium">
+                    {tabs.find((t) => t.isActive)?.clusterName || "없음"}
+                  </span>
+                </p>
+                <p className="text-muted-foreground mt-1 text-xs">
+                  탭 개수: <span className="font-medium">{tabs.length}</span>개
                 </p>
               </div>
             </div>
@@ -757,17 +1023,59 @@ export const StructurePanel: Story = {
           {/* 하단: VS Code 스타일 패널 - 리사이징 가능 */}
           <ResizablePanel defaultSize={40} minSize={15} maxSize={90}>
             <div className="bg-background border-border flex h-full w-full flex-col border-t">
-              {/* UIDL 기반 패널 헤더 - 단일 활성 탭 + Plus 버튼 + 컨트롤 버튼들 */}
-              <div className="bg-background flex h-10 w-full items-center justify-between overflow-hidden">
-                {/* 좌측: 활성 탭 + Plus 버튼 */}
-                <div className="flex items-center">
-                  {/* 활성 TERMINAL 탭 - Primary 색상 하단 보더 */}
-                  <div className="border-primary flex flex-col border-b-2">
-                    <Button variant="ghost" size="sm">
-                      <Terminal className="h-4 w-4" />
-                      <span className="text-sm font-medium">{clusterName}</span>
-                    </Button>
-                  </div>
+              {/* UIDL 기반 패널 헤더 - 다중 클러스터 탭 + Plus 버튼 + 컨트롤 버튼들 */}
+              <div
+                ref={tabsContainerRef}
+                className="bg-background flex h-10 w-full items-center justify-between overflow-hidden"
+              >
+                {/* 좌측: 클러스터 탭들 */}
+                <div className="flex items-center gap-1 overflow-hidden">
+                  {tabs.map((tab) => (
+                    <div
+                      key={tab.id}
+                      className={cn(
+                        "flex items-center",
+                        tab.isActive && "border-primary border-b-2",
+                      )}
+                      style={
+                        shouldTruncate && maxTabWidth
+                          ? { maxWidth: `${maxTabWidth}px` }
+                          : undefined
+                      }
+                      onMouseEnter={() => setHoveredTab(tab.id)}
+                      onMouseLeave={() => setHoveredTab(null)}
+                    >
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => handleTabClick(tab.id)}
+                        className="group relative h-10 gap-2 px-3 py-2"
+                      >
+                        <Terminal className="h-4 w-4 flex-shrink-0" />
+                        <span
+                          className={cn(
+                            "text-sm font-medium",
+                            shouldTruncate && "truncate",
+                          )}
+                          title={tab.clusterName}
+                        >
+                          {tab.clusterName}
+                        </span>
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleCloseTab(tab.id);
+                          }}
+                          className={cn(
+                            "hover:bg-muted/50 rounded-sm p-0.5 transition-opacity",
+                            hoveredTab === tab.id ? "opacity-100" : "opacity-0",
+                          )}
+                        >
+                          <X className="h-4 w-4" />
+                        </button>
+                      </Button>
+                    </div>
+                  ))}
                 </div>
 
                 {/* 우측: + 버튼, Separator, 컨트롤 버튼들 (UIDL 기반) */}
@@ -776,6 +1084,7 @@ export const StructurePanel: Story = {
                   <Button
                     variant="ghost"
                     size="icon"
+                    onClick={handleAddTab}
                     className="text-muted-foreground hover:text-foreground hover:bg-muted/50 h-8 w-8 bg-transparent"
                     title="Add New Terminal"
                   >
