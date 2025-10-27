@@ -698,7 +698,7 @@ export const StructureTab: Story = {
               {index < tabs.length - 1 && (
                 <Separator
                   orientation="vertical"
-                  className="bg-border h-10 w-px"
+                  className="bg-muted-foreground/30 h-10 w-px"
                   style={{ height: "40px", width: "1px" }}
                 />
               )}
@@ -1014,7 +1014,7 @@ export const StructurePanel: Story = {
               {/* UIDL 기반 패널 헤더 - 다중 클러스터 탭 + Plus 버튼 + 컨트롤 버튼들 */}
               <div className="bg-background flex h-10 w-full items-center">
                 {/* 좌측: 클러스터 탭들 */}
-                <div className="flex flex-1 items-start gap-0 overflow-x-auto pt-[7px] pr-px">
+                <div className="flex flex-1 items-center gap-0 overflow-x-auto pr-px">
                   {tabs.map((tab, index) => (
                     <div
                       key={tab.id}
@@ -1022,13 +1022,13 @@ export const StructurePanel: Story = {
                       className={cn(
                         tab.isActive
                           ? cn(
-                              "bg-muted/20 border-t-primary z-[1] flex flex-shrink-0 items-start border-t-2 border-r",
+                              "bg-muted/20 border-t-primary z-[1] flex flex-shrink-0 items-start border-t-2",
                               index > 0 && "-ml-px",
                             )
                           : cn(
                               "flex flex-shrink-0 items-start",
                               index > 0 && "-ml-px",
-                              "bg-muted/20 border-t border-r border-l",
+                              "bg-muted/20",
                             ),
                       )}
                       onMouseEnter={() => setHoveredTab(tab.id)}
@@ -1039,7 +1039,7 @@ export const StructurePanel: Story = {
                         size="sm"
                         onClick={() => handleTabClick(tab.id)}
                         className={cn(
-                          "group relative h-10 gap-2 px-3 py-2",
+                          "group relative h-10 gap-2 rounded-none border-0 px-3 py-2 hover:border-0 focus-visible:border-0 active:border-0",
                           !tab.isActive &&
                             "bg-muted/20 hover:bg-sidebar-accent/30 opacity-50 transition-all duration-200 hover:opacity-100",
                         )}
@@ -1094,7 +1094,7 @@ export const StructurePanel: Story = {
                   {/* UIDL 기반 Separator - 세로 구분선 (sm 버튼에 맞춘 높이) */}
                   <Separator
                     orientation="vertical"
-                    className="bg-border h-6 w-px"
+                    className="bg-muted-foreground/30 h-6 w-px"
                     style={{ height: "24px", width: "1px" }}
                   />
                   {/* 확장 버튼 - Expand 아이콘 사용 */}
