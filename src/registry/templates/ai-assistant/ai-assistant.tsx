@@ -48,31 +48,29 @@ export function AIAssistant({ onClose, onStart, className }: AIAssistantProps) {
 
   return (
     <aside
-      className={`border-border bg-sidebar flex h-auto shrink-0 flex-col gap-9 border-l p-6 ${className || ""} `.trim()}
+      className={`border-border bg-sidebar flex h-auto shrink-0 flex-col gap-9 border-l p-4 ${className || ""} `.trim()}
     >
       {/* 🎯 목적: 헤더 섹션 */}
-      <div className="relative flex flex-col gap-2">
-        <div className="flex items-start justify-between">
-          <div className="flex flex-1 flex-col gap-2">
-            <h3 className="text-foreground text-lg leading-7 font-semibold">
-              Skuber+ AI Assistant
-            </h3>
-            <p className="text-muted-foreground text-sm leading-5">
-              Please set up the API key to use the AI Assistant.
-            </p>
-          </div>
+      <div className="relative flex flex-col gap-0.5">
+        <div className="flex items-center justify-between">
+          <h3 className="text-foreground text-lg leading-7 font-semibold">
+            Skuber+ AI Assistant
+          </h3>
 
           {/* 🎯 목적: 닫기 버튼 */}
           <Button
             variant="ghost"
             size="icon"
             onClick={onClose}
-            className="h-4 w-4 shrink-0 p-0 opacity-70 hover:opacity-100"
+            className="h-8 w-8 shrink-0 p-0 opacity-70 hover:opacity-100"
           >
             <X className="h-4 w-4" />
             <span className="sr-only">Close AI Assistant</span>
           </Button>
         </div>
+        <p className="text-muted-foreground text-sm leading-5">
+          Please set up the API key to use the AI Assistant.
+        </p>
       </div>
 
       {/* 🎯 목적: 폼 영역 */}

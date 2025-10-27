@@ -10,6 +10,20 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import {
+  ChartContainer,
+  ChartTooltip,
+  ChartTooltipContent,
+} from "@/components/ui/chart";
+import { Bar, BarChart, CartesianGrid, XAxis, YAxis } from "recharts";
+import {
   History,
   X,
   Infinity,
@@ -18,6 +32,8 @@ import {
   ChevronRight,
   Copy,
   MoreHorizontal,
+  TrendingUp,
+  Expand,
 } from "lucide-react";
 
 /**
@@ -374,7 +390,7 @@ export const AnswersText: Story = {
                   style={{ paddingBottom: "calc(150px + 1rem)" }}
                 >
                   <ScrollArea className="h-full">
-                    <div className="flex flex-col items-end gap-4 pr-4">
+                    <div className="flex flex-col items-end gap-4">
                       {/* 사용자 질문 버튼 또는 편집 InputGroup */}
                       {isEditingUserMessage ? (
                         <div
@@ -493,6 +509,409 @@ export const AnswersText: Story = {
                           <p>신규 생성: 1명</p>
                           <p>정책 변경: 1건</p>
                           <p>삭제: 1명</p>
+                        </div>
+                      </div>
+
+                      {/* Copy/More 버튼 */}
+                      <div className="flex items-center">
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          className="h-8 w-8 shrink-0 p-0 opacity-70 hover:opacity-100"
+                        >
+                          <Copy className="h-4 w-4" />
+                          <span className="sr-only">Copy response</span>
+                        </Button>
+
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          className="h-8 w-8 shrink-0 p-0 opacity-70 hover:opacity-100"
+                        >
+                          <MoreHorizontal className="h-4 w-4" />
+                          <span className="sr-only">More options</span>
+                        </Button>
+                      </div>
+                    </div>
+                  </ScrollArea>
+                </div>
+              </div>
+
+              {/* 🎯 목적: InputGroup 컴포넌트 (뷰포트 하단 고정) */}
+              <div
+                className="bg-secondary border-border absolute right-4 bottom-4 left-4 flex flex-col rounded-lg border shadow-sm"
+                style={{ maxHeight: "400px" }}
+              >
+                {/* Textarea 영역 with ScrollArea */}
+                <ScrollArea className="max-h-96 p-3">
+                  <Textarea
+                    placeholder="Ask, Search or Chat..."
+                    value={message}
+                    onChange={(e) => setMessage(e.target.value)}
+                    className="text-primary placeholder:text-muted-foreground min-h-0 resize-none border-0 bg-transparent p-0 text-sm leading-5 focus-visible:ring-0"
+                    rows={1}
+                  />
+                </ScrollArea>
+
+                {/* InputGroupAddonBlock - 하단 컨트롤 영역 */}
+                <div className="flex items-center justify-between px-3 pt-1.5 pb-3">
+                  {/* 좌측 컨트롤 그룹 */}
+                  <div className="flex items-center gap-2">
+                    {/* Agent InputGroupButton */}
+                    <div className="flex items-start">
+                      <div className="bg-background/50 border-border flex h-7 items-center justify-center gap-1.5 rounded-full border px-2.5 shadow-sm">
+                        <Infinity className="h-4 w-4" />
+                        <span className="text-foreground text-xs leading-4 font-medium">
+                          Agent
+                        </span>
+                        <ChevronDown className="h-4 w-4" />
+                      </div>
+                    </div>
+
+                    {/* Auto InputGroupButton */}
+                    <div className="flex items-start">
+                      <div className="flex h-6 items-center justify-center gap-1 rounded-sm bg-transparent px-2">
+                        <span className="text-muted-foreground text-sm leading-5 font-medium">
+                          Auto
+                        </span>
+                        <ChevronDown className="h-4 w-4" />
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* 우측 전송 버튼 그룹 */}
+                  <div className="flex items-center gap-2">
+                    <div className="flex items-start">
+                      <div
+                        className={`flex h-6 w-6 items-center justify-center rounded-full shadow-sm transition-all ${
+                          isSendEnabled
+                            ? "bg-primary hover:bg-primary/90 cursor-pointer"
+                            : "bg-muted cursor-not-allowed opacity-50"
+                        }`}
+                      >
+                        <ArrowUp
+                          className={`h-4 w-4 ${isSendEnabled ? "text-primary-foreground" : "text-muted-foreground"}`}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </aside>
+          </ResizablePanel>
+        </ResizablePanelGroup>
+      </div>
+    );
+  },
+};
+
+/**
+ * AI Assistant의 차트 답변 예시입니다.
+ * 차트 카드 형태로 IAM 사용자 활동 데이터를 시각화하여 보여줍니다.
+ */
+export const AnswersChart: Story = {
+  render: () => {
+    // 🎯 목적: 채팅 입력 상태 관리 (InputGroup용)
+    const [message, setMessage] = React.useState("");
+
+    // 🎯 목적: send 버튼 활성화 여부 계산
+    const isSendEnabled = message.trim().length > 0;
+
+    // 🎯 목적: 사용자 발화 버튼 편집 상태 관리
+    const [isEditingUserMessage, setIsEditingUserMessage] =
+      React.useState(false);
+    const [userMessageText, setUserMessageText] = React.useState(
+      "최근 일주일 동안 생성되거나 변경된 IAM 사용자 내역을 알고싶어.",
+    );
+
+    // 🎯 목적: 차트 데이터 정의
+    const chartData = [
+      { period: "월", created: 12, modified: 8 },
+      { period: "화", created: 19, modified: 13 },
+      { period: "수", created: 3, modified: 15 },
+      { period: "목", created: 5, modified: 2 },
+      { period: "금", created: 2, modified: 7 },
+      { period: "토", created: 9, modified: 4 },
+      { period: "일", created: 15, modified: 11 },
+    ];
+
+    const chartConfig = {
+      created: {
+        label: "생성된 사용자",
+        color: "hsl(var(--chart-1))",
+      },
+      modified: {
+        label: "수정된 사용자",
+        color: "hsl(var(--chart-2))",
+      },
+    };
+
+    return (
+      <div className="bg-background h-screen w-full">
+        <ResizablePanelGroup direction="horizontal" className="h-full w-full">
+          {/* 메인 콘텐츠 영역 */}
+          <ResizablePanel>
+            <div className="flex h-full items-center justify-center p-8">
+              <div className="text-center">
+                <h2 className="mb-2 text-lg font-semibold">
+                  AI Assistant 템플릿
+                </h2>
+                <p className="text-muted-foreground text-sm">
+                  AI 차트 답변 예시의 AI Assistant 인터페이스입니다.
+                </p>
+              </div>
+            </div>
+          </ResizablePanel>
+
+          {/* AI Assistant 리사이즈 핸들 */}
+          <ResizableHandle className="w-1 cursor-col-resize bg-transparent transition-colors hover:bg-blue-500/20 active:bg-blue-500/30" />
+
+          {/* AI Assistant 패널 - Chart Answers 상태 */}
+          <ResizablePanel defaultSize={25} minSize={20} maxSize={40}>
+            <aside className="border-border bg-sidebar relative flex h-full shrink-0 flex-col border-l p-4">
+              {/* 🎯 목적: 헤더 섹션 */}
+              <div className="flex shrink-0 flex-col gap-2">
+                <div className="flex items-center justify-between">
+                  <h3 className="text-foreground text-lg leading-7 font-semibold">
+                    New chat
+                  </h3>
+
+                  <div className="flex items-center">
+                    {/* History 버튼 */}
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="h-8 w-8 shrink-0 p-0 opacity-70 hover:opacity-100"
+                    >
+                      <History className="h-4 w-4" />
+                      <span className="sr-only">History</span>
+                    </Button>
+
+                    {/* Close 버튼 */}
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="h-8 w-8 shrink-0 p-0 opacity-70 hover:opacity-100"
+                    >
+                      <X className="h-4 w-4" />
+                      <span className="sr-only">Close AI Assistant</span>
+                    </Button>
+                  </div>
+                </div>
+
+                {/* 🎯 목적: AI 응답 섹션 (스크롤 가능) - InputGroup 공간 제외 */}
+                <div
+                  className="min-h-0 flex-1"
+                  style={{ paddingBottom: "calc(150px + 1rem)" }}
+                >
+                  <ScrollArea className="h-full">
+                    <div className="flex flex-col items-end gap-4">
+                      {/* 사용자 질문 버튼 또는 편집 InputGroup */}
+                      {isEditingUserMessage ? (
+                        <div
+                          className="bg-secondary border-border flex w-full flex-col rounded-lg border shadow-sm"
+                          style={{ maxHeight: "400px" }}
+                        >
+                          {/* Textarea 영역 with ScrollArea */}
+                          <ScrollArea className="max-h-96 p-3">
+                            <Textarea
+                              value={userMessageText}
+                              onChange={(e) =>
+                                setUserMessageText(e.target.value)
+                              }
+                              onBlur={() => setIsEditingUserMessage(false)}
+                              className="text-primary placeholder:text-muted-foreground min-h-0 resize-none border-0 bg-transparent p-0 text-sm leading-5 focus-visible:ring-0"
+                              rows={1}
+                              autoFocus
+                            />
+                          </ScrollArea>
+
+                          {/* InputGroupAddonBlock - 하단 컨트롤 영역 */}
+                          <div className="flex items-center justify-between px-3 pt-1.5 pb-3">
+                            {/* 좌측 컨트롤 그룹 */}
+                            <div className="flex items-center gap-2">
+                              {/* Agent InputGroupButton */}
+                              <div className="flex items-start">
+                                <div className="bg-background/50 border-border flex h-7 items-center justify-center gap-1.5 rounded-full border px-2.5 shadow-sm">
+                                  <Infinity className="h-4 w-4" />
+                                  <span className="text-foreground text-xs leading-4 font-medium">
+                                    Agent
+                                  </span>
+                                  <ChevronDown className="h-4 w-4" />
+                                </div>
+                              </div>
+
+                              {/* Auto InputGroupButton */}
+                              <div className="flex items-start">
+                                <div className="flex h-6 items-center justify-center gap-1 rounded-sm bg-transparent px-2">
+                                  <span className="text-muted-foreground text-sm leading-5 font-medium">
+                                    Auto
+                                  </span>
+                                  <ChevronDown className="h-4 w-4" />
+                                </div>
+                              </div>
+                            </div>
+
+                            {/* 우측 전송 버튼 그룹 */}
+                            <div className="flex items-center gap-2">
+                              <div className="flex items-start">
+                                <div
+                                  className={`flex h-6 w-6 items-center justify-center rounded-full shadow-sm transition-all ${
+                                    userMessageText.trim().length > 0
+                                      ? "bg-primary hover:bg-primary/90 cursor-pointer"
+                                      : "bg-muted cursor-not-allowed opacity-50"
+                                  }`}
+                                >
+                                  <ArrowUp
+                                    className={`h-4 w-4 ${userMessageText.trim().length > 0 ? "text-primary-foreground" : "text-muted-foreground"}`}
+                                  />
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      ) : (
+                        <Button
+                          variant="outline"
+                          className="h-auto w-full cursor-pointer justify-start text-left text-sm font-medium break-words whitespace-normal"
+                          onClick={() => setIsEditingUserMessage(true)}
+                        >
+                          {userMessageText}
+                        </Button>
+                      )}
+
+                      {/* AI 응답 콘텐츠 - 차트 카드들 */}
+                      <div className="flex flex-col items-start gap-5 self-stretch">
+                        {/* Blockquote */}
+                        <div className="flex flex-col items-start self-stretch">
+                          <div className="border-border flex shrink-0 items-center gap-2 self-stretch border-l-2 px-0 py-0 pl-4">
+                            <span className="text-primary flex-grow text-sm leading-5">
+                              최근 7일간 IAM 사용자 활동 통계입니다.
+                            </span>
+                          </div>
+                        </div>
+
+                        {/* 차트 카드들 - 횡스크롤 */}
+                        <div className="flex gap-4 self-stretch overflow-x-auto pb-2">
+                          {/* 첫 번째 차트 카드 - 주간 통계 */}
+                          <Card className="min-w-[280px] flex-shrink-0">
+                            <CardHeader className="pb-2">
+                              <CardTitle className="text-base">
+                                주간 사용자 활동
+                              </CardTitle>
+                              <CardDescription>
+                                지난 7일간 생성/수정된 IAM 사용자 수
+                              </CardDescription>
+                            </CardHeader>
+                            <CardContent className="pb-2">
+                              <ChartContainer
+                                config={chartConfig}
+                                className="h-[180px] w-full"
+                              >
+                                <BarChart data={chartData}>
+                                  <CartesianGrid vertical={false} />
+                                  <XAxis
+                                    dataKey="period"
+                                    tickLine={false}
+                                    tickMargin={10}
+                                    axisLine={false}
+                                  />
+                                  <YAxis hide />
+                                  <ChartTooltip
+                                    cursor={false}
+                                    content={
+                                      <ChartTooltipContent indicator="dashed" />
+                                    }
+                                  />
+                                  <Bar
+                                    dataKey="created"
+                                    fill="var(--color-created)"
+                                    radius={4}
+                                  />
+                                  <Bar
+                                    dataKey="modified"
+                                    fill="var(--color-modified)"
+                                    radius={4}
+                                  />
+                                </BarChart>
+                              </ChartContainer>
+                            </CardContent>
+                            <CardFooter className="flex-col items-start gap-2 text-sm">
+                              <div className="flex gap-2 leading-none font-medium">
+                                <TrendingUp className="h-4 w-4" />
+                                생성 활동 15% 증가
+                              </div>
+                              <div className="text-muted-foreground leading-none">
+                                저번 주 대비 IAM 사용자 생성이 증가했습니다.
+                              </div>
+                            </CardFooter>
+                          </Card>
+
+                          {/* 두 번째 차트 카드 - 누적 통계 */}
+                          <Card className="min-w-[280px] flex-shrink-0">
+                            <CardHeader className="pb-2">
+                              <CardTitle className="text-base">
+                                총 활동 현황
+                              </CardTitle>
+                              <CardDescription>
+                                전체 생성/수정 비율 및 누적 통계
+                              </CardDescription>
+                            </CardHeader>
+                            <CardContent className="pb-2">
+                              <ChartContainer
+                                config={chartConfig}
+                                className="h-[180px] w-full"
+                              >
+                                <BarChart data={chartData}>
+                                  <CartesianGrid vertical={false} />
+                                  <XAxis
+                                    dataKey="period"
+                                    tickLine={false}
+                                    tickMargin={10}
+                                    axisLine={false}
+                                  />
+                                  <YAxis hide />
+                                  <ChartTooltip
+                                    cursor={false}
+                                    content={
+                                      <ChartTooltipContent indicator="line" />
+                                    }
+                                  />
+                                  <Bar
+                                    dataKey="created"
+                                    stackId="a"
+                                    fill="var(--color-created)"
+                                    radius={[0, 0, 4, 4]}
+                                  />
+                                  <Bar
+                                    dataKey="modified"
+                                    stackId="a"
+                                    fill="var(--color-modified)"
+                                    radius={[4, 4, 0, 0]}
+                                  />
+                                </BarChart>
+                              </ChartContainer>
+                            </CardContent>
+                            <CardFooter className="flex-col items-start gap-2 text-sm">
+                              <div className="flex gap-2 leading-none font-medium">
+                                <Expand className="h-4 w-4" />총 125개 활동 기록
+                              </div>
+                              <div className="text-muted-foreground leading-none">
+                                신규 생성 65건, 기존 사용자 수정 60건
+                              </div>
+                            </CardFooter>
+                          </Card>
+                        </div>
+
+                        {/* Separator */}
+                        <div className="bg-border h-px w-full" />
+
+                        {/* 요약 섹션 */}
+                        <div className="text-primary self-stretch text-sm leading-5">
+                          <p>주요 인사이트:</p>
+                          <p>• 금요일에 가장 많은 사용자 생성 (19명)</p>
+                          <p>• 수요일에 가장 많은 정책 수정 (15건)</p>
+                          <p>• 주말 활동량은 평일 대비 40% 감소</p>
                         </div>
                       </div>
 

@@ -307,67 +307,81 @@ export const Structure: Story = {
                           {/* UIDL 기반 패널 헤더 - 다중 클러스터 탭 + Plus 버튼 + 컨트롤 버튼들 */}
                           <div className="bg-background flex h-10 w-full items-center">
                             {/* 좌측: 클러스터 탭들 */}
-                            <div className="flex flex-1 items-start gap-0 overflow-x-auto pt-[7px] pr-px">
+                            <div className="bg-background border-border flex min-h-[40px] w-full items-center overflow-hidden">
+                              {/* 동적 탭 렌더링 */}
                               {tabs.map((tab, index) => (
-                                <div
-                                  key={tab.id}
-                                  ref={tab.isActive ? selectedTabRef : null}
-                                  className={cn(
-                                    tab.isActive
-                                      ? cn(
-                                          "bg-muted/20 border-t-primary z-[1] flex flex-shrink-0 items-start border-t-2 border-r",
-                                          index > 0 && "-ml-px",
-                                        )
-                                      : cn(
-                                          "flex flex-shrink-0 items-start",
-                                          index > 0 && "-ml-px",
-                                          "bg-muted/20 border-t border-r border-l",
-                                        ),
+                                <React.Fragment key={tab.id}>
+                                  {/* 활성 탭 또는 비활성 탭 */}
+                                  {tab.isActive ? (
+                                    // 활성 탭 - 어두운 배경과 파란색 상단 보더, 하단 보더를 덮음, primary 아이콘, bold italic 텍스트
+                                    <div className="bg-background border-primary after:bg-background relative z-10 -mb-px flex flex-col border-t-2 after:absolute after:right-0 after:bottom-0 after:left-0 after:z-20 after:h-px">
+                                      <Button
+                                        variant="ghost"
+                                        onMouseEnter={() =>
+                                          setHoveredTab(tab.id)
+                                        }
+                                        onMouseLeave={() => setHoveredTab(null)}
+                                        onClick={() => handleTabClick(tab.id)}
+                                        className="text-foreground hover:bg-sidebar/50 h-10 justify-center rounded-none border-0 bg-transparent px-3 py-2 hover:border-0 focus-visible:border-0 active:border-0"
+                                      >
+                                        <Terminal className="text-primary h-4 w-4" />
+                                        <span className="text-sm font-bold font-medium italic">
+                                          {tab.clusterName}
+                                        </span>
+                                        <button
+                                          onClick={(e) => {
+                                            e.stopPropagation();
+                                            handleCloseTab(tab.id);
+                                          }}
+                                          className="hover:bg-muted/50 rounded-sm p-0.5 transition-colors"
+                                        >
+                                          <X className="h-4 w-4" />
+                                        </button>
+                                      </Button>
+                                    </div>
+                                  ) : (
+                                    // 비활성 탭 - 더 약한 투명도와 배경, 호버 시 배경 변경, 하단 border 포함
+                                    <div className="border-border relative border-b">
+                                      <Button
+                                        variant="ghost"
+                                        onMouseEnter={() =>
+                                          setHoveredTab(tab.id)
+                                        }
+                                        onMouseLeave={() => setHoveredTab(null)}
+                                        onClick={() => handleTabClick(tab.id)}
+                                        className="text-foreground hover:bg-sidebar-accent/30 bg-muted/20 h-10 rounded-none border-0 px-3 py-2 opacity-50 transition-all duration-200 hover:border-0 hover:opacity-100 focus-visible:border-0 active:border-0"
+                                      >
+                                        <Terminal className="h-4 w-4" />
+                                        <span className="text-sm font-medium">
+                                          {tab.clusterName}
+                                        </span>
+                                        {/* 🎯 목적: X 버튼을 항상 렌더링하여 공간 확보, hover 시에만 표시 */}
+                                        <button
+                                          onClick={(e) => {
+                                            e.stopPropagation();
+                                            handleCloseTab(tab.id);
+                                          }}
+                                          className={`hover:bg-muted/50 rounded-sm p-0.5 transition-all ${
+                                            hoveredTab === tab.id
+                                              ? "opacity-100"
+                                              : "opacity-0"
+                                          }`}
+                                        >
+                                          <X className="h-4 w-4" />
+                                        </button>
+                                      </Button>
+                                    </div>
                                   )}
-                                  onMouseEnter={() => setHoveredTab(tab.id)}
-                                  onMouseLeave={() => setHoveredTab(null)}
-                                >
-                                  <Button
-                                    variant="ghost"
-                                    size="sm"
-                                    onClick={() => handleTabClick(tab.id)}
-                                    className={cn(
-                                      "group relative h-10 gap-2 px-3 py-2",
-                                      !tab.isActive &&
-                                        "bg-muted/20 hover:bg-sidebar-accent/30 opacity-50 transition-all duration-200 hover:opacity-100",
-                                    )}
-                                  >
-                                    <Terminal
-                                      className={cn(
-                                        "h-4 w-4 flex-shrink-0",
-                                        tab.isActive && "text-primary",
-                                      )}
+
+                                  {/* 탭 사이에 Separator 추가 (마지막 탭 제외) */}
+                                  {index < tabs.length - 1 && (
+                                    <Separator
+                                      orientation="vertical"
+                                      className="bg-border h-10 w-px"
+                                      style={{ height: "40px", width: "1px" }}
                                     />
-                                    <span
-                                      className={cn(
-                                        "text-sm font-medium whitespace-nowrap",
-                                        tab.isActive && "font-bold italic",
-                                      )}
-                                      title={tab.clusterName}
-                                    >
-                                      {tab.clusterName}
-                                    </span>
-                                    <button
-                                      onClick={(e) => {
-                                        e.stopPropagation();
-                                        handleCloseTab(tab.id);
-                                      }}
-                                      className={cn(
-                                        "hover:bg-muted/50 flex-shrink-0 rounded-sm p-0.5 transition-opacity",
-                                        tab.isActive || hoveredTab === tab.id
-                                          ? "opacity-100"
-                                          : "opacity-0",
-                                      )}
-                                    >
-                                      <X className="h-4 w-4" />
-                                    </button>
-                                  </Button>
-                                </div>
+                                  )}
+                                </React.Fragment>
                               ))}
                             </div>
 
@@ -698,7 +712,7 @@ export const StructureTab: Story = {
               {index < tabs.length - 1 && (
                 <Separator
                   orientation="vertical"
-                  className="bg-muted-foreground/30 h-10 w-px"
+                  className="bg-border h-10 w-px"
                   style={{ height: "40px", width: "1px" }}
                 />
               )}
@@ -1014,67 +1028,77 @@ export const StructurePanel: Story = {
               {/* UIDL 기반 패널 헤더 - 다중 클러스터 탭 + Plus 버튼 + 컨트롤 버튼들 */}
               <div className="bg-background flex h-10 w-full items-center">
                 {/* 좌측: 클러스터 탭들 */}
-                <div className="flex flex-1 items-center gap-0 overflow-x-auto pr-px">
+                <div className="bg-background border-border flex min-h-[40px] w-full items-center overflow-hidden">
+                  {/* 동적 탭 렌더링 */}
                   {tabs.map((tab, index) => (
-                    <div
-                      key={tab.id}
-                      ref={tab.isActive ? selectedTabRef : null}
-                      className={cn(
-                        tab.isActive
-                          ? cn(
-                              "bg-muted/20 border-t-primary z-[1] flex flex-shrink-0 items-start border-t-2",
-                              index > 0 && "-ml-px",
-                            )
-                          : cn(
-                              "flex flex-shrink-0 items-start",
-                              index > 0 && "-ml-px",
-                              "bg-muted/20",
-                            ),
+                    <React.Fragment key={tab.id}>
+                      {/* 활성 탭 또는 비활성 탭 */}
+                      {tab.isActive ? (
+                        // 활성 탭 - 어두운 배경과 파란색 상단 보더, 하단 보더를 덮음, primary 아이콘, bold italic 텍스트
+                        <div className="bg-background border-primary after:bg-background relative z-10 -mb-px flex flex-col border-t-2 after:absolute after:right-0 after:bottom-0 after:left-0 after:z-20 after:h-px">
+                          <Button
+                            variant="ghost"
+                            onMouseEnter={() => setHoveredTab(tab.id)}
+                            onMouseLeave={() => setHoveredTab(null)}
+                            onClick={() => handleTabClick(tab.id)}
+                            className="text-foreground hover:bg-sidebar/50 h-10 justify-center rounded-none border-0 bg-transparent px-3 py-2 hover:border-0 focus-visible:border-0 active:border-0"
+                          >
+                            <Terminal className="text-primary h-4 w-4" />
+                            <span className="text-sm font-bold font-medium italic">
+                              {tab.clusterName}
+                            </span>
+                            <button
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                handleCloseTab(tab.id);
+                              }}
+                              className="hover:bg-muted/50 rounded-sm p-0.5 transition-colors"
+                            >
+                              <X className="h-4 w-4" />
+                            </button>
+                          </Button>
+                        </div>
+                      ) : (
+                        // 비활성 탭 - 더 약한 투명도와 배경, 호버 시 배경 변경, 하단 border 포함
+                        <div className="border-border relative border-b">
+                          <Button
+                            variant="ghost"
+                            onMouseEnter={() => setHoveredTab(tab.id)}
+                            onMouseLeave={() => setHoveredTab(null)}
+                            onClick={() => handleTabClick(tab.id)}
+                            className="text-foreground hover:bg-sidebar-accent/30 bg-muted/20 h-10 rounded-none border-0 px-3 py-2 opacity-50 transition-all duration-200 hover:border-0 hover:opacity-100 focus-visible:border-0 active:border-0"
+                          >
+                            <Terminal className="h-4 w-4" />
+                            <span className="text-sm font-medium">
+                              {tab.clusterName}
+                            </span>
+                            {/* 🎯 목적: X 버튼을 항상 렌더링하여 공간 확보, hover 시에만 표시 */}
+                            <button
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                handleCloseTab(tab.id);
+                              }}
+                              className={`hover:bg-muted/50 rounded-sm p-0.5 transition-all ${
+                                hoveredTab === tab.id
+                                  ? "opacity-100"
+                                  : "opacity-0"
+                              }`}
+                            >
+                              <X className="h-4 w-4" />
+                            </button>
+                          </Button>
+                        </div>
                       )}
-                      onMouseEnter={() => setHoveredTab(tab.id)}
-                      onMouseLeave={() => setHoveredTab(null)}
-                    >
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => handleTabClick(tab.id)}
-                        className={cn(
-                          "group relative h-10 gap-2 rounded-none border-0 px-3 py-2 hover:border-0 focus-visible:border-0 active:border-0",
-                          !tab.isActive &&
-                            "bg-muted/20 hover:bg-sidebar-accent/30 opacity-50 transition-all duration-200 hover:opacity-100",
-                        )}
-                      >
-                        <Terminal
-                          className={cn(
-                            "h-4 w-4 flex-shrink-0",
-                            tab.isActive && "text-primary",
-                          )}
+
+                      {/* 탭 사이에 Separator 추가 (마지막 탭 제외) */}
+                      {index < tabs.length - 1 && (
+                        <Separator
+                          orientation="vertical"
+                          className="bg-border h-6 w-px"
+                          style={{ height: "24px", width: "1px" }}
                         />
-                        <span
-                          className={cn(
-                            "text-sm font-medium whitespace-nowrap",
-                            tab.isActive && "font-bold italic",
-                          )}
-                          title={tab.clusterName}
-                        >
-                          {tab.clusterName}
-                        </span>
-                        <button
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            handleCloseTab(tab.id);
-                          }}
-                          className={cn(
-                            "hover:bg-muted/50 flex-shrink-0 rounded-sm p-0.5 transition-opacity",
-                            tab.isActive || hoveredTab === tab.id
-                              ? "opacity-100"
-                              : "opacity-0",
-                          )}
-                        >
-                          <X className="h-4 w-4" />
-                        </button>
-                      </Button>
-                    </div>
+                      )}
+                    </React.Fragment>
                   ))}
                 </div>
 
@@ -1094,7 +1118,7 @@ export const StructurePanel: Story = {
                   {/* UIDL 기반 Separator - 세로 구분선 (sm 버튼에 맞춘 높이) */}
                   <Separator
                     orientation="vertical"
-                    className="bg-muted-foreground/30 h-6 w-px"
+                    className="bg-border h-6 w-px"
                     style={{ height: "24px", width: "1px" }}
                   />
                   {/* 확장 버튼 - Expand 아이콘 사용 */}

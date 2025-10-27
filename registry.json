@@ -2578,6 +2578,28 @@
           "type": "registry:component"
         }
       ]
+    },
+    {
+      "name": "ai-assistant-story",
+      "type": "registry:component",
+      "title": "AI Assistant Story",
+      "description": "Interactive Storybook story demonstrating AI Assistant component with resizable panels",
+      "categories": [
+        "templates",
+        "storybook",
+        "ai-assistant",
+        "resizable"
+      ],
+      "author": "Lloyd Richards <lloyd.d.richards@gmail.com>",
+      "registryDependencies": [
+        "resizable"
+      ],
+      "files": [
+        {
+          "path": "src/registry/templates/ai-assistant/ai-assistant.stories.tsx",
+          "type": "registry:component"
+        }
+      ]
     }
   ]
 }
