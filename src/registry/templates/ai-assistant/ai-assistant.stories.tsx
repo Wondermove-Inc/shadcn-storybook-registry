@@ -792,7 +792,7 @@ export const AnswersChart: Story = {
                         </div>
 
                         {/* 차트 카드들 - 횡스크롤 */}
-                        <div className="flex gap-4 self-stretch overflow-x-auto pb-2">
+                        <div className="flex gap-2 self-stretch overflow-x-auto pb-2">
                           {/* 첫 번째 차트 카드 - 주간 통계 */}
                           <Card className="min-w-[280px] flex-shrink-0">
                             <CardHeader className="pb-2">
