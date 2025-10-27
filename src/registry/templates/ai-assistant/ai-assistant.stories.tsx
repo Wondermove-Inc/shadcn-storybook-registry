@@ -154,7 +154,7 @@ export const BeforeUtterance: Story = {
 
                 {/* 🎯 목적: InputGroup 컴포넌트 기반 채팅 입력 영역 */}
                 <div
-                  className="bg-background/50 border-border flex w-full flex-col rounded-lg border shadow-sm"
+                  className="bg-secondary border-border flex w-full flex-col rounded-lg border shadow-sm"
                   style={{ maxHeight: "400px" }}
                 >
                   {/* Textarea 영역 with ScrollArea */}
@@ -300,13 +300,20 @@ export const BeforeUtterance: Story = {
  * AI Assistant의 채팅 응답 후 상태입니다.
  * AI가 응답을 완료한 후의 인터페이스를 보여줍니다.
  */
-export const AfterUtterance: Story = {
+export const AnswersText: Story = {
   render: () => {
     // 🎯 목적: 채팅 입력 상태 관리 (InputGroup용)
     const [message, setMessage] = React.useState("");
 
     // 🎯 목적: send 버튼 활성화 여부 계산
     const isSendEnabled = message.trim().length > 0;
+
+    // 🎯 목적: 사용자 발화 버튼 편집 상태 관리
+    const [isEditingUserMessage, setIsEditingUserMessage] =
+      React.useState(false);
+    const [userMessageText, setUserMessageText] = React.useState(
+      "최근 일주일 동안 생성되거나 변경된 IAM 사용자 내역을 알고싶어.",
+    );
 
     return (
       <div className="bg-background h-screen w-full">
@@ -330,9 +337,9 @@ export const AfterUtterance: Story = {
 
           {/* AI Assistant 패널 - After Utterance 상태 */}
           <ResizablePanel defaultSize={25} minSize={20} maxSize={40}>
-            <aside className="border-border bg-sidebar flex h-full shrink-0 flex-col justify-between gap-3 border-l p-4">
+            <aside className="border-border bg-sidebar relative flex h-full shrink-0 flex-col border-l p-4">
               {/* 🎯 목적: 헤더 섹션 */}
-              <div className="flex flex-col gap-2">
+              <div className="flex shrink-0 flex-col gap-2">
                 <div className="flex items-center justify-between">
                   <h3 className="text-foreground text-lg leading-7 font-semibold">
                     New chat
@@ -361,91 +368,162 @@ export const AfterUtterance: Story = {
                   </div>
                 </div>
 
-                {/* 🎯 목적: AI 응답 섹션 */}
-                <div className="flex flex-col items-end gap-4 self-stretch">
-                  {/* 사용자 질문 버튼 */}
-                  <Button
-                    variant="secondary"
-                    className="hover:bg-secondary/80 h-auto w-full cursor-pointer justify-start text-left text-sm font-medium break-words whitespace-normal"
-                    onClick={() => console.log("사용자 질문 클릭됨")}
-                  >
-                    최근 일주일 동안 생성되거나 변경된 IAM 사용자 내역을
-                    알고싶어.
-                  </Button>
+                {/* 🎯 목적: AI 응답 섹션 (스크롤 가능) - InputGroup 공간 제외 */}
+                <div
+                  className="min-h-0 flex-1"
+                  style={{ paddingBottom: "calc(150px + 1rem)" }}
+                >
+                  <ScrollArea className="h-full">
+                    <div className="flex flex-col items-end gap-4 pr-4">
+                      {/* 사용자 질문 버튼 또는 편집 InputGroup */}
+                      {isEditingUserMessage ? (
+                        <div
+                          className="bg-secondary border-border flex w-full flex-col rounded-lg border shadow-sm"
+                          style={{ maxHeight: "400px" }}
+                        >
+                          {/* Textarea 영역 with ScrollArea */}
+                          <ScrollArea className="max-h-96 p-3">
+                            <Textarea
+                              value={userMessageText}
+                              onChange={(e) =>
+                                setUserMessageText(e.target.value)
+                              }
+                              onBlur={() => setIsEditingUserMessage(false)}
+                              className="text-primary placeholder:text-muted-foreground min-h-0 resize-none border-0 bg-transparent p-0 text-sm leading-5 focus-visible:ring-0"
+                              rows={1}
+                              autoFocus
+                            />
+                          </ScrollArea>
 
-                  {/* AI 응답 콘텐츠 */}
-                  <div className="flex flex-col items-start gap-5 self-stretch">
-                    {/* Blockquote */}
-                    <div className="flex flex-col items-start self-stretch">
-                      <div className="flex shrink-0 items-center gap-2 self-stretch border-l-2 border-white/10 px-0 py-0 pl-4">
-                        <span className="flex-grow text-sm leading-5 text-neutral-300">
-                          최근 7일간 생성되거나 변경된 IAM 사용자 내역은 다음과
-                          같습니다.
-                        </span>
+                          {/* InputGroupAddonBlock - 하단 컨트롤 영역 */}
+                          <div className="flex items-center justify-between px-3 pt-1.5 pb-3">
+                            {/* 좌측 컨트롤 그룹 */}
+                            <div className="flex items-center gap-2">
+                              {/* Agent InputGroupButton */}
+                              <div className="flex items-start">
+                                <div className="bg-background/50 border-border flex h-7 items-center justify-center gap-1.5 rounded-full border px-2.5 shadow-sm">
+                                  <Infinity className="h-4 w-4" />
+                                  <span className="text-foreground text-xs leading-4 font-medium">
+                                    Agent
+                                  </span>
+                                  <ChevronDown className="h-4 w-4" />
+                                </div>
+                              </div>
+
+                              {/* Auto InputGroupButton */}
+                              <div className="flex items-start">
+                                <div className="flex h-6 items-center justify-center gap-1 rounded-sm bg-transparent px-2">
+                                  <span className="text-muted-foreground text-sm leading-5 font-medium">
+                                    Auto
+                                  </span>
+                                  <ChevronDown className="h-4 w-4" />
+                                </div>
+                              </div>
+                            </div>
+
+                            {/* 우측 전송 버튼 그룹 */}
+                            <div className="flex items-center gap-2">
+                              <div className="flex items-start">
+                                <div
+                                  className={`flex h-6 w-6 items-center justify-center rounded-full shadow-sm transition-all ${
+                                    userMessageText.trim().length > 0
+                                      ? "bg-primary hover:bg-primary/90 cursor-pointer"
+                                      : "bg-muted cursor-not-allowed opacity-50"
+                                  }`}
+                                >
+                                  <ArrowUp
+                                    className={`h-4 w-4 ${userMessageText.trim().length > 0 ? "text-primary-foreground" : "text-muted-foreground"}`}
+                                  />
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      ) : (
+                        <Button
+                          variant="outline"
+                          className="h-auto w-full cursor-pointer justify-start text-left text-sm font-medium break-words whitespace-normal"
+                          onClick={() => setIsEditingUserMessage(true)}
+                        >
+                          {userMessageText}
+                        </Button>
+                      )}
+
+                      {/* AI 응답 콘텐츠 */}
+                      <div className="flex flex-col items-start gap-5 self-stretch">
+                        {/* Blockquote */}
+                        <div className="flex flex-col items-start self-stretch">
+                          <div className="border-border flex shrink-0 items-center gap-2 self-stretch border-l-2 px-0 py-0 pl-4">
+                            <span className="text-primary flex-grow text-sm leading-5">
+                              최근 7일간 생성되거나 변경된 IAM 사용자 내역은
+                              다음과 같습니다.
+                            </span>
+                          </div>
+                        </div>
+
+                        {/* 상세 응답 텍스트 */}
+                        <div className="text-primary self-stretch text-sm leading-5">
+                          <p>1. [2025-10-21 14:23:10 UTC]</p>
+                          <p className="ml-3">사용자 'data-engineer' 생성됨</p>
+                          <p className="ml-3">생성자: admin@cluster.local</p>
+                          <p className="ml-3">부여된 권한: read-only-access</p>
+                          <br />
+                          <p>2. [2025-10-20 09:47:35 UTC]</p>
+                          <p className="ml-3">
+                            사용자 'devops-agent'의 정책이 수정됨
+                          </p>
+                          <p className="ml-3">
+                            변경 사항: S3FullAccess → S3ReadOnlyAccess
+                          </p>
+                          <p className="ml-3">
+                            수정자: security-admin@cluster.local
+                          </p>
+                          <br />
+                          <p>3. [2025-10-19 18:02:12 UTC]</p>
+                          <p className="ml-3">사용자 'temp-user-01'이 삭제됨</p>
+                          <p className="ml-3">삭제자: admin@cluster.local</p>
+                        </div>
+
+                        {/* Separator */}
+                        <div className="bg-border h-px w-full" />
+
+                        {/* 요약 섹션 */}
+                        <div className="text-primary self-stretch text-sm leading-5">
+                          <p>요약:</p>
+                          <p>신규 생성: 1명</p>
+                          <p>정책 변경: 1건</p>
+                          <p>삭제: 1명</p>
+                        </div>
+                      </div>
+
+                      {/* Copy/More 버튼 */}
+                      <div className="flex items-center">
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          className="h-8 w-8 shrink-0 p-0 opacity-70 hover:opacity-100"
+                        >
+                          <Copy className="h-4 w-4" />
+                          <span className="sr-only">Copy response</span>
+                        </Button>
+
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          className="h-8 w-8 shrink-0 p-0 opacity-70 hover:opacity-100"
+                        >
+                          <MoreHorizontal className="h-4 w-4" />
+                          <span className="sr-only">More options</span>
+                        </Button>
                       </div>
                     </div>
-
-                    {/* 상세 응답 텍스트 */}
-                    <div className="self-stretch text-sm leading-5 text-neutral-300">
-                      <p>1. [2025-10-21 14:23:10 UTC]</p>
-                      <p className="ml-3">사용자 'data-engineer' 생성됨</p>
-                      <p className="ml-3">생성자: admin@cluster.local</p>
-                      <p className="ml-3">부여된 권한: read-only-access</p>
-                      <br />
-                      <p>2. [2025-10-20 09:47:35 UTC]</p>
-                      <p className="ml-3">
-                        사용자 'devops-agent'의 정책이 수정됨
-                      </p>
-                      <p className="ml-3">
-                        변경 사항: S3FullAccess → S3ReadOnlyAccess
-                      </p>
-                      <p className="ml-3">
-                        수정자: security-admin@cluster.local
-                      </p>
-                      <br />
-                      <p>3. [2025-10-19 18:02:12 UTC]</p>
-                      <p className="ml-3">사용자 'temp-user-01'이 삭제됨</p>
-                      <p className="ml-3">삭제자: admin@cluster.local</p>
-                    </div>
-
-                    {/* Separator */}
-                    <div className="h-px w-full bg-white/10" />
-
-                    {/* 요약 섹션 */}
-                    <div className="self-stretch text-sm leading-5 text-neutral-300">
-                      <p>요약:</p>
-                      <p>신규 생성: 1명</p>
-                      <p>정책 변경: 1건</p>
-                      <p>삭제: 1명</p>
-                    </div>
-                  </div>
-
-                  {/* Copy/More 버튼 */}
-                  <div className="flex items-center">
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      className="h-8 w-8 shrink-0 p-0 opacity-70 hover:opacity-100"
-                    >
-                      <Copy className="h-4 w-4" />
-                      <span className="sr-only">Copy response</span>
-                    </Button>
-
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      className="h-8 w-8 shrink-0 p-0 opacity-70 hover:opacity-100"
-                    >
-                      <MoreHorizontal className="h-4 w-4" />
-                      <span className="sr-only">More options</span>
-                    </Button>
-                  </div>
+                  </ScrollArea>
                 </div>
               </div>
 
-              {/* 🎯 목적: InputGroup 컴포넌트 (Before Utterance와 동일) */}
+              {/* 🎯 목적: InputGroup 컴포넌트 (뷰포트 하단 고정) */}
               <div
-                className="bg-background/50 border-border flex w-full flex-col rounded-lg border shadow-sm"
+                className="bg-secondary border-border absolute right-4 bottom-4 left-4 flex flex-col rounded-lg border shadow-sm"
                 style={{ maxHeight: "400px" }}
               >
                 {/* Textarea 영역 with ScrollArea */}
