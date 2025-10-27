@@ -638,11 +638,11 @@ export const AnswersChart: Story = {
     const chartConfig = {
       created: {
         label: "생성된 사용자",
-        color: "hsl(var(--chart-1))",
+        color: "var(--chart-1)",
       },
       modified: {
         label: "수정된 사용자",
-        color: "hsl(var(--chart-2))",
+        color: "var(--chart-2)",
       },
     };
 
