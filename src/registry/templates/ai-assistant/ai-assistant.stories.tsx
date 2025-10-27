@@ -1,0 +1,512 @@
+import React from "react";
+import type { Meta, StoryObj } from "@storybook/react-vite";
+import {
+  ResizableHandle,
+  ResizablePanel,
+  ResizablePanelGroup,
+} from "@/components/ui/resizable";
+import { AIAssistant } from "@/registry/templates/ai-assistant/ai-assistant";
+import { Button } from "@/components/ui/button";
+import { Textarea } from "@/components/ui/textarea";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import {
+  History,
+  X,
+  Infinity,
+  ChevronDown,
+  ArrowUp,
+  ChevronRight,
+  Copy,
+  MoreHorizontal,
+} from "lucide-react";
+
+/**
+ * AI Assistant 기본 시작 템플릿입니다.
+ *
+ * 🎯 목적: AI Assistant 컴포넌트의 독립적인 사용법 데모
+ * ✨ 특징:
+ * - ResizablePanelGroup을 사용한 반응형 레이아웃
+ * - 메인 콘텐츠 영역과 AI Assistant 패널 분리
+ * - 사용자가 패널 크기를 조절할 수 있는 리사이즈 핸들
+ * - AI Assistant 패널의 기본 사이즈 정책 (25% 기본, 20-40% 범위)
+ */
+const meta: Meta = {
+  title: "templates/AI Assistant",
+  tags: ["autodocs"],
+  parameters: {
+    layout: "fullscreen",
+    docs: {
+      description: {
+        component: "AI Assistant 컴포넌트만 독립적으로 사용하는 예시입니다.",
+      },
+    },
+  },
+};
+
+export default meta;
+type Story = StoryObj<typeof meta>;
+
+/**
+ * AI Assistant의 기본 사용 예시입니다.
+ * 메인 콘텐츠 영역과 함께 리사이즈 가능한 패널로 구성되어 있습니다.
+ */
+export const Start: Story = {
+  render: () => (
+    <div className="bg-background h-screen w-full">
+      <ResizablePanelGroup direction="horizontal" className="h-full w-full">
+        {/* 메인 콘텐츠 영역 */}
+        <ResizablePanel>
+          <div className="flex h-full items-center justify-center p-8">
+            <div className="text-center">
+              <h2 className="mb-2 text-lg font-semibold">
+                AI Assistant 템플릿
+              </h2>
+              <p className="text-muted-foreground text-sm">
+                AI Assistant 컴포넌트만 독립적으로 사용하는 예시입니다.
+              </p>
+            </div>
+          </div>
+        </ResizablePanel>
+
+        {/* AI Assistant 리사이즈 핸들 */}
+        <ResizableHandle className="w-1 cursor-col-resize bg-transparent transition-colors hover:bg-blue-500/20 active:bg-blue-500/30" />
+
+        {/* AI Assistant 패널 (Default 스토리와 동일한 사이즈 정책) */}
+        <ResizablePanel defaultSize={25} minSize={20} maxSize={40}>
+          <AIAssistant
+            onClose={() => {}}
+            onStart={() => {}}
+            className="h-full w-full"
+          />
+        </ResizablePanel>
+      </ResizablePanelGroup>
+    </div>
+  ),
+};
+
+/**
+ * AI Assistant의 채팅 시작 전 상태입니다.
+ * 사용자가 첫 메시지를 입력하기 전의 인터페이스를 보여줍니다.
+ */
+export const BeforeUtterance: Story = {
+  render: () => {
+    // 🎯 목적: 채팅 입력 상태 관리
+    const [message, setMessage] = React.useState("");
+
+    // 🎯 목적: send 버튼 활성화 여부 계산
+    const isSendEnabled = message.trim().length > 0;
+
+    // 🎯 목적: Past Chats 펼침/접힘 상태 관리
+    const [isPastChatsExpanded, setIsPastChatsExpanded] = React.useState(false);
+
+    return (
+      <div className="bg-background h-screen w-full">
+        <ResizablePanelGroup direction="horizontal" className="h-full w-full">
+          {/* 메인 콘텐츠 영역 */}
+          <ResizablePanel>
+            <div className="flex h-full items-center justify-center p-8">
+              <div className="text-center">
+                <h2 className="mb-2 text-lg font-semibold">
+                  AI Assistant 템플릿
+                </h2>
+                <p className="text-muted-foreground text-sm">
+                  채팅 시작 전 상태의 AI Assistant 인터페이스입니다.
+                </p>
+              </div>
+            </div>
+          </ResizablePanel>
+
+          {/* AI Assistant 리사이즈 핸들 */}
+          <ResizableHandle className="w-1 cursor-col-resize bg-transparent transition-colors hover:bg-blue-500/20 active:bg-blue-500/30" />
+
+          {/* AI Assistant 패널 - Before Utterance 상태 */}
+          <ResizablePanel defaultSize={25} minSize={20} maxSize={40}>
+            <aside className="border-border bg-sidebar flex h-full shrink-0 flex-col justify-between gap-4 border-l p-4">
+              {/* 🎯 목적: 헤더 섹션 */}
+              <div className="flex flex-col gap-2">
+                <div className="flex items-center justify-between">
+                  <h3 className="text-foreground text-lg leading-7 font-semibold">
+                    Skuber+ AI Assistant
+                  </h3>
+
+                  <div className="flex items-center">
+                    {/* History 버튼 */}
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="h-8 w-8 shrink-0 p-0 opacity-70 hover:opacity-100"
+                    >
+                      <History className="h-4 w-4" />
+                      <span className="sr-only">History</span>
+                    </Button>
+
+                    {/* Close 버튼 */}
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="h-8 w-8 shrink-0 p-0 opacity-70 hover:opacity-100"
+                    >
+                      <X className="h-4 w-4" />
+                      <span className="sr-only">Close AI Assistant</span>
+                    </Button>
+                  </div>
+                </div>
+
+                {/* 🎯 목적: InputGroup 컴포넌트 기반 채팅 입력 영역 */}
+                <div
+                  className="bg-background/50 border-border flex w-full flex-col rounded-lg border shadow-sm"
+                  style={{ maxHeight: "400px" }}
+                >
+                  {/* Textarea 영역 with ScrollArea */}
+                  <ScrollArea className="max-h-96 p-3">
+                    <Textarea
+                      placeholder="Ask, Search or Chat..."
+                      value={message}
+                      onChange={(e) => setMessage(e.target.value)}
+                      className="text-primary placeholder:text-muted-foreground min-h-0 resize-none border-0 bg-transparent p-0 text-sm leading-5 focus-visible:ring-0"
+                      rows={1}
+                    />
+                  </ScrollArea>
+
+                  {/* InputGroupAddonBlock - 하단 컨트롤 영역 */}
+                  <div className="flex items-center justify-between px-3 pt-1.5 pb-3">
+                    {/* 좌측 컨트롤 그룹 */}
+                    <div className="flex items-center gap-2">
+                      {/* Agent InputGroupButton */}
+                      <div className="flex items-start">
+                        <div className="bg-background/50 border-border flex h-7 items-center justify-center gap-1.5 rounded-full border px-2.5 shadow-sm">
+                          <Infinity className="h-4 w-4" />
+                          <span className="text-foreground text-xs leading-4 font-medium">
+                            Agent
+                          </span>
+                          <ChevronDown className="h-4 w-4" />
+                        </div>
+                      </div>
+
+                      {/* Auto InputGroupButton */}
+                      <div className="flex items-start">
+                        <div className="flex h-6 items-center justify-center gap-1 rounded-sm bg-transparent px-2">
+                          <span className="text-muted-foreground text-sm leading-5 font-medium">
+                            Auto
+                          </span>
+                          <ChevronDown className="h-4 w-4" />
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* 우측 전송 버튼 그룹 */}
+                    <div className="flex items-center gap-2">
+                      <div className="flex items-start">
+                        <div
+                          className={`flex h-6 w-6 items-center justify-center rounded-full shadow-sm transition-all ${
+                            isSendEnabled
+                              ? "bg-primary hover:bg-primary/90 cursor-pointer"
+                              : "bg-muted cursor-not-allowed opacity-50"
+                          }`}
+                        >
+                          <ArrowUp
+                            className={`h-4 w-4 ${isSendEnabled ? "text-primary-foreground" : "text-muted-foreground"}`}
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* 🎯 목적: Past Chats 섹션 */}
+              <div className="flex w-full flex-col gap-0">
+                {/* Past Chats 버튼 */}
+                <div className="flex w-full shrink-0 items-center justify-between">
+                  <Button
+                    variant="ghost"
+                    onClick={() => setIsPastChatsExpanded(!isPastChatsExpanded)}
+                    className="flex h-9 items-center justify-center gap-2 px-4 py-2 text-sm font-medium"
+                  >
+                    Past Chats
+                    {isPastChatsExpanded ? (
+                      <ChevronDown className="h-4 w-4" />
+                    ) : (
+                      <ChevronRight className="h-4 w-4" />
+                    )}
+                  </Button>
+
+                  {isPastChatsExpanded && (
+                    <Button
+                      variant="ghost"
+                      className="flex h-8 items-center justify-center gap-2 px-3 py-2 text-xs font-medium"
+                    >
+                      View All
+                    </Button>
+                  )}
+                </div>
+
+                {/* 펼쳐진 채팅 리스트 */}
+                {isPastChatsExpanded && (
+                  <div className="flex w-full flex-col">
+                    {/* 채팅 아이템 1 */}
+                    <div className="hover:bg-muted/50 flex shrink-0 items-start gap-2.5 rounded-lg px-4 py-3">
+                      <div className="flex shrink-0 flex-grow flex-col items-start justify-center gap-1">
+                        <span className="text-muted-foreground self-stretch text-sm leading-5">
+                          past-chat-1
+                        </span>
+                      </div>
+                      <div className="flex items-center justify-end gap-2 self-stretch">
+                        <span className="text-muted-foreground text-xs leading-4">
+                          1h
+                        </span>
+                      </div>
+                    </div>
+
+                    {/* 채팅 아이템 2 */}
+                    <div className="hover:bg-muted/50 flex shrink-0 items-start gap-2.5 rounded-lg px-4 py-3">
+                      <div className="flex shrink-0 flex-grow flex-col items-start justify-center gap-1">
+                        <span className="text-muted-foreground self-stretch text-sm leading-5">
+                          past-chat-2
+                        </span>
+                      </div>
+                      <div className="flex items-center justify-end gap-2 self-stretch">
+                        <span className="text-muted-foreground text-xs leading-4">
+                          4d
+                        </span>
+                      </div>
+                    </div>
+
+                    {/* 채팅 아이템 3 */}
+                    <div className="hover:bg-muted/50 flex shrink-0 items-start gap-2.5 rounded-lg px-4 py-3">
+                      <div className="flex shrink-0 flex-grow flex-col items-start justify-center gap-1">
+                        <span className="text-muted-foreground self-stretch text-sm leading-5">
+                          past-chat-3
+                        </span>
+                      </div>
+                      <div className="flex items-center justify-end gap-2 self-stretch">
+                        <span className="text-muted-foreground text-xs leading-4">
+                          5d
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
+            </aside>
+          </ResizablePanel>
+        </ResizablePanelGroup>
+      </div>
+    );
+  },
+};
+
+/**
+ * AI Assistant의 채팅 응답 후 상태입니다.
+ * AI가 응답을 완료한 후의 인터페이스를 보여줍니다.
+ */
+export const AfterUtterance: Story = {
+  render: () => {
+    // 🎯 목적: 채팅 입력 상태 관리 (InputGroup용)
+    const [message, setMessage] = React.useState("");
+
+    // 🎯 목적: send 버튼 활성화 여부 계산
+    const isSendEnabled = message.trim().length > 0;
+
+    return (
+      <div className="bg-background h-screen w-full">
+        <ResizablePanelGroup direction="horizontal" className="h-full w-full">
+          {/* 메인 콘텐츠 영역 */}
+          <ResizablePanel>
+            <div className="flex h-full items-center justify-center p-8">
+              <div className="text-center">
+                <h2 className="mb-2 text-lg font-semibold">
+                  AI Assistant 템플릿
+                </h2>
+                <p className="text-muted-foreground text-sm">
+                  AI 응답 완료 후 상태의 AI Assistant 인터페이스입니다.
+                </p>
+              </div>
+            </div>
+          </ResizablePanel>
+
+          {/* AI Assistant 리사이즈 핸들 */}
+          <ResizableHandle className="w-1 cursor-col-resize bg-transparent transition-colors hover:bg-blue-500/20 active:bg-blue-500/30" />
+
+          {/* AI Assistant 패널 - After Utterance 상태 */}
+          <ResizablePanel defaultSize={25} minSize={20} maxSize={40}>
+            <aside className="border-border bg-sidebar flex h-full shrink-0 flex-col justify-between gap-3 border-l p-4">
+              {/* 🎯 목적: 헤더 섹션 */}
+              <div className="flex flex-col gap-2">
+                <div className="flex items-center justify-between">
+                  <h3 className="text-foreground text-lg leading-7 font-semibold">
+                    New chat
+                  </h3>
+
+                  <div className="flex items-center">
+                    {/* History 버튼 */}
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="h-8 w-8 shrink-0 p-0 opacity-70 hover:opacity-100"
+                    >
+                      <History className="h-4 w-4" />
+                      <span className="sr-only">History</span>
+                    </Button>
+
+                    {/* Close 버튼 */}
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="h-8 w-8 shrink-0 p-0 opacity-70 hover:opacity-100"
+                    >
+                      <X className="h-4 w-4" />
+                      <span className="sr-only">Close AI Assistant</span>
+                    </Button>
+                  </div>
+                </div>
+
+                {/* 🎯 목적: AI 응답 섹션 */}
+                <div className="flex flex-col items-end gap-4 self-stretch">
+                  {/* 사용자 질문 버튼 */}
+                  <Button
+                    variant="secondary"
+                    className="hover:bg-secondary/80 h-auto w-full cursor-pointer justify-start text-left text-sm font-medium break-words whitespace-normal"
+                    onClick={() => console.log("사용자 질문 클릭됨")}
+                  >
+                    최근 일주일 동안 생성되거나 변경된 IAM 사용자 내역을
+                    알고싶어.
+                  </Button>
+
+                  {/* AI 응답 콘텐츠 */}
+                  <div className="flex flex-col items-start gap-5 self-stretch">
+                    {/* Blockquote */}
+                    <div className="flex flex-col items-start self-stretch">
+                      <div className="flex shrink-0 items-center gap-2 self-stretch border-l-2 border-white/10 px-0 py-0 pl-4">
+                        <span className="flex-grow text-sm leading-5 text-neutral-300">
+                          최근 7일간 생성되거나 변경된 IAM 사용자 내역은 다음과
+                          같습니다.
+                        </span>
+                      </div>
+                    </div>
+
+                    {/* 상세 응답 텍스트 */}
+                    <div className="self-stretch text-sm leading-5 text-neutral-300">
+                      <p>1. [2025-10-21 14:23:10 UTC]</p>
+                      <p className="ml-3">사용자 'data-engineer' 생성됨</p>
+                      <p className="ml-3">생성자: admin@cluster.local</p>
+                      <p className="ml-3">부여된 권한: read-only-access</p>
+                      <br />
+                      <p>2. [2025-10-20 09:47:35 UTC]</p>
+                      <p className="ml-3">
+                        사용자 'devops-agent'의 정책이 수정됨
+                      </p>
+                      <p className="ml-3">
+                        변경 사항: S3FullAccess → S3ReadOnlyAccess
+                      </p>
+                      <p className="ml-3">
+                        수정자: security-admin@cluster.local
+                      </p>
+                      <br />
+                      <p>3. [2025-10-19 18:02:12 UTC]</p>
+                      <p className="ml-3">사용자 'temp-user-01'이 삭제됨</p>
+                      <p className="ml-3">삭제자: admin@cluster.local</p>
+                    </div>
+
+                    {/* Separator */}
+                    <div className="h-px w-full bg-white/10" />
+
+                    {/* 요약 섹션 */}
+                    <div className="self-stretch text-sm leading-5 text-neutral-300">
+                      <p>요약:</p>
+                      <p>신규 생성: 1명</p>
+                      <p>정책 변경: 1건</p>
+                      <p>삭제: 1명</p>
+                    </div>
+                  </div>
+
+                  {/* Copy/More 버튼 */}
+                  <div className="flex items-center">
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="h-8 w-8 shrink-0 p-0 opacity-70 hover:opacity-100"
+                    >
+                      <Copy className="h-4 w-4" />
+                      <span className="sr-only">Copy response</span>
+                    </Button>
+
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="h-8 w-8 shrink-0 p-0 opacity-70 hover:opacity-100"
+                    >
+                      <MoreHorizontal className="h-4 w-4" />
+                      <span className="sr-only">More options</span>
+                    </Button>
+                  </div>
+                </div>
+              </div>
+
+              {/* 🎯 목적: InputGroup 컴포넌트 (Before Utterance와 동일) */}
+              <div
+                className="bg-background/50 border-border flex w-full flex-col rounded-lg border shadow-sm"
+                style={{ maxHeight: "400px" }}
+              >
+                {/* Textarea 영역 with ScrollArea */}
+                <ScrollArea className="max-h-96 p-3">
+                  <Textarea
+                    placeholder="Ask, Search or Chat..."
+                    value={message}
+                    onChange={(e) => setMessage(e.target.value)}
+                    className="text-primary placeholder:text-muted-foreground min-h-0 resize-none border-0 bg-transparent p-0 text-sm leading-5 focus-visible:ring-0"
+                    rows={1}
+                  />
+                </ScrollArea>
+
+                {/* InputGroupAddonBlock - 하단 컨트롤 영역 */}
+                <div className="flex items-center justify-between px-3 pt-1.5 pb-3">
+                  {/* 좌측 컨트롤 그룹 */}
+                  <div className="flex items-center gap-2">
+                    {/* Agent InputGroupButton */}
+                    <div className="flex items-start">
+                      <div className="bg-background/50 border-border flex h-7 items-center justify-center gap-1.5 rounded-full border px-2.5 shadow-sm">
+                        <Infinity className="h-4 w-4" />
+                        <span className="text-foreground text-xs leading-4 font-medium">
+                          Agent
+                        </span>
+                        <ChevronDown className="h-4 w-4" />
+                      </div>
+                    </div>
+
+                    {/* Auto InputGroupButton */}
+                    <div className="flex items-start">
+                      <div className="flex h-6 items-center justify-center gap-1 rounded-sm bg-transparent px-2">
+                        <span className="text-muted-foreground text-sm leading-5 font-medium">
+                          Auto
+                        </span>
+                        <ChevronDown className="h-4 w-4" />
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* 우측 전송 버튼 그룹 */}
+                  <div className="flex items-center gap-2">
+                    <div className="flex items-start">
+                      <div
+                        className={`flex h-6 w-6 items-center justify-center rounded-full shadow-sm transition-all ${
+                          isSendEnabled
+                            ? "bg-primary hover:bg-primary/90 cursor-pointer"
+                            : "bg-muted cursor-not-allowed opacity-50"
+                        }`}
+                      >
+                        <ArrowUp
+                          className={`h-4 w-4 ${isSendEnabled ? "text-primary-foreground" : "text-muted-foreground"}`}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </aside>
+          </ResizablePanel>
+        </ResizablePanelGroup>
+      </div>
+    );
+  },
+};
