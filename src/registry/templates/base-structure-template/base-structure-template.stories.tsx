@@ -638,19 +638,19 @@ export const StructureTab: Story = {
     return (
       <div className="bg-background h-screen w-full">
         {/* UIDL 기반 탭 네비게이션 바 */}
-        <div className="bg-sidebar border-border flex min-h-[40px] w-full items-center overflow-hidden border-b">
+        <div className="bg-sidebar border-border flex min-h-[40px] w-full items-center overflow-hidden">
           {/* 동적 탭 렌더링 */}
           {tabs.map((tab, index) => (
             <React.Fragment key={tab.id}>
               {/* 활성 탭 또는 비활성 탭 */}
               {tab.type === "active" ? (
-                // 활성 탭 - 어두운 배경과 파란색 상단 보더, primary 아이콘, bold italic 텍스트
-                <div className="bg-background border-primary flex flex-col border-t-2">
+                // 활성 탭 - 어두운 배경과 파란색 상단 보더, 하단 보더를 덮음, primary 아이콘, bold italic 텍스트
+                <div className="bg-background border-primary after:bg-background relative z-10 -mb-px flex flex-col border-t-2 after:absolute after:right-0 after:bottom-0 after:left-0 after:z-20 after:h-px">
                   <Button
                     variant="ghost"
                     onMouseEnter={() => setHoveredTab(tab.id)}
                     onMouseLeave={() => setHoveredTab(null)}
-                    className="text-foreground hover:bg-sidebar/50 h-10 justify-center rounded-lg bg-transparent px-3 py-2"
+                    className="text-foreground hover:bg-sidebar/50 h-10 justify-center rounded-none border-0 bg-transparent px-3 py-2 hover:border-0 focus-visible:border-0 active:border-0"
                   >
                     <tab.icon className="text-primary h-4 w-4" />
                     <span className="text-sm font-bold font-medium italic">
@@ -668,28 +668,30 @@ export const StructureTab: Story = {
                   </Button>
                 </div>
               ) : (
-                // 비활성 탭 - 더 약한 투명도와 배경, 호버 시 배경 변경, 상단/좌우 보더
-                <Button
-                  variant="ghost"
-                  onMouseEnter={() => setHoveredTab(tab.id)}
-                  onMouseLeave={() => setHoveredTab(null)}
-                  className="text-foreground hover:bg-sidebar-accent/30 bg-muted/20 h-10 rounded-lg border-t border-r border-l px-3 py-2 opacity-50 transition-all duration-200 hover:opacity-100"
-                >
-                  <tab.icon className="h-4 w-4" />
-                  <span className="text-sm font-medium">{tab.name}</span>
-                  {/* 🎯 목적: X 버튼을 항상 렌더링하여 공간 확보, hover 시에만 표시 */}
-                  <button
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      handleTabClose(tab.id);
-                    }}
-                    className={`hover:bg-muted/50 rounded-sm p-0.5 transition-all ${
-                      hoveredTab === tab.id ? "opacity-100" : "opacity-0"
-                    }`}
+                // 비활성 탭 - 더 약한 투명도와 배경, 호버 시 배경 변경, 하단 border 포함
+                <div className="border-border relative border-b">
+                  <Button
+                    variant="ghost"
+                    onMouseEnter={() => setHoveredTab(tab.id)}
+                    onMouseLeave={() => setHoveredTab(null)}
+                    className="text-foreground hover:bg-sidebar-accent/30 bg-muted/20 h-10 rounded-none border-0 px-3 py-2 opacity-50 transition-all duration-200 hover:border-0 hover:opacity-100 focus-visible:border-0 active:border-0"
                   >
-                    <X className="h-4 w-4" />
-                  </button>
-                </Button>
+                    <tab.icon className="h-4 w-4" />
+                    <span className="text-sm font-medium">{tab.name}</span>
+                    {/* 🎯 목적: X 버튼을 항상 렌더링하여 공간 확보, hover 시에만 표시 */}
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleTabClose(tab.id);
+                      }}
+                      className={`hover:bg-muted/50 rounded-sm p-0.5 transition-all ${
+                        hoveredTab === tab.id ? "opacity-100" : "opacity-0"
+                      }`}
+                    >
+                      <X className="h-4 w-4" />
+                    </button>
+                  </Button>
+                </div>
               )}
 
               {/* 탭 사이에 Separator 추가 (마지막 탭 제외) */}
