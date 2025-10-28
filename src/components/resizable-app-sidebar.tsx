@@ -1,7 +1,14 @@
 "use client";
 
 import * as React from "react";
-import { ChevronRight, File, Folder, FolderOpen, Plus } from "lucide-react";
+import {
+  ChevronRight,
+  File,
+  Folder,
+  FolderOpen,
+  Plus,
+  BadgeAlert,
+} from "lucide-react";
 
 import {
   Collapsible,
@@ -9,13 +16,6 @@ import {
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
 import { Button } from "@/components/ui/button";
-import {
-  Item,
-  ItemContent,
-  ItemTitle,
-  ItemDescription,
-  ItemActions,
-} from "@/components/ui/item";
 
 // 🎯 목적: 파일 트리 항목의 타입 정의
 interface FileTreeItem {
@@ -190,27 +190,26 @@ export function ResizableAppSidebar({
     <div
       className={`bg-sidebar flex h-full w-full flex-col ${className || ""}`}
     >
-      {/* 🎯 목적: App 정보 및 업데이트 아이템 */}
-      <div className="p-4">
-        <Item size="sm">
-          <ItemContent>
-            <ItemTitle className="text-foreground text-xs font-medium">
-              App ver. 1.1.1
-            </ItemTitle>
-            <ItemDescription className="text-muted-foreground text-xs">
-              You need update app
-            </ItemDescription>
-          </ItemContent>
-          <ItemActions>
-            <Button
-              variant="secondary"
-              size="sm"
-              className="h-9 px-4 text-xs font-medium"
-            >
-              Update
-            </Button>
-          </ItemActions>
-        </Item>
+      {/* 🎯 목적: App 업데이트 알림 */}
+      <div className="px-4 pt-4 pb-1">
+        <div className="bg-secondary flex items-center gap-[10px] overflow-hidden rounded-lg px-4 py-3">
+          {/* ItemMedia */}
+          <div className="flex items-center">
+            <BadgeAlert className="h-5 w-5 text-white" />
+          </div>
+
+          {/* ItemContent */}
+          <div className="flex flex-1 flex-col items-start justify-center gap-1">
+            <span className="text-sm leading-4 font-medium text-white">
+              You can upgrade to 1.5
+            </span>
+          </div>
+
+          {/* ItemActions */}
+          <div className="flex items-center justify-end gap-2 self-stretch">
+            <ChevronRight className="h-4 w-4 text-white" />
+          </div>
+        </div>
       </div>
 
       {/* 🎯 목적: 콘텐츠 영역 */}
