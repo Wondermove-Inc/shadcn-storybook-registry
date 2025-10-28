@@ -5,7 +5,7 @@ import {
   Files,
   Search,
   GitBranch,
-  Bug,
+  BugPlay,
   Blocks,
   Settings,
   User,
@@ -68,7 +68,7 @@ const defaultHotbarItems: HotbarItem[] = [
   },
   {
     id: "run-debug",
-    icon: Bug,
+    icon: BugPlay,
     label: "Run and Debug",
   },
   {
