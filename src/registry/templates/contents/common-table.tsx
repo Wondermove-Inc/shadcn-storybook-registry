@@ -146,6 +146,26 @@ export function CommonTable({ className }: CommonTableProps) {
   const [selectedRowId, setSelectedRowId] = React.useState<string | null>(null);
 
   /**
+   * 🎯 목적: 명시적 패널 닫기 함수 (닫기 버튼 클릭 시에만 사용)
+   */
+  const handleExplicitClose = () => {
+    setIsPropertiesOpen(false);
+    setSelectedRowData(null);
+    setSelectedRowId(null);
+  };
+
+  /**
+   * 🎯 목적: Sheet의 onOpenChange 핸들러 (자동 닫기 방지)
+   */
+  const handleSheetOpenChange = (open: boolean) => {
+    // 패널을 열려고 하는 경우에만 허용
+    if (open) {
+      setIsPropertiesOpen(true);
+    }
+    // 닫으려고 하는 경우는 명시적 닫기에서만 처리하므로 무시
+  };
+
+  /**
    * 🎯 목적: 개별 체크박스 상태 변경 처리
    */
   const handleRowCheckChange = (id: string, checked: boolean) => {
@@ -170,12 +190,24 @@ export function CommonTable({ className }: CommonTableProps) {
 
   /**
    * 🎯 목적: 테이블 행 클릭 시 속성창 열기 및 선택된 행 표시
+   * 속성 패널이 이미 열려있으면 상태를 유지하고 데이터만 업데이트
    */
-  const handleRowClick = (rowData: TableRowData) => {
+  const handleRowClick = (e: React.MouseEvent, rowData: TableRowData) => {
+    e.stopPropagation(); // 이벤트 전파 차단
+
+    // 패널이 이미 열려있으면 데이터만 업데이트
+    if (isPropertiesOpen) {
+      setSelectedRowData(rowData);
+      setSelectedRowId(rowData.id);
+      console.log("Row data updated:", rowData);
+      return; // 패널 상태는 건드리지 않음
+    }
+
+    // 패널이 닫혀있으면 데이터 설정 후 열기
     setSelectedRowData(rowData);
     setSelectedRowId(rowData.id);
     setIsPropertiesOpen(true);
-    console.log("Row clicked:", rowData);
+    console.log("Panel opened with data:", rowData);
   };
 
   return (
@@ -286,12 +318,13 @@ export function CommonTable({ className }: CommonTableProps) {
                 return (
                   <TableRow
                     key={row.id}
+                    data-table-row
                     className={`cursor-pointer border-l-2 transition-colors ${
                       isSelected
                         ? "bg-muted/50 border-l-primary"
                         : "hover:bg-muted/50 border-l-transparent"
                     }`}
-                    onClick={() => handleRowClick(row)}
+                    onClick={(e) => handleRowClick(e, row)}
                   >
                     <TableCell>
                       <Checkbox
@@ -357,19 +390,11 @@ export function CommonTable({ className }: CommonTableProps) {
       </div>
 
       {/* 속성창 패널 */}
-      <Sheet
-        open={isPropertiesOpen}
-        onOpenChange={(open) => {
-          // 포커스 아웃으로 닫히는 것을 방지하기 위해 명시적으로 닫기 버튼을 통해서만 닫도록 함
-          if (!open) return;
-          setIsPropertiesOpen(open);
-        }}
-      >
+      <Sheet open={isPropertiesOpen} onOpenChange={handleSheetOpenChange}>
         <SheetPortal>
           {/* 오버레이 없이 컨텐츠만 렌더링 */}
           <SheetPrimitive.Content
             className="bg-background data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:slide-out-to-right data-[state=open]:slide-in-from-right fixed inset-y-0 right-0 z-50 h-full w-[700px] gap-4 border-l p-5 shadow-lg transition ease-in-out data-[state=closed]:duration-300 data-[state=open]:duration-500"
-            onPointerDownOutside={(e) => e.preventDefault()}
             onEscapeKeyDown={(e) => e.preventDefault()}
           >
             <div className="space-y-4">
@@ -378,7 +403,7 @@ export function CommonTable({ className }: CommonTableProps) {
                   <Button
                     variant="secondary"
                     size="icon-sm"
-                    onClick={() => setIsPropertiesOpen(false)}
+                    onClick={handleExplicitClose}
                   >
                     <ChevronsRight className="h-4 w-4" />
                   </Button>
@@ -391,7 +416,9 @@ export function CommonTable({ className }: CommonTableProps) {
                     {`{Menuname}`}
                   </span>
                   <SheetTitle className="text-lg font-semibold">
-                    {selectedRowData ? `{Table Cell Text}` : "Properties"}
+                    {selectedRowData
+                      ? `${selectedRowData.column2} (Row ${selectedRowData.id})`
+                      : "Properties"}
                   </SheetTitle>
                 </div>
               </div>
@@ -414,7 +441,9 @@ export function CommonTable({ className }: CommonTableProps) {
                     </TableCell>
                     <TableCell className="border-border border-b px-2 py-[14px]">
                       <span className="text-foreground text-sm">
-                        ciliumcidrgroups.cilium.io
+                        {selectedRowData
+                          ? selectedRowData.column3
+                          : "ciliumcidrgroups.cilium.io"}
                       </span>
                     </TableCell>
                   </TableRow>
@@ -427,7 +456,9 @@ export function CommonTable({ className }: CommonTableProps) {
                         variant="outline"
                         className="bg-background border-border text-xs font-semibold"
                       >
-                        io.cilium.k8s.crd.schema.version=1.31.11
+                        {selectedRowData
+                          ? `column5=${selectedRowData.column5.text}`
+                          : "io.cilium.k8s.crd.schema.version=1.31.11"}
                       </Badge>
                     </TableCell>
                   </TableRow>
@@ -519,10 +550,7 @@ export function CommonTable({ className }: CommonTableProps) {
             {/* 푸터 버튼들 */}
             <div className="bg-background absolute right-0 bottom-0 left-0 border-t p-4">
               <div className="flex justify-end gap-2">
-                <Button
-                  variant="ghost"
-                  onClick={() => setIsPropertiesOpen(false)}
-                >
+                <Button variant="ghost" onClick={handleExplicitClose}>
                   Cancel
                 </Button>
                 <Button>Save</Button>
