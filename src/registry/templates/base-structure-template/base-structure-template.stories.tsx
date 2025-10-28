@@ -248,11 +248,11 @@ export const Structure: Story = {
         <div className="h-[calc(100vh-64px)] w-full">
           <div className="flex h-full">
             {/* 핫바 영역 (고정 크기) */}
-            <div className="w-12 flex-shrink-0">
+            <div className="w-[calc(var(--sidebar-width-icon)+1px)] flex-shrink-0">
               <Hotbar
                 activeItem={activeHotbarItem}
                 onItemClick={handleHotbarItemClick}
-                className="border-sidebar-border h-full border-r"
+                className="h-full"
               />
             </div>
 
@@ -780,11 +780,7 @@ export const StructureHotbar: Story = {
     return (
       <div className="bg-background flex h-screen w-full">
         {/* VS Code Activity Bar 스타일 핫바 */}
-        <Hotbar
-          activeItem={activeItem}
-          onItemClick={handleItemClick}
-          className="border-sidebar-border border-r"
-        />
+        <Hotbar activeItem={activeItem} onItemClick={handleItemClick} />
 
         {/* 메인 콘텐츠 영역 */}
         <div className="flex flex-1 items-center justify-center p-8">

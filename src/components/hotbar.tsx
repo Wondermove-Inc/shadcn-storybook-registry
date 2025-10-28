@@ -1,14 +1,7 @@
 "use client";
 
 import React from "react";
-import {
-  Files,
-  Search,
-  GitBranch,
-  BugPlay,
-  Blocks,
-  Settings,
-} from "lucide-react";
+import { Files, Blocks } from "lucide-react";
 import {
   Sidebar,
   SidebarContent,
@@ -56,21 +49,6 @@ const defaultHotbarItems: HotbarItem[] = [
     icon: Files,
     label: "Explorer",
     isActive: true,
-  },
-  {
-    id: "search",
-    icon: Search,
-    label: "Search",
-  },
-  {
-    id: "source-control",
-    icon: GitBranch,
-    label: "Source Control",
-  },
-  {
-    id: "run-debug",
-    icon: BugPlay,
-    label: "Run and Debug",
   },
   {
     id: "extensions",
