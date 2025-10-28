@@ -368,7 +368,7 @@ export function CommonTable({ className }: CommonTableProps) {
         <SheetPortal>
           {/* 오버레이 없이 컨텐츠만 렌더링 */}
           <SheetPrimitive.Content
-            className="bg-primary-foreground data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:slide-out-to-right data-[state=open]:slide-in-from-right fixed inset-y-0 right-0 z-50 h-full w-[700px] gap-4 border-l p-5 shadow-lg transition ease-in-out data-[state=closed]:duration-300 data-[state=open]:duration-500"
+            className="bg-background data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:slide-out-to-right data-[state=open]:slide-in-from-right fixed inset-y-0 right-0 z-50 h-full w-[700px] gap-4 border-l p-5 shadow-lg transition ease-in-out data-[state=closed]:duration-300 data-[state=open]:duration-500"
             onPointerDownOutside={(e) => e.preventDefault()}
             onEscapeKeyDown={(e) => e.preventDefault()}
           >
@@ -399,58 +399,58 @@ export function CommonTable({ className }: CommonTableProps) {
               <Table>
                 <TableBody>
                   <TableRow>
-                    <TableCell className="border-b border-white/10 px-2 py-[14px]">
+                    <TableCell className="border-border border-b px-2 py-[14px]">
                       <span className="text-foreground text-sm">Created</span>
                     </TableCell>
-                    <TableCell className="border-b border-white/10 px-2 py-[14px]">
+                    <TableCell className="border-border border-b px-2 py-[14px]">
                       <span className="text-foreground text-sm">
                         19d 4h 36m ago (2025-10-01T09:24:39+09:00)
                       </span>
                     </TableCell>
                   </TableRow>
                   <TableRow>
-                    <TableCell className="border-b border-white/10 px-2 py-[14px]">
+                    <TableCell className="border-border border-b px-2 py-[14px]">
                       <span className="text-foreground text-sm">Name</span>
                     </TableCell>
-                    <TableCell className="border-b border-white/10 px-2 py-[14px]">
+                    <TableCell className="border-border border-b px-2 py-[14px]">
                       <span className="text-foreground text-sm">
                         ciliumcidrgroups.cilium.io
                       </span>
                     </TableCell>
                   </TableRow>
                   <TableRow>
-                    <TableCell className="border-b border-white/10 px-2 py-[14px]">
+                    <TableCell className="border-border border-b px-2 py-[14px]">
                       <span className="text-foreground text-sm">Labels</span>
                     </TableCell>
-                    <TableCell className="border-b border-white/10 px-2 py-[14px]">
+                    <TableCell className="border-border border-b px-2 py-[14px]">
                       <Badge
                         variant="outline"
-                        className="bg-background border-white/10 text-xs font-semibold"
+                        className="bg-background border-border text-xs font-semibold"
                       >
                         io.cilium.k8s.crd.schema.version=1.31.11
                       </Badge>
                     </TableCell>
                   </TableRow>
                   <TableRow>
-                    <TableCell className="border-b border-white/10 px-2 py-[14px]">
+                    <TableCell className="border-border border-b px-2 py-[14px]">
                       <span className="text-foreground text-sm">
                         Annotations
                       </span>
                     </TableCell>
-                    <TableCell className="border-b border-white/10 px-2 py-[14px]">
+                    <TableCell className="border-border border-b px-2 py-[14px]">
                       <Badge
                         variant="outline"
-                        className="bg-background border-white/10 text-xs font-semibold"
+                        className="bg-background border-border text-xs font-semibold"
                       >
                         freelens.app/resource-version=v1
                       </Badge>
                     </TableCell>
                   </TableRow>
                   <TableRow>
-                    <TableCell className="border-b border-white/10 px-2 py-[14px]">
+                    <TableCell className="border-border border-b px-2 py-[14px]">
                       <span className="text-foreground text-sm">Resource</span>
                     </TableCell>
-                    <TableCell className="border-b border-white/10 px-2 py-2">
+                    <TableCell className="border-border border-b px-2 py-2">
                       <Button
                         variant="ghost"
                         className="text-foreground/80 hover:text-foreground h-8 px-3 text-sm font-medium underline"
@@ -461,26 +461,26 @@ export function CommonTable({ className }: CommonTableProps) {
                     </TableCell>
                   </TableRow>
                   <TableRow>
-                    <TableCell className="border-b border-white/10 px-2 py-[14px]">
+                    <TableCell className="border-border border-b px-2 py-[14px]">
                       <span className="text-foreground text-sm">
                         Conversion
                       </span>
                     </TableCell>
-                    <TableCell className="border-b border-white/10 px-2 py-1.5">
+                    <TableCell className="border-border border-b px-2 py-1.5">
                       <Input
                         placeholder='{"strategy": "None"}'
-                        className="text-muted-foreground h-9 border-white/15 bg-white/[0.045] font-mono text-sm"
+                        className="text-muted-foreground bg-muted/50 h-9 font-mono text-sm"
                         readOnly
                       />
                     </TableCell>
                   </TableRow>
                   <TableRow>
-                    <TableCell className="border-b border-white/10 px-2 py-[14px]">
+                    <TableCell className="border-border border-b px-2 py-[14px]">
                       <span className="text-foreground text-sm">
                         Conditions
                       </span>
                     </TableCell>
-                    <TableCell className="border-b border-white/10 px-2 py-[14px]">
+                    <TableCell className="border-border border-b px-2 py-[14px]">
                       <Badge className="bg-primary text-primary-foreground border-0 text-xs font-semibold">
                         NamesAccepted
                       </Badge>
@@ -494,8 +494,8 @@ export function CommonTable({ className }: CommonTableProps) {
                 <span className="text-foreground text-base leading-none font-medium">
                   Validation
                 </span>
-                <div className="flex w-full flex-col items-center justify-center rounded-[10px] border border-white/10 bg-[#18181b] p-4">
-                  <div className="w-full text-left font-mono text-base leading-6 text-white/[0.47]">
+                <div className="bg-muted/30 flex w-full flex-col items-center justify-center rounded-[10px] border p-4">
+                  <div className="text-muted-foreground w-full text-left font-mono text-base leading-6">
                     <div>
                       import &#123; Button &#125; from
                       &quot;@/components/ui/button&quot;
@@ -517,7 +517,7 @@ export function CommonTable({ className }: CommonTableProps) {
             </div>
 
             {/* 푸터 버튼들 */}
-            <div className="bg-primary-foreground absolute right-0 bottom-0 left-0 p-4">
+            <div className="bg-background absolute right-0 bottom-0 left-0 border-t p-4">
               <div className="flex justify-end gap-2">
                 <Button
                   variant="ghost"
