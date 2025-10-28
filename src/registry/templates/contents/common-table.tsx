@@ -134,17 +134,24 @@ export function CommonTable({ className }: CommonTableProps) {
   const [searchValue, setSearchValue] = React.useState("");
   const [data, setData] = React.useState(tableData);
   const [isPropertiesOpen, setIsPropertiesOpen] = React.useState(false);
+  const [isAnimating, setIsAnimating] = React.useState(false);
   const [selectedRowData, setSelectedRowData] =
     React.useState<TableRowData | null>(null);
   const [selectedRowId, setSelectedRowId] = React.useState<string | null>(null);
 
   /**
    * 🎯 목적: 명시적 패널 닫기 함수 (닫기 버튼 클릭 시에만 사용)
+   * 애니메이션 완료 후 실제 닫기 처리
    */
   const handleExplicitClose = () => {
-    setIsPropertiesOpen(false);
-    setSelectedRowData(null);
-    setSelectedRowId(null);
+    setIsAnimating(true);
+    // 300ms 후 실제 닫기 (닫기 애니메이션 duration과 동일)
+    setTimeout(() => {
+      setIsPropertiesOpen(false);
+      setIsAnimating(false);
+      setSelectedRowData(null);
+      setSelectedRowId(null);
+    }, 300);
   };
 
   /**
@@ -171,18 +178,26 @@ export function CommonTable({ className }: CommonTableProps) {
   const isIndeterminate = selectedCount > 0 && selectedCount < data.length;
 
   /**
-   * 🎯 목적: 테이블 행 클릭 시 속성창 열기 및 선택된 행 표시
-   * 속성 패널이 이미 열려있으면 상태를 유지하고 데이터만 업데이트
+   * 🎯 목적: 테이블 행 클릭 시 속성창 열기/닫기 및 선택된 행 표시
+   * - 새로운 행 클릭: 패널 열기 또는 데이터 업데이트
+   * - 같은 행 재클릭: 패널 닫기 (토글 동작)
    */
   const handleRowClick = (e: React.MouseEvent, rowData: TableRowData) => {
     e.stopPropagation(); // 이벤트 전파 차단
 
-    // 패널이 이미 열려있으면 데이터만 업데이트
+    // 이미 선택된 행을 다시 클릭한 경우 패널 닫기
+    if (isPropertiesOpen && selectedRowId === rowData.id) {
+      handleExplicitClose();
+      console.log("Panel closed by re-clicking selected row:", rowData.id);
+      return;
+    }
+
+    // 패널이 이미 열려있고 다른 행을 클릭한 경우 데이터만 업데이트
     if (isPropertiesOpen) {
       setSelectedRowData(rowData);
       setSelectedRowId(rowData.id);
       console.log("Row data updated:", rowData);
-      return; // 패널 상태는 건드리지 않음
+      return;
     }
 
     // 패널이 닫혀있으면 데이터 설정 후 열기
@@ -374,10 +389,12 @@ export function CommonTable({ className }: CommonTableProps) {
       </div>
 
       {/* 속성창 패널 - Sheet 대신 직접 구현 */}
-      {isPropertiesOpen && (
+      {(isPropertiesOpen || isAnimating) && (
         <div
-          className={`bg-background absolute inset-y-0 right-0 z-50 h-full w-[700px] border-l p-5 shadow-lg transition-transform duration-300 ease-in-out ${
-            isPropertiesOpen ? "translate-x-0" : "translate-x-full"
+          className={`bg-card fixed inset-y-0 right-0 z-50 h-full w-[700px] border-l p-5 shadow-lg transition ease-in-out ${
+            isAnimating
+              ? "animate-out slide-out-to-right duration-300"
+              : "animate-in slide-in-from-right duration-[400ms]"
           }`}
         >
           <div className="space-y-4">
@@ -525,7 +542,7 @@ export function CommonTable({ className }: CommonTableProps) {
           </div>
 
           {/* 푸터 버튼들 */}
-          <div className="bg-background absolute right-0 bottom-0 left-0 border-t p-4">
+          <div className="bg-card absolute right-0 bottom-0 left-0 p-4">
             <div className="flex justify-end gap-2">
               <Button variant="ghost" onClick={handleExplicitClose}>
                 Cancel
