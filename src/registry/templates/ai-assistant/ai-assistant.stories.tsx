@@ -385,10 +385,7 @@ export const AnswersText: Story = {
                 </div>
 
                 {/* 🎯 목적: AI 응답 섹션 (스크롤 가능) - InputGroup 공간 제외 */}
-                <div
-                  className="min-h-0 flex-1"
-                  style={{ paddingBottom: "calc(150px + 1rem)" }}
-                >
+                <div className="min-h-0 flex-1">
                   <ScrollArea className="h-full">
                     <div className="flex flex-col items-end gap-4">
                       {/* 사용자 질문 버튼 또는 편집 InputGroup */}
@@ -700,10 +697,7 @@ export const AnswersChart: Story = {
                 </div>
 
                 {/* 🎯 목적: AI 응답 섹션 (스크롤 가능) - InputGroup 공간 제외 */}
-                <div
-                  className="min-h-0 flex-1"
-                  style={{ paddingBottom: "calc(150px + 1rem)" }}
-                >
+                <div className="min-h-0 flex-1">
                   <ScrollArea className="h-full">
                     <div className="flex flex-col items-end gap-4">
                       {/* 사용자 질문 버튼 또는 편집 InputGroup */}
@@ -790,38 +784,6 @@ export const AnswersChart: Story = {
                             </span>
                           </div>
                         </div>
-
-                        {/* Separator */}
-                        <div className="bg-border h-px w-full" />
-
-                        {/* 요약 섹션 */}
-                        <div className="text-primary w-full text-sm leading-5">
-                          <p>주요 인사이트:</p>
-                          <p>• 금요일에 가장 많은 사용자 생성 (19명)</p>
-                          <p>• 수요일에 가장 많은 정책 수정 (15건)</p>
-                          <p>• 주말 활동량은 평일 대비 40% 감소</p>
-                        </div>
-                      </div>
-
-                      {/* Copy/More 버튼 */}
-                      <div className="flex items-center">
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          className="h-8 w-8 shrink-0 p-0 opacity-70 hover:opacity-100"
-                        >
-                          <Copy className="h-4 w-4" />
-                          <span className="sr-only">Copy response</span>
-                        </Button>
-
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          className="h-8 w-8 shrink-0 p-0 opacity-70 hover:opacity-100"
-                        >
-                          <MoreHorizontal className="h-4 w-4" />
-                          <span className="sr-only">More options</span>
-                        </Button>
                       </div>
                     </div>
                   </ScrollArea>
@@ -976,6 +938,37 @@ export const AnswersChart: Story = {
                       </ChartContainer>
                     </div>
                   </div>
+                </div>
+
+                {/* 🎯 목적: 주요 인사이트 섹션 - 차트 카드들 다음에 배치 */}
+                <div>
+                  <div className="text-primary w-full text-sm leading-5">
+                    <p>주요 인사이트:</p>
+                    <p>• 금요일에 가장 많은 사용자 생성 (19명)</p>
+                    <p>• 수요일에 가장 많은 정책 수정 (15건)</p>
+                    <p>• 주말 활동량은 평일 대비 40% 감소</p>
+                  </div>
+                </div>
+
+                {/* 🎯 목적: Copy/More 버튼 - 인사이트 섹션 다음에 배치 */}
+                <div className="flex items-center justify-end">
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className="h-8 w-8 shrink-0 p-0 opacity-70 hover:opacity-100"
+                  >
+                    <Copy className="h-4 w-4" />
+                    <span className="sr-only">Copy response</span>
+                  </Button>
+
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className="h-8 w-8 shrink-0 p-0 opacity-70 hover:opacity-100"
+                  >
+                    <MoreHorizontal className="h-4 w-4" />
+                    <span className="sr-only">More options</span>
+                  </Button>
                 </div>
               </div>
 
