@@ -467,7 +467,7 @@ export const AnswersText: Story = {
                         {/* Blockquote */}
                         <div className="flex w-full flex-col items-start">
                           <div className="border-border flex w-full shrink-0 items-center gap-2 border-l-2 px-0 py-0 pl-4">
-                            <span className="text-primary flex-grow text-sm leading-5">
+                            <span className="text-foreground flex-grow text-sm leading-5">
                               최근 7일간 생성되거나 변경된 IAM 사용자 내역은
                               다음과 같습니다.
                             </span>
@@ -475,7 +475,7 @@ export const AnswersText: Story = {
                         </div>
 
                         {/* 상세 응답 텍스트 */}
-                        <div className="text-primary self-stretch text-sm leading-5">
+                        <div className="text-foreground self-stretch text-sm leading-5">
                           <p>1. [2025-10-21 14:23:10 UTC]</p>
                           <p className="ml-3">사용자 'data-engineer' 생성됨</p>
                           <p className="ml-3">생성자: admin@cluster.local</p>
@@ -501,7 +501,7 @@ export const AnswersText: Story = {
                         <div className="bg-border h-px w-full" />
 
                         {/* 요약 섹션 */}
-                        <div className="text-primary w-full text-sm leading-5">
+                        <div className="text-foreground w-full text-sm leading-5">
                           <p>요약:</p>
                           <p>신규 생성: 1명</p>
                           <p>정책 변경: 1건</p>
@@ -779,7 +779,7 @@ export const AnswersChart: Story = {
                         {/* Blockquote */}
                         <div className="flex w-full flex-col items-start">
                           <div className="border-border flex w-full shrink-0 items-center gap-2 border-l-2 px-0 py-0 pl-4">
-                            <span className="text-primary flex-grow text-sm leading-5">
+                            <span className="text-foreground flex-grow text-sm leading-5">
                               최근 7일간 IAM 사용자 활동 통계입니다.
                             </span>
                           </div>
@@ -942,7 +942,7 @@ export const AnswersChart: Story = {
 
                 {/* 🎯 목적: 주요 인사이트 섹션 - 차트 카드들 다음에 배치 */}
                 <div>
-                  <div className="text-primary w-full text-sm leading-5">
+                  <div className="text-foreground w-full text-sm leading-5">
                     <p>주요 인사이트:</p>
                     <p>• 금요일에 가장 많은 사용자 생성 (19명)</p>
                     <p>• 수요일에 가장 많은 정책 수정 (15건)</p>
