@@ -468,8 +468,8 @@ export const AnswersText: Story = {
                       {/* AI 응답 콘텐츠 */}
                       <div className="flex flex-col items-start gap-5 self-stretch">
                         {/* Blockquote */}
-                        <div className="flex flex-col items-start self-stretch">
-                          <div className="border-border flex shrink-0 items-center gap-2 self-stretch border-l-2 px-0 py-0 pl-4">
+                        <div className="flex w-full flex-col items-start">
+                          <div className="border-border flex w-full shrink-0 items-center gap-2 border-l-2 px-0 py-0 pl-4">
                             <span className="text-primary flex-grow text-sm leading-5">
                               최근 7일간 생성되거나 변경된 IAM 사용자 내역은
                               다음과 같습니다.
@@ -504,7 +504,7 @@ export const AnswersText: Story = {
                         <div className="bg-border h-px w-full" />
 
                         {/* 요약 섹션 */}
-                        <div className="text-primary self-stretch text-sm leading-5">
+                        <div className="text-primary w-full text-sm leading-5">
                           <p>요약:</p>
                           <p>신규 생성: 1명</p>
                           <p>정책 변경: 1건</p>
@@ -780,137 +780,14 @@ export const AnswersChart: Story = {
                         </Button>
                       )}
 
-                      {/* AI 응답 콘텐츠 - 차트 카드들 */}
-                      <div className="flex flex-col items-start gap-5 self-stretch">
+                      {/* AI 응답 콘텐츠 - 텍스트 부분만 (차트 제외) */}
+                      <div className="flex w-full flex-col items-start gap-5">
                         {/* Blockquote */}
-                        <div className="flex flex-col items-start self-stretch">
-                          <div className="border-border flex shrink-0 items-center gap-2 self-stretch border-l-2 px-0 py-0 pl-4">
+                        <div className="flex w-full flex-col items-start">
+                          <div className="border-border flex w-full shrink-0 items-center gap-2 border-l-2 px-0 py-0 pl-4">
                             <span className="text-primary flex-grow text-sm leading-5">
                               최근 7일간 IAM 사용자 활동 통계입니다.
                             </span>
-                          </div>
-                        </div>
-
-                        {/* 차트 카드들 - 횡스크롤 컨테이너 (패널 바깥으로 확장) */}
-                        <div className="w-full overflow-visible">
-                          <div
-                            className="flex gap-2 overflow-x-auto pb-2"
-                            style={{
-                              scrollBehavior: "smooth",
-                              /* 차트 카드들이 패널 바깥으로 나갈 수 있도록 충분한 width */
-                              width: "calc(100vw - 20px)",
-                              marginRight: "calc(-100vw + 100% + 20px)",
-                            }}
-                          >
-                            {/* 첫 번째 차트 카드 - 주간 통계 */}
-                            <Card className="min-w-[280px] flex-shrink-0">
-                              <CardHeader className="pb-2">
-                                <CardTitle className="text-base">
-                                  주간 사용자 활동
-                                </CardTitle>
-                                <CardDescription>
-                                  지난 7일간 생성/수정된 IAM 사용자 수
-                                </CardDescription>
-                              </CardHeader>
-                              <CardContent className="pb-2">
-                                <ChartContainer
-                                  config={chartConfig}
-                                  className="h-[180px] w-full"
-                                >
-                                  <BarChart data={chartData}>
-                                    <CartesianGrid vertical={false} />
-                                    <XAxis
-                                      dataKey="period"
-                                      tickLine={false}
-                                      tickMargin={10}
-                                      axisLine={false}
-                                    />
-                                    <YAxis hide />
-                                    <ChartTooltip
-                                      cursor={false}
-                                      content={
-                                        <ChartTooltipContent indicator="dashed" />
-                                      }
-                                    />
-                                    <Bar
-                                      dataKey="created"
-                                      fill="var(--color-created)"
-                                      radius={4}
-                                    />
-                                    <Bar
-                                      dataKey="modified"
-                                      fill="var(--color-modified)"
-                                      radius={4}
-                                    />
-                                  </BarChart>
-                                </ChartContainer>
-                              </CardContent>
-                              <CardFooter className="flex-col items-start gap-2 text-sm">
-                                <div className="flex gap-2 leading-none font-medium">
-                                  <TrendingUp className="h-4 w-4" />
-                                  생성 활동 15% 증가
-                                </div>
-                                <div className="text-muted-foreground leading-none">
-                                  저번 주 대비 IAM 사용자 생성이 증가했습니다.
-                                </div>
-                              </CardFooter>
-                            </Card>
-
-                            {/* 두 번째 차트 카드 - 누적 통계 */}
-                            <Card className="min-w-[280px] flex-shrink-0">
-                              <CardHeader className="pb-2">
-                                <CardTitle className="text-base">
-                                  총 활동 현황
-                                </CardTitle>
-                                <CardDescription>
-                                  전체 생성/수정 비율 및 누적 통계
-                                </CardDescription>
-                              </CardHeader>
-                              <CardContent className="pb-2">
-                                <ChartContainer
-                                  config={chartConfig}
-                                  className="h-[180px] w-full"
-                                >
-                                  <BarChart data={chartData}>
-                                    <CartesianGrid vertical={false} />
-                                    <XAxis
-                                      dataKey="period"
-                                      tickLine={false}
-                                      tickMargin={10}
-                                      axisLine={false}
-                                    />
-                                    <YAxis hide />
-                                    <ChartTooltip
-                                      cursor={false}
-                                      content={
-                                        <ChartTooltipContent indicator="line" />
-                                      }
-                                    />
-                                    <Bar
-                                      dataKey="created"
-                                      stackId="a"
-                                      fill="var(--color-created)"
-                                      radius={[0, 0, 4, 4]}
-                                    />
-                                    <Bar
-                                      dataKey="modified"
-                                      stackId="a"
-                                      fill="var(--color-modified)"
-                                      radius={[4, 4, 0, 0]}
-                                    />
-                                  </BarChart>
-                                </ChartContainer>
-                              </CardContent>
-                              <CardFooter className="flex-col items-start gap-2 text-sm">
-                                <div className="flex gap-2 leading-none font-medium">
-                                  <Expand className="h-4 w-4" />총 125개 활동
-                                  기록
-                                </div>
-                                <div className="text-muted-foreground leading-none">
-                                  신규 생성 65건, 기존 사용자 수정 60건
-                                </div>
-                              </CardFooter>
-                            </Card>
                           </div>
                         </div>
 
@@ -918,7 +795,7 @@ export const AnswersChart: Story = {
                         <div className="bg-border h-px w-full" />
 
                         {/* 요약 섹션 */}
-                        <div className="text-primary self-stretch text-sm leading-5">
+                        <div className="text-primary w-full text-sm leading-5">
                           <p>주요 인사이트:</p>
                           <p>• 금요일에 가장 많은 사용자 생성 (19명)</p>
                           <p>• 수요일에 가장 많은 정책 수정 (15건)</p>
@@ -948,6 +825,157 @@ export const AnswersChart: Story = {
                       </div>
                     </div>
                   </ScrollArea>
+                </div>
+
+                {/* 🎯 목적: 차트 카드 영역 - ScrollArea 외부에서 독립적인 횡스크롤 */}
+                <div className="mt-4 w-full">
+                  <div className="flex gap-4 overflow-x-auto pb-2">
+                    {/* 차트 카드 1 - 사용자 생성 데이터 */}
+                    <div
+                      data-slot="card"
+                      className="bg-card w-80 flex-none rounded-xl border p-6 shadow-sm"
+                    >
+                      <div className="mb-4">
+                        <h3 className="text-lg font-semibold">
+                          사용자 생성 추이
+                        </h3>
+                        <p className="text-muted-foreground text-sm">
+                          최근 7일간 새로 생성된 IAM 사용자 수
+                        </p>
+                      </div>
+                      <ChartContainer
+                        config={chartConfig}
+                        className="h-48 w-full"
+                      >
+                        <BarChart data={chartData}>
+                          <CartesianGrid vertical={false} />
+                          <XAxis
+                            dataKey="period"
+                            tickLine={false}
+                            tickMargin={10}
+                            axisLine={false}
+                          />
+                          <ChartTooltip content={<ChartTooltipContent />} />
+                          <Bar
+                            dataKey="created"
+                            fill="var(--color-created)"
+                            radius={4}
+                          />
+                        </BarChart>
+                      </ChartContainer>
+                    </div>
+
+                    {/* 차트 카드 2 - 사용자 수정 데이터 */}
+                    <div
+                      data-slot="card"
+                      className="bg-card w-80 flex-none rounded-xl border p-6 shadow-sm"
+                    >
+                      <div className="mb-4">
+                        <h3 className="text-lg font-semibold">
+                          정책 수정 추이
+                        </h3>
+                        <p className="text-muted-foreground text-sm">
+                          최근 7일간 수정된 사용자 정책 수
+                        </p>
+                      </div>
+                      <ChartContainer
+                        config={chartConfig}
+                        className="h-48 w-full"
+                      >
+                        <BarChart data={chartData}>
+                          <CartesianGrid vertical={false} />
+                          <XAxis
+                            dataKey="period"
+                            tickLine={false}
+                            tickMargin={10}
+                            axisLine={false}
+                          />
+                          <ChartTooltip content={<ChartTooltipContent />} />
+                          <Bar
+                            dataKey="modified"
+                            fill="var(--color-modified)"
+                            radius={4}
+                          />
+                        </BarChart>
+                      </ChartContainer>
+                    </div>
+
+                    {/* 차트 카드 3 - 활동량 비교 */}
+                    <div
+                      data-slot="card"
+                      className="bg-card w-80 flex-none rounded-xl border p-6 shadow-sm"
+                    >
+                      <div className="mb-4">
+                        <h3 className="text-lg font-semibold">주간 활동량</h3>
+                        <p className="text-muted-foreground text-sm">
+                          생성 vs 수정 비교 차트
+                        </p>
+                      </div>
+                      <ChartContainer
+                        config={chartConfig}
+                        className="h-48 w-full"
+                      >
+                        <BarChart data={chartData}>
+                          <CartesianGrid vertical={false} />
+                          <XAxis
+                            dataKey="period"
+                            tickLine={false}
+                            tickMargin={10}
+                            axisLine={false}
+                          />
+                          <ChartTooltip content={<ChartTooltipContent />} />
+                          <Bar
+                            dataKey="created"
+                            fill="var(--color-created)"
+                            radius={4}
+                          />
+                          <Bar
+                            dataKey="modified"
+                            fill="var(--color-modified)"
+                            radius={4}
+                          />
+                        </BarChart>
+                      </ChartContainer>
+                    </div>
+
+                    {/* 차트 카드 4 - 총 활동량 */}
+                    <div
+                      data-slot="card"
+                      className="bg-card w-80 flex-none rounded-xl border p-6 shadow-sm"
+                    >
+                      <div className="mb-4">
+                        <h3 className="text-lg font-semibold">총 활동량</h3>
+                        <p className="text-muted-foreground text-sm">
+                          일일 총 IAM 사용자 활동 수
+                        </p>
+                      </div>
+                      <ChartContainer
+                        config={chartConfig}
+                        className="h-48 w-full"
+                      >
+                        <BarChart
+                          data={chartData.map((item) => ({
+                            ...item,
+                            total: item.created + item.modified,
+                          }))}
+                        >
+                          <CartesianGrid vertical={false} />
+                          <XAxis
+                            dataKey="period"
+                            tickLine={false}
+                            tickMargin={10}
+                            axisLine={false}
+                          />
+                          <ChartTooltip content={<ChartTooltipContent />} />
+                          <Bar
+                            dataKey="total"
+                            fill="var(--chart-3)"
+                            radius={4}
+                          />
+                        </BarChart>
+                      </ChartContainer>
+                    </div>
+                  </div>
                 </div>
               </div>
 
