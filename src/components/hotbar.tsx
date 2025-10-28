@@ -2,11 +2,11 @@
 
 import React from "react";
 import {
-  FolderOpen,
+  Files,
   Search,
   GitBranch,
-  Play,
-  Puzzle,
+  Bug,
+  Blocks,
   Settings,
   User,
   ChevronsUpDown,
@@ -52,7 +52,7 @@ interface HotbarProps {
 const defaultHotbarItems: HotbarItem[] = [
   {
     id: "explorer",
-    icon: FolderOpen,
+    icon: Files,
     label: "Explorer",
     isActive: true,
   },
@@ -68,12 +68,12 @@ const defaultHotbarItems: HotbarItem[] = [
   },
   {
     id: "run-debug",
-    icon: Play,
+    icon: Bug,
     label: "Run and Debug",
   },
   {
     id: "extensions",
-    icon: Puzzle,
+    icon: Blocks,
     label: "Extensions",
   },
 ];
