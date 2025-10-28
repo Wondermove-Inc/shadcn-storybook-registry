@@ -8,26 +8,22 @@ import {
   BugPlay,
   Blocks,
   Settings,
-  User,
-  ChevronsUpDown,
-  LogOut,
-  Sparkles,
 } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Badge } from "@/components/ui/badge";
+  Sidebar,
+  SidebarContent,
+  SidebarFooter,
+  SidebarGroup,
+  SidebarGroupContent,
+  SidebarMenu,
+  SidebarMenuButton,
+  SidebarMenuItem,
+} from "@/components/ui/sidebar";
+import { NavUser } from "@/components/nav-user";
 import { cn } from "@/lib/utils";
 
 /**
- * 🎯 목적: Hotbar 아이템의 타입 정의
+ * 🎯 목적: Hotbar 아이템의 타입 정의 - UIDL 명세에 따른 아이콘 구조
  */
 export interface HotbarItem {
   id: string;
@@ -44,10 +40,15 @@ interface HotbarProps {
   activeItem?: string;
   onItemClick?: (itemId: string) => void;
   className?: string;
+  user?: {
+    name: string;
+    email: string;
+    avatar: string;
+  };
 }
 
 /**
- * 🎯 목적: VS Code Activity Bar 기본 아이템 목록
+ * 🎯 목적: VS Code Activity Bar 기본 아이템 목록 - UIDL 명세 적용
  */
 const defaultHotbarItems: HotbarItem[] = [
   {
@@ -79,122 +80,67 @@ const defaultHotbarItems: HotbarItem[] = [
 ];
 
 /**
+ * 🎯 목적: 기본 사용자 데이터
+ */
+const defaultUser = {
+  name: "사용자",
+  email: "user@example.com",
+  avatar: "",
+};
+
+/**
  * 🎯 목적: VS Code Activity Bar 스타일의 핫바 컴포넌트
  *
- * 특징:
- * - 세로 방향으로 배치된 아이콘 버튼들
- * - 활성/비활성 상태 시각적 표시
- * - 각 아이콘은 클릭 가능하며 해당 패널을 토글
- * - shadcn Button 컴포넌트와 SidebarMenu 구조 활용
- * - VS Code의 Activity Bar와 동일한 UX 제공
+ * shadcn/ui 공식 패턴 적용:
+ * - Sidebar, SidebarMenu, SidebarMenuButton 구조 사용
+ * - SidebarFooter에서 NavUser 컴포넌트 활용
+ * - UIDL 명세에 따른 아이콘 순서 적용
  */
 export function Hotbar({
   items = defaultHotbarItems,
   activeItem,
   onItemClick,
   className,
+  user = defaultUser,
 }: HotbarProps) {
   return (
-    <div
+    <Sidebar
+      collapsible="none"
       className={cn(
-        "bg-sidebar flex w-12 flex-col items-center py-2",
+        "w-[calc(var(--sidebar-width-icon)+1px)] border-r",
         className,
       )}
     >
-      {/* 🎯 목적: 상단 핫바 아이템들 */}
-      <div className="flex flex-col gap-1">
-        {items.map((item) => {
-          const IconComponent = item.icon;
-          const isActive = activeItem === item.id || item.isActive;
-
-          return (
-            <Button
-              key={item.id}
-              variant="ghost"
-              size="icon"
-              onClick={() => onItemClick?.(item.id)}
-              className={cn(
-                "hover:bg-sidebar-accent hover:text-sidebar-accent-foreground h-10 w-10 rounded-lg transition-colors",
-                isActive && "bg-sidebar-accent text-sidebar-accent-foreground",
-              )}
-              title={item.label}
-            >
-              <IconComponent className="h-5 w-5" />
-            </Button>
-          );
-        })}
-      </div>
-
-      {/* 🎯 목적: 하단 설정/사용자 영역 - NavUser 패턴 적용 */}
-      <div className="mt-auto flex flex-col gap-1">
-        {/* 설정 드롭다운 메뉴 */}
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button
-              variant="ghost"
-              size="icon"
-              className="hover:bg-sidebar-accent hover:text-sidebar-accent-foreground data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground h-10 w-10 rounded-lg transition-colors"
-              title="Settings"
-            >
-              <Settings className="h-5 w-5" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent className="w-56" align="end" side="right">
-            <DropdownMenuLabel>설정</DropdownMenuLabel>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem>
-              <Settings className="mr-2 h-4 w-4" />
-              <span>기본 설정</span>
-            </DropdownMenuItem>
-            <DropdownMenuItem>
-              <Sparkles className="mr-2 h-4 w-4" />
-              <span>확장 기능</span>
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-
-        {/* 사용자 계정 드롭다운 메뉴 */}
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button
-              variant="ghost"
-              className="hover:bg-sidebar-accent hover:text-sidebar-accent-foreground data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground h-10 w-10 rounded-lg p-0 transition-colors"
-              title="Account"
-            >
-              <Avatar className="h-8 w-8">
-                <AvatarImage src="" alt="User" />
-                <AvatarFallback className="bg-sidebar-primary text-sidebar-primary-foreground">
-                  <User className="h-4 w-4" />
-                </AvatarFallback>
-              </Avatar>
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent className="w-56" align="end" side="right">
-            <DropdownMenuLabel className="font-normal">
-              <div className="flex flex-col space-y-1">
-                <p className="text-sm leading-none font-medium">사용자</p>
-                <p className="text-muted-foreground text-xs leading-none">
-                  user@example.com
-                </p>
-              </div>
-            </DropdownMenuLabel>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem>
-              <User className="mr-2 h-4 w-4" />
-              <span>프로필</span>
-            </DropdownMenuItem>
-            <DropdownMenuItem>
-              <Settings className="mr-2 h-4 w-4" />
-              <span>계정 설정</span>
-            </DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem>
-              <LogOut className="mr-2 h-4 w-4" />
-              <span>로그아웃</span>
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      </div>
-    </div>
+      <SidebarContent>
+        <SidebarGroup>
+          <SidebarGroupContent className="px-1.5 md:px-0">
+            <SidebarMenu>
+              {items.map((item) => {
+                const isActive = activeItem === item.id || item.isActive;
+                return (
+                  <SidebarMenuItem key={item.id}>
+                    <SidebarMenuButton
+                      tooltip={{
+                        children: item.label,
+                        hidden: false,
+                      }}
+                      onClick={() => onItemClick?.(item.id)}
+                      isActive={isActive}
+                      className="px-2.5 md:px-2"
+                    >
+                      <item.icon />
+                      <span>{item.label}</span>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                );
+              })}
+            </SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
+      </SidebarContent>
+      <SidebarFooter>
+        <NavUser user={user} />
+      </SidebarFooter>
+    </Sidebar>
   );
 }
