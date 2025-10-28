@@ -791,116 +791,127 @@ export const AnswersChart: Story = {
                           </div>
                         </div>
 
-                        {/* 차트 카드들 - 횡스크롤 */}
-                        <div className="flex gap-2 self-stretch overflow-x-auto pb-2">
-                          {/* 첫 번째 차트 카드 - 주간 통계 */}
-                          <Card className="min-w-[280px] flex-shrink-0">
-                            <CardHeader className="pb-2">
-                              <CardTitle className="text-base">
-                                주간 사용자 활동
-                              </CardTitle>
-                              <CardDescription>
-                                지난 7일간 생성/수정된 IAM 사용자 수
-                              </CardDescription>
-                            </CardHeader>
-                            <CardContent className="pb-2">
-                              <ChartContainer
-                                config={chartConfig}
-                                className="h-[180px] w-full"
-                              >
-                                <BarChart data={chartData}>
-                                  <CartesianGrid vertical={false} />
-                                  <XAxis
-                                    dataKey="period"
-                                    tickLine={false}
-                                    tickMargin={10}
-                                    axisLine={false}
-                                  />
-                                  <YAxis hide />
-                                  <ChartTooltip
-                                    cursor={false}
-                                    content={
-                                      <ChartTooltipContent indicator="dashed" />
-                                    }
-                                  />
-                                  <Bar
-                                    dataKey="created"
-                                    fill="var(--color-created)"
-                                    radius={4}
-                                  />
-                                  <Bar
-                                    dataKey="modified"
-                                    fill="var(--color-modified)"
-                                    radius={4}
-                                  />
-                                </BarChart>
-                              </ChartContainer>
-                            </CardContent>
-                            <CardFooter className="flex-col items-start gap-2 text-sm">
-                              <div className="flex gap-2 leading-none font-medium">
-                                <TrendingUp className="h-4 w-4" />
-                                생성 활동 15% 증가
-                              </div>
-                              <div className="text-muted-foreground leading-none">
-                                저번 주 대비 IAM 사용자 생성이 증가했습니다.
-                              </div>
-                            </CardFooter>
-                          </Card>
+                        {/* 차트 카드들 - 횡스크롤 컨테이너 (패널 바깥으로 확장) */}
+                        <div className="w-full overflow-visible">
+                          <div
+                            className="flex gap-2 overflow-x-auto pb-2"
+                            style={{
+                              scrollBehavior: "smooth",
+                              /* 차트 카드들이 패널 바깥으로 나갈 수 있도록 충분한 width */
+                              width: "calc(100vw - 20px)",
+                              marginRight: "calc(-100vw + 100% + 20px)",
+                            }}
+                          >
+                            {/* 첫 번째 차트 카드 - 주간 통계 */}
+                            <Card className="min-w-[280px] flex-shrink-0">
+                              <CardHeader className="pb-2">
+                                <CardTitle className="text-base">
+                                  주간 사용자 활동
+                                </CardTitle>
+                                <CardDescription>
+                                  지난 7일간 생성/수정된 IAM 사용자 수
+                                </CardDescription>
+                              </CardHeader>
+                              <CardContent className="pb-2">
+                                <ChartContainer
+                                  config={chartConfig}
+                                  className="h-[180px] w-full"
+                                >
+                                  <BarChart data={chartData}>
+                                    <CartesianGrid vertical={false} />
+                                    <XAxis
+                                      dataKey="period"
+                                      tickLine={false}
+                                      tickMargin={10}
+                                      axisLine={false}
+                                    />
+                                    <YAxis hide />
+                                    <ChartTooltip
+                                      cursor={false}
+                                      content={
+                                        <ChartTooltipContent indicator="dashed" />
+                                      }
+                                    />
+                                    <Bar
+                                      dataKey="created"
+                                      fill="var(--color-created)"
+                                      radius={4}
+                                    />
+                                    <Bar
+                                      dataKey="modified"
+                                      fill="var(--color-modified)"
+                                      radius={4}
+                                    />
+                                  </BarChart>
+                                </ChartContainer>
+                              </CardContent>
+                              <CardFooter className="flex-col items-start gap-2 text-sm">
+                                <div className="flex gap-2 leading-none font-medium">
+                                  <TrendingUp className="h-4 w-4" />
+                                  생성 활동 15% 증가
+                                </div>
+                                <div className="text-muted-foreground leading-none">
+                                  저번 주 대비 IAM 사용자 생성이 증가했습니다.
+                                </div>
+                              </CardFooter>
+                            </Card>
 
-                          {/* 두 번째 차트 카드 - 누적 통계 */}
-                          <Card className="min-w-[280px] flex-shrink-0">
-                            <CardHeader className="pb-2">
-                              <CardTitle className="text-base">
-                                총 활동 현황
-                              </CardTitle>
-                              <CardDescription>
-                                전체 생성/수정 비율 및 누적 통계
-                              </CardDescription>
-                            </CardHeader>
-                            <CardContent className="pb-2">
-                              <ChartContainer
-                                config={chartConfig}
-                                className="h-[180px] w-full"
-                              >
-                                <BarChart data={chartData}>
-                                  <CartesianGrid vertical={false} />
-                                  <XAxis
-                                    dataKey="period"
-                                    tickLine={false}
-                                    tickMargin={10}
-                                    axisLine={false}
-                                  />
-                                  <YAxis hide />
-                                  <ChartTooltip
-                                    cursor={false}
-                                    content={
-                                      <ChartTooltipContent indicator="line" />
-                                    }
-                                  />
-                                  <Bar
-                                    dataKey="created"
-                                    stackId="a"
-                                    fill="var(--color-created)"
-                                    radius={[0, 0, 4, 4]}
-                                  />
-                                  <Bar
-                                    dataKey="modified"
-                                    stackId="a"
-                                    fill="var(--color-modified)"
-                                    radius={[4, 4, 0, 0]}
-                                  />
-                                </BarChart>
-                              </ChartContainer>
-                            </CardContent>
-                            <CardFooter className="flex-col items-start gap-2 text-sm">
-                              <div className="flex gap-2 leading-none font-medium">
-                                <Expand className="h-4 w-4" />총 125개 활동 기록
-                              </div>
-                              <div className="text-muted-foreground leading-none">
-                                신규 생성 65건, 기존 사용자 수정 60건
-                              </div>
-                            </CardFooter>
-                          </Card>
+                            {/* 두 번째 차트 카드 - 누적 통계 */}
+                            <Card className="min-w-[280px] flex-shrink-0">
+                              <CardHeader className="pb-2">
+                                <CardTitle className="text-base">
+                                  총 활동 현황
+                                </CardTitle>
+                                <CardDescription>
+                                  전체 생성/수정 비율 및 누적 통계
+                                </CardDescription>
+                              </CardHeader>
+                              <CardContent className="pb-2">
+                                <ChartContainer
+                                  config={chartConfig}
+                                  className="h-[180px] w-full"
+                                >
+                                  <BarChart data={chartData}>
+                                    <CartesianGrid vertical={false} />
+                                    <XAxis
+                                      dataKey="period"
+                                      tickLine={false}
+                                      tickMargin={10}
+                                      axisLine={false}
+                                    />
+                                    <YAxis hide />
+                                    <ChartTooltip
+                                      cursor={false}
+                                      content={
+                                        <ChartTooltipContent indicator="line" />
+                                      }
+                                    />
+                                    <Bar
+                                      dataKey="created"
+                                      stackId="a"
+                                      fill="var(--color-created)"
+                                      radius={[0, 0, 4, 4]}
+                                    />
+                                    <Bar
+                                      dataKey="modified"
+                                      stackId="a"
+                                      fill="var(--color-modified)"
+                                      radius={[4, 4, 0, 0]}
+                                    />
+                                  </BarChart>
+                                </ChartContainer>
+                              </CardContent>
+                              <CardFooter className="flex-col items-start gap-2 text-sm">
+                                <div className="flex gap-2 leading-none font-medium">
+                                  <Expand className="h-4 w-4" />총 125개 활동
+                                  기록
+                                </div>
+                                <div className="text-muted-foreground leading-none">
+                                  신규 생성 65건, 기존 사용자 수정 60건
+                                </div>
+                              </CardFooter>
+                            </Card>
+                          </div>
                         </div>
 
                         {/* Separator */}
