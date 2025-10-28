@@ -2600,6 +2600,40 @@
           "type": "registry:component"
         }
       ]
+    },
+    {
+      "name": "common-table-story",
+      "type": "registry:component",
+      "title": "CommonTable Story",
+      "description": "Interactive Storybook stories for Kubernetes resource table interface with namespace dropdown, search functionality, and multi-type cell content",
+      "categories": [
+        "templates",
+        "storybook",
+        "table",
+        "contents"
+      ],
+      "author": "Lloyd Richards <lloyd.d.richards@gmail.com>",
+      "registryDependencies": [
+        "table",
+        "dropdown-menu",
+        "button",
+        "input",
+        "badge",
+        "checkbox"
+      ],
+      "dependencies": [
+        "lucide-react"
+      ],
+      "files": [
+        {
+          "path": "src/registry/templates/contents/common-table.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "src/registry/templates/contents/common-table.stories.tsx",
+          "type": "registry:component"
+        }
+      ]
     }
   ]
 }
