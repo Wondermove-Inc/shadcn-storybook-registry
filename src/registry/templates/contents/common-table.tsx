@@ -6,7 +6,6 @@ import {
   ChevronDown,
   EllipsisVertical,
   BadgeCheck,
-  Check,
 } from "lucide-react";
 import {
   Table,
@@ -19,8 +18,9 @@ import {
 import {
   DropdownMenu,
   DropdownMenuContent,
-  DropdownMenuItem,
+  DropdownMenuCheckboxItem,
   DropdownMenuLabel,
+  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
@@ -190,52 +190,45 @@ export function CommonTable({ className }: CommonTableProps) {
                 <ChevronDown className="ml-2 h-4 w-4" />
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent className="w-56">
+            <DropdownMenuContent className="w-56" align="start">
               <DropdownMenuLabel>All Namespaces</DropdownMenuLabel>
-              <DropdownMenuItem
-                onClick={() => {
+              <DropdownMenuSeparator />
+              <DropdownMenuCheckboxItem
+                checked={selectedNamespace === "default"}
+                onCheckedChange={() => {
                   console.log("Default clicked");
                   setSelectedNamespace("default");
                 }}
               >
-                {selectedNamespace === "default" && (
-                  <Check className="mr-2 h-4 w-4" />
-                )}
                 default
-              </DropdownMenuItem>
-              <DropdownMenuItem
-                onClick={() => {
+              </DropdownMenuCheckboxItem>
+              <DropdownMenuCheckboxItem
+                checked={selectedNamespace === "cilium-secrets"}
+                onCheckedChange={() => {
                   console.log("cilium-secrets clicked");
                   setSelectedNamespace("cilium-secrets");
                 }}
               >
-                {selectedNamespace === "cilium-secrets" && (
-                  <Check className="mr-2 h-4 w-4" />
-                )}
                 cilium-secrets
-              </DropdownMenuItem>
-              <DropdownMenuItem
-                onClick={() => {
+              </DropdownMenuCheckboxItem>
+              <DropdownMenuCheckboxItem
+                checked={selectedNamespace === "kube-node-lease"}
+                onCheckedChange={() => {
                   console.log("kube-node-lease clicked");
                   setSelectedNamespace("kube-node-lease");
                 }}
               >
-                {selectedNamespace === "kube-node-lease" && (
-                  <Check className="mr-2 h-4 w-4" />
-                )}
                 kube-node-lease
-              </DropdownMenuItem>
-              <DropdownMenuItem
-                onClick={() => {
+              </DropdownMenuCheckboxItem>
+              <DropdownMenuCheckboxItem
+                checked={selectedNamespace === "kube-public"}
+                onCheckedChange={() => {
                   console.log("kube-public clicked");
                   setSelectedNamespace("kube-public");
                 }}
               >
-                {selectedNamespace === "kube-public" && (
-                  <Check className="mr-2 h-4 w-4" />
-                )}
                 kube-public
-              </DropdownMenuItem>
+              </DropdownMenuCheckboxItem>
             </DropdownMenuContent>
           </DropdownMenu>
 
