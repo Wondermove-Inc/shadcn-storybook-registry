@@ -6,6 +6,8 @@ import {
   ChevronDown,
   EllipsisVertical,
   BadgeCheck,
+  ChevronsRight,
+  ExternalLink,
 } from "lucide-react";
 import {
   Table,
@@ -27,6 +29,13 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Checkbox } from "@/components/ui/checkbox";
+import {
+  Sheet,
+  SheetHeader,
+  SheetTitle,
+  SheetPortal,
+} from "@/components/ui/sheet";
+import * as SheetPrimitive from "@radix-ui/react-dialog";
 
 /**
  * 🎯 목적: CommonTable 테이블 행 데이터 타입 정의
@@ -112,16 +121,6 @@ const tableData: TableRowData[] = [
 ];
 
 /**
- * 🎯 목적: 네임스페이스 드롭다운 옵션
- */
-const namespaceOptions = [
-  "default",
-  "cilium-secrets",
-  "kube-node-lease",
-  "kube-public",
-];
-
-/**
  * 🎯 목적: CommonTable 컴포넌트 Props 타입
  */
 interface CommonTableProps {
@@ -141,6 +140,10 @@ export function CommonTable({ className }: CommonTableProps) {
   const [selectedNamespace, setSelectedNamespace] = React.useState("default");
   const [searchValue, setSearchValue] = React.useState("");
   const [data, setData] = React.useState(tableData);
+  const [isPropertiesOpen, setIsPropertiesOpen] = React.useState(false);
+  const [selectedRowData, setSelectedRowData] =
+    React.useState<TableRowData | null>(null);
+  const [selectedRowId, setSelectedRowId] = React.useState<string | null>(null);
 
   /**
    * 🎯 목적: 개별 체크박스 상태 변경 처리
@@ -165,160 +168,369 @@ export function CommonTable({ className }: CommonTableProps) {
   const isAllSelected = selectedCount === data.length;
   const isIndeterminate = selectedCount > 0 && selectedCount < data.length;
 
+  /**
+   * 🎯 목적: 테이블 행 클릭 시 속성창 열기 및 선택된 행 표시
+   */
+  const handleRowClick = (rowData: TableRowData) => {
+    setSelectedRowData(rowData);
+    setSelectedRowId(rowData.id);
+    setIsPropertiesOpen(true);
+    console.log("Row clicked:", rowData);
+  };
+
   return (
     <div className={`flex h-screen w-full flex-col ${className || ""}`}>
-      {/* 상단 메뉴 섹션 */}
-      <div className="flex items-center justify-between gap-4 border-b p-4">
-        {/* 왼쪽: 메뉴 이름과 아이템 개수 */}
-        <div className="flex items-center gap-1">
-          <h2 className="text-foreground text-lg font-semibold">{`{Menuname}`}</h2>
-          <span className="text-muted-foreground text-base font-light">
-            ({data.length})
-          </span>
-        </div>
+      {/* 전체 콘텐츠 영역 - gap-5 패딩 */}
+      <div className="flex-1 p-5">
+        <div className="space-y-4">
+          {/* 상단 메뉴 섹션 */}
+          <div className="flex items-center justify-between gap-4">
+            {/* 왼쪽: 메뉴 이름과 아이템 개수 */}
+            <div className="flex items-center gap-1">
+              <h2 className="text-foreground text-lg font-semibold">{`{Menuname}`}</h2>
+              <span className="text-muted-foreground text-base font-light">
+                ({data.length})
+              </span>
+            </div>
 
-        {/* 오른쪽: 네임스페이스 드롭다운과 검색 */}
-        <div className="flex items-center gap-2">
-          {/* 네임스페이스 드롭다운 */}
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button
-                variant="outline"
-                onClick={() => console.log("Dropdown trigger clicked")}
-              >
-                Namespace: {selectedNamespace}
-                <ChevronDown className="ml-2 h-4 w-4" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent className="w-56" align="start">
-              <DropdownMenuLabel>All Namespaces</DropdownMenuLabel>
-              <DropdownMenuSeparator />
-              <DropdownMenuCheckboxItem
-                checked={selectedNamespace === "default"}
-                onCheckedChange={() => {
-                  console.log("Default clicked");
-                  setSelectedNamespace("default");
-                }}
-              >
-                default
-              </DropdownMenuCheckboxItem>
-              <DropdownMenuCheckboxItem
-                checked={selectedNamespace === "cilium-secrets"}
-                onCheckedChange={() => {
-                  console.log("cilium-secrets clicked");
-                  setSelectedNamespace("cilium-secrets");
-                }}
-              >
-                cilium-secrets
-              </DropdownMenuCheckboxItem>
-              <DropdownMenuCheckboxItem
-                checked={selectedNamespace === "kube-node-lease"}
-                onCheckedChange={() => {
-                  console.log("kube-node-lease clicked");
-                  setSelectedNamespace("kube-node-lease");
-                }}
-              >
-                kube-node-lease
-              </DropdownMenuCheckboxItem>
-              <DropdownMenuCheckboxItem
-                checked={selectedNamespace === "kube-public"}
-                onCheckedChange={() => {
-                  console.log("kube-public clicked");
-                  setSelectedNamespace("kube-public");
-                }}
-              >
-                kube-public
-              </DropdownMenuCheckboxItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-
-          {/* 검색 입력 */}
-          <div className="relative">
-            <Search className="text-muted-foreground absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 transform" />
-            <Input
-              placeholder="Search..."
-              value={searchValue}
-              onChange={(e) => setSearchValue(e.target.value)}
-              className="w-[373px] pl-9"
-            />
-          </div>
-        </div>
-      </div>
-
-      {/* 테이블 섹션 */}
-      <div className="flex-1 p-4">
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead className="w-12">
-                <Checkbox
-                  checked={isIndeterminate ? "indeterminate" : isAllSelected}
-                  onCheckedChange={handleSelectAll}
-                  aria-label="전체 선택"
-                />
-              </TableHead>
-              <TableHead>Head Text</TableHead>
-              <TableHead>Head Text</TableHead>
-              <TableHead>Head Text</TableHead>
-              <TableHead>Head Text</TableHead>
-              <TableHead>Head Text</TableHead>
-              <TableHead className="text-right"></TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {data.map((row) => (
-              <TableRow key={row.id}>
-                <TableCell>
-                  <Checkbox
-                    checked={row.checked}
-                    onCheckedChange={(checked) =>
-                      handleRowCheckChange(row.id, !!checked)
-                    }
-                    aria-label={`행 ${row.id} 선택`}
-                  />
-                </TableCell>
-                <TableCell>{row.column2}</TableCell>
-                <TableCell>{row.column3}</TableCell>
-                <TableCell>
-                  <Button variant="link" className="text-primary h-auto p-0">
-                    {row.column4.text}
+            {/* 오른쪽: 네임스페이스 드롭다운과 검색 */}
+            <div className="flex items-center gap-2">
+              {/* 네임스페이스 드롭다운 */}
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button
+                    variant="outline"
+                    onClick={() => console.log("Dropdown trigger clicked")}
+                  >
+                    Namespace: {selectedNamespace}
+                    <ChevronDown className="ml-2 h-4 w-4" />
                   </Button>
-                </TableCell>
-                <TableCell>
-                  {row.column5.variant === "verified" ? (
-                    <Badge
-                      variant="secondary"
-                      className="bg-blue-500 text-white dark:bg-blue-600"
-                    >
-                      <BadgeCheck className="h-3 w-3" />
-                      {row.column5.text}
-                    </Badge>
-                  ) : (
-                    <Badge
-                      variant={
-                        row.column5.variant as
-                          | "default"
-                          | "secondary"
-                          | "outline"
-                      }
-                    >
-                      {row.column5.text}
-                    </Badge>
-                  )}
-                </TableCell>
-                <TableCell>{row.column6}</TableCell>
-                <TableCell className="text-right">
-                  {row.column7 && (
-                    <Button variant="ghost" size="sm" aria-label="행 옵션">
-                      <EllipsisVertical className="h-4 w-4" />
-                    </Button>
-                  )}
-                </TableCell>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent className="w-56" align="start">
+                  <DropdownMenuLabel>All Namespaces</DropdownMenuLabel>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuCheckboxItem
+                    checked={selectedNamespace === "default"}
+                    onCheckedChange={() => {
+                      console.log("Default clicked");
+                      setSelectedNamespace("default");
+                    }}
+                  >
+                    default
+                  </DropdownMenuCheckboxItem>
+                  <DropdownMenuCheckboxItem
+                    checked={selectedNamespace === "cilium-secrets"}
+                    onCheckedChange={() => {
+                      console.log("cilium-secrets clicked");
+                      setSelectedNamespace("cilium-secrets");
+                    }}
+                  >
+                    cilium-secrets
+                  </DropdownMenuCheckboxItem>
+                  <DropdownMenuCheckboxItem
+                    checked={selectedNamespace === "kube-node-lease"}
+                    onCheckedChange={() => {
+                      console.log("kube-node-lease clicked");
+                      setSelectedNamespace("kube-node-lease");
+                    }}
+                  >
+                    kube-node-lease
+                  </DropdownMenuCheckboxItem>
+                  <DropdownMenuCheckboxItem
+                    checked={selectedNamespace === "kube-public"}
+                    onCheckedChange={() => {
+                      console.log("kube-public clicked");
+                      setSelectedNamespace("kube-public");
+                    }}
+                  >
+                    kube-public
+                  </DropdownMenuCheckboxItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+
+              {/* 검색 입력 */}
+              <div className="relative">
+                <Search className="text-muted-foreground absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 transform" />
+                <Input
+                  placeholder="Search..."
+                  value={searchValue}
+                  onChange={(e) => setSearchValue(e.target.value)}
+                  className="w-[373px] pl-9"
+                />
+              </div>
+            </div>
+          </div>
+
+          {/* 테이블 섹션 - header와 gap-4 간격 */}
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead className="w-12">
+                  <Checkbox
+                    checked={isIndeterminate ? "indeterminate" : isAllSelected}
+                    onCheckedChange={handleSelectAll}
+                    aria-label="전체 선택"
+                  />
+                </TableHead>
+                <TableHead>Head Text</TableHead>
+                <TableHead>Head Text</TableHead>
+                <TableHead>Head Text</TableHead>
+                <TableHead>Head Text</TableHead>
+                <TableHead>Head Text</TableHead>
+                <TableHead className="text-right"></TableHead>
               </TableRow>
-            ))}
-          </TableBody>
-        </Table>
+            </TableHeader>
+            <TableBody>
+              {data.map((row) => {
+                const isSelected = selectedRowId === row.id;
+                return (
+                  <TableRow
+                    key={row.id}
+                    className={`cursor-pointer border-l-2 transition-colors ${
+                      isSelected
+                        ? "bg-muted/50 border-l-primary"
+                        : "hover:bg-muted/50 border-l-transparent"
+                    }`}
+                    onClick={() => handleRowClick(row)}
+                  >
+                    <TableCell>
+                      <Checkbox
+                        checked={row.checked}
+                        onCheckedChange={(checked) =>
+                          handleRowCheckChange(row.id, !!checked)
+                        }
+                        aria-label={`행 ${row.id} 선택`}
+                        onClick={(e) => e.stopPropagation()}
+                      />
+                    </TableCell>
+                    <TableCell>{row.column2}</TableCell>
+                    <TableCell>{row.column3}</TableCell>
+                    <TableCell>
+                      <Button
+                        variant="link"
+                        className="text-primary h-auto p-0"
+                      >
+                        {row.column4.text}
+                      </Button>
+                    </TableCell>
+                    <TableCell>
+                      {row.column5.variant === "verified" ? (
+                        <Badge
+                          variant="secondary"
+                          className="bg-blue-500 text-white dark:bg-blue-600"
+                        >
+                          <BadgeCheck className="h-3 w-3" />
+                          {row.column5.text}
+                        </Badge>
+                      ) : (
+                        <Badge
+                          variant={
+                            row.column5.variant as
+                              | "default"
+                              | "secondary"
+                              | "outline"
+                          }
+                        >
+                          {row.column5.text}
+                        </Badge>
+                      )}
+                    </TableCell>
+                    <TableCell>{row.column6}</TableCell>
+                    <TableCell className="text-right">
+                      {row.column7 && (
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          aria-label="행 옵션"
+                          onClick={(e) => e.stopPropagation()}
+                        >
+                          <EllipsisVertical className="h-4 w-4" />
+                        </Button>
+                      )}
+                    </TableCell>
+                  </TableRow>
+                );
+              })}
+            </TableBody>
+          </Table>
+        </div>
       </div>
+
+      {/* 속성창 패널 */}
+      <Sheet
+        open={isPropertiesOpen}
+        onOpenChange={(open) => {
+          // 포커스 아웃으로 닫히는 것을 방지하기 위해 명시적으로 닫기 버튼을 통해서만 닫도록 함
+          if (!open) return;
+          setIsPropertiesOpen(open);
+        }}
+      >
+        <SheetPortal>
+          {/* 오버레이 없이 컨텐츠만 렌더링 */}
+          <SheetPrimitive.Content
+            className="bg-primary-foreground data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:slide-out-to-right data-[state=open]:slide-in-from-right fixed inset-y-0 right-0 z-50 h-full w-[700px] gap-4 border-l p-5 shadow-lg transition ease-in-out data-[state=closed]:duration-300 data-[state=open]:duration-500"
+            onPointerDownOutside={(e) => e.preventDefault()}
+            onEscapeKeyDown={(e) => e.preventDefault()}
+          >
+            <div className="space-y-4">
+              <div className="space-y-3">
+                <div className="flex items-center justify-between">
+                  <Button
+                    variant="secondary"
+                    size="icon-sm"
+                    onClick={() => setIsPropertiesOpen(false)}
+                  >
+                    <ChevronsRight className="h-4 w-4" />
+                  </Button>
+                  <Button variant="ghost" size="icon-sm">
+                    <EllipsisVertical className="h-4 w-4" />
+                  </Button>
+                </div>
+                <div className="flex flex-col gap-1">
+                  <span className="text-muted-foreground text-sm leading-5">
+                    {`{Menuname}`}
+                  </span>
+                  <SheetTitle className="text-lg font-semibold">
+                    {selectedRowData ? `{Table Cell Text}` : "Properties"}
+                  </SheetTitle>
+                </div>
+              </div>
+              {/* 속성 테이블 - UIDL 명세에 따른 Table 컴포넌트 사용 */}
+              <Table>
+                <TableBody>
+                  <TableRow>
+                    <TableCell className="border-b border-white/10 px-2 py-[14px]">
+                      <span className="text-foreground text-sm">Created</span>
+                    </TableCell>
+                    <TableCell className="border-b border-white/10 px-2 py-[14px]">
+                      <span className="text-foreground text-sm">
+                        19d 4h 36m ago (2025-10-01T09:24:39+09:00)
+                      </span>
+                    </TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell className="border-b border-white/10 px-2 py-[14px]">
+                      <span className="text-foreground text-sm">Name</span>
+                    </TableCell>
+                    <TableCell className="border-b border-white/10 px-2 py-[14px]">
+                      <span className="text-foreground text-sm">
+                        ciliumcidrgroups.cilium.io
+                      </span>
+                    </TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell className="border-b border-white/10 px-2 py-[14px]">
+                      <span className="text-foreground text-sm">Labels</span>
+                    </TableCell>
+                    <TableCell className="border-b border-white/10 px-2 py-[14px]">
+                      <Badge
+                        variant="outline"
+                        className="bg-background border-white/10 text-xs font-semibold"
+                      >
+                        io.cilium.k8s.crd.schema.version=1.31.11
+                      </Badge>
+                    </TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell className="border-b border-white/10 px-2 py-[14px]">
+                      <span className="text-foreground text-sm">
+                        Annotations
+                      </span>
+                    </TableCell>
+                    <TableCell className="border-b border-white/10 px-2 py-[14px]">
+                      <Badge
+                        variant="outline"
+                        className="bg-background border-white/10 text-xs font-semibold"
+                      >
+                        freelens.app/resource-version=v1
+                      </Badge>
+                    </TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell className="border-b border-white/10 px-2 py-[14px]">
+                      <span className="text-foreground text-sm">Resource</span>
+                    </TableCell>
+                    <TableCell className="border-b border-white/10 px-2 py-2">
+                      <Button
+                        variant="ghost"
+                        className="text-foreground/80 hover:text-foreground h-8 px-3 text-sm font-medium underline"
+                      >
+                        Ciliumendpoints
+                        <ExternalLink className="ml-2 h-4 w-4" />
+                      </Button>
+                    </TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell className="border-b border-white/10 px-2 py-[14px]">
+                      <span className="text-foreground text-sm">
+                        Conversion
+                      </span>
+                    </TableCell>
+                    <TableCell className="border-b border-white/10 px-2 py-1.5">
+                      <Input
+                        placeholder='{"strategy": "None"}'
+                        className="text-muted-foreground h-9 border-white/15 bg-white/[0.045] font-mono text-sm"
+                        readOnly
+                      />
+                    </TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell className="border-b border-white/10 px-2 py-[14px]">
+                      <span className="text-foreground text-sm">
+                        Conditions
+                      </span>
+                    </TableCell>
+                    <TableCell className="border-b border-white/10 px-2 py-[14px]">
+                      <Badge className="bg-primary text-primary-foreground border-0 text-xs font-semibold">
+                        NamesAccepted
+                      </Badge>
+                    </TableCell>
+                  </TableRow>
+                </TableBody>
+              </Table>
+
+              {/* Validation 섹션 - UIDL 명세에 따른 코드 블록 */}
+              <div className="mt-8 flex flex-col gap-4">
+                <span className="text-foreground text-base leading-none font-medium">
+                  Validation
+                </span>
+                <div className="flex w-full flex-col items-center justify-center rounded-[10px] border border-white/10 bg-[#18181b] p-4">
+                  <div className="w-full text-left font-mono text-base leading-6 text-white/[0.47]">
+                    <div>
+                      import &#123; Button &#125; from
+                      &quot;@/components/ui/button&quot;
+                    </div>
+                    <br />
+                    <br />
+                    <div>
+                      export function{" "}
+                      <span className="font-bold">ButtonOutline</span>() &#123;
+                    </div>
+                    <div>
+                      &nbsp;&nbsp;return &lt;Button
+                      variant=&quot;outline&quot;&gt;Outline&lt;/Button&gt;
+                    </div>
+                    <div>&#125;</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* 푸터 버튼들 */}
+            <div className="bg-primary-foreground absolute right-0 bottom-0 left-0 p-4">
+              <div className="flex justify-end gap-2">
+                <Button
+                  variant="ghost"
+                  onClick={() => setIsPropertiesOpen(false)}
+                >
+                  Cancel
+                </Button>
+                <Button>Save</Button>
+              </div>
+            </div>
+          </SheetPrimitive.Content>
+        </SheetPortal>
+      </Sheet>
     </div>
   );
 }
