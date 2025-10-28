@@ -21,7 +21,7 @@
     },
     {
       "path": "src/registry/templates/contents/welcome.stories.tsx",
-      "content": "import type { Meta, StoryObj } from \"@storybook/react-vite\";\nimport { Welcome } from \"./welcome\";\n\n/**\n * Welcome 콘텐츠 컴포넌트 - Kubernetes IDE 환경의 웰컴 페이지\n *\n * baseStructure의 contents 영역에 들어갈 웰컴 콘텐츠를 제공합니다.\n * 탭 네비게이션, 메인 제목, 액션 카드, 도움말 정보를 포함합니다.\n */\nconst meta: Meta<typeof Welcome> = {\n  title: \"templates/Welcome\",\n  component: Welcome,\n  parameters: {\n    layout: \"fullscreen\",\n  },\n  tags: [\"autodocs\"],\n} satisfies Meta<typeof Welcome>;\n\nexport default meta;\ntype Story = StoryObj<typeof meta>;\n\n/**\n * 기본 Welcome 콘텐츠 - 완전한 웰컴 페이지 레이아웃\n */\nexport const Default: Story = {};\n",
+      "content": "import type { Meta, StoryObj } from \"@storybook/react-vite\";\nimport { Welcome } from \"./welcome\";\n\n/**\n * Welcome 콘텐츠 컴포넌트 - Kubernetes IDE 환경의 웰컴 페이지\n *\n * baseStructure의 contents 영역에 들어갈 웰컴 콘텐츠를 제공합니다.\n * 탭 네비게이션, 메인 제목, 액션 카드, 도움말 정보를 포함합니다.\n */\nconst meta: Meta<typeof Welcome> = {\n  title: \"templates/Contents/Welcome\",\n  component: Welcome,\n  parameters: {\n    layout: \"fullscreen\",\n  },\n  tags: [\"autodocs\"],\n} satisfies Meta<typeof Welcome>;\n\nexport default meta;\ntype Story = StoryObj<typeof meta>;\n\n/**\n * 기본 Welcome 콘텐츠 - 완전한 웰컴 페이지 레이아웃\n */\nexport const Default: Story = {};\n",
       "type": "registry:component"
     }
   ],

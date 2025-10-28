@@ -8,7 +8,7 @@ import { Welcome } from "./welcome";
  * 탭 네비게이션, 메인 제목, 액션 카드, 도움말 정보를 포함합니다.
  */
 const meta: Meta<typeof Welcome> = {
-  title: "templates/Welcome",
+  title: "templates/Contents/Welcome",
   component: Welcome,
   parameters: {
     layout: "fullscreen",
