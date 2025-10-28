@@ -12,6 +12,7 @@ import {
 } from "@/components/ui/resizable";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
+import { SidebarProvider } from "@/components/ui/sidebar";
 import {
   X,
   Bell,
@@ -88,6 +89,13 @@ type Story = StoryObj<typeof meta>;
  * - AI Assistant 패널 토글 및 닫기 기능
  */
 export const Structure: Story = {
+  decorators: [
+    (Story) => (
+      <SidebarProvider>
+        <Story />
+      </SidebarProvider>
+    ),
+  ],
   render: () => {
     // 🎯 목적: 클러스터 탭 목록 상태 관리
     interface Tab {
@@ -753,6 +761,13 @@ export const StructureTab: Story = {
  * - 하단에 Settings, Account 아이콘 배치
  */
 export const StructureHotbar: Story = {
+  decorators: [
+    (Story) => (
+      <SidebarProvider>
+        <Story />
+      </SidebarProvider>
+    ),
+  ],
   render: () => {
     // 🎯 목적: 활성 아이템 상태 관리
     const [activeItem, setActiveItem] = React.useState("explorer");
