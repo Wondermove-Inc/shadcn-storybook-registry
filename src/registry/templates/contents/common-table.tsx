@@ -29,13 +29,6 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Checkbox } from "@/components/ui/checkbox";
-import {
-  Sheet,
-  SheetHeader,
-  SheetTitle,
-  SheetPortal,
-} from "@/components/ui/sheet";
-import * as SheetPrimitive from "@radix-ui/react-dialog";
 
 /**
  * 🎯 목적: CommonTable 테이블 행 데이터 타입 정의
@@ -155,17 +148,6 @@ export function CommonTable({ className }: CommonTableProps) {
   };
 
   /**
-   * 🎯 목적: Sheet의 onOpenChange 핸들러 (자동 닫기 방지)
-   */
-  const handleSheetOpenChange = (open: boolean) => {
-    // 패널을 열려고 하는 경우에만 허용
-    if (open) {
-      setIsPropertiesOpen(true);
-    }
-    // 닫으려고 하는 경우는 명시적 닫기에서만 처리하므로 무시
-  };
-
-  /**
    * 🎯 목적: 개별 체크박스 상태 변경 처리
    */
   const handleRowCheckChange = (id: string, checked: boolean) => {
@@ -211,7 +193,9 @@ export function CommonTable({ className }: CommonTableProps) {
   };
 
   return (
-    <div className={`flex h-screen w-full flex-col ${className || ""}`}>
+    <div
+      className={`relative flex h-screen w-full flex-col ${className || ""}`}
+    >
       {/* 전체 콘텐츠 영역 - gap-5 패딩 */}
       <div className="flex-1 p-5">
         <div className="space-y-4">
@@ -389,176 +373,168 @@ export function CommonTable({ className }: CommonTableProps) {
         </div>
       </div>
 
-      {/* 속성창 패널 */}
-      <Sheet open={isPropertiesOpen} onOpenChange={handleSheetOpenChange}>
-        <SheetPortal>
-          {/* 오버레이 없이 컨텐츠만 렌더링 */}
-          <SheetPrimitive.Content
-            className="bg-background data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:slide-out-to-right data-[state=open]:slide-in-from-right fixed inset-y-0 right-0 z-50 h-full w-[700px] gap-4 border-l p-5 shadow-lg transition ease-in-out data-[state=closed]:duration-300 data-[state=open]:duration-500"
-            onEscapeKeyDown={(e) => e.preventDefault()}
-          >
-            <div className="space-y-4">
-              <div className="space-y-3">
-                <div className="flex items-center justify-between">
-                  <Button
-                    variant="secondary"
-                    size="icon-sm"
-                    onClick={handleExplicitClose}
-                  >
-                    <ChevronsRight className="h-4 w-4" />
-                  </Button>
-                  <Button variant="ghost" size="icon-sm">
-                    <EllipsisVertical className="h-4 w-4" />
-                  </Button>
-                </div>
-                <div className="flex flex-col gap-1">
-                  <span className="text-muted-foreground text-sm leading-5">
-                    {`{Menuname}`}
-                  </span>
-                  <SheetTitle className="text-lg font-semibold">
-                    {selectedRowData
-                      ? `${selectedRowData.column2} (Row ${selectedRowData.id})`
-                      : "Properties"}
-                  </SheetTitle>
-                </div>
-              </div>
-              {/* 속성 테이블 - UIDL 명세에 따른 Table 컴포넌트 사용 */}
-              <Table>
-                <TableBody>
-                  <TableRow>
-                    <TableCell className="border-border border-b px-2 py-[14px]">
-                      <span className="text-foreground text-sm">Created</span>
-                    </TableCell>
-                    <TableCell className="border-border border-b px-2 py-[14px]">
-                      <span className="text-foreground text-sm">
-                        19d 4h 36m ago (2025-10-01T09:24:39+09:00)
-                      </span>
-                    </TableCell>
-                  </TableRow>
-                  <TableRow>
-                    <TableCell className="border-border border-b px-2 py-[14px]">
-                      <span className="text-foreground text-sm">Name</span>
-                    </TableCell>
-                    <TableCell className="border-border border-b px-2 py-[14px]">
-                      <span className="text-foreground text-sm">
-                        {selectedRowData
-                          ? selectedRowData.column3
-                          : "ciliumcidrgroups.cilium.io"}
-                      </span>
-                    </TableCell>
-                  </TableRow>
-                  <TableRow>
-                    <TableCell className="border-border border-b px-2 py-[14px]">
-                      <span className="text-foreground text-sm">Labels</span>
-                    </TableCell>
-                    <TableCell className="border-border border-b px-2 py-[14px]">
-                      <Badge
-                        variant="outline"
-                        className="bg-background border-border text-xs font-semibold"
-                      >
-                        {selectedRowData
-                          ? `column5=${selectedRowData.column5.text}`
-                          : "io.cilium.k8s.crd.schema.version=1.31.11"}
-                      </Badge>
-                    </TableCell>
-                  </TableRow>
-                  <TableRow>
-                    <TableCell className="border-border border-b px-2 py-[14px]">
-                      <span className="text-foreground text-sm">
-                        Annotations
-                      </span>
-                    </TableCell>
-                    <TableCell className="border-border border-b px-2 py-[14px]">
-                      <Badge
-                        variant="outline"
-                        className="bg-background border-border text-xs font-semibold"
-                      >
-                        freelens.app/resource-version=v1
-                      </Badge>
-                    </TableCell>
-                  </TableRow>
-                  <TableRow>
-                    <TableCell className="border-border border-b px-2 py-[14px]">
-                      <span className="text-foreground text-sm">Resource</span>
-                    </TableCell>
-                    <TableCell className="border-border border-b px-2 py-2">
-                      <Button
-                        variant="ghost"
-                        className="text-foreground/80 hover:text-foreground h-8 px-3 text-sm font-medium underline"
-                      >
-                        Ciliumendpoints
-                        <ExternalLink className="ml-2 h-4 w-4" />
-                      </Button>
-                    </TableCell>
-                  </TableRow>
-                  <TableRow>
-                    <TableCell className="border-border border-b px-2 py-[14px]">
-                      <span className="text-foreground text-sm">
-                        Conversion
-                      </span>
-                    </TableCell>
-                    <TableCell className="border-border border-b px-2 py-1.5">
-                      <Input
-                        placeholder='{"strategy": "None"}'
-                        className="text-muted-foreground bg-muted/50 h-9 font-mono text-sm"
-                        readOnly
-                      />
-                    </TableCell>
-                  </TableRow>
-                  <TableRow>
-                    <TableCell className="border-border border-b px-2 py-[14px]">
-                      <span className="text-foreground text-sm">
-                        Conditions
-                      </span>
-                    </TableCell>
-                    <TableCell className="border-border border-b px-2 py-[14px]">
-                      <Badge className="bg-primary text-primary-foreground border-0 text-xs font-semibold">
-                        NamesAccepted
-                      </Badge>
-                    </TableCell>
-                  </TableRow>
-                </TableBody>
-              </Table>
-
-              {/* Validation 섹션 - UIDL 명세에 따른 코드 블록 */}
-              <div className="mt-8 flex flex-col gap-4">
-                <span className="text-foreground text-base leading-none font-medium">
-                  Validation
-                </span>
-                <div className="bg-muted/30 flex w-full flex-col items-center justify-center rounded-[10px] border p-4">
-                  <div className="text-muted-foreground w-full text-left font-mono text-base leading-6">
-                    <div>
-                      import &#123; Button &#125; from
-                      &quot;@/components/ui/button&quot;
-                    </div>
-                    <br />
-                    <br />
-                    <div>
-                      export function{" "}
-                      <span className="font-bold">ButtonOutline</span>() &#123;
-                    </div>
-                    <div>
-                      &nbsp;&nbsp;return &lt;Button
-                      variant=&quot;outline&quot;&gt;Outline&lt;/Button&gt;
-                    </div>
-                    <div>&#125;</div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* 푸터 버튼들 */}
-            <div className="bg-background absolute right-0 bottom-0 left-0 border-t p-4">
-              <div className="flex justify-end gap-2">
-                <Button variant="ghost" onClick={handleExplicitClose}>
-                  Cancel
+      {/* 속성창 패널 - Sheet 대신 직접 구현 */}
+      {isPropertiesOpen && (
+        <div
+          className={`bg-background absolute inset-y-0 right-0 z-50 h-full w-[700px] border-l p-5 shadow-lg transition-transform duration-300 ease-in-out ${
+            isPropertiesOpen ? "translate-x-0" : "translate-x-full"
+          }`}
+        >
+          <div className="space-y-4">
+            <div className="space-y-3">
+              <div className="flex items-center justify-between">
+                <Button
+                  variant="secondary"
+                  size="icon-sm"
+                  onClick={handleExplicitClose}
+                >
+                  <ChevronsRight className="h-4 w-4" />
                 </Button>
-                <Button>Save</Button>
+                <Button variant="ghost" size="icon-sm">
+                  <EllipsisVertical className="h-4 w-4" />
+                </Button>
+              </div>
+              <div className="flex flex-col gap-1">
+                <span className="text-muted-foreground text-sm leading-5">
+                  {`{Menuname}`}
+                </span>
+                <h2 className="text-lg font-semibold">
+                  {selectedRowData
+                    ? `${selectedRowData.column2} (Row ${selectedRowData.id})`
+                    : "Properties"}
+                </h2>
               </div>
             </div>
-          </SheetPrimitive.Content>
-        </SheetPortal>
-      </Sheet>
+            {/* 속성 테이블 - UIDL 명세에 따른 Table 컴포넌트 사용 */}
+            <Table>
+              <TableBody>
+                <TableRow>
+                  <TableCell className="border-border border-b px-2 py-[14px]">
+                    <span className="text-foreground text-sm">Created</span>
+                  </TableCell>
+                  <TableCell className="border-border border-b px-2 py-[14px]">
+                    <span className="text-foreground text-sm">
+                      19d 4h 36m ago (2025-10-01T09:24:39+09:00)
+                    </span>
+                  </TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell className="border-border border-b px-2 py-[14px]">
+                    <span className="text-foreground text-sm">Name</span>
+                  </TableCell>
+                  <TableCell className="border-border border-b px-2 py-[14px]">
+                    <span className="text-foreground text-sm">
+                      {selectedRowData
+                        ? selectedRowData.column3
+                        : "ciliumcidrgroups.cilium.io"}
+                    </span>
+                  </TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell className="border-border border-b px-2 py-[14px]">
+                    <span className="text-foreground text-sm">Labels</span>
+                  </TableCell>
+                  <TableCell className="border-border border-b px-2 py-[14px]">
+                    <Badge
+                      variant="outline"
+                      className="bg-background border-border text-xs font-semibold"
+                    >
+                      {selectedRowData
+                        ? `column5=${selectedRowData.column5.text}`
+                        : "io.cilium.k8s.crd.schema.version=1.31.11"}
+                    </Badge>
+                  </TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell className="border-border border-b px-2 py-[14px]">
+                    <span className="text-foreground text-sm">Annotations</span>
+                  </TableCell>
+                  <TableCell className="border-border border-b px-2 py-[14px]">
+                    <Badge
+                      variant="outline"
+                      className="bg-background border-border text-xs font-semibold"
+                    >
+                      freelens.app/resource-version=v1
+                    </Badge>
+                  </TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell className="border-border border-b px-2 py-[14px]">
+                    <span className="text-foreground text-sm">Resource</span>
+                  </TableCell>
+                  <TableCell className="border-border border-b px-2 py-2">
+                    <Button
+                      variant="ghost"
+                      className="text-foreground/80 hover:text-foreground h-8 px-3 text-sm font-medium underline"
+                    >
+                      Ciliumendpoints
+                      <ExternalLink className="ml-2 h-4 w-4" />
+                    </Button>
+                  </TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell className="border-border border-b px-2 py-[14px]">
+                    <span className="text-foreground text-sm">Conversion</span>
+                  </TableCell>
+                  <TableCell className="border-border border-b px-2 py-1.5">
+                    <Input
+                      placeholder='{"strategy": "None"}'
+                      className="text-muted-foreground bg-muted/50 h-9 font-mono text-sm"
+                      readOnly
+                    />
+                  </TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell className="border-border border-b px-2 py-[14px]">
+                    <span className="text-foreground text-sm">Conditions</span>
+                  </TableCell>
+                  <TableCell className="border-border border-b px-2 py-[14px]">
+                    <Badge className="bg-primary text-primary-foreground border-0 text-xs font-semibold">
+                      NamesAccepted
+                    </Badge>
+                  </TableCell>
+                </TableRow>
+              </TableBody>
+            </Table>
+
+            {/* Validation 섹션 - UIDL 명세에 따른 코드 블록 */}
+            <div className="mt-8 flex flex-col gap-4">
+              <span className="text-foreground text-base leading-none font-medium">
+                Validation
+              </span>
+              <div className="bg-muted/30 flex w-full flex-col items-center justify-center rounded-[10px] border p-4">
+                <div className="text-muted-foreground w-full text-left font-mono text-base leading-6">
+                  <div>
+                    import &#123; Button &#125; from
+                    &quot;@/components/ui/button&quot;
+                  </div>
+                  <br />
+                  <br />
+                  <div>
+                    export function{" "}
+                    <span className="font-bold">ButtonOutline</span>() &#123;
+                  </div>
+                  <div>
+                    &nbsp;&nbsp;return &lt;Button
+                    variant=&quot;outline&quot;&gt;Outline&lt;/Button&gt;
+                  </div>
+                  <div>&#125;</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* 푸터 버튼들 */}
+          <div className="bg-background absolute right-0 bottom-0 left-0 border-t p-4">
+            <div className="flex justify-end gap-2">
+              <Button variant="ghost" onClick={handleExplicitClose}>
+                Cancel
+              </Button>
+              <Button>Save</Button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

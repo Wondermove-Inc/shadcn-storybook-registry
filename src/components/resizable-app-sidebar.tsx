@@ -1,15 +1,7 @@
 "use client";
 
 import * as React from "react";
-import {
-  ChevronRight,
-  ChevronsUpDown,
-  File,
-  Folder,
-  FolderOpen,
-  GalleryVerticalEnd,
-  Plus,
-} from "lucide-react";
+import { ChevronRight, File, Folder, FolderOpen, Plus } from "lucide-react";
 
 import {
   Collapsible,
@@ -17,6 +9,13 @@ import {
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
 import { Button } from "@/components/ui/button";
+import {
+  Item,
+  ItemContent,
+  ItemTitle,
+  ItemDescription,
+  ItemActions,
+} from "@/components/ui/item";
 
 // 🎯 목적: 파일 트리 항목의 타입 정의
 interface FileTreeItem {
@@ -124,7 +123,7 @@ function Tree({ item, onFileSelect }: TreeProps) {
           <CollapsibleTrigger asChild>
             <Button
               variant="ghost"
-              className="hover:bg-sidebar-accent hover:text-sidebar-accent-foreground h-8 w-full min-w-0 justify-start gap-2 p-2 text-sm"
+              className="hover:bg-sidebar-accent hover:text-sidebar-accent-foreground h-8 w-full min-w-0 justify-start gap-2 px-2 py-1 text-xs"
             >
               <ChevronRight className="transition-transform" />
               {isOpen ? (
@@ -136,7 +135,7 @@ function Tree({ item, onFileSelect }: TreeProps) {
             </Button>
           </CollapsibleTrigger>
           <CollapsibleContent>
-            <ul className="border-sidebar-border ml-2 flex w-full min-w-0 flex-col gap-1 border-l pl-4">
+            <ul className="border-sidebar-border ml-2 flex w-full min-w-0 flex-col gap-0 border-l pl-4">
               {item.children?.map((subItem) => (
                 <Tree
                   key={subItem.id}
@@ -156,7 +155,7 @@ function Tree({ item, onFileSelect }: TreeProps) {
       <Button
         variant="ghost"
         onClick={() => onFileSelect?.(item)}
-        className="hover:bg-sidebar-accent hover:text-sidebar-accent-foreground h-7 w-full min-w-0 justify-start gap-2 px-2 text-sm"
+        className="hover:bg-sidebar-accent hover:text-sidebar-accent-foreground h-7 w-full min-w-0 justify-start gap-2 px-2 py-1 text-xs"
       >
         <File className="h-4 w-4" />
         <span className="truncate">{item.name}</span>
@@ -191,41 +190,44 @@ export function ResizableAppSidebar({
     <div
       className={`bg-sidebar flex h-full w-full flex-col ${className || ""}`}
     >
-      {/* 🎯 목적: 헤더 영역 */}
-      <div className="flex flex-col gap-2 p-2">
-        <div className="p-2">
-          <Button variant="ghost" className="w-full justify-start gap-2 p-2">
-            <div className="flex h-8 w-8 items-center justify-center gap-2 rounded-lg bg-blue-600 p-2.5">
-              <GalleryVerticalEnd className="h-4 w-4 text-white" />
-            </div>
-            <div className="flex flex-1 flex-col items-start gap-0.5">
-              <span className="text-sm leading-none font-semibold">
-                Catalog
-              </span>
-              <span className="text-muted-foreground text-xs leading-none">
-                app
-              </span>
-            </div>
-            <ChevronsUpDown className="h-4 w-4" />
-          </Button>
-        </div>
+      {/* 🎯 목적: App 정보 및 업데이트 아이템 */}
+      <div className="p-4">
+        <Item size="sm">
+          <ItemContent>
+            <ItemTitle className="text-foreground text-xs font-medium">
+              App ver. 1.1.1
+            </ItemTitle>
+            <ItemDescription className="text-muted-foreground text-xs">
+              You need update app
+            </ItemDescription>
+          </ItemContent>
+          <ItemActions>
+            <Button
+              variant="secondary"
+              size="sm"
+              className="h-9 px-4 text-xs font-medium"
+            >
+              Update
+            </Button>
+          </ItemActions>
+        </Item>
       </div>
 
       {/* 🎯 목적: 콘텐츠 영역 */}
-      <div className="flex min-h-0 flex-1 flex-col gap-2 overflow-auto">
+      <div className="flex min-h-0 flex-1 flex-col gap-0 overflow-auto">
         {/* Overview 그룹 */}
-        <div className="relative flex w-full min-w-0 flex-col p-2">
+        <div className="relative flex w-full min-w-0 flex-col px-2 py-1">
           <div className="text-sidebar-foreground/70 ring-sidebar-ring flex h-8 shrink-0 items-center rounded-md px-2 text-xs font-medium outline-hidden transition-[margin,opacity] duration-200 ease-linear focus-visible:ring-2 [&>svg]:size-4 [&>svg]:shrink-0">
             Overview
           </div>
-          <div className="w-full text-sm">
-            <ul className="flex w-full min-w-0 flex-col gap-1">
+          <div className="w-full text-xs">
+            <ul className="flex w-full min-w-0 flex-col gap-0">
               {changedFiles.map((item) => (
                 <li key={item.id} className="group/menu-item relative">
                   <Button
                     variant="ghost"
                     onClick={() => handleFileSelect(item)}
-                    className="hover:bg-sidebar-accent hover:text-sidebar-accent-foreground h-8 w-full min-w-0 justify-start gap-2 p-2 text-sm"
+                    className="hover:bg-sidebar-accent hover:text-sidebar-accent-foreground h-8 w-full min-w-0 justify-start gap-2 px-2 py-1 text-xs"
                   >
                     <File className="h-4 w-4" />
                     <span className="truncate">{item.name}</span>
@@ -237,7 +239,7 @@ export function ResizableAppSidebar({
         </div>
 
         {/* Your Clusters 그룹 */}
-        <div className="flex w-full min-w-0 flex-col p-2">
+        <div className="flex w-full min-w-0 flex-col px-2 py-1">
           <div className="flex h-8 items-center justify-between rounded-md px-2">
             <span className="text-sidebar-foreground/70 text-xs font-medium">
               Your Clusters
@@ -251,8 +253,8 @@ export function ResizableAppSidebar({
               <span className="sr-only">Add Cluster</span>
             </Button>
           </div>
-          <div className="w-full text-sm">
-            <ul className="flex w-full min-w-0 flex-col gap-1">
+          <div className="w-full text-xs">
+            <ul className="flex w-full min-w-0 flex-col gap-0">
               {projectFiles.map((item) => (
                 <Tree
                   key={item.id}

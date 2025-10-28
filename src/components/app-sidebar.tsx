@@ -1,15 +1,7 @@
 "use client";
 
 import * as React from "react";
-import {
-  ChevronRight,
-  ChevronsUpDown,
-  File,
-  Folder,
-  FolderOpen,
-  GalleryVerticalEnd,
-  Plus,
-} from "lucide-react";
+import { ChevronRight, File, Folder, FolderOpen, Plus } from "lucide-react";
 
 import {
   Collapsible,
@@ -23,7 +15,6 @@ import {
   SidebarGroupAction,
   SidebarGroupContent,
   SidebarGroupLabel,
-  SidebarHeader,
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
@@ -32,6 +23,14 @@ import {
   SidebarMenuSubItem,
   SidebarRail,
 } from "@/components/ui/sidebar";
+import {
+  Item,
+  ItemContent,
+  ItemTitle,
+  ItemDescription,
+  ItemActions,
+} from "@/components/ui/item";
+import { Button } from "@/components/ui/button";
 
 // 🎯 목적: 파일 트리 항목의 타입 정의
 interface FileTreeItem {
@@ -187,26 +186,29 @@ export function AppSidebar({ onFileSelect, ...props }: AppSidebarProps) {
 
   return (
     <Sidebar {...props}>
-      <SidebarHeader>
-        <SidebarMenu className="p-2">
-          <SidebarMenuItem>
-            <SidebarMenuButton className="gap-2 p-2">
-              <div className="flex h-8 w-8 items-center justify-center gap-2 rounded-lg bg-blue-600 p-2.5">
-                <GalleryVerticalEnd className="h-4 w-4 text-white" />
-              </div>
-              <div className="flex flex-1 flex-col items-start gap-0.5">
-                <span className="text-sm leading-none font-semibold">
-                  Catalog
-                </span>
-                <span className="text-muted-foreground text-xs leading-none">
-                  app
-                </span>
-              </div>
-              <ChevronsUpDown className="h-4 w-4" />
-            </SidebarMenuButton>
-          </SidebarMenuItem>
-        </SidebarMenu>
-      </SidebarHeader>
+      {/* 🎯 목적: App 정보 및 업데이트 아이템 */}
+      <div className="p-4">
+        <Item size="sm">
+          <ItemContent>
+            <ItemTitle className="text-foreground text-xs font-medium">
+              App ver. 1.1.1
+            </ItemTitle>
+            <ItemDescription className="text-muted-foreground text-xs">
+              You need update app
+            </ItemDescription>
+          </ItemContent>
+          <ItemActions>
+            <Button
+              variant="secondary"
+              size="sm"
+              className="h-9 px-4 text-xs font-medium"
+            >
+              Update
+            </Button>
+          </ItemActions>
+        </Item>
+      </div>
+
       <SidebarContent>
         <SidebarGroup>
           <SidebarGroupLabel>Overview</SidebarGroupLabel>
