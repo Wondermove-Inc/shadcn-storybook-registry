@@ -192,7 +192,14 @@ export function ResizableAppSidebar({
     >
       {/* 🎯 목적: App 업데이트 알림 */}
       <div className="px-4 pt-4 pb-1">
-        <div className="bg-secondary flex items-center gap-[10px] overflow-hidden rounded-lg px-4 py-3">
+        <Button
+          variant="ghost"
+          className="bg-secondary hover:bg-secondary/80 flex w-full items-center gap-[10px] overflow-hidden rounded-lg px-4 py-3 transition-colors"
+          onClick={() => {
+            // 🎯 목적: 업그레이드 클릭 이벤트 (실제 구현에서는 업그레이드 페이지로 이동)
+            console.log("Upgrade to 1.5 clicked");
+          }}
+        >
           {/* ItemMedia */}
           <div className="flex items-center">
             <BadgeAlert className="h-5 w-5 text-white" />
@@ -200,7 +207,7 @@ export function ResizableAppSidebar({
 
           {/* ItemContent */}
           <div className="flex flex-1 flex-col items-start justify-center gap-1">
-            <span className="text-sm leading-4 font-medium text-white">
+            <span className="text-sm leading-5 text-white/70">
               You can upgrade to 1.5
             </span>
           </div>
@@ -209,7 +216,7 @@ export function ResizableAppSidebar({
           <div className="flex items-center justify-end gap-2 self-stretch">
             <ChevronRight className="h-4 w-4 text-white" />
           </div>
-        </div>
+        </Button>
       </div>
 
       {/* 🎯 목적: 콘텐츠 영역 */}

@@ -23,6 +23,7 @@ import {
   Expand,
 } from "lucide-react";
 import { Hotbar } from "@/components/hotbar";
+import { LoadingProvider, useLoading } from "@/components/ui/loading-provider";
 import { cn } from "@/lib/utils";
 
 /**
@@ -92,11 +93,36 @@ export const Structure: Story = {
   decorators: [
     (Story) => (
       <SidebarProvider>
-        <Story />
+        <LoadingProvider>
+          <Story />
+        </LoadingProvider>
       </SidebarProvider>
     ),
   ],
   render: () => {
+    // 🎯 목적: 로딩 테스트를 위한 내부 컴포넌트
+    function StructureContent() {
+      const { showLoading, hideLoading } = useLoading();
+
+      // 🎯 목적: 로딩 테스트 핸들러들
+      const handleQuickLoading = () => {
+        showLoading();
+        setTimeout(hideLoading, 2000);
+      };
+
+      const handleMessageLoading = () => {
+        showLoading("데이터를 불러오는 중...");
+        setTimeout(hideLoading, 3000);
+      };
+
+      const handleLongLoading = () => {
+        showLoading("파일을 처리하는 중입니다...");
+        setTimeout(hideLoading, 5000);
+      };
+
+      return { handleQuickLoading, handleMessageLoading, handleLongLoading };
+    }
+
     // 🎯 목적: 클러스터 탭 목록 상태 관리
     interface Tab {
       id: string;
@@ -133,6 +159,9 @@ export const Structure: Story = {
 
     // 🎯 목적: 하단 패널 표시 상태 관리
     const [isPanelVisible, setIsPanelVisible] = React.useState(true);
+
+    // 🎯 목적: 로딩 테스트 핸들러들
+    const loadingHandlers = StructureContent();
 
     // 🎯 목적: AI Assistant 토글 핸들러
     const handleAIAssistantToggle = () => {
@@ -290,6 +319,41 @@ export const Structure: Story = {
                                 contents-area
                               </span>
                             </div>
+
+                            {/* 🎯 목적: 로딩 테스트 버튼들 */}
+                            <div className="flex flex-col gap-3">
+                              <div className="text-center">
+                                <p className="text-muted-foreground mb-3 text-sm font-medium">
+                                  로딩 오버레이 테스트
+                                </p>
+                                <div className="flex gap-2">
+                                  <Button
+                                    size="sm"
+                                    variant="outline"
+                                    onClick={loadingHandlers.handleQuickLoading}
+                                  >
+                                    2초 로딩
+                                  </Button>
+                                  <Button
+                                    size="sm"
+                                    variant="outline"
+                                    onClick={
+                                      loadingHandlers.handleMessageLoading
+                                    }
+                                  >
+                                    메시지 로딩
+                                  </Button>
+                                  <Button
+                                    size="sm"
+                                    variant="outline"
+                                    onClick={loadingHandlers.handleLongLoading}
+                                  >
+                                    5초 로딩
+                                  </Button>
+                                </div>
+                              </div>
+                            </div>
+
                             <div className="text-center">
                               <p className="text-muted-foreground mt-2 text-xs">
                                 현재 활성 핫바 아이템:{" "}

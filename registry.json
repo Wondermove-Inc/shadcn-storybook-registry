@@ -2660,6 +2660,38 @@
           "type": "registry:component"
         }
       ]
+    },
+    {
+      "name": "search-toolbar-story",
+      "type": "registry:component",
+      "title": "SearchToolbar Story",
+      "description": "Interactive Storybook stories for code editor search toolbar with input field, search options toggles, and navigation controls",
+      "categories": [
+        "templates",
+        "storybook",
+        "search",
+        "contents",
+        "toolbar"
+      ],
+      "author": "Lloyd Richards <lloyd.d.richards@gmail.com>",
+      "registryDependencies": [
+        "button",
+        "input-group",
+        "tooltip"
+      ],
+      "dependencies": [
+        "lucide-react"
+      ],
+      "files": [
+        {
+          "path": "src/registry/templates/contents/search-toolbar.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "src/registry/templates/contents/search-toolbar.stories.tsx",
+          "type": "registry:component"
+        }
+      ]
     }
   ]
 }
