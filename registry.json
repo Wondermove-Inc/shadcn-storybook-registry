@@ -812,6 +812,32 @@
       ]
     },
     {
+      "name": "loading-overlay-template",
+      "type": "registry:component",
+      "title": "Loading Overlay Template",
+      "description": "Interactive Storybook template demonstrating global loading overlay with spinner component for application-wide loading states",
+      "categories": [
+        "templates",
+        "storybook",
+        "loading",
+        "overlay",
+        "spinner"
+      ],
+      "author": "Lloyd Richards <lloyd.d.richards@gmail.com>",
+      "registryDependencies": [
+        "spinner"
+      ],
+      "dependencies": [
+        "lucide-react"
+      ],
+      "files": [
+        {
+          "path": "src/registry/templates/loading-overlay-template/loading-overlay-template.stories.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
       "name": "kbd-story",
       "type": "registry:component",
       "title": "Kbd Story",
