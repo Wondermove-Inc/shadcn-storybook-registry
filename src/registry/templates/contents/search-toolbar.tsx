@@ -2,8 +2,8 @@
 
 import React from "react";
 import {
-  ChevronUp,
-  ChevronDown,
+  ArrowUp,
+  ArrowDown,
   X,
   CaseSensitive,
   WholeWord,
@@ -139,10 +139,10 @@ export function SearchToolbar({
 
   return (
     <div
-      className={`bg-background flex items-center gap-2 rounded-lg border p-1.5 shadow-sm ${disabled ? "opacity-50" : ""} ${className}`}
+      className={`bg-background flex items-center gap-2 rounded-r-lg border py-1.5 pr-2 pl-2.5 shadow-sm ${disabled ? "opacity-50" : ""} ${className}`}
     >
       {/* 검색 입력 그룹 */}
-      <InputGroup className="w-[300px]">
+      <InputGroup style={{ width: "var(--input-group-width, 300px)" }}>
         <InputGroupInput
           value={searchInput}
           onChange={handleSearchInputChange}
@@ -222,7 +222,7 @@ export function SearchToolbar({
           disabled={disabled}
           className="h-8 w-8 p-0 opacity-50 hover:opacity-100"
         >
-          <ChevronUp className="h-4 w-4" />
+          <ArrowUp className="h-4 w-4" />
         </Button>
         <Button
           variant="ghost"
@@ -231,7 +231,7 @@ export function SearchToolbar({
           disabled={disabled}
           className="h-8 w-8 p-0 opacity-50 hover:opacity-100"
         >
-          <ChevronDown className="h-4 w-4" />
+          <ArrowDown className="h-4 w-4" />
         </Button>
         <Button
           variant="ghost"
