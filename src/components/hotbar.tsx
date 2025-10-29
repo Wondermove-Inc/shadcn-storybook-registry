@@ -3,7 +3,7 @@
 import React from "react";
 import {
   Files,
-  Blocks,
+  Plus,
   LayoutGrid,
   Search,
   GitBranch,
@@ -56,7 +56,8 @@ interface HotbarProps {
   topItems?: HotbarItem[];
   items?: HotbarItem[];
   footerItems?: HotbarItem[];
-  activeItem?: string;
+  activeTopItem?: string;
+  activeBottomItem?: string;
   onItemClick?: (itemId: string) => void;
   className?: string;
   user?: {
@@ -100,7 +101,7 @@ const defaultHotbarItems: HotbarItem[] = [
   },
   {
     id: "extensions",
-    icon: Blocks,
+    icon: Plus,
     label: "Extensions",
   },
 ];
@@ -142,7 +143,8 @@ export function Hotbar({
   topItems = topBigIconItems,
   items = defaultHotbarItems,
   footerItems = defaultFooterItems,
-  activeItem,
+  activeTopItem,
+  activeBottomItem,
   onItemClick,
   className,
   user = defaultUser,
@@ -156,7 +158,10 @@ export function Hotbar({
           <SidebarGroupContent className="px-0">
             <SidebarMenu className="gap-2">
               {topItems.map((item) => {
-                const isActive = activeItem === item.id || item.isActive;
+                // 상단 그룹: activeTopItem이 설정된 경우 그것만 사용, 아니면 기본 isActive 사용
+                const isActive = activeTopItem
+                  ? activeTopItem === item.id
+                  : item.isActive;
                 return (
                   <SidebarMenuItem key={item.id}>
                     <SidebarMenuButton
@@ -189,7 +194,10 @@ export function Hotbar({
           <SidebarGroupContent className="px-0">
             <SidebarMenu className="gap-2">
               {items.map((item) => {
-                const isActive = activeItem === item.id || item.isActive;
+                // 하단 그룹: activeBottomItem이 설정된 경우 그것만 사용, 아니면 기본 isActive 사용
+                const isActive = activeBottomItem
+                  ? activeBottomItem === item.id
+                  : item.isActive;
                 return (
                   <SidebarMenuItem key={item.id}>
                     <SidebarMenuButton
@@ -214,7 +222,8 @@ export function Hotbar({
       </SidebarContent>
       <SidebarFooter>
         {footerItems.map((item) => {
-          const isActive = activeItem === item.id || item.isActive;
+          // Footer 아이템들은 독립적으로 동작 (User는 드롭다운, Settings는 일반 버튼)
+          const isActive = item.isActive;
 
           // User 버튼인 경우 드롭다운 메뉴 적용
           if (item.id === "user") {
