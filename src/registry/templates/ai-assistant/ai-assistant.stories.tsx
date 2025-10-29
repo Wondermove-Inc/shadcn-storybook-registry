@@ -10,19 +10,19 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import {
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart";
-import { Bar, BarChart, CartesianGrid, XAxis, YAxis } from "recharts";
+import {
+  Bar,
+  BarChart,
+  CartesianGrid,
+  XAxis,
+  YAxis,
+  Area,
+  AreaChart,
+} from "recharts";
 import {
   History,
   X,
@@ -621,15 +621,14 @@ export const AnswersChart: Story = {
       "최근 일주일 동안 생성되거나 변경된 IAM 사용자 내역을 알고싶어.",
     );
 
-    // 🎯 목적: 차트 데이터 정의
+    // 🎯 목적: 차트 데이터 정의 - UIDL 기반 6개월 데이터
     const chartData = [
-      { period: "월", created: 12, modified: 8 },
-      { period: "화", created: 19, modified: 13 },
-      { period: "수", created: 3, modified: 15 },
-      { period: "목", created: 5, modified: 2 },
-      { period: "금", created: 2, modified: 7 },
-      { period: "토", created: 9, modified: 4 },
-      { period: "일", created: 15, modified: 11 },
+      { period: "Jan", created: 12, modified: 8 },
+      { period: "Feb", created: 19, modified: 13 },
+      { period: "Mar", created: 3, modified: 15 },
+      { period: "Apr", created: 5, modified: 2 },
+      { period: "May", created: 2, modified: 7 },
+      { period: "Jun", created: 15, modified: 11 },
     ];
 
     const chartConfig = {
@@ -791,151 +790,287 @@ export const AnswersChart: Story = {
 
                 {/* 🎯 목적: 차트 카드 영역 - ScrollArea 외부에서 독립적인 횡스크롤 */}
                 <div className="mt-4 w-full">
-                  <div className="flex gap-4 overflow-x-auto pb-2">
-                    {/* 차트 카드 1 - 사용자 생성 데이터 */}
+                  <div className="flex gap-2 overflow-x-auto pb-2">
+                    {/* 차트 카드 1 - UIDL 기반 FrameChartCard 구조 */}
                     <div
                       data-slot="card"
-                      className="bg-card w-80 flex-none rounded-xl border p-6 shadow-sm"
+                      className="bg-card w-80 flex-none rounded-xl border shadow-sm"
                     >
-                      <div className="mb-4">
-                        <h3 className="text-lg font-semibold">
-                          사용자 생성 추이
-                        </h3>
-                        <p className="text-muted-foreground text-sm">
-                          최근 7일간 새로 생성된 IAM 사용자 수
-                        </p>
-                      </div>
-                      <ChartContainer
-                        config={chartConfig}
-                        className="h-48 w-full"
-                      >
-                        <BarChart data={chartData}>
-                          <CartesianGrid vertical={false} />
-                          <XAxis
-                            dataKey="period"
-                            tickLine={false}
-                            tickMargin={10}
-                            axisLine={false}
-                          />
-                          <ChartTooltip content={<ChartTooltipContent />} />
-                          <Bar
-                            dataKey="created"
-                            fill="var(--color-created)"
-                            radius={4}
-                          />
-                        </BarChart>
-                      </ChartContainer>
-                    </div>
-
-                    {/* 차트 카드 2 - 사용자 수정 데이터 */}
-                    <div
-                      data-slot="card"
-                      className="bg-card w-80 flex-none rounded-xl border p-6 shadow-sm"
-                    >
-                      <div className="mb-4">
-                        <h3 className="text-lg font-semibold">
-                          정책 수정 추이
-                        </h3>
-                        <p className="text-muted-foreground text-sm">
-                          최근 7일간 수정된 사용자 정책 수
-                        </p>
-                      </div>
-                      <ChartContainer
-                        config={chartConfig}
-                        className="h-48 w-full"
-                      >
-                        <BarChart data={chartData}>
-                          <CartesianGrid vertical={false} />
-                          <XAxis
-                            dataKey="period"
-                            tickLine={false}
-                            tickMargin={10}
-                            axisLine={false}
-                          />
-                          <ChartTooltip content={<ChartTooltipContent />} />
-                          <Bar
-                            dataKey="modified"
-                            fill="var(--color-modified)"
-                            radius={4}
-                          />
-                        </BarChart>
-                      </ChartContainer>
-                    </div>
-
-                    {/* 차트 카드 3 - 활동량 비교 */}
-                    <div
-                      data-slot="card"
-                      className="bg-card w-80 flex-none rounded-xl border p-6 shadow-sm"
-                    >
-                      <div className="mb-4">
-                        <h3 className="text-lg font-semibold">주간 활동량</h3>
-                        <p className="text-muted-foreground text-sm">
-                          생성 vs 수정 비교 차트
-                        </p>
-                      </div>
-                      <ChartContainer
-                        config={chartConfig}
-                        className="h-48 w-full"
-                      >
-                        <BarChart data={chartData}>
-                          <CartesianGrid vertical={false} />
-                          <XAxis
-                            dataKey="period"
-                            tickLine={false}
-                            tickMargin={10}
-                            axisLine={false}
-                          />
-                          <ChartTooltip content={<ChartTooltipContent />} />
-                          <Bar
-                            dataKey="created"
-                            fill="var(--color-created)"
-                            radius={4}
-                          />
-                          <Bar
-                            dataKey="modified"
-                            fill="var(--color-modified)"
-                            radius={4}
-                          />
-                        </BarChart>
-                      </ChartContainer>
-                    </div>
-
-                    {/* 차트 카드 4 - 총 활동량 */}
-                    <div
-                      data-slot="card"
-                      className="bg-card w-80 flex-none rounded-xl border p-6 shadow-sm"
-                    >
-                      <div className="mb-4">
-                        <h3 className="text-lg font-semibold">총 활동량</h3>
-                        <p className="text-muted-foreground text-sm">
-                          일일 총 IAM 사용자 활동 수
-                        </p>
-                      </div>
-                      <ChartContainer
-                        config={chartConfig}
-                        className="h-48 w-full"
-                      >
-                        <BarChart
-                          data={chartData.map((item) => ({
-                            ...item,
-                            total: item.created + item.modified,
-                          }))}
+                      {/* 🎯 목적: 헤더 영역 - UIDL 사양에 따른 정렬과 타이포그래피 */}
+                      <div className="flex items-start gap-2 p-4 pb-2">
+                        <div className="flex flex-1 flex-col gap-1.5">
+                          <h3 className="self-stretch text-base leading-none font-semibold">
+                            Bar Chart - Multiple
+                          </h3>
+                          <p className="text-muted-foreground self-stretch text-sm leading-5">
+                            January - June 2024
+                          </p>
+                        </div>
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          className="h-8 w-8 flex-shrink-0"
                         >
-                          <CartesianGrid vertical={false} />
-                          <XAxis
-                            dataKey="period"
-                            tickLine={false}
-                            tickMargin={10}
-                            axisLine={false}
-                          />
-                          <ChartTooltip content={<ChartTooltipContent />} />
-                          <Bar
-                            dataKey="total"
-                            fill="var(--chart-3)"
-                            radius={4}
-                          />
-                        </BarChart>
-                      </ChartContainer>
+                          <Expand className="h-4 w-4" />
+                          <span className="sr-only">Expand chart</span>
+                        </Button>
+                      </div>
+
+                      {/* 🎯 목적: 차트 영역 - 235px 높이, 배경 그리드 */}
+                      <div className="px-4">
+                        <ChartContainer
+                          config={chartConfig}
+                          className="w-full"
+                          style={{ height: "235px" }}
+                        >
+                          <BarChart data={chartData}>
+                            <CartesianGrid strokeDasharray="3 3" />
+                            <XAxis
+                              dataKey="period"
+                              tickLine={false}
+                              tickMargin={10}
+                              axisLine={false}
+                            />
+                            <YAxis hide={true} />
+                            <ChartTooltip content={<ChartTooltipContent />} />
+                            <Bar
+                              dataKey="created"
+                              fill="var(--color-created)"
+                              radius={4}
+                            />
+                            <Bar
+                              dataKey="modified"
+                              fill="var(--color-modified)"
+                              radius={4}
+                            />
+                          </BarChart>
+                        </ChartContainer>
+                      </div>
+
+                      {/* 🎯 목적: 푸터 영역 - UIDL 사양에 따른 구조 */}
+                      <div className="flex flex-col items-start gap-2 self-stretch p-4 pt-2">
+                        <div className="flex flex-shrink-0 items-center gap-2 self-stretch">
+                          <span className="text-sm leading-none font-medium">
+                            Trending up by 5.2% this month
+                          </span>
+                          <TrendingUp className="h-4 w-4" />
+                        </div>
+                        <p className="text-muted-foreground self-stretch text-sm leading-none">
+                          Showing total visitors for the last 6 months
+                        </p>
+                      </div>
+                    </div>
+
+                    {/* 차트 카드 2 - Single Bar Chart */}
+                    <div
+                      data-slot="card"
+                      className="bg-card w-80 flex-none rounded-xl border shadow-sm"
+                    >
+                      {/* 🎯 목적: 헤더 영역 - UIDL 사양에 따른 정렬과 타이포그래피 */}
+                      <div className="flex items-start gap-2 p-4 pb-2">
+                        <div className="flex flex-1 flex-col gap-1.5">
+                          <h3 className="self-stretch text-base leading-none font-semibold">
+                            Bar Chart - Single
+                          </h3>
+                          <p className="text-muted-foreground self-stretch text-sm leading-5">
+                            Policy Changes - 2024
+                          </p>
+                        </div>
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          className="h-8 w-8 flex-shrink-0"
+                        >
+                          <Expand className="h-4 w-4" />
+                          <span className="sr-only">Expand chart</span>
+                        </Button>
+                      </div>
+
+                      {/* 🎯 목적: 차트 영역 - 235px 높이, 배경 그리드 */}
+                      <div className="px-4">
+                        <ChartContainer
+                          config={chartConfig}
+                          className="w-full"
+                          style={{ height: "235px" }}
+                        >
+                          <BarChart data={chartData}>
+                            <CartesianGrid strokeDasharray="3 3" />
+                            <XAxis
+                              dataKey="period"
+                              tickLine={false}
+                              tickMargin={10}
+                              axisLine={false}
+                            />
+                            <YAxis hide={true} />
+                            <ChartTooltip content={<ChartTooltipContent />} />
+                            <Bar
+                              dataKey="modified"
+                              fill="var(--color-modified)"
+                              radius={4}
+                            />
+                          </BarChart>
+                        </ChartContainer>
+                      </div>
+
+                      {/* 🎯 목적: 푸터 영역 - UIDL 사양에 따른 구조 */}
+                      <div className="flex flex-col items-start gap-2 self-stretch p-4 pt-2">
+                        <div className="flex flex-shrink-0 items-center gap-2 self-stretch">
+                          <span className="text-sm leading-none font-medium">
+                            Trending down by 2.1% this month
+                          </span>
+                          <TrendingUp className="h-4 w-4 rotate-180" />
+                        </div>
+                        <p className="text-muted-foreground self-stretch text-sm leading-none">
+                          Showing policy modification trends for the last 6
+                          months
+                        </p>
+                      </div>
+                    </div>
+
+                    {/* 차트 카드 3 - Stacked Bar Chart */}
+                    <div
+                      data-slot="card"
+                      className="bg-card w-80 flex-none rounded-xl border shadow-sm"
+                    >
+                      {/* 🎯 목적: 헤더 영역 - UIDL 사양에 따른 정렬과 타이포그래피 */}
+                      <div className="flex items-start gap-2 p-4 pb-2">
+                        <div className="flex flex-1 flex-col gap-1.5">
+                          <h3 className="self-stretch text-base leading-none font-semibold">
+                            Bar Chart - Stacked
+                          </h3>
+                          <p className="text-muted-foreground self-stretch text-sm leading-5">
+                            Activity Comparison - 2024
+                          </p>
+                        </div>
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          className="h-8 w-8 flex-shrink-0"
+                        >
+                          <Expand className="h-4 w-4" />
+                          <span className="sr-only">Expand chart</span>
+                        </Button>
+                      </div>
+
+                      {/* 🎯 목적: 차트 영역 - 235px 높이, 배경 그리드 */}
+                      <div className="px-4">
+                        <ChartContainer
+                          config={chartConfig}
+                          className="w-full"
+                          style={{ height: "235px" }}
+                        >
+                          <BarChart data={chartData}>
+                            <CartesianGrid strokeDasharray="3 3" />
+                            <XAxis
+                              dataKey="period"
+                              tickLine={false}
+                              tickMargin={10}
+                              axisLine={false}
+                            />
+                            <YAxis hide={true} />
+                            <ChartTooltip content={<ChartTooltipContent />} />
+                            <Bar
+                              dataKey="created"
+                              stackId="activity"
+                              fill="var(--color-created)"
+                              radius={[0, 0, 4, 4]}
+                            />
+                            <Bar
+                              dataKey="modified"
+                              stackId="activity"
+                              fill="var(--color-modified)"
+                              radius={[4, 4, 0, 0]}
+                            />
+                          </BarChart>
+                        </ChartContainer>
+                      </div>
+
+                      {/* 🎯 목적: 푸터 영역 - UIDL 사양에 따른 구조 */}
+                      <div className="flex flex-col items-start gap-2 self-stretch p-4 pt-2">
+                        <div className="flex flex-shrink-0 items-center gap-2 self-stretch">
+                          <span className="text-sm leading-none font-medium">
+                            Trending up by 8.7% this month
+                          </span>
+                          <TrendingUp className="h-4 w-4" />
+                        </div>
+                        <p className="text-muted-foreground self-stretch text-sm leading-none">
+                          Showing combined activity metrics for the last 6
+                          months
+                        </p>
+                      </div>
+                    </div>
+
+                    {/* 차트 카드 4 - Area Chart */}
+                    <div
+                      data-slot="card"
+                      className="bg-card w-80 flex-none rounded-xl border shadow-sm"
+                    >
+                      {/* 🎯 목적: 헤더 영역 - UIDL 사양에 따른 정렬과 타이포그래피 */}
+                      <div className="flex items-start gap-2 p-4 pb-2">
+                        <div className="flex flex-1 flex-col gap-1.5">
+                          <h3 className="self-stretch text-base leading-none font-semibold">
+                            Area Chart - Total
+                          </h3>
+                          <p className="text-muted-foreground self-stretch text-sm leading-5">
+                            Total Activity - 2024
+                          </p>
+                        </div>
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          className="h-8 w-8 flex-shrink-0"
+                        >
+                          <Expand className="h-4 w-4" />
+                          <span className="sr-only">Expand chart</span>
+                        </Button>
+                      </div>
+
+                      {/* 🎯 목적: 차트 영역 - 235px 높이, 배경 그리드 */}
+                      <div className="px-4">
+                        <ChartContainer
+                          config={chartConfig}
+                          className="w-full"
+                          style={{ height: "235px" }}
+                        >
+                          <AreaChart
+                            data={chartData.map((item) => ({
+                              ...item,
+                              total: item.created + item.modified,
+                            }))}
+                          >
+                            <CartesianGrid strokeDasharray="3 3" />
+                            <XAxis
+                              dataKey="period"
+                              tickLine={false}
+                              tickMargin={10}
+                              axisLine={false}
+                            />
+                            <YAxis hide={true} />
+                            <ChartTooltip content={<ChartTooltipContent />} />
+                            <Area
+                              dataKey="total"
+                              fill="var(--chart-3)"
+                              fillOpacity={0.6}
+                              stroke="var(--chart-3)"
+                              strokeWidth={2}
+                            />
+                          </AreaChart>
+                        </ChartContainer>
+                      </div>
+
+                      {/* 🎯 목적: 푸터 영역 - UIDL 사양에 따른 구조 */}
+                      <div className="flex flex-col items-start gap-2 self-stretch p-4 pt-2">
+                        <div className="flex flex-shrink-0 items-center gap-2 self-stretch">
+                          <span className="text-sm leading-none font-medium">
+                            Trending up by 12.3% this month
+                          </span>
+                          <TrendingUp className="h-4 w-4" />
+                        </div>
+                        <p className="text-muted-foreground self-stretch text-sm leading-none">
+                          Showing total activity progression for the last 6
+                          months
+                        </p>
+                      </div>
                     </div>
                   </div>
                 </div>
