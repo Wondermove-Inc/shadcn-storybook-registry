@@ -276,7 +276,169 @@ export const Structure: Story = {
               {isSidebarVisible && (
                 <>
                   <ResizablePanel defaultSize={15} minSize={15} maxSize={50}>
-                    <ResizableAppSidebar className="border-r" />
+                    {/* activeBottomItem 상태에 따라 사이드바 콘텐츠 동적 렌더링 */}
+                    {activeBottomItem === "explorer" ? (
+                      <ResizableAppSidebar className="border-r" />
+                    ) : activeBottomItem === "extensions" ? (
+                      <div className="bg-card flex h-full w-full flex-col overflow-hidden border-r p-2">
+                        {/* Extensions Header */}
+                        <div className="flex items-center justify-between gap-4 px-2 py-1 opacity-70">
+                          <span className="text-card-foreground flex-1 text-xs leading-4 font-medium">
+                            Extensions
+                          </span>
+                          <div className="flex h-5 w-5 items-center justify-center opacity-70">
+                            <svg
+                              width="16"
+                              height="16"
+                              viewBox="0 0 16 16"
+                              fill="none"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path
+                                d="M8.00002 8.66665C8.36821 8.66665 8.66669 8.36817 8.66669 7.99998C8.66669 7.63179 8.36821 7.33331 8.00002 7.33331C7.63183 7.33331 7.33335 7.63179 7.33335 7.99998C7.33335 8.36817 7.63183 8.66665 8.00002 8.66665Z"
+                                stroke="currentColor"
+                                strokeWidth="1.5"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                              />
+                              <path
+                                d="M12.6667 8.66665C13.0349 8.66665 13.3334 8.36817 13.3334 7.99998C13.3334 7.63179 13.0349 7.33331 12.6667 7.33331C12.2985 7.33331 12 7.63179 12 7.99998C12 8.36817 12.2985 8.66665 12.6667 8.66665Z"
+                                stroke="currentColor"
+                                strokeWidth="1.5"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                              />
+                              <path
+                                d="M3.33335 8.66665C3.70154 8.66665 4.00002 8.36817 4.00002 7.99998C4.00002 7.63179 3.70154 7.33331 3.33335 7.33331C2.96516 7.33331 2.66669 7.63179 2.66669 7.99998C2.66669 8.36817 2.96516 8.66665 3.33335 8.66665Z"
+                                stroke="currentColor"
+                                strokeWidth="1.5"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                              />
+                            </svg>
+                          </div>
+                        </div>
+
+                        {/* Search Section */}
+                        <div className="flex flex-col gap-2 p-2">
+                          <span className="text-muted-foreground text-xs leading-4">
+                            Search Extensions in Marketplace
+                          </span>
+
+                          <div className="bg-accent/10 border-border flex items-center gap-2 rounded-lg border px-3 py-1 shadow-sm">
+                            <div className="flex items-center justify-center">
+                              <svg
+                                width="16"
+                                height="16"
+                                viewBox="0 0 16 16"
+                                fill="none"
+                                xmlns="http://www.w3.org/2000/svg"
+                              >
+                                <path
+                                  d="M14.0001 14L11.1335 11.1333M12.6667 7.33333C12.6667 10.2789 10.2789 12.6667 7.33333 12.6667C4.38781 12.6667 2 10.2789 2 7.33333C2 4.38781 4.38781 2 7.33333 2C10.2789 2 12.6667 4.38781 12.6667 7.33333Z"
+                                  stroke="currentColor"
+                                  strokeWidth="1.33"
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                />
+                              </svg>
+                            </div>
+                            <span className="text-muted-foreground flex-1 text-sm leading-5">
+                              Search
+                            </span>
+                            <div className="flex items-center justify-center">
+                              <svg
+                                width="16"
+                                height="16"
+                                viewBox="0 0 16 16"
+                                fill="none"
+                                xmlns="http://www.w3.org/2000/svg"
+                              >
+                                <path
+                                  d="M14.6666 2H1.33331L6.66665 8.30667V12.6667L9.33331 14V8.30667L14.6666 2Z"
+                                  stroke="currentColor"
+                                  strokeWidth="1.33"
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                />
+                              </svg>
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Extensions List */}
+                        <div className="flex-1 overflow-y-auto">
+                          {/* Installed Section */}
+                          <div className="flex items-center gap-2 overflow-hidden rounded-lg p-2">
+                            <div className="flex items-center">
+                              <svg
+                                width="20"
+                                height="20"
+                                viewBox="0 0 20 20"
+                                fill="none"
+                                xmlns="http://www.w3.org/2000/svg"
+                              >
+                                <path
+                                  d="M7.5 15L12.5 10L7.5 5"
+                                  stroke="currentColor"
+                                  strokeWidth="1.67"
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                />
+                              </svg>
+                            </div>
+                            <div className="flex flex-1 flex-col justify-center gap-1">
+                              <span className="text-muted-foreground text-sm leading-5">
+                                Installed
+                              </span>
+                            </div>
+                            <div className="bg-muted flex items-center justify-center overflow-hidden rounded-full border border-transparent px-1">
+                              <span className="text-muted-foreground text-xs">
+                                3
+                              </span>
+                            </div>
+                          </div>
+
+                          {/* Separator */}
+                          <div className="flex flex-col gap-2 px-2">
+                            <div className="bg-border h-px w-full opacity-10"></div>
+                          </div>
+
+                          {/* Recommended Section */}
+                          <div className="flex items-center gap-2 overflow-hidden rounded-lg p-2">
+                            <div className="flex items-center">
+                              <svg
+                                width="20"
+                                height="20"
+                                viewBox="0 0 20 20"
+                                fill="none"
+                                xmlns="http://www.w3.org/2000/svg"
+                              >
+                                <path
+                                  d="M7.5 15L12.5 10L7.5 5"
+                                  stroke="currentColor"
+                                  strokeWidth="1.67"
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                />
+                              </svg>
+                            </div>
+                            <div className="flex flex-1 flex-col justify-center gap-1">
+                              <span className="text-muted-foreground text-sm leading-5">
+                                Recommended
+                              </span>
+                            </div>
+                            <div className="bg-muted flex items-center justify-center overflow-hidden rounded-full border border-transparent px-1">
+                              <span className="text-muted-foreground text-xs">
+                                3
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    ) : (
+                      <ResizableAppSidebar className="border-r" />
+                    )}
                   </ResizablePanel>
 
                   {/* 사이드바 리사이즈 핸들 */}
