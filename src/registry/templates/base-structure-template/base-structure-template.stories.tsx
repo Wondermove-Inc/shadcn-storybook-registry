@@ -257,7 +257,7 @@ export const Structure: Story = {
           isAiAssistantActive={isAIAssistantVisible}
         />
         <div className="flex flex-1">
-          {/* 핫바 영역 (고정 크기) */}
+          {/* 핫바 영역 (고정 크기) - 모든 화면 크기에서 표시 */}
           <div className="w-[var(--sidebar-width-icon)] flex-shrink-0">
             <Hotbar
               activeTopItem={activeTopItem}

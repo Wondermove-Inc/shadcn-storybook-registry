@@ -152,7 +152,7 @@ export function Hotbar({
   const { isMobile } = useSidebar();
   return (
     <Sidebar
-      collapsible="icon"
+      collapsible="none"
       className={cn("h-full w-12 border-r", className)}
     >
       <SidebarContent className="flex flex-1 flex-col justify-between">
