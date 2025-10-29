@@ -23,8 +23,6 @@ import {
   Expand,
 } from "lucide-react";
 import { Hotbar } from "@/components/hotbar";
-import { LoadingProvider, useLoading } from "@/components/ui/loading-provider";
-import { cn } from "@/lib/utils";
 
 /**
  * 🎭 실제 적용 시 mock data 삭제 필수
@@ -93,36 +91,11 @@ export const Structure: Story = {
   decorators: [
     (Story) => (
       <SidebarProvider>
-        <LoadingProvider>
-          <Story />
-        </LoadingProvider>
+        <Story />
       </SidebarProvider>
     ),
   ],
   render: () => {
-    // 🎯 목적: 로딩 테스트를 위한 내부 컴포넌트
-    function StructureContent() {
-      const { showLoading, hideLoading } = useLoading();
-
-      // 🎯 목적: 로딩 테스트 핸들러들
-      const handleQuickLoading = () => {
-        showLoading();
-        setTimeout(hideLoading, 2000);
-      };
-
-      const handleMessageLoading = () => {
-        showLoading("데이터를 불러오는 중...");
-        setTimeout(hideLoading, 3000);
-      };
-
-      const handleLongLoading = () => {
-        showLoading("파일을 처리하는 중입니다...");
-        setTimeout(hideLoading, 5000);
-      };
-
-      return { handleQuickLoading, handleMessageLoading, handleLongLoading };
-    }
-
     // 🎯 목적: 클러스터 탭 목록 상태 관리
     interface Tab {
       id: string;
@@ -154,14 +127,12 @@ export const Structure: Story = {
     // 🎯 목적: 사이드바 표시 상태 관리
     const [isSidebarVisible, setIsSidebarVisible] = React.useState(true);
 
-    // 🎯 목적: 핫바 활성 아이템 상태 관리
-    const [activeHotbarItem, setActiveHotbarItem] = React.useState("explorer");
+    // 🎯 목적: 핫바 활성 아이템 상태 관리 - 그룹별 독립 관리
+    const [activeTopItem, setActiveTopItem] = React.useState("daive-app");
+    const [activeBottomItem, setActiveBottomItem] = React.useState("explorer");
 
     // 🎯 목적: 하단 패널 표시 상태 관리
     const [isPanelVisible, setIsPanelVisible] = React.useState(true);
-
-    // 🎯 목적: 로딩 테스트 핸들러들
-    const loadingHandlers = StructureContent();
 
     // 🎯 목적: AI Assistant 토글 핸들러
     const handleAIAssistantToggle = () => {
@@ -183,9 +154,20 @@ export const Structure: Story = {
       setIsPanelVisible((prev) => !prev);
     };
 
-    // 🎯 목적: 핫바 아이템 클릭 핸들러
+    // 🎯 목적: 핫바 아이템 클릭 핸들러 - 그룹별 독립 관리
     const handleHotbarItemClick = (itemId: string) => {
-      setActiveHotbarItem(itemId);
+      // 상단 그룹 앱 아이템 클릭 시
+      if (itemId.startsWith("daive") || itemId.startsWith("skuber")) {
+        setActiveTopItem(itemId);
+      }
+      // 하단 그룹 기능 아이템 클릭 시
+      else if (
+        itemId.startsWith("explorer") ||
+        itemId.startsWith("extensions")
+      ) {
+        setActiveBottomItem(itemId);
+      }
+
       // 사이드바가 숨겨져 있다면 다시 표시
       if (!isSidebarVisible) {
         setIsSidebarVisible(true);
@@ -261,7 +243,7 @@ export const Structure: Story = {
     }, [tabs]);
 
     return (
-      <div className="bg-background h-screen w-full">
+      <div className="bg-background flex h-screen w-full flex-col">
         <Header
           searchQuery=""
           onSearchChange={() => {}}
@@ -274,291 +256,230 @@ export const Structure: Story = {
           isPanelBottomActive={isPanelVisible}
           isAiAssistantActive={isAIAssistantVisible}
         />
-        <div className="h-[calc(100vh-64px)] w-full">
-          <div className="flex h-full">
-            {/* 핫바 영역 (고정 크기) */}
-            <div className="w-[calc(var(--sidebar-width-icon)+1px)] flex-shrink-0">
-              <Hotbar
-                activeTopItem={
-                  activeHotbarItem.startsWith("gallery") ||
-                  activeHotbarItem.startsWith("search") ||
-                  activeHotbarItem.startsWith("source")
-                    ? activeHotbarItem
-                    : undefined
-                }
-                activeBottomItem={
-                  activeHotbarItem.startsWith("explorer") ||
-                  activeHotbarItem.startsWith("extensions")
-                    ? activeHotbarItem
-                    : undefined
-                }
-                onItemClick={handleHotbarItemClick}
-                className="h-full"
-              />
-            </div>
+        <div className="flex flex-1">
+          {/* 핫바 영역 (고정 크기) */}
+          <div className="w-[var(--sidebar-width-icon)] flex-shrink-0">
+            <Hotbar
+              activeTopItem={activeTopItem}
+              activeBottomItem={activeBottomItem}
+              onItemClick={handleHotbarItemClick}
+            />
+          </div>
 
-            {/* 사이드바 + 메인 콘텐츠 + AI Assistant 영역 (리사이즈 가능) */}
-            <div className="flex-1">
-              <ResizablePanelGroup
-                direction="horizontal"
-                className="h-full w-full"
-              >
-                {/* 사이드바 패널 - 조건부 렌더링 */}
-                {isSidebarVisible && (
-                  <>
-                    <ResizablePanel defaultSize={15} minSize={15} maxSize={50}>
-                      <ResizableAppSidebar className="border-r" />
-                    </ResizablePanel>
+          {/* 사이드바 + 메인 콘텐츠 + AI Assistant 영역 (리사이즈 가능) */}
+          <div className="flex-1">
+            <ResizablePanelGroup
+              direction="horizontal"
+              className="h-full w-full"
+            >
+              {/* 사이드바 패널 - 조건부 렌더링 */}
+              {isSidebarVisible && (
+                <>
+                  <ResizablePanel defaultSize={15} minSize={15} maxSize={50}>
+                    <ResizableAppSidebar className="border-r" />
+                  </ResizablePanel>
 
-                    {/* 사이드바 리사이즈 핸들 */}
-                    <ResizableHandle className="w-0 cursor-col-resize bg-transparent transition-colors hover:bg-blue-500/20 active:bg-blue-500/30" />
-                  </>
-                )}
+                  {/* 사이드바 리사이즈 핸들 */}
+                  <ResizableHandle className="w-0 cursor-col-resize bg-transparent transition-colors hover:bg-blue-500/20 active:bg-blue-500/30" />
+                </>
+              )}
 
-                {/* 메인 콘텐츠 패널 - VS Code 스타일로 패널을 포함하는 상하 분할 */}
-                <ResizablePanel>
-                  {isPanelVisible ? (
-                    <ResizablePanelGroup
-                      direction="vertical"
-                      className="h-full"
-                    >
-                      {/* 상단: 메인 콘텐츠 영역 */}
-                      <ResizablePanel defaultSize={60} minSize={10}>
-                        <div className="flex h-full flex-1 flex-col gap-4 lg:gap-6">
-                          <div className="flex h-full w-full flex-col items-center justify-center gap-4">
-                            <div className="bg-muted text-muted-foreground flex items-center justify-center gap-2 rounded-md px-3 py-2">
-                              <span className="font-mono text-sm">
-                                contents-area
-                              </span>
-                            </div>
-
-                            {/* 🎯 목적: 로딩 테스트 버튼들 */}
-                            <div className="flex flex-col gap-3">
-                              <div className="text-center">
-                                <p className="text-muted-foreground mb-3 text-sm font-medium">
-                                  로딩 오버레이 테스트
-                                </p>
-                                <div className="flex gap-2">
-                                  <Button
-                                    size="sm"
-                                    variant="outline"
-                                    onClick={loadingHandlers.handleQuickLoading}
-                                  >
-                                    2초 로딩
-                                  </Button>
-                                  <Button
-                                    size="sm"
-                                    variant="outline"
-                                    onClick={
-                                      loadingHandlers.handleMessageLoading
-                                    }
-                                  >
-                                    메시지 로딩
-                                  </Button>
-                                  <Button
-                                    size="sm"
-                                    variant="outline"
-                                    onClick={loadingHandlers.handleLongLoading}
-                                  >
-                                    5초 로딩
-                                  </Button>
-                                </div>
-                              </div>
-                            </div>
-
-                            <div className="text-center">
-                              <p className="text-muted-foreground mt-2 text-xs">
-                                현재 활성 핫바 아이템:{" "}
-                                <span className="font-medium">
-                                  {activeHotbarItem}
-                                </span>
-                              </p>
-                            </div>
-                          </div>
-                        </div>
-                      </ResizablePanel>
-
-                      {/* 상하 구분 리사이즈 핸들 */}
-                      <ResizableHandle className="h-1 cursor-row-resize bg-transparent transition-colors hover:bg-blue-500/20 active:bg-blue-500/30" />
-
-                      {/* 하단: VS Code 스타일 패널 */}
-                      <ResizablePanel
-                        defaultSize={40}
-                        minSize={15}
-                        maxSize={90}
-                      >
-                        <div className="bg-background border-border flex h-full w-full flex-col border-t">
-                          {/* UIDL 기반 패널 헤더 - 다중 클러스터 탭 + Plus 버튼 + 컨트롤 버튼들 */}
-                          <div className="bg-background flex h-10 w-full items-center">
-                            {/* 좌측: 클러스터 탭들 */}
-                            <div className="bg-background border-border flex min-h-[40px] w-full items-center overflow-hidden">
-                              {/* 동적 탭 렌더링 */}
-                              {tabs.map((tab, index) => (
-                                <React.Fragment key={tab.id}>
-                                  {/* 활성 탭 또는 비활성 탭 */}
-                                  {tab.isActive ? (
-                                    // 활성 탭 - 어두운 배경과 파란색 상단 보더, 하단 보더를 덮음, primary 아이콘, bold italic 텍스트
-                                    <div className="bg-background border-primary after:bg-background relative z-10 -mb-px flex flex-col border-t-2 after:absolute after:right-0 after:bottom-0 after:left-0 after:z-20 after:h-px">
-                                      <Button
-                                        variant="ghost"
-                                        onMouseEnter={() =>
-                                          setHoveredTab(tab.id)
-                                        }
-                                        onMouseLeave={() => setHoveredTab(null)}
-                                        onClick={() => handleTabClick(tab.id)}
-                                        className="text-foreground hover:bg-sidebar/50 h-10 justify-center rounded-none border-0 bg-transparent px-3 py-2 hover:border-0 focus-visible:border-0 active:border-0"
-                                      >
-                                        <Terminal className="text-primary h-4 w-4" />
-                                        <span className="text-sm font-bold font-medium italic">
-                                          {tab.clusterName}
-                                        </span>
-                                        <button
-                                          onClick={(e) => {
-                                            e.stopPropagation();
-                                            handleCloseTab(tab.id);
-                                          }}
-                                          className="hover:bg-muted/50 rounded-sm p-0.5 transition-colors"
-                                        >
-                                          <X className="h-4 w-4" />
-                                        </button>
-                                      </Button>
-                                    </div>
-                                  ) : (
-                                    // 비활성 탭 - 더 약한 투명도와 배경, 호버 시 배경 변경, 하단 border 포함
-                                    <div className="border-border relative border-b">
-                                      <Button
-                                        variant="ghost"
-                                        onMouseEnter={() =>
-                                          setHoveredTab(tab.id)
-                                        }
-                                        onMouseLeave={() => setHoveredTab(null)}
-                                        onClick={() => handleTabClick(tab.id)}
-                                        className="text-foreground hover:bg-sidebar-accent/30 bg-muted/20 h-10 rounded-none border-0 px-3 py-2 opacity-50 transition-all duration-200 hover:border-0 hover:opacity-100 focus-visible:border-0 active:border-0"
-                                      >
-                                        <Terminal className="h-4 w-4" />
-                                        <span className="text-sm font-medium">
-                                          {tab.clusterName}
-                                        </span>
-                                        {/* 🎯 목적: X 버튼을 항상 렌더링하여 공간 확보, hover 시에만 표시 */}
-                                        <button
-                                          onClick={(e) => {
-                                            e.stopPropagation();
-                                            handleCloseTab(tab.id);
-                                          }}
-                                          className={`hover:bg-muted/50 rounded-sm p-0.5 transition-all ${
-                                            hoveredTab === tab.id
-                                              ? "opacity-100"
-                                              : "opacity-0"
-                                          }`}
-                                        >
-                                          <X className="h-4 w-4" />
-                                        </button>
-                                      </Button>
-                                    </div>
-                                  )}
-
-                                  {/* 탭 사이에 Separator 추가 (마지막 탭 제외) */}
-                                  {index < tabs.length - 1 && (
-                                    <Separator
-                                      orientation="vertical"
-                                      className="bg-border h-10 w-px"
-                                      style={{ height: "40px", width: "1px" }}
-                                    />
-                                  )}
-                                </React.Fragment>
-                              ))}
-                            </div>
-
-                            {/* 우측: + 버튼, Separator, 컨트롤 버튼들 (UIDL 기반) */}
-                            <div className="controls-buttons flex min-h-[40px] flex-shrink-0 items-center gap-2">
-                              {/* + 버튼 - UIDL 기반 */}
-                              <Button
-                                variant="ghost"
-                                size="icon"
-                                onClick={handleAddTab}
-                                className="text-muted-foreground hover:text-foreground hover:bg-muted/50 h-8 w-8 bg-transparent"
-                                title="Add New Terminal"
-                              >
-                                <Plus className="h-4 w-4" />
-                              </Button>
-
-                              {/* UIDL 기반 Separator - 세로 구분선 (sm 버튼에 맞춘 높이) */}
-                              <Separator
-                                orientation="vertical"
-                                className="bg-border h-6 w-px"
-                                style={{ height: "24px", width: "1px" }}
-                              />
-                              {/* 확장 버튼 - Expand 아이콘 사용 */}
-                              <Button
-                                variant="ghost"
-                                size="icon"
-                                className="text-muted-foreground hover:text-foreground hover:bg-muted/50 h-8 w-8 bg-transparent"
-                                title="Expand Panel"
-                              >
-                                <Expand className="h-4 w-4" />
-                              </Button>
-
-                              {/* 닫기 버튼 */}
-                              <Button
-                                variant="ghost"
-                                size="icon"
-                                onClick={handlePanelBottomToggle}
-                                className="text-muted-foreground hover:text-foreground hover:bg-muted/50 h-8 w-8 bg-transparent"
-                                title="Close Panel"
-                              >
-                                <X className="h-4 w-4" />
-                              </Button>
-                            </div>
-                          </div>
-
-                          {/* 패널 콘텐츠 영역 */}
-                          <div className="bg-background flex w-full flex-1 items-center justify-center p-6">
-                            <div className="bg-muted text-muted-foreground flex items-center justify-center rounded-md px-3 py-2">
-                              <span className="font-mono text-sm">
-                                panel-area
-                              </span>
-                            </div>
-                          </div>
-                        </div>
-                      </ResizablePanel>
-                    </ResizablePanelGroup>
-                  ) : (
-                    // 패널이 닫혔을 때: 전체 화면 콘텐츠 영역
-                    <div className="flex h-full flex-1 flex-col gap-4 lg:gap-6">
-                      <div className="flex h-full w-full flex-col items-center justify-center gap-4">
-                        <div className="bg-muted text-muted-foreground flex items-center justify-center gap-2 rounded-md px-3 py-2">
-                          <span className="font-mono text-sm">
-                            contents-area
-                          </span>
-                        </div>
-                        <div className="text-center">
-                          <p className="text-muted-foreground mt-2 text-xs">
-                            현재 활성 핫바 아이템:{" "}
-                            <span className="font-medium">
-                              {activeHotbarItem}
+              {/* 메인 콘텐츠 패널 - VS Code 스타일로 패널을 포함하는 상하 분할 */}
+              <ResizablePanel>
+                {isPanelVisible ? (
+                  <ResizablePanelGroup direction="vertical" className="h-full">
+                    {/* 상단: 메인 콘텐츠 영역 */}
+                    <ResizablePanel defaultSize={60} minSize={10}>
+                      <div className="flex h-full flex-1 flex-col gap-4 lg:gap-6">
+                        <div className="flex h-full w-full flex-col items-center justify-center gap-4">
+                          <div className="bg-muted text-muted-foreground flex items-center justify-center gap-2 rounded-md px-3 py-2">
+                            <span className="font-mono text-sm">
+                              contents-area
                             </span>
-                          </p>
+                          </div>
+
+                          <div className="text-center">
+                            <p className="text-muted-foreground mt-2 text-xs">
+                              현재 활성 핫바 아이템:{" "}
+                              <span className="font-medium">
+                                상단: {activeTopItem} | 하단: {activeBottomItem}
+                              </span>
+                            </p>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  )}
-                </ResizablePanel>
-
-                {/* AI Assistant 패널 */}
-                {isAIAssistantVisible && (
-                  <>
-                    <ResizableHandle className="w-0 cursor-col-resize bg-transparent transition-colors hover:bg-blue-500/20 active:bg-blue-500/30" />
-                    <ResizablePanel defaultSize={25} minSize={20} maxSize={40}>
-                      <AIAssistant
-                        onClose={handleAIAssistantClose}
-                        onStart={() => {}}
-                        className="h-full w-full"
-                      />
                     </ResizablePanel>
-                  </>
+
+                    {/* 상하 구분 리사이즈 핸들 */}
+                    <ResizableHandle className="h-1 cursor-row-resize bg-transparent transition-colors hover:bg-blue-500/20 active:bg-blue-500/30" />
+
+                    {/* 하단: VS Code 스타일 패널 */}
+                    <ResizablePanel defaultSize={40} minSize={15} maxSize={90}>
+                      <div className="bg-background border-border flex h-full w-full flex-col border-t">
+                        {/* UIDL 기반 패널 헤더 - 다중 클러스터 탭 + Plus 버튼 + 컨트롤 버튼들 */}
+                        <div className="bg-background flex h-10 w-full items-center">
+                          {/* 좌측: 클러스터 탭들 */}
+                          <div className="bg-background border-border flex min-h-[40px] w-full items-center overflow-hidden">
+                            {/* 동적 탭 렌더링 */}
+                            {tabs.map((tab, index) => (
+                              <React.Fragment key={tab.id}>
+                                {/* 활성 탭 또는 비활성 탭 */}
+                                {tab.isActive ? (
+                                  // 활성 탭 - 어두운 배경과 파란색 상단 보더, 하단 보더를 덮음, primary 아이콘, bold italic 텍스트
+                                  <div className="bg-background border-primary after:bg-background relative z-10 -mb-px flex flex-col border-t-2 after:absolute after:right-0 after:bottom-0 after:left-0 after:z-20 after:h-px">
+                                    <Button
+                                      variant="ghost"
+                                      onMouseEnter={() => setHoveredTab(tab.id)}
+                                      onMouseLeave={() => setHoveredTab(null)}
+                                      onClick={() => handleTabClick(tab.id)}
+                                      className="text-foreground hover:bg-sidebar/50 h-10 justify-center rounded-none border-0 bg-transparent px-3 py-2 hover:border-0 focus-visible:border-0 active:border-0"
+                                    >
+                                      <Terminal className="text-primary h-4 w-4" />
+                                      <span className="text-sm font-bold font-medium italic">
+                                        {tab.clusterName}
+                                      </span>
+                                      <button
+                                        onClick={(e) => {
+                                          e.stopPropagation();
+                                          handleCloseTab(tab.id);
+                                        }}
+                                        className="hover:bg-muted/50 rounded-sm p-0.5 transition-colors"
+                                      >
+                                        <X className="h-4 w-4" />
+                                      </button>
+                                    </Button>
+                                  </div>
+                                ) : (
+                                  // 비활성 탭 - 더 약한 투명도와 배경, 호버 시 배경 변경, 하단 border 포함
+                                  <div className="border-border relative border-b">
+                                    <Button
+                                      variant="ghost"
+                                      onMouseEnter={() => setHoveredTab(tab.id)}
+                                      onMouseLeave={() => setHoveredTab(null)}
+                                      onClick={() => handleTabClick(tab.id)}
+                                      className="text-foreground hover:bg-sidebar-accent/30 bg-muted/20 h-10 rounded-none border-0 px-3 py-2 opacity-50 transition-all duration-200 hover:border-0 hover:opacity-100 focus-visible:border-0 active:border-0"
+                                    >
+                                      <Terminal className="h-4 w-4" />
+                                      <span className="text-sm font-medium">
+                                        {tab.clusterName}
+                                      </span>
+                                      {/* 🎯 목적: X 버튼을 항상 렌더링하여 공간 확보, hover 시에만 표시 */}
+                                      <button
+                                        onClick={(e) => {
+                                          e.stopPropagation();
+                                          handleCloseTab(tab.id);
+                                        }}
+                                        className={`hover:bg-muted/50 rounded-sm p-0.5 transition-all ${
+                                          hoveredTab === tab.id
+                                            ? "opacity-100"
+                                            : "opacity-0"
+                                        }`}
+                                      >
+                                        <X className="h-4 w-4" />
+                                      </button>
+                                    </Button>
+                                  </div>
+                                )}
+
+                                {/* 탭 사이에 Separator 추가 (마지막 탭 제외) */}
+                                {index < tabs.length - 1 && (
+                                  <Separator
+                                    orientation="vertical"
+                                    className="bg-border h-10 w-px"
+                                    style={{ height: "40px", width: "1px" }}
+                                  />
+                                )}
+                              </React.Fragment>
+                            ))}
+                          </div>
+
+                          {/* 우측: + 버튼, Separator, 컨트롤 버튼들 (UIDL 기반) */}
+                          <div className="controls-buttons flex min-h-[40px] flex-shrink-0 items-center gap-2">
+                            {/* + 버튼 - UIDL 기반 */}
+                            <Button
+                              variant="ghost"
+                              size="icon"
+                              onClick={handleAddTab}
+                              className="text-muted-foreground hover:text-foreground hover:bg-muted/50 h-8 w-8 bg-transparent"
+                              title="Add New Terminal"
+                            >
+                              <Plus className="h-4 w-4" />
+                            </Button>
+
+                            {/* UIDL 기반 Separator - 세로 구분선 (sm 버튼에 맞춘 높이) */}
+                            <Separator
+                              orientation="vertical"
+                              className="bg-border h-6 w-px"
+                              style={{ height: "24px", width: "1px" }}
+                            />
+                            {/* 확장 버튼 - Expand 아이콘 사용 */}
+                            <Button
+                              variant="ghost"
+                              size="icon"
+                              className="text-muted-foreground hover:text-foreground hover:bg-muted/50 h-8 w-8 bg-transparent"
+                              title="Expand Panel"
+                            >
+                              <Expand className="h-4 w-4" />
+                            </Button>
+
+                            {/* 닫기 버튼 */}
+                            <Button
+                              variant="ghost"
+                              size="icon"
+                              onClick={handlePanelBottomToggle}
+                              className="text-muted-foreground hover:text-foreground hover:bg-muted/50 h-8 w-8 bg-transparent"
+                              title="Close Panel"
+                            >
+                              <X className="h-4 w-4" />
+                            </Button>
+                          </div>
+                        </div>
+
+                        {/* 패널 콘텐츠 영역 */}
+                        <div className="bg-background flex w-full flex-1 items-center justify-center p-6">
+                          <div className="bg-muted text-muted-foreground flex items-center justify-center rounded-md px-3 py-2">
+                            <span className="font-mono text-sm">
+                              panel-area
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                    </ResizablePanel>
+                  </ResizablePanelGroup>
+                ) : (
+                  // 패널이 닫혔을 때: 전체 화면 콘텐츠 영역
+                  <div className="flex h-full flex-1 flex-col gap-4 lg:gap-6">
+                    <div className="flex h-full w-full flex-col items-center justify-center gap-4">
+                      <div className="bg-muted text-muted-foreground flex items-center justify-center gap-2 rounded-md px-3 py-2">
+                        <span className="font-mono text-sm">contents-area</span>
+                      </div>
+                      <div className="text-center">
+                        <p className="text-muted-foreground mt-2 text-xs">
+                          현재 활성 핫바 아이템:{" "}
+                          <span className="font-medium">
+                            상단: {activeTopItem} | 하단: {activeBottomItem}
+                          </span>
+                        </p>
+                      </div>
+                    </div>
+                  </div>
                 )}
-              </ResizablePanelGroup>
-            </div>
+              </ResizablePanel>
+
+              {/* AI Assistant 패널 */}
+              {isAIAssistantVisible && (
+                <>
+                  <ResizableHandle className="w-0 cursor-col-resize bg-transparent transition-colors hover:bg-blue-500/20 active:bg-blue-500/30" />
+                  <ResizablePanel defaultSize={25} minSize={20} maxSize={40}>
+                    <AIAssistant
+                      onClose={handleAIAssistantClose}
+                      onStart={() => {}}
+                      className="h-full w-full"
+                    />
+                  </ResizablePanel>
+                </>
+              )}
+            </ResizablePanelGroup>
           </div>
         </div>
 
@@ -845,31 +766,31 @@ export const StructureHotbar: Story = {
     ),
   ],
   render: () => {
-    // 🎯 목적: 활성 아이템 상태 관리
-    const [activeItem, setActiveItem] = React.useState("explorer");
+    // 🎯 목적: 핫바 활성 아이템 상태 관리 - 그룹별 독립 관리
+    const [activeTopItem, setActiveTopItem] = React.useState("daive-app");
+    const [activeBottomItem, setActiveBottomItem] = React.useState("explorer");
 
-    // 🎯 목적: 핫바 아이템 클릭 핸들러
+    // 🎯 목적: 핫바 아이템 클릭 핸들러 - 그룹별 독립 관리
     const handleItemClick = (itemId: string) => {
-      setActiveItem(itemId);
+      // 상단 그룹 앱 아이템 클릭 시
+      if (itemId.startsWith("daive") || itemId.startsWith("skuber")) {
+        setActiveTopItem(itemId);
+      }
+      // 하단 그룹 기능 아이템 클릭 시
+      else if (
+        itemId.startsWith("explorer") ||
+        itemId.startsWith("extensions")
+      ) {
+        setActiveBottomItem(itemId);
+      }
     };
 
     return (
       <div className="bg-background flex h-screen w-full">
         {/* VS Code Activity Bar 스타일 핫바 */}
         <Hotbar
-          activeTopItem={
-            activeItem.startsWith("gallery") ||
-            activeItem.startsWith("search") ||
-            activeItem.startsWith("source")
-              ? activeItem
-              : undefined
-          }
-          activeBottomItem={
-            activeItem.startsWith("explorer") ||
-            activeItem.startsWith("extensions")
-              ? activeItem
-              : undefined
-          }
+          activeTopItem={activeTopItem}
+          activeBottomItem={activeBottomItem}
           onItemClick={handleItemClick}
         />
 
@@ -882,7 +803,9 @@ export const StructureHotbar: Story = {
             </p>
             <p className="text-muted-foreground mt-2 text-xs">
               현재 활성 아이템:{" "}
-              <span className="font-medium">{activeItem}</span>
+              <span className="font-medium">
+                상단: {activeTopItem} | 하단: {activeBottomItem}
+              </span>
             </p>
           </div>
         </div>
