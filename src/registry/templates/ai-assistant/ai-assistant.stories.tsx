@@ -10,6 +10,15 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import {
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
@@ -621,6 +630,22 @@ export const AnswersChart: Story = {
       "최근 일주일 동안 생성되거나 변경된 IAM 사용자 내역을 알고싶어.",
     );
 
+    // 🎯 목적: 차트 Dialog 상태 관리
+    const [openDialogs, setOpenDialogs] = React.useState({
+      chart1: false,
+      chart2: false,
+      chart3: false,
+      chart4: false,
+    });
+
+    // 🎯 목적: Dialog 열기/닫기 핸들러
+    const handleDialogChange = (
+      chartId: keyof typeof openDialogs,
+      isOpen: boolean,
+    ) => {
+      setOpenDialogs((prev) => ({ ...prev, [chartId]: isOpen }));
+    };
+
     // 🎯 목적: 차트 데이터 정의 - UIDL 기반 6개월 데이터
     const chartData = [
       { period: "Jan", created: 12, modified: 8 },
@@ -810,6 +835,7 @@ export const AnswersChart: Story = {
                           variant="ghost"
                           size="icon"
                           className="h-8 w-8 flex-shrink-0"
+                          onClick={() => handleDialogChange("chart1", true)}
                         >
                           <Expand className="h-4 w-4" />
                           <span className="sr-only">Expand chart</span>
@@ -861,6 +887,74 @@ export const AnswersChart: Story = {
                       </div>
                     </div>
 
+                    {/* 🎯 목적: 첫 번째 차트 Dialog */}
+                    <Dialog
+                      open={openDialogs.chart1}
+                      onOpenChange={(open) =>
+                        handleDialogChange("chart1", open)
+                      }
+                    >
+                      <DialogContent className="bg-background border-border flex h-[85%] max-w-[70%] flex-col sm:h-[90%] sm:max-w-[65%] lg:max-w-[60%] xl:max-w-[55%]">
+                        <DialogHeader className="gap-1.5">
+                          <DialogTitle className="text-foreground text-lg font-semibold">
+                            Bar Chart - Multiple
+                          </DialogTitle>
+                          <DialogDescription className="text-muted-foreground text-sm leading-5">
+                            January - June 2024 • User Activity Analysis
+                          </DialogDescription>
+                        </DialogHeader>
+
+                        {/* 🎯 목적: 확대된 차트 영역 */}
+                        <div className="min-h-0 flex-1 p-4">
+                          <ChartContainer
+                            config={chartConfig}
+                            className="h-full w-full"
+                          >
+                            <BarChart data={chartData}>
+                              <CartesianGrid strokeDasharray="3 3" />
+                              <XAxis
+                                dataKey="period"
+                                tickLine={false}
+                                tickMargin={10}
+                                axisLine={false}
+                              />
+                              <YAxis
+                                tickLine={false}
+                                axisLine={false}
+                                tickMargin={10}
+                              />
+                              <ChartTooltip content={<ChartTooltipContent />} />
+                              <Bar
+                                dataKey="created"
+                                fill="var(--color-created)"
+                                radius={4}
+                              />
+                              <Bar
+                                dataKey="modified"
+                                fill="var(--color-modified)"
+                                radius={4}
+                              />
+                            </BarChart>
+                          </ChartContainer>
+                        </div>
+
+                        <DialogFooter className="flex justify-end gap-2">
+                          <Button
+                            variant="outline"
+                            onClick={() => handleDialogChange("chart1", false)}
+                            className="bg-muted/30 border-border hover:bg-muted/50"
+                          >
+                            Close
+                          </Button>
+                        </DialogFooter>
+
+                        <DialogClose className="ring-offset-background focus:ring-ring data-[state=open]:bg-accent data-[state=open]:text-muted-foreground absolute top-4 right-4 rounded-sm opacity-70 transition-opacity hover:opacity-100 focus:ring-2 focus:ring-offset-2 focus:outline-none disabled:pointer-events-none">
+                          <X className="h-4 w-4" />
+                          <span className="sr-only">Close</span>
+                        </DialogClose>
+                      </DialogContent>
+                    </Dialog>
+
                     {/* 차트 카드 2 - Single Bar Chart */}
                     <div
                       data-slot="card"
@@ -880,6 +974,7 @@ export const AnswersChart: Story = {
                           variant="ghost"
                           size="icon"
                           className="h-8 w-8 flex-shrink-0"
+                          onClick={() => handleDialogChange("chart2", true)}
                         >
                           <Expand className="h-4 w-4" />
                           <span className="sr-only">Expand chart</span>
@@ -927,6 +1022,68 @@ export const AnswersChart: Story = {
                       </div>
                     </div>
 
+                    {/* 🎯 목적: 두 번째 차트 Dialog */}
+                    <Dialog
+                      open={openDialogs.chart2}
+                      onOpenChange={(open) =>
+                        handleDialogChange("chart2", open)
+                      }
+                    >
+                      <DialogContent className="bg-background border-border flex h-[85%] max-w-[70%] flex-col sm:h-[90%] sm:max-w-[65%] lg:max-w-[60%] xl:max-w-[55%]">
+                        <DialogHeader className="gap-1.5">
+                          <DialogTitle className="text-foreground text-lg font-semibold">
+                            Bar Chart - Single
+                          </DialogTitle>
+                          <DialogDescription className="text-muted-foreground text-sm leading-5">
+                            Policy Changes - 2024 • Modification Trends
+                          </DialogDescription>
+                        </DialogHeader>
+
+                        <div className="min-h-0 flex-1 p-4">
+                          <ChartContainer
+                            config={chartConfig}
+                            className="h-full w-full"
+                          >
+                            <BarChart data={chartData}>
+                              <CartesianGrid strokeDasharray="3 3" />
+                              <XAxis
+                                dataKey="period"
+                                tickLine={false}
+                                tickMargin={10}
+                                axisLine={false}
+                              />
+                              <YAxis
+                                tickLine={false}
+                                axisLine={false}
+                                tickMargin={10}
+                              />
+                              <ChartTooltip content={<ChartTooltipContent />} />
+                              <Bar
+                                dataKey="modified"
+                                fill="var(--color-modified)"
+                                radius={4}
+                              />
+                            </BarChart>
+                          </ChartContainer>
+                        </div>
+
+                        <DialogFooter className="flex justify-end gap-2">
+                          <Button
+                            variant="outline"
+                            onClick={() => handleDialogChange("chart2", false)}
+                            className="bg-muted/30 border-border hover:bg-muted/50"
+                          >
+                            Close
+                          </Button>
+                        </DialogFooter>
+
+                        <DialogClose className="ring-offset-background focus:ring-ring data-[state=open]:bg-accent data-[state=open]:text-muted-foreground absolute top-4 right-4 rounded-sm opacity-70 transition-opacity hover:opacity-100 focus:ring-2 focus:ring-offset-2 focus:outline-none disabled:pointer-events-none">
+                          <X className="h-4 w-4" />
+                          <span className="sr-only">Close</span>
+                        </DialogClose>
+                      </DialogContent>
+                    </Dialog>
+
                     {/* 차트 카드 3 - Stacked Bar Chart */}
                     <div
                       data-slot="card"
@@ -946,6 +1103,7 @@ export const AnswersChart: Story = {
                           variant="ghost"
                           size="icon"
                           className="h-8 w-8 flex-shrink-0"
+                          onClick={() => handleDialogChange("chart3", true)}
                         >
                           <Expand className="h-4 w-4" />
                           <span className="sr-only">Expand chart</span>
@@ -1000,6 +1158,75 @@ export const AnswersChart: Story = {
                       </div>
                     </div>
 
+                    {/* 🎯 목적: 세 번째 차트 Dialog */}
+                    <Dialog
+                      open={openDialogs.chart3}
+                      onOpenChange={(open) =>
+                        handleDialogChange("chart3", open)
+                      }
+                    >
+                      <DialogContent className="bg-background border-border flex h-[85%] max-w-[70%] flex-col sm:h-[90%] sm:max-w-[65%] lg:max-w-[60%] xl:max-w-[55%]">
+                        <DialogHeader className="gap-1.5">
+                          <DialogTitle className="text-foreground text-lg font-semibold">
+                            Bar Chart - Stacked
+                          </DialogTitle>
+                          <DialogDescription className="text-muted-foreground text-sm leading-5">
+                            Activity Comparison - 2024 • Combined Metrics
+                          </DialogDescription>
+                        </DialogHeader>
+
+                        <div className="min-h-0 flex-1 p-4">
+                          <ChartContainer
+                            config={chartConfig}
+                            className="h-full w-full"
+                          >
+                            <BarChart data={chartData}>
+                              <CartesianGrid strokeDasharray="3 3" />
+                              <XAxis
+                                dataKey="period"
+                                tickLine={false}
+                                tickMargin={10}
+                                axisLine={false}
+                              />
+                              <YAxis
+                                tickLine={false}
+                                axisLine={false}
+                                tickMargin={10}
+                              />
+                              <ChartTooltip content={<ChartTooltipContent />} />
+                              <Bar
+                                dataKey="created"
+                                stackId="activity"
+                                fill="var(--color-created)"
+                                radius={[0, 0, 4, 4]}
+                              />
+                              <Bar
+                                dataKey="modified"
+                                stackId="activity"
+                                fill="var(--color-modified)"
+                                radius={[4, 4, 0, 0]}
+                              />
+                            </BarChart>
+                          </ChartContainer>
+                        </div>
+
+                        <DialogFooter className="flex justify-end gap-2">
+                          <Button
+                            variant="outline"
+                            onClick={() => handleDialogChange("chart3", false)}
+                            className="bg-muted/30 border-border hover:bg-muted/50"
+                          >
+                            Close
+                          </Button>
+                        </DialogFooter>
+
+                        <DialogClose className="ring-offset-background focus:ring-ring data-[state=open]:bg-accent data-[state=open]:text-muted-foreground absolute top-4 right-4 rounded-sm opacity-70 transition-opacity hover:opacity-100 focus:ring-2 focus:ring-offset-2 focus:outline-none disabled:pointer-events-none">
+                          <X className="h-4 w-4" />
+                          <span className="sr-only">Close</span>
+                        </DialogClose>
+                      </DialogContent>
+                    </Dialog>
+
                     {/* 차트 카드 4 - Area Chart */}
                     <div
                       data-slot="card"
@@ -1019,6 +1246,7 @@ export const AnswersChart: Story = {
                           variant="ghost"
                           size="icon"
                           className="h-8 w-8 flex-shrink-0"
+                          onClick={() => handleDialogChange("chart4", true)}
                         >
                           <Expand className="h-4 w-4" />
                           <span className="sr-only">Expand chart</span>
@@ -1072,6 +1300,75 @@ export const AnswersChart: Story = {
                         </p>
                       </div>
                     </div>
+
+                    {/* 🎯 목적: 네 번째 차트 Dialog */}
+                    <Dialog
+                      open={openDialogs.chart4}
+                      onOpenChange={(open) =>
+                        handleDialogChange("chart4", open)
+                      }
+                    >
+                      <DialogContent className="bg-background border-border flex h-[85%] max-w-[70%] flex-col sm:h-[90%] sm:max-w-[65%] lg:max-w-[60%] xl:max-w-[55%]">
+                        <DialogHeader className="gap-1.5">
+                          <DialogTitle className="text-foreground text-lg font-semibold">
+                            Area Chart - Total
+                          </DialogTitle>
+                          <DialogDescription className="text-muted-foreground text-sm leading-5">
+                            Total Activity - 2024 • Activity Progression
+                          </DialogDescription>
+                        </DialogHeader>
+
+                        <div className="min-h-0 flex-1 p-4">
+                          <ChartContainer
+                            config={chartConfig}
+                            className="h-full w-full"
+                          >
+                            <AreaChart
+                              data={chartData.map((item) => ({
+                                ...item,
+                                total: item.created + item.modified,
+                              }))}
+                            >
+                              <CartesianGrid strokeDasharray="3 3" />
+                              <XAxis
+                                dataKey="period"
+                                tickLine={false}
+                                tickMargin={10}
+                                axisLine={false}
+                              />
+                              <YAxis
+                                tickLine={false}
+                                axisLine={false}
+                                tickMargin={10}
+                              />
+                              <ChartTooltip content={<ChartTooltipContent />} />
+                              <Area
+                                dataKey="total"
+                                fill="var(--chart-3)"
+                                fillOpacity={0.6}
+                                stroke="var(--chart-3)"
+                                strokeWidth={2}
+                              />
+                            </AreaChart>
+                          </ChartContainer>
+                        </div>
+
+                        <DialogFooter className="flex justify-end gap-2">
+                          <Button
+                            variant="outline"
+                            onClick={() => handleDialogChange("chart4", false)}
+                            className="bg-muted/30 border-border hover:bg-muted/50"
+                          >
+                            Close
+                          </Button>
+                        </DialogFooter>
+
+                        <DialogClose className="ring-offset-background focus:ring-ring data-[state=open]:bg-accent data-[state=open]:text-muted-foreground absolute top-4 right-4 rounded-sm opacity-70 transition-opacity hover:opacity-100 focus:ring-2 focus:ring-offset-2 focus:outline-none disabled:pointer-events-none">
+                          <X className="h-4 w-4" />
+                          <span className="sr-only">Close</span>
+                        </DialogClose>
+                      </DialogContent>
+                    </Dialog>
                   </div>
                 </div>
 
