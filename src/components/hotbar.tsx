@@ -177,7 +177,9 @@ export function Hotbar({
                         onClick={() => onItemClick?.(item.id)}
                         isActive={isActive}
                         className={`h-8 w-8 items-center justify-center p-0 ${
-                          isActive ? "border-border rounded-md border-2" : ""
+                          isActive
+                            ? "ring-accent-foreground rounded-md ring-[1.5px]"
+                            : ""
                         }`}
                         size="sm"
                       >
