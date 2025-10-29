@@ -153,13 +153,13 @@ export function Hotbar({
   return (
     <Sidebar
       collapsible="none"
-      className={cn("h-full w-12 border-r", className)}
+      className={cn("h-full w-14 border-r", className)}
     >
       <SidebarContent className="flex flex-1 flex-col justify-between">
         {/* 상단과 하단 그룹을 함께 묶기 */}
         <div>
           {/* 상단 Big Icon 그룹 */}
-          <SidebarGroup className="py-2">
+          <SidebarGroup className="p-3">
             <SidebarGroupContent className="px-0">
               <SidebarMenu className="gap-2">
                 {topItems.map((item) => {
@@ -203,12 +203,14 @@ export function Hotbar({
           </SidebarGroup>
 
           {/* 구분선 */}
-          <div className="px-2">
-            <Separator />
+          <div className="flex justify-center py-0.5">
+            <div className="w-8">
+              <Separator />
+            </div>
           </div>
 
           {/* 하단 기본 아이템 그룹 */}
-          <SidebarGroup className="py-2">
+          <SidebarGroup className="p-3">
             <SidebarGroupContent className="px-0">
               <SidebarMenu className="gap-2">
                 {items.map((item) => {
@@ -249,7 +251,7 @@ export function Hotbar({
         </div>
 
         {/* 푸터 그룹 - 하단에 고정 */}
-        <div className="flex flex-col items-center gap-2 px-2 py-2">
+        <div className="flex flex-col items-center gap-2 p-3">
           {footerItems.map((item) => {
             // Footer 아이템들은 독립적으로 동작 (User는 드롭다운, Settings는 일반 버튼)
             const isActive = item.isActive;
