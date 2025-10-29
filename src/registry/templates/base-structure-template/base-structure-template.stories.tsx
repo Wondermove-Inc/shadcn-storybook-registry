@@ -21,7 +21,14 @@ import {
   Terminal,
   Plus,
   Expand,
+  Search,
+  Filter,
 } from "lucide-react";
+import {
+  InputGroup,
+  InputGroupAddon,
+  InputGroupInput,
+} from "@/components/ui/input-group";
 import { Hotbar } from "@/components/hotbar";
 
 /**
@@ -325,45 +332,15 @@ export const Structure: Story = {
                             Search Extensions in Marketplace
                           </span>
 
-                          <div className="bg-accent/10 border-border flex items-center gap-2 rounded-lg border px-3 py-1 shadow-sm">
-                            <div className="flex items-center justify-center">
-                              <svg
-                                width="16"
-                                height="16"
-                                viewBox="0 0 16 16"
-                                fill="none"
-                                xmlns="http://www.w3.org/2000/svg"
-                              >
-                                <path
-                                  d="M14.0001 14L11.1335 11.1333M12.6667 7.33333C12.6667 10.2789 10.2789 12.6667 7.33333 12.6667C4.38781 12.6667 2 10.2789 2 7.33333C2 4.38781 4.38781 2 7.33333 2C10.2789 2 12.6667 4.38781 12.6667 7.33333Z"
-                                  stroke="currentColor"
-                                  strokeWidth="1.33"
-                                  strokeLinecap="round"
-                                  strokeLinejoin="round"
-                                />
-                              </svg>
-                            </div>
-                            <span className="text-muted-foreground flex-1 text-sm leading-5">
-                              Search
-                            </span>
-                            <div className="flex items-center justify-center">
-                              <svg
-                                width="16"
-                                height="16"
-                                viewBox="0 0 16 16"
-                                fill="none"
-                                xmlns="http://www.w3.org/2000/svg"
-                              >
-                                <path
-                                  d="M14.6666 2H1.33331L6.66665 8.30667V12.6667L9.33331 14V8.30667L14.6666 2Z"
-                                  stroke="currentColor"
-                                  strokeWidth="1.33"
-                                  strokeLinecap="round"
-                                  strokeLinejoin="round"
-                                />
-                              </svg>
-                            </div>
-                          </div>
+                          <InputGroup>
+                            <InputGroupAddon>
+                              <Search />
+                            </InputGroupAddon>
+                            <InputGroupInput placeholder="Search" />
+                            <InputGroupAddon align="inline-end">
+                              <Filter />
+                            </InputGroupAddon>
+                          </InputGroup>
                         </div>
 
                         {/* Extensions List */}
@@ -782,7 +759,7 @@ export const StructureSidebarExtensions: Story = {
       <ResizablePanelGroup direction="horizontal" className="h-full w-full">
         {/* 사이드바 영역 - 리사이징 가능 */}
         <ResizablePanel defaultSize={15} minSize={15} maxSize={50}>
-          <div className="bg-card flex h-full w-full flex-col overflow-hidden border-r p-2">
+          <div className="bg-sidebar flex h-full w-full flex-col overflow-hidden border-r p-2">
             {/* Extensions Header */}
             <div className="flex items-center justify-between gap-4 px-2 py-1 opacity-70">
               <span className="text-card-foreground flex-1 text-xs leading-4 font-medium">
@@ -827,45 +804,15 @@ export const StructureSidebarExtensions: Story = {
                 Search Extensions in Marketplace
               </span>
 
-              <div className="bg-accent/10 border-border flex items-center gap-2 rounded-lg border px-3 py-1 shadow-sm">
-                <div className="flex items-center justify-center">
-                  <svg
-                    width="16"
-                    height="16"
-                    viewBox="0 0 16 16"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M14.0001 14L11.1335 11.1333M12.6667 7.33333C12.6667 10.2789 10.2789 12.6667 7.33333 12.6667C4.38781 12.6667 2 10.2789 2 7.33333C2 4.38781 4.38781 2 7.33333 2C10.2789 2 12.6667 4.38781 12.6667 7.33333Z"
-                      stroke="currentColor"
-                      strokeWidth="1.33"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                  </svg>
-                </div>
-                <span className="text-muted-foreground flex-1 text-sm leading-5">
-                  Search
-                </span>
-                <div className="flex items-center justify-center">
-                  <svg
-                    width="16"
-                    height="16"
-                    viewBox="0 0 16 16"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M14.6666 2H1.33331L6.66665 8.30667V12.6667L9.33331 14V8.30667L14.6666 2Z"
-                      stroke="currentColor"
-                      strokeWidth="1.33"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                  </svg>
-                </div>
-              </div>
+              <InputGroup>
+                <InputGroupAddon>
+                  <Search />
+                </InputGroupAddon>
+                <InputGroupInput placeholder="Search" />
+                <InputGroupAddon align="inline-end">
+                  <Filter />
+                </InputGroupAddon>
+              </InputGroup>
             </div>
 
             {/* Extensions List */}
