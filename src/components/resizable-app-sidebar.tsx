@@ -202,19 +202,19 @@ export function ResizableAppSidebar({
         >
           {/* ItemMedia */}
           <div className="flex items-center">
-            <BadgeAlert className="h-5 w-5 text-white" />
+            <BadgeAlert className="text-foreground h-5 w-5" />
           </div>
 
           {/* ItemContent */}
           <div className="flex flex-1 flex-col items-start justify-center gap-1">
-            <span className="text-sm leading-5 text-white/70">
+            <span className="text-muted-foreground text-sm leading-5">
               You can upgrade to 1.5
             </span>
           </div>
 
           {/* ItemActions */}
           <div className="flex items-center justify-end gap-2 self-stretch">
-            <ChevronRight className="h-4 w-4 text-white" />
+            <ChevronRight className="text-foreground h-4 w-4" />
           </div>
         </Button>
       </div>
