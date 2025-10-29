@@ -566,23 +566,234 @@ export const StructureHeader: Story = {
 };
 
 /**
- * Sidebar 템플릿만 독립적으로 표시하는 스토리입니다.
+ * Sidebar Explorer 템플릿만 독립적으로 표시하는 스토리입니다.
  *
- * 🎯 목적: Sidebar 컴포넌트의 독립적인 사용법 데모
+ * 🎯 목적: 파일 탐색기 스타일의 Sidebar 컴포넌트 데모
  */
-export const StructureSidebar: Story = {
+export const StructureSidebarExplorer: Story = {
+  storyName: "Structure Sidebar/Sidebar Explorer",
+  parameters: {
+    docs: {
+      description: {
+        story:
+          "파일 탐색기 스타일의 Sidebar 컴포넌트를 독립적으로 사용하는 예시입니다.",
+      },
+    },
+  },
   render: () => (
     <div className="h-screen w-full">
       <SidebarTemplate defaultSidebarSize={15}>
         <div className="flex h-full items-center justify-center p-8">
           <div className="text-center">
-            <h2 className="mb-2 text-lg font-semibold">Sidebar 템플릿</h2>
+            <h2 className="mb-2 text-lg font-semibold">Sidebar Explorer</h2>
             <p className="text-muted-foreground text-sm">
-              Sidebar 컴포넌트만 독립적으로 사용하는 예시입니다.
+              파일 탐색기 스타일의 Sidebar 컴포넌트만 독립적으로 사용하는
+              예시입니다.
+            </p>
+            <p className="text-muted-foreground mt-2 text-xs">
+              VS Code Explorer와 유사한 파일 트리 구조를 제공합니다.
             </p>
           </div>
         </div>
       </SidebarTemplate>
+    </div>
+  ),
+};
+
+/**
+ * Sidebar Extensions 템플릿만 독립적으로 표시하는 스토리입니다.
+ *
+ * 🎯 목적: 확장 프로그램 관리 스타일의 Sidebar 컴포넌트 데모
+ */
+export const StructureSidebarExtensions: Story = {
+  storyName: "Structure Sidebar/Sidebar Extensions",
+  parameters: {
+    docs: {
+      description: {
+        story:
+          "확장 프로그램 관리 스타일의 Sidebar 컴포넌트를 독립적으로 사용하는 예시입니다.",
+      },
+    },
+  },
+  render: () => (
+    <div className="h-screen w-full">
+      <ResizablePanelGroup direction="horizontal" className="h-full w-full">
+        {/* 사이드바 영역 - 리사이징 가능 */}
+        <ResizablePanel defaultSize={15} minSize={15} maxSize={50}>
+          <div className="bg-card flex h-full w-full flex-col overflow-hidden border-r p-2">
+            {/* Extensions Header */}
+            <div className="flex items-center justify-between gap-4 px-2 py-1 opacity-70">
+              <span className="text-card-foreground flex-1 text-xs leading-4 font-medium">
+                Extensions
+              </span>
+              <div className="flex h-5 w-5 items-center justify-center opacity-70">
+                <svg
+                  width="16"
+                  height="16"
+                  viewBox="0 0 16 16"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M8.00002 8.66665C8.36821 8.66665 8.66669 8.36817 8.66669 7.99998C8.66669 7.63179 8.36821 7.33331 8.00002 7.33331C7.63183 7.33331 7.33335 7.63179 7.33335 7.99998C7.33335 8.36817 7.63183 8.66665 8.00002 8.66665Z"
+                    stroke="currentColor"
+                    strokeWidth="1.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                  <path
+                    d="M12.6667 8.66665C13.0349 8.66665 13.3334 8.36817 13.3334 7.99998C13.3334 7.63179 13.0349 7.33331 12.6667 7.33331C12.2985 7.33331 12 7.63179 12 7.99998C12 8.36817 12.2985 8.66665 12.6667 8.66665Z"
+                    stroke="currentColor"
+                    strokeWidth="1.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                  <path
+                    d="M3.33335 8.66665C3.70154 8.66665 4.00002 8.36817 4.00002 7.99998C4.00002 7.63179 3.70154 7.33331 3.33335 7.33331C2.96516 7.33331 2.66669 7.63179 2.66669 7.99998C2.66669 8.36817 2.96516 8.66665 3.33335 8.66665Z"
+                    stroke="currentColor"
+                    strokeWidth="1.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
+              </div>
+            </div>
+
+            {/* Search Section */}
+            <div className="flex flex-col gap-2 p-2">
+              <span className="text-muted-foreground text-xs leading-4">
+                Search Extensions in Marketplace
+              </span>
+
+              <div className="bg-accent/10 border-border flex items-center gap-2 rounded-lg border px-3 py-1 shadow-sm">
+                <div className="flex items-center justify-center">
+                  <svg
+                    width="16"
+                    height="16"
+                    viewBox="0 0 16 16"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M14.0001 14L11.1335 11.1333M12.6667 7.33333C12.6667 10.2789 10.2789 12.6667 7.33333 12.6667C4.38781 12.6667 2 10.2789 2 7.33333C2 4.38781 4.38781 2 7.33333 2C10.2789 2 12.6667 4.38781 12.6667 7.33333Z"
+                      stroke="currentColor"
+                      strokeWidth="1.33"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </svg>
+                </div>
+                <span className="text-muted-foreground flex-1 text-sm leading-5">
+                  Search
+                </span>
+                <div className="flex items-center justify-center">
+                  <svg
+                    width="16"
+                    height="16"
+                    viewBox="0 0 16 16"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M14.6666 2H1.33331L6.66665 8.30667V12.6667L9.33331 14V8.30667L14.6666 2Z"
+                      stroke="currentColor"
+                      strokeWidth="1.33"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </svg>
+                </div>
+              </div>
+            </div>
+
+            {/* Extensions List */}
+            <div className="flex-1 overflow-y-auto">
+              {/* Installed Section */}
+              <div className="flex items-center gap-2 overflow-hidden rounded-lg p-2">
+                <div className="flex items-center">
+                  <svg
+                    width="20"
+                    height="20"
+                    viewBox="0 0 20 20"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M7.5 15L12.5 10L7.5 5"
+                      stroke="currentColor"
+                      strokeWidth="1.67"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </svg>
+                </div>
+                <div className="flex flex-1 flex-col justify-center gap-1">
+                  <span className="text-muted-foreground text-sm leading-5">
+                    Installed
+                  </span>
+                </div>
+                <div className="bg-muted flex items-center justify-center overflow-hidden rounded-full border border-transparent px-1">
+                  <span className="text-muted-foreground text-xs">3</span>
+                </div>
+              </div>
+
+              {/* Separator */}
+              <div className="flex flex-col gap-2 px-2">
+                <div className="bg-border h-px w-full opacity-10"></div>
+              </div>
+
+              {/* Recommended Section */}
+              <div className="flex items-center gap-2 overflow-hidden rounded-lg p-2">
+                <div className="flex items-center">
+                  <svg
+                    width="20"
+                    height="20"
+                    viewBox="0 0 20 20"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M7.5 15L12.5 10L7.5 5"
+                      stroke="currentColor"
+                      strokeWidth="1.67"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </svg>
+                </div>
+                <div className="flex flex-1 flex-col justify-center gap-1">
+                  <span className="text-muted-foreground text-sm leading-5">
+                    Recommended
+                  </span>
+                </div>
+                <div className="bg-muted flex items-center justify-center overflow-hidden rounded-full border border-transparent px-1">
+                  <span className="text-muted-foreground text-xs">3</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </ResizablePanel>
+
+        {/* 리사이즈 핸들 */}
+        <ResizableHandle className="w-1 cursor-col-resize bg-transparent transition-colors hover:bg-blue-500/20 active:bg-blue-500/30" />
+
+        {/* 메인 콘텐츠 영역 */}
+        <ResizablePanel>
+          <div className="flex h-full items-center justify-center p-8">
+            <div className="text-center">
+              <h2 className="mb-2 text-lg font-semibold">Sidebar Extensions</h2>
+              <p className="text-muted-foreground text-sm">
+                확장 프로그램 관리 스타일의 Sidebar 컴포넌트만 독립적으로
+                사용하는 예시입니다.
+              </p>
+              <p className="text-muted-foreground mt-2 text-xs">
+                VS Code Extensions와 유사한 확장 프로그램 관리 구조를
+                제공합니다.
+              </p>
+            </div>
+          </div>
+        </ResizablePanel>
+      </ResizablePanelGroup>
     </div>
   ),
 };
