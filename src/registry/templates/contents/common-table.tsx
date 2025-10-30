@@ -246,8 +246,8 @@ export function CommonTable({
     <div
       className={`relative flex h-screen w-full flex-col ${className || ""}`}
     >
-      {/* 전체 콘텐츠 영역 - gap-5 패딩 */}
-      <div className="flex-1 p-5">
+      {/* 전체 콘텐츠 영역 - 640px 미만에서 우측 마진 유지 */}
+      <div className="flex-1 p-5 pr-1 sm:pr-5">
         <div className="space-y-0.5">
           {/* 상단 메뉴 섹션 */}
           <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
@@ -267,7 +267,7 @@ export function CommonTable({
                   <Button
                     variant="outline"
                     onClick={() => console.log("Dropdown trigger clicked")}
-                    className="w-full sm:w-auto"
+                    className="w-full max-w-none min-w-[180px] sm:w-auto"
                   >
                     Namespace: {selectedNamespace}
                     <ChevronDown className="ml-2 h-4 w-4" />
@@ -322,7 +322,7 @@ export function CommonTable({
                   placeholder="Search..."
                   value={searchValue}
                   onChange={(e) => setSearchValue(e.target.value)}
-                  className="w-full min-w-0 pl-9 sm:w-[373px]"
+                  className="w-full max-w-none min-w-[180px] pl-9 sm:w-[373px]"
                 />
               </div>
             </div>
