@@ -32,6 +32,7 @@ interface HeaderProps {
 
 /**
  * 🎯 목적: 검색 입력 그룹 컴포넌트 - InputGroup 컴포넌트 사용
+ * 반응형 width로 화면 크기에 따라 적절히 조정됨
  */
 function SearchInputGroup({
   searchQuery = "",
@@ -41,7 +42,7 @@ function SearchInputGroup({
   onSearchChange?: (value: string) => void;
 }) {
   return (
-    <InputGroup className="h-7 w-[580px] shrink-0">
+    <InputGroup className="h-7 w-full max-w-[580px] min-w-[200px] shrink">
       <InputGroupAddon align="inline-start">
         <Search className="h-4 w-4" />
       </InputGroupAddon>
@@ -128,6 +129,7 @@ function AiAssistantIcon() {
 
 /**
  * 🎯 목적: 헤더 좌측 네비게이션 ButtonGroup 컴포넌트 - UIDL 구조에 따른 구현
+ * 반응형 디자인을 위해 flex shrink 적용
  */
 function NavigationButtonGroup({
   onNavigationBack,
@@ -137,7 +139,7 @@ function NavigationButtonGroup({
   onNavigationForward?: () => void;
 }) {
   return (
-    <div className="border-border/10 bg-sidebar flex h-10 items-center border-b px-1">
+    <div className="border-border/10 bg-sidebar flex h-10 shrink-0 items-center border-b px-1">
       <ButtonGroup>
         <Button
           variant="ghost"
@@ -164,6 +166,7 @@ function NavigationButtonGroup({
 
 /**
  * 🎯 목적: 헤더 우측 버튼 그룹 컴포넌트
+ * 반응형 디자인을 위해 shrink-0 적용하여 버튼 크기 고정
  */
 function HeaderButtonGroup({
   onPanelLeftToggle,
@@ -181,7 +184,7 @@ function HeaderButtonGroup({
   isAiAssistantActive?: boolean;
 }) {
   return (
-    <div className="flex items-center">
+    <div className="flex shrink-0 items-center">
       <div className="flex items-center">
         {/* 왼쪽 패널 토글 버튼 */}
         <Button
@@ -239,9 +242,9 @@ export function Header({
   isAiAssistantActive = false,
 }: HeaderProps) {
   return (
-    <header className="border-border bg-sidebar flex h-10 w-full shrink-0 items-center justify-between gap-[10px] overflow-hidden border-b p-2">
+    <header className="border-border bg-sidebar flex h-10 w-full shrink-0 items-center justify-between gap-2 overflow-hidden border-b p-2">
       {/* 중앙 검색 영역 - ButtonGroup과 SearchInput */}
-      <div className="flex flex-grow items-center justify-center gap-2">
+      <div className="flex min-w-0 flex-1 items-center justify-center gap-2">
         <NavigationButtonGroup
           onNavigationBack={onNavigationBack}
           onNavigationForward={onNavigationForward}
