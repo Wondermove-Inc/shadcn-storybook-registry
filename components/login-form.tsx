@@ -1,13 +1,7 @@
 import * as React from "react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardDescription } from "@/components/ui/card";
 import {
   Field,
   FieldDescription,
@@ -16,23 +10,35 @@ import {
   FieldSeparator,
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
+import { GalleryVerticalEnd } from "lucide-react";
 
 export function LoginForm({
   className,
   ...props
 }: React.ComponentProps<"div">) {
   return (
-    <div className={cn("flex flex-col gap-6", className)} {...props}>
+    <div
+      className={cn("flex w-full max-w-sm flex-col gap-6", className)}
+      {...props}
+    >
+      <a href="#" className="flex items-center gap-2 self-center font-medium">
+        <div className="bg-primary text-primary-foreground flex size-6 items-center justify-center rounded-md">
+          <GalleryVerticalEnd className="size-4" />
+        </div>
+        Acme Inc.
+      </a>
       <Card>
-        <CardHeader className="text-center">
-          <CardTitle className="text-xl">Welcome back</CardTitle>
+        <div
+          className="px-0 pb-0 text-center"
+          style={{ paddingBottom: "0", marginBottom: "0" }}
+        >
           <CardDescription>
             Login with your Apple or Google account
           </CardDescription>
-        </CardHeader>
+        </div>
         <CardContent>
           <form>
-            <FieldGroup>
+            <FieldGroup className="gap-6">
               <Field>
                 <Button variant="outline" type="button">
                   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">

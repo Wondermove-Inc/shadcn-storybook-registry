@@ -90,6 +90,18 @@ type Story = StoryObj<typeof meta>;
  */
 export const Default: Story = {
   render: () => <LoginForm />,
+  parameters: {
+    layout: "fullscreen",
+  },
+  decorators: [
+    (Story) => (
+      <div className="bg-background flex min-h-svh flex-col items-center justify-center p-6 md:p-10">
+        <div className="w-full max-w-sm">
+          <Story />
+        </div>
+      </div>
+    ),
+  ],
 };
 
 /**

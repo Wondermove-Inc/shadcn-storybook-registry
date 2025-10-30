@@ -16,7 +16,7 @@ import {
   FieldSeparator,
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
-import { Eye, EyeOff, ArrowLeft } from "lucide-react";
+import { Eye, EyeOff, ArrowLeft, GalleryVerticalEnd } from "lucide-react";
 
 /**
  * 🎯 목적: shadcn/ui login-03 블록 원본 (변형 없음)
@@ -26,17 +26,28 @@ export function LoginForm({
   ...props
 }: React.ComponentProps<"div">) {
   return (
-    <div className={cn("flex flex-col gap-6", className)} {...props}>
+    <div
+      className={cn("flex w-full max-w-sm flex-col gap-6", className)}
+      {...props}
+    >
+      <a href="#" className="flex items-center gap-2 self-center font-medium">
+        <div className="bg-primary text-primary-foreground flex size-6 items-center justify-center rounded-md">
+          <GalleryVerticalEnd className="size-4" />
+        </div>
+        Acme Inc.
+      </a>
       <Card>
-        <CardHeader className="text-center">
-          <CardTitle className="text-xl">Welcome back</CardTitle>
+        <div
+          className="px-0 pb-0 text-center"
+          style={{ paddingBottom: "0", marginBottom: "0" }}
+        >
           <CardDescription>
             Login with your Apple or Google account
           </CardDescription>
-        </CardHeader>
+        </div>
         <CardContent>
           <form>
-            <FieldGroup>
+            <FieldGroup className="gap-6">
               <Field>
                 <Button variant="outline" type="button">
                   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
@@ -579,7 +590,10 @@ export function CognitoTemplate({
   };
 
   return (
-    <div className={cn("flex flex-col gap-6", className)} {...props}>
+    <div
+      className={cn("flex w-full max-w-sm flex-col gap-6", className)}
+      {...props}
+    >
       {renderCurrentView()}
       <FieldDescription className="px-6 text-center text-xs">
         By continuing, you agree to our{" "}
