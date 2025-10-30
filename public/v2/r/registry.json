@@ -2692,6 +2692,40 @@
           "type": "registry:component"
         }
       ]
+    },
+    {
+      "name": "cognito-story",
+      "type": "registry:component",
+      "title": "Cognito Story",
+      "description": "AWS Cognito-style comprehensive authentication template with login, signup, password reset, email verification, and social login flows",
+      "categories": [
+        "templates",
+        "storybook",
+        "authentication",
+        "cognito",
+        "forms",
+        "login"
+      ],
+      "author": "Lloyd Richards <lloyd.d.richards@gmail.com>",
+      "registryDependencies": [
+        "button",
+        "card", 
+        "field",
+        "input"
+      ],
+      "dependencies": [
+        "lucide-react"
+      ],
+      "files": [
+        {
+          "path": "src/registry/templates/cognito-story/cognito-template.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "src/registry/templates/cognito-story/cognito.stories.tsx",
+          "type": "registry:component"
+        }
+      ]
     }
   ]
 }
