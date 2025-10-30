@@ -80,7 +80,7 @@ export const Start: Story = {
     <div className="bg-background h-screen w-full">
       <ResizablePanelGroup direction="horizontal" className="h-full w-full">
         {/* 메인 콘텐츠 영역 */}
-        <ResizablePanel>
+        <ResizablePanel minSize={15}>
           <div className="flex h-full items-center justify-center p-8">
             <div className="text-center">
               <h2 className="mb-2 text-lg font-semibold">
@@ -97,7 +97,7 @@ export const Start: Story = {
         <ResizableHandle className="w-1 cursor-col-resize bg-transparent transition-colors hover:bg-blue-500/20 active:bg-blue-500/30" />
 
         {/* AI Assistant 패널 (Default 스토리와 동일한 사이즈 정책) */}
-        <ResizablePanel defaultSize={20} minSize={16} maxSize={40}>
+        <ResizablePanel defaultSize={20} minSize={8} maxSize={80}>
           <AIAssistant
             onClose={() => {}}
             onStart={() => {}}
@@ -145,7 +145,7 @@ export const BeforeUtterance: Story = {
           <ResizableHandle className="w-1 cursor-col-resize bg-transparent transition-colors hover:bg-blue-500/20 active:bg-blue-500/30" />
 
           {/* AI Assistant 패널 - Before Utterance 상태 */}
-          <ResizablePanel defaultSize={20} minSize={16} maxSize={40}>
+          <ResizablePanel defaultSize={20} minSize={8} maxSize={80}>
             <aside className="border-border bg-sidebar flex h-full shrink-0 flex-col justify-between gap-4 border-l p-4">
               {/* 🎯 목적: 헤더 섹션 */}
               <div className="flex flex-col gap-2">
@@ -361,7 +361,7 @@ export const AnswersText: Story = {
           <ResizableHandle className="w-1 cursor-col-resize bg-transparent transition-colors hover:bg-blue-500/20 active:bg-blue-500/30" />
 
           {/* AI Assistant 패널 - After Utterance 상태 */}
-          <ResizablePanel defaultSize={20} minSize={16} maxSize={40}>
+          <ResizablePanel defaultSize={20} minSize={8} maxSize={80}>
             <aside className="border-border bg-sidebar relative flex h-full shrink-0 flex-col border-l p-4">
               {/* 🎯 목적: 헤더 섹션 */}
               <div className="flex shrink-0 flex-col gap-2">
@@ -688,7 +688,7 @@ export const AnswersChart: Story = {
           <ResizableHandle className="w-1 cursor-col-resize bg-transparent transition-colors hover:bg-blue-500/20 active:bg-blue-500/30" />
 
           {/* AI Assistant 패널 - Chart Answers 상태 */}
-          <ResizablePanel defaultSize={20} minSize={16} maxSize={40}>
+          <ResizablePanel defaultSize={20} minSize={8} maxSize={80}>
             <aside className="border-border bg-sidebar relative flex h-full shrink-0 flex-col border-l p-4">
               {/* 🎯 목적: 헤더 섹션 */}
               <div className="flex shrink-0 flex-col gap-2">

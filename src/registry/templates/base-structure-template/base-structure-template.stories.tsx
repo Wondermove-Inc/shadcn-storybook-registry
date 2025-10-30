@@ -283,7 +283,7 @@ export const Structure: Story = {
               {/* 사이드바 패널 - 조건부 렌더링 */}
               {isSidebarVisible && (
                 <>
-                  <ResizablePanel defaultSize={12} minSize={12} maxSize={50}>
+                  <ResizablePanel defaultSize={12} minSize={5} maxSize={80}>
                     {/* activeBottomItem 상태에 따라 사이드바 콘텐츠 동적 렌더링 */}
                     {activeBottomItem === "explorer" ? (
                       <ResizableAppSidebar className="border-r" />
@@ -402,7 +402,7 @@ export const Structure: Story = {
               )}
 
               {/* 메인 콘텐츠 패널 - VS Code 스타일로 패널을 포함하는 상하 분할 */}
-              <ResizablePanel>
+              <ResizablePanel minSize={15}>
                 {isPanelVisible ? (
                   <ResizablePanelGroup direction="vertical" className="h-full">
                     {/* 상단: 메인 콘텐츠 영역 */}
@@ -587,7 +587,7 @@ export const Structure: Story = {
               {isAIAssistantVisible && (
                 <>
                   <ResizableHandle className="w-0 cursor-col-resize bg-transparent transition-colors hover:bg-blue-500/20 active:bg-blue-500/30" />
-                  <ResizablePanel defaultSize={20} minSize={16} maxSize={40}>
+                  <ResizablePanel defaultSize={20} minSize={8} maxSize={80}>
                     <AIAssistant
                       onClose={handleAIAssistantClose}
                       onStart={() => {}}
@@ -699,20 +699,31 @@ export const StructureSidebarExplorer: Story = {
   },
   render: () => (
     <div className="h-screen w-full">
-      <SidebarTemplate defaultSidebarSize={15}>
-        <div className="flex h-full items-center justify-center p-8">
-          <div className="text-center">
-            <h2 className="mb-2 text-lg font-semibold">Sidebar Explorer</h2>
-            <p className="text-muted-foreground text-sm">
-              파일 탐색기 스타일의 Sidebar 컴포넌트만 독립적으로 사용하는
-              예시입니다.
-            </p>
-            <p className="text-muted-foreground mt-2 text-xs">
-              VS Code Explorer와 유사한 파일 트리 구조를 제공합니다.
-            </p>
+      <ResizablePanelGroup direction="horizontal" className="h-full w-full">
+        {/* 사이드바 영역 - 리사이징 가능 */}
+        <ResizablePanel defaultSize={15} minSize={5} maxSize={80}>
+          <ResizableAppSidebar className="border-r" />
+        </ResizablePanel>
+
+        {/* 리사이즈 핸들 */}
+        <ResizableHandle className="w-1 cursor-col-resize bg-transparent transition-colors hover:bg-blue-500/20 active:bg-blue-500/30" />
+
+        {/* 메인 콘텐츠 영역 */}
+        <ResizablePanel minSize={15}>
+          <div className="flex h-full items-center justify-center p-8">
+            <div className="text-center">
+              <h2 className="mb-2 text-lg font-semibold">Sidebar Explorer</h2>
+              <p className="text-muted-foreground text-sm">
+                파일 탐색기 스타일의 Sidebar 컴포넌트만 독립적으로 사용하는
+                예시입니다.
+              </p>
+              <p className="text-muted-foreground mt-2 text-xs">
+                VS Code Explorer와 유사한 파일 트리 구조를 제공합니다.
+              </p>
+            </div>
           </div>
-        </div>
-      </SidebarTemplate>
+        </ResizablePanel>
+      </ResizablePanelGroup>
     </div>
   ),
 };
@@ -736,7 +747,7 @@ export const StructureSidebarExtensions: Story = {
     <div className="h-screen w-full">
       <ResizablePanelGroup direction="horizontal" className="h-full w-full">
         {/* 사이드바 영역 - 리사이징 가능 */}
-        <ResizablePanel defaultSize={15} minSize={15} maxSize={50}>
+        <ResizablePanel defaultSize={15} minSize={5} maxSize={80}>
           <div className="bg-sidebar flex h-full w-full flex-col overflow-hidden border-r p-2">
             {/* Extensions Header */}
             <div className="flex items-center justify-between gap-4 px-2 py-1 opacity-70">
@@ -842,7 +853,7 @@ export const StructureSidebarExtensions: Story = {
         <ResizableHandle className="w-1 cursor-col-resize bg-transparent transition-colors hover:bg-blue-500/20 active:bg-blue-500/30" />
 
         {/* 메인 콘텐츠 영역 */}
-        <ResizablePanel>
+        <ResizablePanel minSize={15}>
           <div className="flex h-full items-center justify-center p-8">
             <div className="text-center">
               <h2 className="mb-2 text-lg font-semibold">Sidebar Extensions</h2>
@@ -872,7 +883,7 @@ export const StructureAIAssistant: Story = {
     <div className="bg-background h-screen w-full">
       <ResizablePanelGroup direction="horizontal" className="h-full w-full">
         {/* 메인 콘텐츠 영역 */}
-        <ResizablePanel>
+        <ResizablePanel minSize={15}>
           <div className="flex h-full items-center justify-center p-8">
             <div className="text-center">
               <h2 className="mb-2 text-lg font-semibold">
@@ -889,7 +900,7 @@ export const StructureAIAssistant: Story = {
         <ResizableHandle className="w-1 cursor-col-resize bg-transparent transition-colors hover:bg-blue-500/20 active:bg-blue-500/30" />
 
         {/* AI Assistant 패널 (Default 스토리와 동일한 사이즈 정책) */}
-        <ResizablePanel defaultSize={20} minSize={16} maxSize={40}>
+        <ResizablePanel defaultSize={20} minSize={8} maxSize={80}>
           <AIAssistant
             onClose={() => {}}
             onStart={() => {}}
