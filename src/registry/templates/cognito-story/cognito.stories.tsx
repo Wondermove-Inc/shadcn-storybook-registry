@@ -24,22 +24,6 @@ const meta: Meta<typeof CognitoTemplate> = {
       description: {
         component: `
 AWS Cognito 스타일의 종합적인 인증 템플릿입니다. 실제 프로덕션 환경에서 바로 사용할 수 있도록 설계되었습니다.
-
-## 주요 특징
-
-- **완전한 인증 플로우**: 로그인부터 비밀번호 재설정까지 모든 과정
-- **소셜 로그인**: Google, Apple 등 소셜 로그인 지원
-- **사용자 경험**: 직관적인 네비게이션과 명확한 상태 표시
-- **접근성**: WCAG 가이드라인 준수, 키보드 네비게이션 지원
-- **반응형**: 모바일 퍼스트 디자인
-- **브랜딩**: 커스텀 로고와 앱 이름 지원
-
-## 사용 사례
-
-- SaaS 애플리케이션 인증 시스템
-- 모바일 앱 로그인 화면
-- B2B 대시보드 접근 제어
-- 이커머스 고객 계정 관리
         `,
       },
     },
@@ -88,7 +72,7 @@ type Story = StoryObj<typeof meta>;
  * 기본 로그인 화면입니다.
  * shadcn/ui의 login-03 블록을 완전히 그대로 사용합니다.
  */
-export const Default: Story = {
+export const Login: Story = {
   render: () => <LoginForm />,
   parameters: {
     layout: "fullscreen",
@@ -105,23 +89,23 @@ export const Default: Story = {
 };
 
 /**
- * 로그인 화면의 클린한 버전입니다.
- * 소셜 로그인 없이 이메일/비밀번호만 사용합니다.
- */
-export const LoginOnly: Story = {
-  args: {
-    enableSocialLogin: false,
-  },
-};
-
-/**
  * 회원가입 화면입니다.
- * 새 계정 생성을 위한 폼을 표시합니다.
+ * shadcn/ui login-03 블록을 그대로 사용합니다.
  */
 export const SignUp: Story = {
-  args: {
-    initialView: "signup",
+  render: () => <LoginForm />,
+  parameters: {
+    layout: "fullscreen",
   },
+  decorators: [
+    (Story) => (
+      <div className="bg-background flex min-h-svh flex-col items-center justify-center p-6 md:p-10">
+        <div className="w-full max-w-sm">
+          <Story />
+        </div>
+      </div>
+    ),
+  ],
 };
 
 /**

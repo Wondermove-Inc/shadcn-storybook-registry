@@ -45,8 +45,11 @@ export function LoginForm({
           className="px-0 pb-0 text-center"
           style={{ paddingBottom: "0", marginBottom: "0" }}
         >
+          <h1 className="mb-1.5 text-xl leading-none font-semibold">
+            Create your account
+          </h1>
           <CardDescription>
-            Login with your Apple or Google account
+            Fill in the form below to create your account
           </CardDescription>
         </div>
         <CardContent>
@@ -64,7 +67,7 @@ export function LoginForm({
                       fill="currentColor"
                     />
                   </svg>
-                  Login with Apple
+                  Sign up with Apple
                 </Button>
                 <Button
                   variant="outline"
@@ -77,7 +80,7 @@ export function LoginForm({
                       fill="currentColor"
                     />
                   </svg>
-                  Login with Google
+                  Sign up with Google
                 </Button>
               </Field>
               <FieldSeparator className="*:data-[slot=field-separator-content]:bg-card">
@@ -108,6 +111,89 @@ export function LoginForm({
                 <Button type="submit">Login</Button>
                 <FieldDescription className="text-center">
                   Don&apos;t have an account? <a href="#">Sign up</a>
+                </FieldDescription>
+              </Field>
+            </FieldGroup>
+          </form>
+        </CardContent>
+      </Card>
+      <p className="text-muted-foreground px-20 text-center text-xs">
+        By clicking continue, you agree to our{" "}
+        <a href="#" className="underline underline-offset-4">
+          Terms of Service
+        </a>{" "}
+        and{" "}
+        <a href="#" className="underline underline-offset-4">
+          Privacy Policy
+        </a>
+        .
+      </p>
+    </div>
+  );
+}
+
+/**
+ * 🎯 목적: signup block-3 스타일의 회원가입 폼 (shadcn/ui blocks에서 다운로드한 컴포넌트)
+ */
+export function SignupForm({
+  className,
+  ...props
+}: React.ComponentProps<"div">) {
+  return (
+    <div className={cn("flex flex-col gap-6", className)} {...props}>
+      <a href="#" className="flex items-center gap-1 self-center font-medium">
+        <Avatar className="size-10 rounded-md">
+          <AvatarImage src="/images/apps/skuber.svg" alt="Skuber+ Logo" />
+          <AvatarFallback className="bg-primary text-primary-foreground rounded-md">
+            <GalleryVerticalEnd className="size-4" />
+          </AvatarFallback>
+        </Avatar>
+        <span className="text-3xl leading-none font-medium">Skuber+</span>
+      </a>
+      <Card>
+        <CardHeader className="text-center">
+          <CardTitle className="text-xl">Create your account</CardTitle>
+          <CardDescription>
+            Enter your email below to create your account
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <form>
+            <FieldGroup>
+              <Field>
+                <FieldLabel htmlFor="name">Full Name</FieldLabel>
+                <Input id="name" type="text" placeholder="John Doe" required />
+              </Field>
+              <Field>
+                <FieldLabel htmlFor="email">Email</FieldLabel>
+                <Input
+                  id="email"
+                  type="email"
+                  placeholder="m@example.com"
+                  required
+                />
+              </Field>
+              <Field>
+                <Field className="grid grid-cols-2 gap-4">
+                  <Field>
+                    <FieldLabel htmlFor="password">Password</FieldLabel>
+                    <Input id="password" type="password" required />
+                  </Field>
+                  <Field>
+                    <FieldLabel htmlFor="confirm-password">
+                      Confirm Password
+                    </FieldLabel>
+                    <Input id="confirm-password" type="password" required />
+                  </Field>
+                </Field>
+                <FieldDescription>
+                  Must be at least 8 characters long.
+                </FieldDescription>
+              </Field>
+              <Field>
+                <Button type="submit">Create Account</Button>
+                <FieldDescription className="text-center">
+                  Already have an account? <a href="#">Sign in</a>
                 </FieldDescription>
               </Field>
             </FieldGroup>
@@ -353,67 +439,6 @@ export function CognitoTemplate({
   );
 
   /**
-   * 🎯 목적: 회원가입 폼을 렌더링
-   */
-  const renderSignupForm = () => (
-    <Card>
-      {renderHeader("Create account", `Create a new ${appName} account`, true)}
-      <CardContent>
-        <form>
-          <FieldGroup>
-            {renderSocialButtons()}
-            {enableSocialLogin && (
-              <FieldSeparator className="*:data-[slot=field-separator-content]:bg-card">
-                Or continue with email
-              </FieldSeparator>
-            )}
-            <Field>
-              <FieldLabel htmlFor="signup-email">Email</FieldLabel>
-              <Input
-                id="signup-email"
-                type="email"
-                placeholder="Enter your email"
-                required
-              />
-            </Field>
-            {renderPasswordField(
-              "signup-password",
-              "Password",
-              showPassword,
-              togglePasswordVisibility,
-              "Create a password",
-            )}
-            {renderPasswordField(
-              "confirm-password",
-              "Confirm Password",
-              showConfirmPassword,
-              toggleConfirmPasswordVisibility,
-              "Confirm your password",
-            )}
-            <Field>
-              <Button type="submit" className="w-full">
-                Create Account
-              </Button>
-            </Field>
-            <Field>
-              <FieldDescription className="text-center">
-                Already have an account?{" "}
-                <button
-                  type="button"
-                  onClick={() => setCurrentView("login")}
-                  className="underline-offset-4 hover:underline"
-                >
-                  Sign in
-                </button>
-              </FieldDescription>
-            </Field>
-          </FieldGroup>
-        </form>
-      </CardContent>
-    </Card>
-  );
-
-  /**
    * 🎯 목적: 비밀번호 재설정 요청 폼을 렌더링
    */
   const renderForgotPasswordForm = () => (
@@ -587,7 +612,7 @@ export function CognitoTemplate({
   const renderCurrentView = () => {
     switch (currentView) {
       case "signup":
-        return renderSignupForm();
+        return <SignupForm />;
       case "forgot-password":
         return renderForgotPasswordForm();
       case "reset-password":
@@ -607,7 +632,7 @@ export function CognitoTemplate({
       {...props}
     >
       {renderCurrentView()}
-      <FieldDescription className="px-6 text-center text-xs">
+      <p className="text-muted-foreground px-20 text-center text-xs">
         By continuing, you agree to our{" "}
         <a href="#" className="underline-offset-4 hover:underline">
           Terms of Service
@@ -617,7 +642,7 @@ export function CognitoTemplate({
           Privacy Policy
         </a>
         .
-      </FieldDescription>
+      </p>
     </div>
   );
 }
