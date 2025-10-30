@@ -1,6 +1,6 @@
 import * as React from "react";
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { LoginForm, CognitoTemplate } from "./cognito-template";
+import { LoginForm, CognitoTemplate, SignupForm } from "./cognito-template";
 
 /**
  * AWS Cognito 인증 시스템을 위한 종합적인 템플릿입니다.
@@ -90,10 +90,10 @@ export const Login: Story = {
 
 /**
  * 회원가입 화면입니다.
- * shadcn/ui login-03 블록을 그대로 사용합니다.
+ * 새 계정 생성을 위한 폼을 표시합니다.
  */
 export const SignUp: Story = {
-  render: () => <LoginForm />,
+  render: () => <SignupForm />,
   parameters: {
     layout: "fullscreen",
   },
