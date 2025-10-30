@@ -30,18 +30,14 @@ import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Checkbox } from "@/components/ui/checkbox";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
-import {
-  Bar,
-  BarChart,
-  CartesianGrid,
-  XAxis,
-  ResponsiveContainer,
-} from "recharts";
+import { Area, AreaChart, CartesianGrid, XAxis, YAxis } from "recharts";
 import {
   ChartContainer,
   ChartConfig,
   ChartTooltip,
   ChartTooltipContent,
+  ChartLegend,
+  ChartLegendContent,
 } from "@/components/ui/chart";
 
 /**
@@ -468,7 +464,7 @@ export function CommonTable({
           <div className="flex-1 space-y-4 overflow-y-auto p-4">
             {/* 🎯 목적: 차트 영역 (showChart가 true일 때만 표시) */}
             {showChart && (
-              <div className="space-y-4">
+              <div className="space-y-6">
                 {/* 토글 그룹 (Figma 설정에 따른 shadcn/ui ToggleGroup) */}
                 <div className="flex justify-center">
                   <ToggleGroup
@@ -489,27 +485,49 @@ export function CommonTable({
                 </div>
 
                 {/* 차트 영역 */}
-                <div className="h-[300px] w-full">
-                  <ChartContainer config={chartConfig}>
-                    <BarChart accessibilityLayer data={chartData}>
+                <div className="h-[240px] w-full">
+                  <ChartContainer
+                    config={chartConfig}
+                    className="h-full w-full"
+                    style={{ width: "100%", height: "100%" }}
+                  >
+                    <AreaChart
+                      accessibilityLayer
+                      data={chartData}
+                      margin={{
+                        left: 0,
+                        right: 0,
+                        top: 5,
+                        bottom: 5,
+                      }}
+                    >
                       <CartesianGrid vertical={false} />
                       <XAxis
                         dataKey="month"
                         tickLine={false}
-                        tickMargin={10}
                         axisLine={false}
+                        tickMargin={8}
                         tickFormatter={(value) => value.slice(0, 3)}
+                      />
+                      <YAxis
+                        tickLine={false}
+                        axisLine={false}
+                        tickMargin={8}
+                        width={40}
                       />
                       <ChartTooltip
                         cursor={false}
                         content={<ChartTooltipContent hideLabel />}
                       />
-                      <Bar
+                      <Area
                         dataKey="usage"
+                        type="step"
                         fill="var(--color-usage)"
-                        radius={8}
+                        fillOpacity={0.4}
+                        stroke="var(--color-usage)"
                       />
-                    </BarChart>
+                      <ChartLegend content={<ChartLegendContent />} />
+                    </AreaChart>
                   </ChartContainer>
                 </div>
               </div>
@@ -639,7 +657,7 @@ export function CommonTable({
               <Button variant="ghost" onClick={handleExplicitClose}>
                 Cancel
               </Button>
-              <Button>Save</Button>
+              <Button disabled>Save</Button>
             </div>
           </div>
         </div>
