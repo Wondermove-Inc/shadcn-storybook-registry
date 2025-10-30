@@ -1,3 +1,4 @@
+import React from "react";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { CommonTable } from "./common-table";
 
@@ -26,3 +27,10 @@ type Story = StoryObj<typeof meta>;
  * 기본 CommonTable - 완전한 리소스 테이블 레이아웃
  */
 export const Default: Story = {};
+
+/**
+ * Chart Data - 속성 패널에 차트가 포함된 CommonTable
+ */
+export const ChartData: Story = {
+  render: () => <CommonTable showChart={true} />,
+};

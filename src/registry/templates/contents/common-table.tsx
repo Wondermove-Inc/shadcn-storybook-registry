@@ -29,6 +29,16 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Checkbox } from "@/components/ui/checkbox";
+import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
+import {
+  Bar,
+  BarChart,
+  CartesianGrid,
+  XAxis,
+  YAxis,
+  ResponsiveContainer,
+} from "recharts";
+import { ChartContainer } from "@/components/ui/chart";
 
 /**
  * 🎯 목적: CommonTable 테이블 행 데이터 타입 정의
@@ -118,6 +128,7 @@ const tableData: TableRowData[] = [
  */
 interface CommonTableProps {
   className?: string;
+  showChart?: boolean; // 🎯 목적: 속성 패널에 차트 표시 여부
 }
 
 /**
@@ -129,7 +140,10 @@ interface CommonTableProps {
  * - 헤더 행 (Head Text 레이블)
  * - 6개 데이터 행 (텍스트, 링크, 뱃지, 액션 버튼 포함)
  */
-export function CommonTable({ className }: CommonTableProps) {
+export function CommonTable({
+  className,
+  showChart = false,
+}: CommonTableProps) {
   const [selectedNamespace, setSelectedNamespace] = React.useState("default");
   const [searchValue, setSearchValue] = React.useState("");
   const [data, setData] = React.useState(tableData);
@@ -138,6 +152,19 @@ export function CommonTable({ className }: CommonTableProps) {
   const [selectedRowData, setSelectedRowData] =
     React.useState<TableRowData | null>(null);
   const [selectedRowId, setSelectedRowId] = React.useState<string | null>(null);
+
+  // 🎯 목적: 차트 관련 상태 (showChart가 true일 때만 사용)
+  const [selectedMetric, setSelectedMetric] = React.useState("cpu");
+
+  // 🎯 목적: 차트 데이터 정의 (CPU/Memory 메트릭)
+  const chartData = [
+    { month: "Jan", value: 200 },
+    { month: "Feb", value: 300 },
+    { month: "Mar", value: 250 },
+    { month: "Apr", value: 80 },
+    { month: "May", value: 200 },
+    { month: "Jun", value: 220 },
+  ];
 
   /**
    * 🎯 목적: 명시적 패널 닫기 함수 (닫기 버튼 클릭 시에만 사용)
@@ -422,6 +449,68 @@ export function CommonTable({ className }: CommonTableProps) {
                 </h2>
               </div>
             </div>
+
+            {/* 🎯 목적: 차트 영역 (showChart가 true일 때만 표시) */}
+            {showChart && (
+              <div className="space-y-4">
+                {/* 토글 그룹 (중앙 정렬) */}
+                <div className="flex justify-center">
+                  <ToggleGroup
+                    type="single"
+                    value={selectedMetric}
+                    onValueChange={(value) => value && setSelectedMetric(value)}
+                    className="bg-muted rounded-lg p-1"
+                  >
+                    <ToggleGroupItem value="cpu" aria-label="CPU">
+                      CPU
+                    </ToggleGroupItem>
+                    <ToggleGroupItem value="memory" aria-label="Memory">
+                      Memory
+                    </ToggleGroupItem>
+                  </ToggleGroup>
+                </div>
+
+                {/* 차트 영역 */}
+                <div className="h-[300px] w-full">
+                  <ChartContainer
+                    config={{
+                      value: {
+                        label: selectedMetric === "cpu" ? "CPU" : "Memory",
+                        color: "hsl(var(--chart-1))",
+                      },
+                    }}
+                  >
+                    <ResponsiveContainer width="100%" height="100%">
+                      <BarChart
+                        data={chartData}
+                        margin={{ top: 20, right: 30, bottom: 20, left: 40 }}
+                      >
+                        <CartesianGrid
+                          strokeDasharray="3 3"
+                          className="stroke-muted"
+                        />
+                        <XAxis
+                          dataKey="month"
+                          className="text-muted-foreground"
+                          tick={{ fontSize: 12 }}
+                        />
+                        <YAxis
+                          className="text-muted-foreground"
+                          tick={{ fontSize: 12 }}
+                          domain={[0, 400]}
+                          ticks={[0, 100, 200, 300, 400]}
+                        />
+                        <Bar
+                          dataKey="value"
+                          fill="hsl(var(--primary))"
+                          radius={[4, 4, 0, 0]}
+                        />
+                      </BarChart>
+                    </ResponsiveContainer>
+                  </ChartContainer>
+                </div>
+              </div>
+            )}
             {/* 속성 테이블 - UIDL 명세에 따른 Table 컴포넌트 사용 */}
             <Table>
               <TableBody>
