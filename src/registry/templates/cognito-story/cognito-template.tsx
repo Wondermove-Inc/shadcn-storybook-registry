@@ -1,5 +1,6 @@
 import * as React from "react";
 import { cn } from "@/lib/utils";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -30,11 +31,14 @@ export function LoginForm({
       className={cn("flex w-full max-w-sm flex-col gap-6", className)}
       {...props}
     >
-      <a href="#" className="flex items-center gap-2 self-center font-medium">
-        <div className="bg-primary text-primary-foreground flex size-6 items-center justify-center rounded-md">
-          <GalleryVerticalEnd className="size-4" />
-        </div>
-        Acme Inc.
+      <a href="#" className="flex items-center gap-1 self-center font-medium">
+        <Avatar className="size-10 rounded-md">
+          <AvatarImage src="/images/apps/skuber.svg" alt="Skuber+ Logo" />
+          <AvatarFallback className="bg-primary text-primary-foreground rounded-md">
+            <GalleryVerticalEnd className="size-4" />
+          </AvatarFallback>
+        </Avatar>
+        <span className="text-3xl leading-none font-medium">Skuber+</span>
       </a>
       <Card>
         <div
