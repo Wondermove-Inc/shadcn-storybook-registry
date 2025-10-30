@@ -165,11 +165,11 @@ export function Welcome({
           </div>
         )}
 
-        {/* 액션 카드 그룹 - 640px 이상에서는 가로 2열, 미만에서는 세로 1열 배치 */}
+        {/* 액션 카드 그룹 - 640px 이상에서는 가로 2열, 미만에서는 세로 1열 배치, 도움말 섹션과 동일한 너비, 카드 높이 통일 */}
         {showCards && (
-          <div className="flex flex-col items-center gap-4 sm:flex-row sm:items-center">
+          <div className="flex w-full max-w-[860px] flex-col items-center gap-4 sm:flex-row sm:items-stretch">
             {/* Add from kubeconfig 카드 */}
-            <Card className="w-full max-w-[420px] sm:w-[420px]">
+            <Card className="flex h-full w-full max-w-[420px] flex-col sm:w-[420px]">
               <CardHeader>
                 <div className="flex flex-col gap-1.5">
                   <h3 className="text-base leading-none font-semibold">
@@ -180,7 +180,7 @@ export function Welcome({
                   </p>
                 </div>
               </CardHeader>
-              <CardContent>
+              <CardContent className="flex flex-1 flex-col justify-end">
                 <div className="flex flex-col gap-2">
                   <Button className="gap-2">
                     <Plus className="h-4 w-4" />
@@ -191,7 +191,7 @@ export function Welcome({
             </Card>
 
             {/* Sync kubeconfig 카드 */}
-            <Card className="w-full max-w-[420px] sm:w-[420px]">
+            <Card className="flex h-full w-full max-w-[420px] flex-col sm:w-[420px]">
               <CardHeader>
                 <div className="flex flex-col gap-1.5">
                   <h3 className="text-base leading-none font-semibold">
@@ -202,7 +202,7 @@ export function Welcome({
                   </p>
                 </div>
               </CardHeader>
-              <CardContent>
+              <CardContent className="flex flex-1 flex-col justify-end">
                 <div className="flex flex-col gap-2">
                   <Button className="gap-2">
                     <FolderSync className="h-4 w-4" />
