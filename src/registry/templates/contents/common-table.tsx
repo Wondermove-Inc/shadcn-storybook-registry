@@ -453,13 +453,15 @@ export function CommonTable({
             {/* 🎯 목적: 차트 영역 (showChart가 true일 때만 표시) */}
             {showChart && (
               <div className="space-y-4">
-                {/* 토글 그룹 (중앙 정렬) */}
+                {/* 토글 그룹 (Figma 설정에 따른 shadcn/ui ToggleGroup) */}
                 <div className="flex justify-center">
                   <ToggleGroup
                     type="single"
                     value={selectedMetric}
                     onValueChange={(value) => value && setSelectedMetric(value)}
-                    className="bg-muted rounded-lg p-1"
+                    variant="outline"
+                    size="default"
+                    className="w-[280px]"
                   >
                     <ToggleGroupItem value="cpu" aria-label="CPU">
                       CPU
