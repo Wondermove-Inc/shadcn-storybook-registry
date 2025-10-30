@@ -191,29 +191,29 @@ export function ResizableAppSidebar({
       className={`bg-sidebar flex h-full w-full flex-col ${className || ""}`}
     >
       {/* 🎯 목적: App 업데이트 알림 */}
-      <div className="px-4 pt-4 pb-1">
+      <div className="px-3 py-2.5">
         <Button
           variant="ghost"
-          className="bg-secondary hover:bg-secondary/80 flex w-full items-center gap-[10px] overflow-hidden rounded-lg px-4 py-3 transition-colors"
+          className="bg-secondary hover:bg-secondary/80 flex w-full items-center overflow-hidden rounded-lg px-3 py-2.5 transition-colors"
           onClick={() => {
             // 🎯 목적: 업그레이드 클릭 이벤트 (실제 구현에서는 업그레이드 페이지로 이동)
             console.log("Upgrade to 1.5 clicked");
           }}
         >
-          {/* ItemMedia */}
-          <div className="flex items-center">
-            <BadgeAlert className="text-foreground h-5 w-5" />
+          {/* ItemMedia + ItemContent - 아이콘과 텍스트 사이는 고정 gap-2 */}
+          <div className="flex min-w-0 flex-1 items-center gap-2">
+            <div className="flex shrink-0 items-center">
+              <BadgeAlert className="text-foreground h-5 w-5" />
+            </div>
+            <div className="flex min-w-0 flex-1 flex-col items-start justify-center gap-1">
+              <span className="text-muted-foreground w-full truncate text-left text-sm leading-5">
+                Upgrade to 1.5
+              </span>
+            </div>
           </div>
 
-          {/* ItemContent */}
-          <div className="flex flex-1 flex-col items-start justify-center gap-1">
-            <span className="text-muted-foreground text-sm leading-5">
-              You can upgrade to 1.5
-            </span>
-          </div>
-
-          {/* ItemActions */}
-          <div className="flex items-center justify-end gap-2 self-stretch">
+          {/* ItemActions - 텍스트와 화살표 사이만 반응형 gap */}
+          <div className="ml-2 flex shrink-0 items-center justify-end self-stretch sm:ml-1.5 md:ml-2">
             <ChevronRight className="text-foreground h-4 w-4" />
           </div>
         </Button>
