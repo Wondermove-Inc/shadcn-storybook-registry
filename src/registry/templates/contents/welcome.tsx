@@ -44,62 +44,86 @@ export function Welcome({
 }: WelcomeProps) {
   return (
     <div className="flex h-screen w-full flex-col">
-      {/* 🎯 목적: 탭 네비게이션 영역 */}
+      {/* 🎯 목적: 탭 네비게이션 영역 - 작은 화면에서 스크롤 지원 */}
       {showTabs && (
-        <div className="border-border bg-card flex items-center border-b">
-          {/* 좌측 분리선 */}
-          <div className="flex items-center px-2">
-            <Separator orientation="vertical" className="h-5" />
-          </div>
-
-          {/* 네비게이션 버튼 그룹 */}
-          <div className="border-border flex items-center border-b">
-            <Button variant="ghost" size="sm" className="rounded-none border-0">
-              <ChevronLeft className="h-4 w-4" />
-            </Button>
-            <Button variant="ghost" size="sm" className="rounded-none border-0">
-              <ChevronRight className="h-4 w-4" />
-            </Button>
-          </div>
-
-          {/* 활성 탭 */}
-          <div className="border-primary bg-background border-b-2">
-            <Button variant="ghost" size="sm" className="gap-2">
-              <span className="text-sm font-medium">Welcome</span>
-              <X className="h-4 w-4" />
-            </Button>
-          </div>
-
-          {/* 우측 분리선 */}
-          <div className="flex items-center px-2">
-            <Separator orientation="vertical" className="h-5" />
-          </div>
-
-          {/* 비활성 탭들 */}
-          <div className="border-border flex flex-1 border-b">
-            <Button
-              variant="ghost"
-              size="sm"
-              className="text-muted-foreground rounded-none opacity-50"
-            >
-              File Explorer
-            </Button>
-            <div className="flex items-center px-2">
-              <Separator orientation="vertical" className="h-5" />
+        <div className="border-border bg-card overflow-hidden border-b">
+          <div className="scrollbar-hide flex items-center overflow-x-auto">
+            {/* 좌측 분리선 */}
+            <div className="flex shrink-0 items-center px-2">
+              <Separator
+                orientation="vertical"
+                className="h-5"
+                style={{ height: "20px", width: "1px" }}
+              />
             </div>
-            <Button
-              variant="ghost"
-              size="sm"
-              className="text-muted-foreground rounded-none opacity-50"
-            >
-              Terminal
-            </Button>
+
+            {/* 네비게이션 버튼 그룹 */}
+            <div className="border-border flex shrink-0 items-center border-b">
+              <Button
+                variant="ghost"
+                size="sm"
+                className="rounded-none border-0"
+              >
+                <ChevronLeft className="h-4 w-4" />
+              </Button>
+              <Button
+                variant="ghost"
+                size="sm"
+                className="rounded-none border-0"
+              >
+                <ChevronRight className="h-4 w-4" />
+              </Button>
+            </div>
+
+            {/* 활성 탭 */}
+            <div className="border-primary bg-background shrink-0 border-b-2">
+              <Button variant="ghost" size="sm" className="gap-2">
+                <span className="text-sm font-medium whitespace-nowrap">
+                  Welcome
+                </span>
+                <X className="h-4 w-4" />
+              </Button>
+            </div>
+
+            {/* 우측 분리선 */}
+            <div className="flex shrink-0 items-center px-2">
+              <Separator
+                orientation="vertical"
+                className="h-5"
+                style={{ height: "20px", width: "1px" }}
+              />
+            </div>
+
+            {/* 비활성 탭들 - 스크롤 가능 */}
+            <div className="border-border flex border-b">
+              <Button
+                variant="ghost"
+                size="sm"
+                className="text-muted-foreground shrink-0 rounded-none whitespace-nowrap opacity-50"
+              >
+                File Explorer
+              </Button>
+              <div className="flex shrink-0 items-center px-2">
+                <Separator
+                  orientation="vertical"
+                  className="h-5"
+                  style={{ height: "20px", width: "1px" }}
+                />
+              </div>
+              <Button
+                variant="ghost"
+                size="sm"
+                className="text-muted-foreground shrink-0 rounded-none whitespace-nowrap opacity-50"
+              >
+                Terminal
+              </Button>
+            </div>
           </div>
         </div>
       )}
 
-      {/* 🎯 목적: 메인 콘텐츠 영역 */}
-      <div className="flex min-h-0 flex-1 flex-col items-center justify-center gap-12 p-8">
+      {/* 🎯 목적: 메인 콘텐츠 영역 - 모바일 친화적 패딩 적용 */}
+      <div className="flex min-h-0 flex-1 flex-col items-center justify-center gap-8 p-4 sm:gap-12 sm:p-8">
         {/* 브랜드 헤더 */}
         {showHeader && (
           <div className="flex flex-col items-center gap-4">
@@ -141,11 +165,11 @@ export function Welcome({
           </div>
         )}
 
-        {/* 액션 카드 그룹 */}
+        {/* 액션 카드 그룹 - 640px 이상에서는 가로 2열, 미만에서는 세로 1열 배치 */}
         {showCards && (
-          <div className="flex items-center gap-4">
+          <div className="flex flex-col items-center gap-4 sm:flex-row sm:items-center">
             {/* Add from kubeconfig 카드 */}
-            <Card className="w-[420px]">
+            <Card className="w-full max-w-[420px] sm:w-[420px]">
               <CardHeader>
                 <div className="flex flex-col gap-1.5">
                   <h3 className="text-base leading-none font-semibold">
@@ -167,7 +191,7 @@ export function Welcome({
             </Card>
 
             {/* Sync kubeconfig 카드 */}
-            <Card className="w-[420px]">
+            <Card className="w-full max-w-[420px] sm:w-[420px]">
               <CardHeader>
                 <div className="flex flex-col gap-1.5">
                   <h3 className="text-base leading-none font-semibold">
@@ -190,9 +214,9 @@ export function Welcome({
           </div>
         )}
 
-        {/* 도움말 섹션 */}
+        {/* 도움말 섹션 - 반응형 너비 적용 */}
         {showHelp && (
-          <div className="border-border flex w-[860px] items-start gap-4 rounded-lg border p-4">
+          <div className="border-border mx-4 flex w-full max-w-[860px] items-start gap-4 rounded-lg border p-4 sm:mx-0">
             {/* 아이콘 영역 */}
             <div className="bg-muted border-border flex h-8 w-8 shrink-0 items-center justify-center rounded-md border">
               <CircleHelp className="h-4 w-4" />
