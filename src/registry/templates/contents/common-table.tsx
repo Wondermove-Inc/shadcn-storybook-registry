@@ -35,10 +35,14 @@ import {
   BarChart,
   CartesianGrid,
   XAxis,
-  YAxis,
   ResponsiveContainer,
 } from "recharts";
-import { ChartContainer } from "@/components/ui/chart";
+import {
+  ChartContainer,
+  ChartConfig,
+  ChartTooltip,
+  ChartTooltipContent,
+} from "@/components/ui/chart";
 
 /**
  * 🎯 목적: CommonTable 테이블 행 데이터 타입 정의
@@ -158,13 +162,21 @@ export function CommonTable({
 
   // 🎯 목적: 차트 데이터 정의 (CPU/Memory 메트릭)
   const chartData = [
-    { month: "Jan", value: 200 },
-    { month: "Feb", value: 300 },
-    { month: "Mar", value: 250 },
-    { month: "Apr", value: 80 },
-    { month: "May", value: 200 },
-    { month: "Jun", value: 220 },
+    { month: "Jan", usage: 200 },
+    { month: "Feb", usage: 300 },
+    { month: "Mar", usage: 250 },
+    { month: "Apr", usage: 80 },
+    { month: "May", usage: 200 },
+    { month: "Jun", usage: 220 },
   ];
+
+  // 🎯 목적: 차트 설정 (공식 shadcn/ui 스타일)
+  const chartConfig = {
+    usage: {
+      label: selectedMetric === "cpu" ? "CPU Usage" : "Memory Usage",
+      color: "var(--chart-1)",
+    },
+  } satisfies ChartConfig;
 
   /**
    * 🎯 목적: 명시적 패널 닫기 함수 (닫기 버튼 클릭 시에만 사용)
@@ -240,7 +252,7 @@ export function CommonTable({
     >
       {/* 전체 콘텐츠 영역 - gap-5 패딩 */}
       <div className="flex-1 p-5">
-        <div className="space-y-4">
+        <div className="space-y-0.5">
           {/* 상단 메뉴 섹션 */}
           <div className="flex items-center justify-between gap-4">
             {/* 왼쪽: 메뉴 이름과 아이템 개수 */}
@@ -418,13 +430,14 @@ export function CommonTable({
       {/* 속성창 패널 - Sheet 대신 직접 구현 */}
       {(isPropertiesOpen || isAnimating) && (
         <div
-          className={`bg-card fixed inset-y-0 right-0 z-50 h-full w-[700px] border-l p-5 shadow-lg transition ease-in-out ${
+          className={`bg-card fixed inset-y-0 right-0 z-50 flex h-full w-[700px] flex-col border-l shadow-lg transition ease-in-out ${
             isAnimating
               ? "animate-out slide-out-to-right duration-300"
               : "animate-in slide-in-from-right duration-[400ms]"
           }`}
         >
-          <div className="space-y-4">
+          {/* 고정 헤더 영역 */}
+          <div className="flex-shrink-0 p-5 pb-0">
             <div className="space-y-3">
               <div className="flex items-center justify-between">
                 <Button
@@ -449,7 +462,10 @@ export function CommonTable({
                 </h2>
               </div>
             </div>
+          </div>
 
+          {/* 스크롤 가능한 콘텐츠 영역 */}
+          <div className="flex-1 space-y-4 overflow-y-auto p-4">
             {/* 🎯 목적: 차트 영역 (showChart가 true일 때만 표시) */}
             {showChart && (
               <div className="space-y-4">
@@ -474,41 +490,26 @@ export function CommonTable({
 
                 {/* 차트 영역 */}
                 <div className="h-[300px] w-full">
-                  <ChartContainer
-                    config={{
-                      value: {
-                        label: selectedMetric === "cpu" ? "CPU" : "Memory",
-                        color: "hsl(var(--chart-1))",
-                      },
-                    }}
-                  >
-                    <ResponsiveContainer width="100%" height="100%">
-                      <BarChart
-                        data={chartData}
-                        margin={{ top: 20, right: 30, bottom: 20, left: 40 }}
-                      >
-                        <CartesianGrid
-                          strokeDasharray="3 3"
-                          className="stroke-muted"
-                        />
-                        <XAxis
-                          dataKey="month"
-                          className="text-muted-foreground"
-                          tick={{ fontSize: 12 }}
-                        />
-                        <YAxis
-                          className="text-muted-foreground"
-                          tick={{ fontSize: 12 }}
-                          domain={[0, 400]}
-                          ticks={[0, 100, 200, 300, 400]}
-                        />
-                        <Bar
-                          dataKey="value"
-                          fill="hsl(var(--primary))"
-                          radius={[4, 4, 0, 0]}
-                        />
-                      </BarChart>
-                    </ResponsiveContainer>
+                  <ChartContainer config={chartConfig}>
+                    <BarChart accessibilityLayer data={chartData}>
+                      <CartesianGrid vertical={false} />
+                      <XAxis
+                        dataKey="month"
+                        tickLine={false}
+                        tickMargin={10}
+                        axisLine={false}
+                        tickFormatter={(value) => value.slice(0, 3)}
+                      />
+                      <ChartTooltip
+                        cursor={false}
+                        content={<ChartTooltipContent hideLabel />}
+                      />
+                      <Bar
+                        dataKey="usage"
+                        fill="var(--color-usage)"
+                        radius={8}
+                      />
+                    </BarChart>
                   </ChartContainer>
                 </div>
               </div>
@@ -632,8 +633,8 @@ export function CommonTable({
             </div>
           </div>
 
-          {/* 푸터 버튼들 */}
-          <div className="bg-card absolute right-0 bottom-0 left-0 p-4">
+          {/* 고정 푸터 영역 */}
+          <div className="bg-card flex-shrink-0 p-4">
             <div className="flex justify-end gap-2">
               <Button variant="ghost" onClick={handleExplicitClose}>
                 Cancel
