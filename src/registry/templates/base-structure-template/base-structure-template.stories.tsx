@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/resizable";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import { SidebarProvider } from "@/components/ui/sidebar";
+import { SidebarProvider, SidebarGroupAction } from "@/components/ui/sidebar";
 import {
   X,
   Bell,
@@ -23,6 +23,7 @@ import {
   Expand,
   Search,
   Filter,
+  MoreHorizontal,
 } from "lucide-react";
 import {
   InputGroup,
@@ -293,37 +294,12 @@ export const Structure: Story = {
                           <span className="text-card-foreground flex-1 text-xs leading-4 font-medium">
                             Extensions
                           </span>
-                          <div className="flex h-5 w-5 items-center justify-center opacity-70">
-                            <svg
-                              width="16"
-                              height="16"
-                              viewBox="0 0 16 16"
-                              fill="none"
-                              xmlns="http://www.w3.org/2000/svg"
-                            >
-                              <path
-                                d="M8.00002 8.66665C8.36821 8.66665 8.66669 8.36817 8.66669 7.99998C8.66669 7.63179 8.36821 7.33331 8.00002 7.33331C7.63183 7.33331 7.33335 7.63179 7.33335 7.99998C7.33335 8.36817 7.63183 8.66665 8.00002 8.66665Z"
-                                stroke="currentColor"
-                                strokeWidth="1.5"
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                              />
-                              <path
-                                d="M12.6667 8.66665C13.0349 8.66665 13.3334 8.36817 13.3334 7.99998C13.3334 7.63179 13.0349 7.33331 12.6667 7.33331C12.2985 7.33331 12 7.63179 12 7.99998C12 8.36817 12.2985 8.66665 12.6667 8.66665Z"
-                                stroke="currentColor"
-                                strokeWidth="1.5"
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                              />
-                              <path
-                                d="M3.33335 8.66665C3.70154 8.66665 4.00002 8.36817 4.00002 7.99998C4.00002 7.63179 3.70154 7.33331 3.33335 7.33331C2.96516 7.33331 2.66669 7.63179 2.66669 7.99998C2.66669 8.36817 2.96516 8.66665 3.33335 8.66665Z"
-                                stroke="currentColor"
-                                strokeWidth="1.5"
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                              />
-                            </svg>
-                          </div>
+                          <SidebarGroupAction
+                            title="More options"
+                            className="opacity-70"
+                          >
+                            <MoreHorizontal />
+                          </SidebarGroupAction>
                         </div>
 
                         {/* Search Section */}
@@ -765,37 +741,9 @@ export const StructureSidebarExtensions: Story = {
               <span className="text-card-foreground flex-1 text-xs leading-4 font-medium">
                 Extensions
               </span>
-              <div className="flex h-5 w-5 items-center justify-center opacity-70">
-                <svg
-                  width="16"
-                  height="16"
-                  viewBox="0 0 16 16"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M8.00002 8.66665C8.36821 8.66665 8.66669 8.36817 8.66669 7.99998C8.66669 7.63179 8.36821 7.33331 8.00002 7.33331C7.63183 7.33331 7.33335 7.63179 7.33335 7.99998C7.33335 8.36817 7.63183 8.66665 8.00002 8.66665Z"
-                    stroke="currentColor"
-                    strokeWidth="1.5"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                  <path
-                    d="M12.6667 8.66665C13.0349 8.66665 13.3334 8.36817 13.3334 7.99998C13.3334 7.63179 13.0349 7.33331 12.6667 7.33331C12.2985 7.33331 12 7.63179 12 7.99998C12 8.36817 12.2985 8.66665 12.6667 8.66665Z"
-                    stroke="currentColor"
-                    strokeWidth="1.5"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                  <path
-                    d="M3.33335 8.66665C3.70154 8.66665 4.00002 8.36817 4.00002 7.99998C4.00002 7.63179 3.70154 7.33331 3.33335 7.33331C2.96516 7.33331 2.66669 7.63179 2.66669 7.99998C2.66669 8.36817 2.96516 8.66665 3.33335 8.66665Z"
-                    stroke="currentColor"
-                    strokeWidth="1.5"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                </svg>
-              </div>
+              <SidebarGroupAction title="More options" className="opacity-70">
+                <MoreHorizontal />
+              </SidebarGroupAction>
             </div>
 
             {/* Search Section */}
