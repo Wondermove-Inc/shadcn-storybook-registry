@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/resizable";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import { SidebarProvider, SidebarGroupAction } from "@/components/ui/sidebar";
+import { SidebarProvider } from "@/components/ui/sidebar";
 import {
   X,
   Bell,
@@ -294,12 +294,14 @@ export const Structure: Story = {
                           <span className="text-card-foreground flex-1 text-xs leading-4 font-medium">
                             Extensions
                           </span>
-                          <SidebarGroupAction
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            className="text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground h-5 w-5 p-0 opacity-70"
                             title="More options"
-                            className="opacity-70"
                           >
-                            <MoreHorizontal />
-                          </SidebarGroupAction>
+                            <MoreHorizontal className="h-4 w-4" />
+                          </Button>
                         </div>
 
                         {/* Search Section */}
@@ -741,9 +743,14 @@ export const StructureSidebarExtensions: Story = {
               <span className="text-card-foreground flex-1 text-xs leading-4 font-medium">
                 Extensions
               </span>
-              <SidebarGroupAction title="More options" className="opacity-70">
-                <MoreHorizontal />
-              </SidebarGroupAction>
+              <Button
+                variant="ghost"
+                size="icon"
+                className="text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground h-5 w-5 p-0 opacity-70"
+                title="More options"
+              >
+                <MoreHorizontal className="h-4 w-4" />
+              </Button>
             </div>
 
             {/* Search Section */}
