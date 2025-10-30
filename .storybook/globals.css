@@ -343,6 +343,14 @@ html.theme-violet-dark {
     background-color: var(--color-input);
   }
   
+  .bg-input\/30 {
+    background-color: oklch(from var(--color-input) l c h / 0.3);
+  }
+  
+  .dark\:bg-input\/30 {
+    background-color: oklab(0.999998 -0.00000980496 0.0000234246 / 0.045);
+  }
+  
   .bg-input\/80 {
     background-color: oklch(from var(--color-input) l c h / 0.8);
   }
