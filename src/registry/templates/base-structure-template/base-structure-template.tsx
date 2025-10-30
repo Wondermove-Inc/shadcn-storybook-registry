@@ -130,7 +130,7 @@ export function BaseStructureTemplate({
           <AIAssistant
             onClose={handleAIAssistantClose}
             onStart={handleAIAssistantStart}
-            className="w-[400px] shrink-0"
+            className="w-[320px] shrink-0"
           />
         )}
       </SidebarProvider>

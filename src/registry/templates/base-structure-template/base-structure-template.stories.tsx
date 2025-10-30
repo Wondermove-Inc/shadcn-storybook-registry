@@ -283,7 +283,7 @@ export const Structure: Story = {
               {/* 사이드바 패널 - 조건부 렌더링 */}
               {isSidebarVisible && (
                 <>
-                  <ResizablePanel defaultSize={15} minSize={15} maxSize={50}>
+                  <ResizablePanel defaultSize={12} minSize={12} maxSize={50}>
                     {/* activeBottomItem 상태에 따라 사이드바 콘텐츠 동적 렌더링 */}
                     {activeBottomItem === "explorer" ? (
                       <ResizableAppSidebar className="border-r" />
@@ -587,7 +587,7 @@ export const Structure: Story = {
               {isAIAssistantVisible && (
                 <>
                   <ResizableHandle className="w-0 cursor-col-resize bg-transparent transition-colors hover:bg-blue-500/20 active:bg-blue-500/30" />
-                  <ResizablePanel defaultSize={25} minSize={20} maxSize={40}>
+                  <ResizablePanel defaultSize={20} minSize={16} maxSize={40}>
                     <AIAssistant
                       onClose={handleAIAssistantClose}
                       onStart={() => {}}
@@ -889,7 +889,7 @@ export const StructureAIAssistant: Story = {
         <ResizableHandle className="w-1 cursor-col-resize bg-transparent transition-colors hover:bg-blue-500/20 active:bg-blue-500/30" />
 
         {/* AI Assistant 패널 (Default 스토리와 동일한 사이즈 정책) */}
-        <ResizablePanel defaultSize={25} minSize={20} maxSize={40}>
+        <ResizablePanel defaultSize={20} minSize={16} maxSize={40}>
           <AIAssistant
             onClose={() => {}}
             onStart={() => {}}

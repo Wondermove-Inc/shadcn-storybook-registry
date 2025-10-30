@@ -97,7 +97,7 @@ export const Start: Story = {
         <ResizableHandle className="w-1 cursor-col-resize bg-transparent transition-colors hover:bg-blue-500/20 active:bg-blue-500/30" />
 
         {/* AI Assistant 패널 (Default 스토리와 동일한 사이즈 정책) */}
-        <ResizablePanel defaultSize={25} minSize={20} maxSize={40}>
+        <ResizablePanel defaultSize={20} minSize={16} maxSize={40}>
           <AIAssistant
             onClose={() => {}}
             onStart={() => {}}
@@ -145,7 +145,7 @@ export const BeforeUtterance: Story = {
           <ResizableHandle className="w-1 cursor-col-resize bg-transparent transition-colors hover:bg-blue-500/20 active:bg-blue-500/30" />
 
           {/* AI Assistant 패널 - Before Utterance 상태 */}
-          <ResizablePanel defaultSize={25} minSize={20} maxSize={40}>
+          <ResizablePanel defaultSize={20} minSize={16} maxSize={40}>
             <aside className="border-border bg-sidebar flex h-full shrink-0 flex-col justify-between gap-4 border-l p-4">
               {/* 🎯 목적: 헤더 섹션 */}
               <div className="flex flex-col gap-2">
@@ -361,7 +361,7 @@ export const AnswersText: Story = {
           <ResizableHandle className="w-1 cursor-col-resize bg-transparent transition-colors hover:bg-blue-500/20 active:bg-blue-500/30" />
 
           {/* AI Assistant 패널 - After Utterance 상태 */}
-          <ResizablePanel defaultSize={25} minSize={20} maxSize={40}>
+          <ResizablePanel defaultSize={20} minSize={16} maxSize={40}>
             <aside className="border-border bg-sidebar relative flex h-full shrink-0 flex-col border-l p-4">
               {/* 🎯 목적: 헤더 섹션 */}
               <div className="flex shrink-0 flex-col gap-2">
@@ -688,7 +688,7 @@ export const AnswersChart: Story = {
           <ResizableHandle className="w-1 cursor-col-resize bg-transparent transition-colors hover:bg-blue-500/20 active:bg-blue-500/30" />
 
           {/* AI Assistant 패널 - Chart Answers 상태 */}
-          <ResizablePanel defaultSize={25} minSize={20} maxSize={40}>
+          <ResizablePanel defaultSize={20} minSize={16} maxSize={40}>
             <aside className="border-border bg-sidebar relative flex h-full shrink-0 flex-col border-l p-4">
               {/* 🎯 목적: 헤더 섹션 */}
               <div className="flex shrink-0 flex-col gap-2">
