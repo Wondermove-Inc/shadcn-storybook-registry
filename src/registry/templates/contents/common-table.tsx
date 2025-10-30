@@ -250,7 +250,7 @@ export function CommonTable({
       <div className="flex-1 p-5">
         <div className="space-y-0.5">
           {/* 상단 메뉴 섹션 */}
-          <div className="flex items-center justify-between gap-4">
+          <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
             {/* 왼쪽: 메뉴 이름과 아이템 개수 */}
             <div className="flex items-center gap-1">
               <h2 className="text-foreground text-lg font-semibold">{`{Menuname}`}</h2>
@@ -260,13 +260,14 @@ export function CommonTable({
             </div>
 
             {/* 오른쪽: 네임스페이스 드롭다운과 검색 */}
-            <div className="flex items-center gap-2">
+            <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
               {/* 네임스페이스 드롭다운 */}
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <Button
                     variant="outline"
                     onClick={() => console.log("Dropdown trigger clicked")}
+                    className="w-full sm:w-auto"
                   >
                     Namespace: {selectedNamespace}
                     <ChevronDown className="ml-2 h-4 w-4" />
@@ -321,7 +322,7 @@ export function CommonTable({
                   placeholder="Search..."
                   value={searchValue}
                   onChange={(e) => setSearchValue(e.target.value)}
-                  className="w-[373px] pl-9"
+                  className="w-full min-w-0 pl-9 sm:w-[373px]"
                 />
               </div>
             </div>
@@ -426,7 +427,7 @@ export function CommonTable({
       {/* 속성창 패널 - Sheet 대신 직접 구현 */}
       {(isPropertiesOpen || isAnimating) && (
         <div
-          className={`bg-card fixed inset-y-0 right-0 z-50 flex h-full w-[700px] flex-col border-l shadow-lg transition ease-in-out ${
+          className={`bg-card fixed inset-y-0 right-0 z-50 flex h-full w-full flex-col border-l shadow-lg transition ease-in-out md:w-[700px] ${
             isAnimating
               ? "animate-out slide-out-to-right duration-300"
               : "animate-in slide-in-from-right duration-[400ms]"
@@ -473,7 +474,7 @@ export function CommonTable({
                     onValueChange={(value) => value && setSelectedMetric(value)}
                     variant="outline"
                     size="default"
-                    className="w-[280px]"
+                    className="w-full max-w-[280px]"
                   >
                     <ToggleGroupItem value="cpu" aria-label="CPU">
                       CPU
