@@ -37,6 +37,15 @@ export function LoginForm({
   className,
   ...props
 }: React.ComponentProps<"div">) {
+  const [showPassword, setShowPassword] = React.useState(false);
+
+  /**
+   * 🎯 목적: 비밀번호 입력 필드의 표시/숨기기 상태를 토글
+   */
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
+
   return (
     <div
       className={cn("flex w-full max-w-sm flex-col gap-6", className)}
@@ -113,13 +122,96 @@ export function LoginForm({
                     Forgot your password?
                   </a>
                 </div>
-                <Input id="password" type="password" required />
+                <InputGroup>
+                  <InputGroupInput
+                    id="password"
+                    type={showPassword ? "text" : "password"}
+                    required
+                  />
+                  <InputGroupAddon align="inline-end">
+                    <InputGroupButton
+                      size="icon-xs"
+                      onClick={togglePasswordVisibility}
+                    >
+                      {showPassword ? <EyeOff /> : <Eye />}
+                      <span className="sr-only">
+                        {showPassword ? "비밀번호 숨기기" : "비밀번호 표시"}
+                      </span>
+                    </InputGroupButton>
+                  </InputGroupAddon>
+                </InputGroup>
               </Field>
               <Field>
                 <Button type="submit">Login</Button>
+              </Field>
+              <Field>
                 <FieldDescription className="text-center">
                   Don&apos;t have an account?{" "}
                   <a href="/?path=/story/templates-cognito--sign-up">Sign up</a>
+                </FieldDescription>
+              </Field>
+            </FieldGroup>
+          </form>
+        </CardContent>
+      </Card>
+    </div>
+  );
+}
+
+/**
+ * 🎯 목적: 비밀번호 찾기 폼 (Login 폼을 기반으로 한 독립적인 컴포넌트)
+ */
+export function FindingPasswordForm({
+  className,
+  ...props
+}: React.ComponentProps<"div">) {
+  return (
+    <div
+      className={cn("flex w-full max-w-sm flex-col gap-6", className)}
+      {...props}
+    >
+      <a href="#" className="flex items-center gap-1 self-center font-medium">
+        <Avatar className="size-10 rounded-md">
+          <AvatarImage src="/images/apps/skuber.svg" alt="Skuber+ Logo" />
+          <AvatarFallback className="bg-primary text-primary-foreground rounded-md">
+            <GalleryVerticalEnd className="size-4" />
+          </AvatarFallback>
+        </Avatar>
+        <span className="text-3xl leading-none font-medium">Skuber+</span>
+      </a>
+      <Card>
+        <div
+          className="px-0 pb-0 text-center"
+          style={{ paddingBottom: "0", marginBottom: "0" }}
+        >
+          <h1 className="mb-1.5 text-xl leading-none font-semibold">
+            Finding Password
+          </h1>
+          <CardDescription>
+            Please enter your login email and click the button
+          </CardDescription>
+        </div>
+        <CardContent>
+          <form>
+            <FieldGroup className="gap-6">
+              <Field>
+                <FieldLabel htmlFor="reset-email">Email</FieldLabel>
+                <Input
+                  id="reset-email"
+                  type="email"
+                  placeholder="m@example.com"
+                  required
+                />
+              </Field>
+              <Field>
+                <Button type="submit">Find Password</Button>
+              </Field>
+              <Field>
+                <FieldDescription className="text-center">
+                  Do you want to log in again?{" "}
+                  <a href="/?path=/story/templates-cognito--login">
+                    Back to Login
+                  </a>
                 </FieldDescription>
               </Field>
             </FieldGroup>
@@ -149,7 +241,7 @@ export function EmailAuthenticationForm({
         <span className="text-3xl leading-none font-medium">Skuber+</span>
       </a>
       <Card className="w-80">
-        <CardHeader className="text-center">
+        <CardHeader className="gap-1.5 text-center">
           <CardTitle className="text-xl">Enter verification code</CardTitle>
           <CardDescription>
             We sent a 6-digit code to your email:
@@ -159,7 +251,7 @@ export function EmailAuthenticationForm({
         </CardHeader>
         <CardContent>
           <form>
-            <FieldGroup>
+            <FieldGroup className="gap-6">
               <Field>
                 <FieldLabel htmlFor="otp" className="sr-only">
                   Verification code
@@ -180,13 +272,17 @@ export function EmailAuthenticationForm({
                   Please enter the code.
                 </FieldDescription>
               </Field>
-              <Button type="submit">Verify</Button>
-              <FieldDescription className="text-center">
-                Didn&apos;t receive the code?{" "}
-                <a href="#" className="underline underline-offset-4">
-                  Resend
-                </a>
-              </FieldDescription>
+              <Field>
+                <Button type="submit">Verify</Button>
+              </Field>
+              <Field>
+                <FieldDescription className="text-center">
+                  Didn&apos;t receive the code?{" "}
+                  <a href="#" className="underline underline-offset-4">
+                    Resend
+                  </a>
+                </FieldDescription>
+              </Field>
             </FieldGroup>
           </form>
         </CardContent>
@@ -202,6 +298,23 @@ export function SignupForm({
   className,
   ...props
 }: React.ComponentProps<"div">) {
+  const [showPassword, setShowPassword] = React.useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = React.useState(false);
+
+  /**
+   * 🎯 목적: 비밀번호 입력 필드의 표시/숨기기 상태를 토글
+   */
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
+
+  /**
+   * 🎯 목적: 비밀번호 확인 필드의 표시/숨기기 상태를 토글
+   */
+  const toggleConfirmPasswordVisibility = () => {
+    setShowConfirmPassword(!showConfirmPassword);
+  };
+
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
       <a href="#" className="flex items-center gap-1 self-center font-medium">
@@ -264,7 +377,7 @@ export function SignupForm({
                 <Input
                   id="signup-email"
                   type="email"
-                  placeholder="Enter your email"
+                  placeholder="m@example.com"
                   required
                 />
               </Field>
@@ -273,13 +386,18 @@ export function SignupForm({
                 <InputGroup>
                   <InputGroupInput
                     id="signup-password"
-                    type="password"
+                    type={showPassword ? "text" : "password"}
                     required
                   />
                   <InputGroupAddon align="inline-end">
-                    <InputGroupButton size="icon-xs">
-                      <Eye />
-                      <span className="sr-only">Show password</span>
+                    <InputGroupButton
+                      size="icon-xs"
+                      onClick={togglePasswordVisibility}
+                    >
+                      {showPassword ? <EyeOff /> : <Eye />}
+                      <span className="sr-only">
+                        {showPassword ? "비밀번호 숨기기" : "비밀번호 표시"}
+                      </span>
                     </InputGroupButton>
                   </InputGroupAddon>
                 </InputGroup>
@@ -294,19 +412,28 @@ export function SignupForm({
                 <InputGroup>
                   <InputGroupInput
                     id="signup-confirm-password"
-                    type="password"
+                    type={showConfirmPassword ? "text" : "password"}
                     required
                   />
                   <InputGroupAddon align="inline-end">
-                    <InputGroupButton size="icon-xs">
-                      <Eye />
-                      <span className="sr-only">Show password</span>
+                    <InputGroupButton
+                      size="icon-xs"
+                      onClick={toggleConfirmPasswordVisibility}
+                    >
+                      {showConfirmPassword ? <EyeOff /> : <Eye />}
+                      <span className="sr-only">
+                        {showConfirmPassword
+                          ? "비밀번호 숨기기"
+                          : "비밀번호 표시"}
+                      </span>
                     </InputGroupButton>
                   </InputGroupAddon>
                 </InputGroup>
               </Field>
               <Field>
                 <Button type="submit">Sign up</Button>
+              </Field>
+              <Field>
                 <FieldDescription className="text-center">
                   Already have an account?{" "}
                   <a href="/?path=/story/templates-cognito--login">Log in</a>

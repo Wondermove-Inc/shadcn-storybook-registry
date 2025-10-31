@@ -5,6 +5,7 @@ import {
   CognitoTemplate,
   SignupForm,
   EmailAuthenticationForm,
+  FindingPasswordForm,
 } from "./cognito-template";
 
 /**
@@ -132,41 +133,21 @@ export const EmailAuthentication: Story = {
 };
 
 /**
- * 비밀번호 재설정 요청 화면입니다.
- * 이메일 주소 입력으로 재설정 링크를 요청합니다.
+ * 비밀번호 찾기 화면입니다.
+ * 이메일 주소로 비밀번호 재설정 링크를 요청하는 독립적인 폼입니다.
  */
-export const ForgotPassword: Story = {
-  args: {
-    initialView: "forgot-password",
+export const FindingPassword: Story = {
+  render: () => <FindingPasswordForm />,
+  parameters: {
+    layout: "fullscreen",
   },
-};
-
-/**
- * 비밀번호 재설정 화면입니다.
- * 인증 코드와 새 비밀번호를 입력합니다.
- */
-export const ResetPassword: Story = {
-  args: {
-    initialView: "reset-password",
-  },
-};
-
-/**
- * 이메일 인증 화면입니다.
- * 회원가입 후 이메일로 받은 인증 코드를 입력합니다.
- */
-export const VerifyEmail: Story = {
-  args: {
-    initialView: "verify-email",
-  },
-};
-
-/**
- * 비밀번호 변경 화면입니다.
- * 로그인된 사용자가 현재 비밀번호를 새 비밀번호로 변경합니다.
- */
-export const ChangePassword: Story = {
-  args: {
-    initialView: "change-password",
-  },
+  decorators: [
+    (Story) => (
+      <div className="bg-background flex min-h-svh flex-col items-center justify-center p-6 md:p-10">
+        <div className="w-full max-w-sm">
+          <Story />
+        </div>
+      </div>
+    ),
+  ],
 };
