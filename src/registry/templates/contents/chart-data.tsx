@@ -11,11 +11,11 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
-import { Card, CardContent } from "@/components/ui/card";
 import { ChartContainer, ChartConfig } from "@/components/ui/chart";
 import { RadialBar, RadialBarChart, PolarGrid, PolarAngleAxis } from "recharts";
-import { TriangleAlert } from "lucide-react";
-import { Area, AreaChart, CartesianGrid, XAxis } from "recharts";
+import { TriangleAlert, BadgeCheck } from "lucide-react";
+import { Area, AreaChart, CartesianGrid, XAxis, YAxis } from "recharts";
+import { ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
 
 /**
  * 🎯 목적: ChartData 컴포넌트 Props 타입 정의
@@ -26,15 +26,15 @@ interface ChartDataProps {
 }
 
 /**
- * 🎯 목적: 시간별 사용량 데이터
+ * 🎯 목적: 시간별 사용량 데이터 (JSON UIDL 기반)
  */
 const hourlyData = [
-  { hour: "15:00", value: 186 },
-  { hour: "16:00", value: 305 },
-  { hour: "17:00", value: 237 },
-  { hour: "18:00", value: 73 },
-  { hour: "19:00", value: 209 },
-  { hour: "20:00", value: 214 },
+  { hour: "15:00", value: 953.7 },
+  { hour: "16:00", value: 1600 },
+  { hour: "17:00", value: 2800 },
+  { hour: "18:00", value: 1800 },
+  { hour: "19:00", value: 1200 },
+  { hour: "20:00", value: 1600 },
 ];
 
 /**
@@ -115,13 +115,7 @@ const warningData = [
 ];
 
 /**
- * 🎯 목적: 스크린샷 기반 차트 데이터 대시보드 컴포넌트
- *
- * 구조:
- * - 상단: Master/Worker 노드 토글
- * - 왼쪽: 시간별 사용량 바 차트 + CPU/Memory 토글
- * - 오른쪽: 3개의 Radial 차트 (CPU, Memory, Pods)
- * - 하단: 경고 테이블
+ * 차트와 테이블 조합의 모니터링 차트데이터 입니다.
  */
 export function ChartData({ className }: ChartDataProps) {
   const [selectedNode, setSelectedNode] = React.useState("master");
@@ -143,8 +137,8 @@ export function ChartData({ className }: ChartDataProps) {
   } satisfies ChartConfig;
 
   return (
-    <div className={`min-h-screen w-full bg-black p-5 ${className || ""}`}>
-      <div className="mx-auto max-w-[1400px] space-y-6">
+    <div className={`bg-background min-h-screen w-full p-5 ${className || ""}`}>
+      <div className="mx-auto max-w-[1400px] space-y-5">
         {/* 헤더 영역 */}
         <div className="flex items-center justify-between">
           <h1 className="text-foreground text-lg leading-none font-normal">
@@ -170,40 +164,39 @@ export function ChartData({ className }: ChartDataProps) {
         </div>
 
         {/* 차트 영역 - 1단 레이아웃 */}
-        <div className="flex gap-6">
+        <div className="border-input flex gap-6 rounded-md border">
           {/* 왼쪽: 시간별 사용량 차트 */}
-          <div className="flex flex-grow flex-col items-start gap-4 border-r border-white/15 bg-transparent p-4">
+          <div className="border-input flex flex-1 flex-col items-start gap-4 border-r bg-transparent p-4">
             {/* 제목과 토글 영역 */}
             <div className="flex items-center justify-between gap-5 self-stretch">
-              <h3 className="text-lg leading-none font-normal text-[#e5e5e5]">
+              <h3 className="text-foreground text-lg leading-none font-normal">
                 Hourly usage
               </h3>
 
-              {/* CPU/Memory 토글 - 커스텀 스타일 */}
-              <div className="flex w-[200px] items-center">
-                <div className="flex w-full">
-                  <button
-                    onClick={() => setSelectedMetric("cpu")}
-                    className={`flex h-8 flex-grow items-center justify-center gap-2 rounded-l-lg border border-white/15 px-1.5 py-2.5 text-sm leading-5 font-medium shadow-sm ${
-                      selectedMetric === "cpu"
-                        ? "bg-gray-600 text-white"
-                        : "bg-gray-600 text-white hover:bg-gray-500"
-                    } `}
-                  >
-                    CPU
-                  </button>
-                  <button
-                    onClick={() => setSelectedMetric("memory")}
-                    className={`flex h-8 flex-grow items-center justify-center gap-2 rounded-r-lg border-t border-r border-b border-white/15 px-1.5 py-2.5 text-sm leading-5 font-medium shadow-sm ${
-                      selectedMetric === "memory"
-                        ? "bg-gray-600 text-white"
-                        : "bg-gray-600 text-white hover:bg-gray-500"
-                    } `}
-                  >
-                    Memory
-                  </button>
-                </div>
-              </div>
+              {/* CPU/Memory 토글 - shadcn/ui ToggleGroup */}
+              <ToggleGroup
+                type="single"
+                value={selectedMetric}
+                onValueChange={(value) => value && setSelectedMetric(value)}
+                variant="outline"
+                size="sm"
+                className="w-[200px]"
+              >
+                <ToggleGroupItem
+                  value="cpu"
+                  aria-label="CPU"
+                  className="flex-1"
+                >
+                  CPU
+                </ToggleGroupItem>
+                <ToggleGroupItem
+                  value="memory"
+                  aria-label="Memory"
+                  className="flex-1"
+                >
+                  Memory
+                </ToggleGroupItem>
+              </ToggleGroup>
             </div>
 
             {/* 차트 래퍼 */}
@@ -216,7 +209,7 @@ export function ChartData({ className }: ChartDataProps) {
                   accessibilityLayer
                   data={hourlyData}
                   margin={{
-                    left: 12,
+                    left: 6,
                     right: 12,
                   }}
                 >
@@ -226,7 +219,22 @@ export function ChartData({ className }: ChartDataProps) {
                     tickLine={false}
                     axisLine={false}
                     tickMargin={8}
-                    tickFormatter={(value) => value.slice(0, 5)}
+                    tickFormatter={(value) => value}
+                  />
+                  <YAxis
+                    tickLine={false}
+                    axisLine={false}
+                    tickMargin={8}
+                    tickFormatter={(value) => {
+                      if (value >= 1000) {
+                        return `${(value / 1000).toFixed(1)}GiB`;
+                      }
+                      return `${value}MiB`;
+                    }}
+                  />
+                  <ChartTooltip
+                    cursor={false}
+                    content={<ChartTooltipContent hideLabel />}
                   />
                   <Area
                     dataKey="value"
@@ -241,205 +249,319 @@ export function ChartData({ className }: ChartDataProps) {
           </div>
 
           {/* 오른쪽: Usage Type Distribution Chart */}
-          <Card className="border-gray-800 bg-gray-900">
-            <CardContent className="p-6">
-              <h3 className="mb-6 text-base font-normal text-white">
+          <div className="flex flex-1 flex-col items-start gap-4 self-stretch p-4">
+            {/* 제목 */}
+            <div className="flex items-center gap-2.5 self-stretch">
+              <h3 className="text-foreground text-lg leading-none font-normal">
                 Usage Type Distribution Chart
-              </h3>
-
-              <div className="grid grid-cols-3 gap-6">
-                {/* CPU Chart */}
-                <div className="text-center">
-                  <h4 className="mb-4 text-sm font-normal text-white">CPU</h4>
-                  <ChartContainer
-                    config={radialChartConfig}
-                    className="mx-auto h-[200px] w-[200px]"
-                  >
-                    <RadialBarChart
-                      data={cpuData}
-                      startAngle={90}
-                      endAngle={-270}
-                      innerRadius={30}
-                      outerRadius={90}
-                    >
-                      <PolarGrid
-                        gridType="circle"
-                        radialLines={false}
-                        stroke="none"
-                        className="first:fill-gray-800 last:fill-transparent"
-                        polarRadius={[86, 74, 62, 50, 38]}
-                      />
-                      <RadialBar
-                        dataKey="value"
-                        cornerRadius={10}
-                        fill="currentColor"
-                      />
-                      <PolarAngleAxis
-                        type="number"
-                        domain={[0, 4]}
-                        angleAxisId={0}
-                        tick={false}
-                      />
-                    </RadialBarChart>
-                  </ChartContainer>
-                  <div className="mt-4 space-y-1 text-left text-xs text-gray-400">
-                    <p>• Usages: 0.06</p>
-                    <p>• Requests: 1.10</p>
-                    <p>• Limits: 0.20</p>
-                    <p>• Allocatable Capacity: 4.00</p>
-                    <p>• Capacity: 4.00</p>
-                  </div>
-                </div>
-
-                {/* Memory Chart */}
-                <div className="text-center">
-                  <h4 className="mb-4 text-sm font-normal text-white">
-                    Memory
-                  </h4>
-                  <ChartContainer
-                    config={radialChartConfig}
-                    className="mx-auto h-[200px] w-[200px]"
-                  >
-                    <RadialBarChart
-                      data={memoryData}
-                      startAngle={90}
-                      endAngle={-270}
-                      innerRadius={30}
-                      outerRadius={90}
-                    >
-                      <PolarGrid
-                        gridType="circle"
-                        radialLines={false}
-                        stroke="none"
-                        className="first:fill-gray-800 last:fill-transparent"
-                        polarRadius={[86, 74, 62, 50, 38]}
-                      />
-                      <RadialBar
-                        dataKey="value"
-                        cornerRadius={10}
-                        fill="currentColor"
-                      />
-                      <PolarAngleAxis
-                        type="number"
-                        domain={[0, 3700]}
-                        angleAxisId={0}
-                        tick={false}
-                      />
-                    </RadialBarChart>
-                  </ChartContainer>
-                  <div className="mt-4 space-y-1 text-left text-xs text-gray-400">
-                    <p>• Usages: 1.3GiB</p>
-                    <p>• Requests: 304.0MiB</p>
-                    <p>• Limits: 468.0MiB</p>
-                    <p>• Allocatable Capacity: 3.7GiB</p>
-                    <p>• Capacity: 3.8GiB</p>
-                  </div>
-                </div>
-
-                {/* Pods Chart */}
-                <div className="text-center">
-                  <h4 className="mb-4 text-sm font-normal text-white">Pods</h4>
-                  <ChartContainer
-                    config={radialChartConfig}
-                    className="mx-auto h-[200px] w-[200px]"
-                  >
-                    <RadialBarChart
-                      data={podsData}
-                      startAngle={90}
-                      endAngle={-270}
-                      innerRadius={30}
-                      outerRadius={90}
-                    >
-                      <PolarGrid
-                        gridType="circle"
-                        radialLines={false}
-                        stroke="none"
-                        className="first:fill-gray-800 last:fill-transparent"
-                        polarRadius={[86, 62, 38]}
-                      />
-                      <RadialBar
-                        dataKey="value"
-                        cornerRadius={10}
-                        fill="currentColor"
-                      />
-                      <PolarAngleAxis
-                        type="number"
-                        domain={[0, 110]}
-                        angleAxisId={0}
-                        tick={false}
-                      />
-                    </RadialBarChart>
-                  </ChartContainer>
-                  <div className="mt-4 space-y-1 text-left text-xs text-gray-400">
-                    <p>• Usages: 15</p>
-                    <p>• Allocatable Capacity: 110</p>
-                    <p>• Capacity: 110</p>
-                  </div>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        </div>
-
-        {/* 경고 테이블 */}
-        <Card className="border-gray-800 bg-gray-900">
-          <CardContent className="p-6">
-            <div className="mb-4 flex items-center gap-2">
-              <TriangleAlert className="h-5 w-5 text-yellow-500" />
-              <h3 className="text-base font-normal text-yellow-500">
-                Warnings (3)
               </h3>
             </div>
 
-            <Table>
+            {/* 카드들 */}
+            <div className="flex flex-1 items-start gap-4 self-stretch">
+              {/* CPU Card */}
+              <div className="flex flex-1 flex-col items-start gap-5 self-stretch overflow-hidden rounded-lg border border-[#e5e5e5] p-5 shadow-sm">
+                <h4 className="text-base leading-none font-semibold text-[#fafafa]">
+                  CPU
+                </h4>
+                <ChartContainer
+                  config={radialChartConfig}
+                  className="mx-auto h-[122px] w-[122px]"
+                >
+                  <RadialBarChart
+                    data={cpuData}
+                    startAngle={90}
+                    endAngle={-270}
+                    innerRadius={30}
+                    outerRadius={60}
+                  >
+                    <PolarGrid
+                      gridType="circle"
+                      radialLines={false}
+                      stroke="none"
+                      className="first:fill-gray-200 last:fill-transparent"
+                      polarRadius={[55, 45, 35, 25]}
+                    />
+                    <RadialBar
+                      dataKey="value"
+                      cornerRadius={5}
+                      fill="currentColor"
+                    />
+                    <PolarAngleAxis
+                      type="number"
+                      domain={[0, 4]}
+                      angleAxisId={0}
+                      tick={false}
+                    />
+                  </RadialBarChart>
+                </ChartContainer>
+                <div className="flex flex-col items-start self-stretch">
+                  <div className="flex items-start gap-1 px-4 py-1">
+                    <div className="flex items-center">
+                      <div className="h-5 w-5 rounded-full border-2 border-[#fafafa]"></div>
+                    </div>
+                    <p className="flex-1 text-sm leading-5 text-[#a3a3a3]">
+                      Usages: 0.06
+                    </p>
+                  </div>
+                  <div className="flex items-start gap-1 px-4 py-1">
+                    <div className="flex items-center">
+                      <div className="h-5 w-5 rounded-full border-2 border-[#fafafa]"></div>
+                    </div>
+                    <p className="flex-1 text-sm leading-5 text-[#a3a3a3]">
+                      Requests: 1.10
+                    </p>
+                  </div>
+                  <div className="flex items-start gap-1 px-4 py-1">
+                    <div className="flex items-center">
+                      <div className="h-5 w-5 rounded-full border-2 border-[#fafafa]"></div>
+                    </div>
+                    <p className="flex-1 text-sm leading-5 text-[#a3a3a3]">
+                      Limits: 0.20
+                    </p>
+                  </div>
+                  <div className="flex items-start gap-1 px-4 py-1">
+                    <div className="flex items-center">
+                      <div className="h-5 w-5 rounded-full border-2 border-[#fafafa]"></div>
+                    </div>
+                    <p className="flex-1 text-sm leading-5 text-[#a3a3a3]">
+                      Allocatable Capacity: 4.00
+                    </p>
+                  </div>
+                  <div className="flex items-start gap-1 px-4 py-1">
+                    <div className="flex items-center">
+                      <div className="h-5 w-5 rounded-full border-2 border-[#fafafa]"></div>
+                    </div>
+                    <p className="flex-1 text-sm leading-5 text-[#a3a3a3]">
+                      Capacity: 4.00
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Memory Card */}
+              <div className="flex flex-1 flex-col items-start gap-5 self-stretch overflow-hidden rounded-lg border border-[#e5e5e5] p-5 shadow-sm">
+                <h4 className="text-base leading-none font-semibold text-[#fafafa]">
+                  Memory
+                </h4>
+                <ChartContainer
+                  config={radialChartConfig}
+                  className="mx-auto h-[122px] w-[122px]"
+                >
+                  <RadialBarChart
+                    data={memoryData}
+                    startAngle={90}
+                    endAngle={-270}
+                    innerRadius={30}
+                    outerRadius={60}
+                  >
+                    <PolarGrid
+                      gridType="circle"
+                      radialLines={false}
+                      stroke="none"
+                      className="first:fill-gray-200 last:fill-transparent"
+                      polarRadius={[55, 45, 35, 25]}
+                    />
+                    <RadialBar
+                      dataKey="value"
+                      cornerRadius={5}
+                      fill="currentColor"
+                    />
+                    <PolarAngleAxis
+                      type="number"
+                      domain={[0, 3700]}
+                      angleAxisId={0}
+                      tick={false}
+                    />
+                  </RadialBarChart>
+                </ChartContainer>
+                <div className="flex flex-col items-start self-stretch">
+                  <div className="flex items-start gap-1 px-4 py-1">
+                    <div className="flex items-center">
+                      <div className="h-5 w-5 rounded-full border-2 border-[#fafafa]"></div>
+                    </div>
+                    <p className="flex-1 text-sm leading-5 text-[#a3a3a3]">
+                      Usages: 1.3GiB
+                    </p>
+                  </div>
+                  <div className="flex items-start gap-1 px-4 py-1">
+                    <div className="flex items-center">
+                      <div className="h-5 w-5 rounded-full border-2 border-[#fafafa]"></div>
+                    </div>
+                    <p className="flex-1 text-sm leading-5 text-[#a3a3a3]">
+                      Requests: 304.0MiB
+                    </p>
+                  </div>
+                  <div className="flex items-start gap-1 px-4 py-1">
+                    <div className="flex items-center">
+                      <div className="h-5 w-5 rounded-full border-2 border-[#fafafa]"></div>
+                    </div>
+                    <p className="flex-1 text-sm leading-5 text-[#a3a3a3]">
+                      Limits: 468.0MiB
+                    </p>
+                  </div>
+                  <div className="flex items-start gap-1 px-4 py-1">
+                    <div className="flex items-center">
+                      <div className="h-5 w-5 rounded-full border-2 border-[#fafafa]"></div>
+                    </div>
+                    <p className="flex-1 text-sm leading-5 text-[#a3a3a3]">
+                      Allocatable Capacity: 3.7GiB
+                    </p>
+                  </div>
+                  <div className="flex items-start gap-1 px-4 py-1">
+                    <div className="flex items-center">
+                      <div className="h-5 w-5 rounded-full border-2 border-[#fafafa]"></div>
+                    </div>
+                    <p className="flex-1 text-sm leading-5 text-[#a3a3a3]">
+                      Capacity: 3.8GiB
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Pods Card */}
+              <div className="flex flex-1 flex-col items-start gap-5 self-stretch overflow-hidden rounded-lg border border-[#e5e5e5] p-5 shadow-sm">
+                <h4 className="text-base leading-none font-semibold text-[#fafafa]">
+                  Pods
+                </h4>
+                <ChartContainer
+                  config={radialChartConfig}
+                  className="mx-auto h-[122px] w-[122px]"
+                >
+                  <RadialBarChart
+                    data={podsData}
+                    startAngle={90}
+                    endAngle={-270}
+                    innerRadius={30}
+                    outerRadius={60}
+                  >
+                    <PolarGrid
+                      gridType="circle"
+                      radialLines={false}
+                      stroke="none"
+                      className="first:fill-gray-200 last:fill-transparent"
+                      polarRadius={[55, 35, 25]}
+                    />
+                    <RadialBar
+                      dataKey="value"
+                      cornerRadius={5}
+                      fill="currentColor"
+                    />
+                    <PolarAngleAxis
+                      type="number"
+                      domain={[0, 110]}
+                      angleAxisId={0}
+                      tick={false}
+                    />
+                  </RadialBarChart>
+                </ChartContainer>
+                <div className="flex flex-col items-start self-stretch">
+                  <div className="flex items-start gap-1 px-4 py-1">
+                    <div className="flex items-center">
+                      <div className="h-5 w-5 rounded-full border-2 border-[#fafafa]"></div>
+                    </div>
+                    <p className="flex-1 text-sm leading-5 text-[#a3a3a3]">
+                      Usages: 15
+                    </p>
+                  </div>
+                  <div className="flex items-start gap-1 px-4 py-1">
+                    <div className="flex items-center">
+                      <div className="h-5 w-5 rounded-full border-2 border-[#fafafa]"></div>
+                    </div>
+                    <p className="flex-1 text-sm leading-5 text-[#a3a3a3]">
+                      Allocatable Capacity: 110
+                    </p>
+                  </div>
+                  <div className="flex items-start gap-1 px-4 py-1">
+                    <div className="flex items-center">
+                      <div className="h-5 w-5 rounded-full border-2 border-[#fafafa]"></div>
+                    </div>
+                    <p className="flex-1 text-sm leading-5 text-[#a3a3a3]">
+                      Capacity: 110
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* 경고 테이블 */}
+        <div className="flex flex-1 flex-col items-start gap-1 self-stretch">
+          {/* 헤더 */}
+          <div className="flex items-center gap-1">
+            <TriangleAlert className="h-4 w-4 text-amber-500" />
+            <span className="text-lg leading-none font-normal text-amber-500">
+              Warnings
+            </span>
+            <span className="text-muted-foreground text-base leading-6 font-light">
+              (3)
+            </span>
+          </div>
+
+          {/* 테이블 */}
+          <div className="flex flex-col items-start self-stretch">
+            <Table className="w-full table-fixed">
               <TableHeader>
-                <TableRow className="border-gray-800">
-                  <TableHead className="text-gray-400">Head Text</TableHead>
-                  <TableHead className="text-gray-400">Head Text</TableHead>
-                  <TableHead className="text-gray-400">Head Text</TableHead>
-                  <TableHead className="text-gray-400">Head Text</TableHead>
-                  <TableHead className="text-gray-400">Head Text</TableHead>
-                  <TableHead className="text-gray-400"></TableHead>
+                <TableRow className="border-border">
+                  <TableHead className="text-foreground w-1/5 text-sm leading-5 font-medium">
+                    Head Text
+                  </TableHead>
+                  <TableHead className="text-foreground w-1/5 text-sm leading-5 font-medium">
+                    Head Text
+                  </TableHead>
+                  <TableHead className="text-foreground w-1/5 text-sm leading-5 font-medium">
+                    Head Text
+                  </TableHead>
+                  <TableHead className="text-foreground w-1/5 text-sm leading-5 font-medium">
+                    Head Text
+                  </TableHead>
+                  <TableHead className="text-foreground w-1/5 text-sm leading-5 font-medium">
+                    Head Text
+                  </TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {warningData.map((row) => (
-                  <TableRow key={row.id} className="border-gray-800">
-                    <TableCell className="text-gray-300">{row.col1}</TableCell>
-                    <TableCell className="text-gray-300">{row.col2}</TableCell>
-                    <TableCell className="text-gray-300">{row.col3}</TableCell>
-                    <TableCell className="text-gray-300">{row.col4}</TableCell>
-                    <TableCell>
-                      {row.isVerified ? (
-                        <Badge className="bg-blue-600 text-white hover:bg-blue-700">
-                          ✓ {row.badge}
-                        </Badge>
-                      ) : (
-                        <Badge
-                          variant="secondary"
-                          className="bg-gray-700 text-gray-300"
-                        >
-                          {row.badge}
-                        </Badge>
-                      )}
+                  <TableRow key={row.id} className="border-border">
+                    <TableCell className="text-foreground text-sm leading-5 font-normal">
+                      {row.col1}
+                    </TableCell>
+                    <TableCell className="text-foreground text-sm leading-5 font-normal">
+                      {row.col2}
+                    </TableCell>
+                    <TableCell className="text-foreground text-sm leading-5 font-normal">
+                      {row.col3}
+                    </TableCell>
+                    <TableCell className="text-foreground text-sm leading-5 font-normal">
+                      {row.col4}
                     </TableCell>
                     <TableCell>
-                      <button className="text-gray-400 hover:text-gray-200">
-                        ⋮
-                      </button>
+                      {row.isVerified ? (
+                        <Badge
+                          variant="secondary"
+                          className="bg-blue-500 text-white dark:bg-blue-600"
+                        >
+                          <BadgeCheck className="h-3 w-3" />
+                          {row.badge}
+                        </Badge>
+                      ) : (
+                        <Badge variant="default">{row.badge}</Badge>
+                      )}
                     </TableCell>
                   </TableRow>
                 ))}
               </TableBody>
             </Table>
+          </div>
 
-            <div className="mt-4 text-center">
-              <button className="text-sm text-gray-400 hover:text-gray-200">
-                Caption text
-              </button>
-            </div>
-          </CardContent>
-        </Card>
+          {/* Caption */}
+          <div className="flex flex-shrink-0 items-center justify-center gap-2.5 self-stretch pt-4">
+            <span className="text-muted-foreground flex-1 text-center text-sm leading-5 font-normal">
+              Caption text
+            </span>
+          </div>
+        </div>
       </div>
     </div>
   );
