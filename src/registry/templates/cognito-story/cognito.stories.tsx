@@ -1,6 +1,11 @@
 import * as React from "react";
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { LoginForm, CognitoTemplate, SignupForm } from "./cognito-template";
+import {
+  LoginForm,
+  CognitoTemplate,
+  SignupForm,
+  EmailAuthenticationForm,
+} from "./cognito-template";
 
 /**
  * AWS Cognito 인증 시스템을 위한 종합적인 템플릿입니다.
@@ -109,6 +114,24 @@ export const SignUp: Story = {
 };
 
 /**
+ * 이메일 인증 화면입니다.
+ * 이메일 기반 인증을 위한 독립적인 폼입니다.
+ */
+export const EmailAuthentication: Story = {
+  render: () => <EmailAuthenticationForm />,
+  parameters: {
+    layout: "fullscreen",
+  },
+  decorators: [
+    (Story) => (
+      <div className="bg-background flex min-h-svh flex-col items-center justify-center p-6 md:p-10">
+        <Story />
+      </div>
+    ),
+  ],
+};
+
+/**
  * 비밀번호 재설정 요청 화면입니다.
  * 이메일 주소 입력으로 재설정 링크를 요청합니다.
  */
@@ -145,32 +168,5 @@ export const VerifyEmail: Story = {
 export const ChangePassword: Story = {
   args: {
     initialView: "change-password",
-  },
-};
-
-/**
- * 접근성 테스트용 스토리입니다.
- * 키보드 네비게이션과 스크린 리더 지원을 확인합니다.
- */
-export const AccessibilityTest: Story = {
-  args: {
-    enablePasswordToggle: true,
-    enableSocialLogin: true,
-  },
-  parameters: {
-    a11y: {
-      config: {
-        rules: [
-          {
-            id: "color-contrast",
-            enabled: true,
-          },
-          {
-            id: "keyboard-navigation",
-            enabled: true,
-          },
-        ],
-      },
-    },
   },
 };

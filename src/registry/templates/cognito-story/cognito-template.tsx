@@ -23,6 +23,11 @@ import {
   InputGroupButton,
   InputGroupInput,
 } from "@/components/ui/input-group";
+import {
+  InputOTP,
+  InputOTPGroup,
+  InputOTPSlot,
+} from "@/components/ui/input-otp";
 import { Eye, EyeOff, ArrowLeft, GalleryVerticalEnd } from "lucide-react";
 
 /**
@@ -113,9 +118,75 @@ export function LoginForm({
               <Field>
                 <Button type="submit">Login</Button>
                 <FieldDescription className="text-center">
-                  Don&apos;t have an account? <a href="#">Sign up</a>
+                  Don&apos;t have an account?{" "}
+                  <a href="/?path=/story/templates-cognito--sign-up">Sign up</a>
                 </FieldDescription>
               </Field>
+            </FieldGroup>
+          </form>
+        </CardContent>
+      </Card>
+    </div>
+  );
+}
+
+/**
+ * 🎯 목적: 이메일 인증을 위한 OTP 인증 폼 (otp-03 블록 기반)
+ */
+export function EmailAuthenticationForm({
+  className,
+  ...props
+}: React.ComponentProps<"div">) {
+  return (
+    <div className={cn("flex flex-col gap-6", className)} {...props}>
+      <a href="#" className="flex items-center gap-1 self-center font-medium">
+        <Avatar className="size-10 rounded-md">
+          <AvatarImage src="/images/apps/skuber.svg" alt="Skuber+ Logo" />
+          <AvatarFallback className="bg-primary text-primary-foreground rounded-md">
+            <GalleryVerticalEnd className="size-4" />
+          </AvatarFallback>
+        </Avatar>
+        <span className="text-3xl leading-none font-medium">Skuber+</span>
+      </a>
+      <Card className="w-80">
+        <CardHeader className="text-center">
+          <CardTitle className="text-xl">Enter verification code</CardTitle>
+          <CardDescription>
+            We sent a 6-digit code to your email:
+            <br />
+            useremail@domain.com
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <form>
+            <FieldGroup>
+              <Field>
+                <FieldLabel htmlFor="otp" className="sr-only">
+                  Verification code
+                </FieldLabel>
+                <div className="flex justify-center">
+                  <InputOTP maxLength={6} id="otp" required>
+                    <InputOTPGroup className="gap-2.5 *:data-[slot=input-otp-slot]:rounded-md *:data-[slot=input-otp-slot]:border">
+                      <InputOTPSlot index={0} />
+                      <InputOTPSlot index={1} />
+                      <InputOTPSlot index={2} />
+                      <InputOTPSlot index={3} />
+                      <InputOTPSlot index={4} />
+                      <InputOTPSlot index={5} />
+                    </InputOTPGroup>
+                  </InputOTP>
+                </div>
+                <FieldDescription className="text-center">
+                  Please enter the code.
+                </FieldDescription>
+              </Field>
+              <Button type="submit">Verify</Button>
+              <FieldDescription className="text-center">
+                Didn&apos;t receive the code?{" "}
+                <a href="#" className="underline underline-offset-4">
+                  Resend
+                </a>
+              </FieldDescription>
             </FieldGroup>
           </form>
         </CardContent>
@@ -237,7 +308,8 @@ export function SignupForm({
               <Field>
                 <Button type="submit">Sign up</Button>
                 <FieldDescription className="text-center">
-                  Already have an account? <a href="#">Log in</a>
+                  Already have an account?{" "}
+                  <a href="/?path=/story/templates-cognito--login">Log in</a>
                 </FieldDescription>
               </Field>
             </FieldGroup>

@@ -79,7 +79,7 @@ const preview: Preview = {
         "violet-light": "theme-default-light theme-violet-light",
         "violet-dark": "theme-default-dark theme-violet-dark",
       },
-      defaultTheme: "blue-light",
+      defaultTheme: "blue-dark",
       parentSelector: "html",
     }),
   ],
