@@ -12,9 +12,15 @@ import {
 } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import {
+  Item,
+  ItemContent,
+  ItemGroup,
+  ItemMedia,
+  ItemTitle,
+} from "@/components/ui/item";
+import {
   Card,
   CardContent,
-  CardDescription,
   CardFooter,
   CardHeader,
   CardTitle,
@@ -53,6 +59,7 @@ const cpuData = [
   { metric: "requests", value: 1.1, fill: "var(--color-requests)" },
   { metric: "limits", value: 0.2, fill: "var(--color-limits)" },
   { metric: "allocatable", value: 4.0, fill: "var(--color-allocatable)" },
+  { metric: "capacity", value: 4.0, fill: "var(--color-capacity)" },
 ];
 
 /**
@@ -63,6 +70,7 @@ const memoryData = [
   { metric: "requests", value: 304.0, fill: "var(--color-requests)" },
   { metric: "limits", value: 468.0, fill: "var(--color-limits)" },
   { metric: "allocatable", value: 3700, fill: "var(--color-allocatable)" },
+  { metric: "capacity", value: 3800, fill: "var(--color-capacity)" },
 ];
 
 /**
@@ -158,6 +166,10 @@ export function ChartData({ className }: ChartDataProps) {
       label: "Allocatable",
       color: "var(--chart-4)",
     },
+    capacity: {
+      label: "Capacity",
+      color: "var(--chart-5)",
+    },
   } satisfies ChartConfig;
 
   // 🎯 목적: Memory Radial 차트 설정
@@ -180,6 +192,10 @@ export function ChartData({ className }: ChartDataProps) {
     allocatable: {
       label: "Allocatable",
       color: "var(--chart-4)",
+    },
+    capacity: {
+      label: "Capacity",
+      color: "var(--chart-5)",
     },
   } satisfies ChartConfig;
 
@@ -204,233 +220,352 @@ export function ChartData({ className }: ChartDataProps) {
 
   return (
     <div className={`bg-background min-h-screen w-full p-5 ${className || ""}`}>
-      <div className="mx-auto max-w-[1400px] space-y-3">
-        {/* 헤더 영역 */}
-        <div className="flex items-center justify-between">
-          <h1 className="text-foreground text-lg leading-none font-normal">
-            {"{Menuname}"}
-          </h1>
+      <div className="mx-auto flex max-w-[1400px] flex-col gap-5">
+        {/* 헤더와 차트 영역 */}
+        <div className="flex flex-col gap-3">
+          {/* 헤더 영역 */}
+          <div className="flex items-center justify-between">
+            <h1 className="text-foreground text-lg leading-none font-normal">
+              {"{Menuname}"}
+            </h1>
 
-          {/* Master/Worker 노드 토글 */}
-          <ToggleGroup
-            type="single"
-            value={selectedNode}
-            onValueChange={(value) => value && setSelectedNode(value)}
-            variant="outline"
-            size="default"
-            className="w-[360px]"
-          >
-            <ToggleGroupItem value="master" aria-label="Master Nodes">
-              Master Nodes
-            </ToggleGroupItem>
-            <ToggleGroupItem value="worker" aria-label="Worker Nodes">
-              Worker Nodes
-            </ToggleGroupItem>
-          </ToggleGroup>
-        </div>
-
-        {/* 차트 영역 - 1단 레이아웃 */}
-        <div className="border-input flex gap-6 rounded-md border">
-          {/* 왼쪽: 시간별 사용량 차트 */}
-          <div className="border-input flex min-w-0 flex-1 flex-col items-start gap-4 border-r bg-transparent p-4">
-            {/* 제목과 토글 영역 */}
-            <div className="flex items-center justify-between gap-5 self-stretch">
-              <h3 className="text-foreground text-lg leading-none font-normal">
-                Hourly usage
-              </h3>
-
-              {/* CPU/Memory 토글 - shadcn/ui ToggleGroup */}
-              <ToggleGroup
-                type="single"
-                value={selectedMetric}
-                onValueChange={(value) => value && setSelectedMetric(value)}
-                variant="outline"
-                size="sm"
-                className="w-[200px]"
-              >
-                <ToggleGroupItem
-                  value="cpu"
-                  aria-label="CPU"
-                  className="flex-1"
-                >
-                  CPU
-                </ToggleGroupItem>
-                <ToggleGroupItem
-                  value="memory"
-                  aria-label="Memory"
-                  className="flex-1"
-                >
-                  Memory
-                </ToggleGroupItem>
-              </ToggleGroup>
-            </div>
-
-            {/* 차트 래퍼 */}
-            <div className="flex flex-grow flex-col items-start gap-2.5 self-stretch">
-              <ChartContainer
-                config={hourlyChartConfig}
-                className="h-[340px] w-full"
-              >
-                <AreaChart
-                  accessibilityLayer
-                  data={hourlyData}
-                  margin={{
-                    left: 6,
-                    right: 12,
-                  }}
-                >
-                  <CartesianGrid vertical={false} />
-                  <XAxis
-                    dataKey="hour"
-                    tickLine={false}
-                    axisLine={false}
-                    tickMargin={8}
-                    tickFormatter={(value) => value}
-                  />
-                  <YAxis
-                    tickLine={false}
-                    axisLine={false}
-                    tickMargin={8}
-                    tickFormatter={(value) => {
-                      if (value >= 1000) {
-                        return `${(value / 1000).toFixed(1)}GiB`;
-                      }
-                      return `${value}MiB`;
-                    }}
-                  />
-                  <ChartTooltip
-                    cursor={false}
-                    content={<ChartTooltipContent hideLabel />}
-                  />
-                  <Area
-                    dataKey="value"
-                    type="step"
-                    fill="var(--color-hourly)"
-                    fillOpacity={0.4}
-                    stroke="var(--color-hourly)"
-                  />
-                </AreaChart>
-              </ChartContainer>
-            </div>
+            {/* Master/Worker 노드 토글 */}
+            <ToggleGroup
+              type="single"
+              value={selectedNode}
+              onValueChange={(value) => value && setSelectedNode(value)}
+              variant="outline"
+              size="default"
+              className="w-[360px]"
+            >
+              <ToggleGroupItem value="master" aria-label="Master Nodes">
+                Master Nodes
+              </ToggleGroupItem>
+              <ToggleGroupItem value="worker" aria-label="Worker Nodes">
+                Worker Nodes
+              </ToggleGroupItem>
+            </ToggleGroup>
           </div>
 
-          {/* 오른쪽: Usage Type Distribution Chart */}
-          <div className="flex min-w-0 flex-1 flex-col items-start gap-4 self-stretch p-4">
-            {/* 제목 */}
-            <div className="flex items-center gap-2.5 self-stretch">
-              <h3 className="text-foreground text-lg leading-none font-normal">
-                Usage Type Distribution Chart
-              </h3>
+          {/* 차트 영역 - 1단 레이아웃 */}
+          <div className="border-input flex rounded-md border">
+            {/* 왼쪽: 시간별 사용량 차트 */}
+            <div className="border-input flex min-w-0 flex-1 flex-col items-start gap-4 border-r bg-transparent p-4">
+              {/* 제목과 토글 영역 */}
+              <div className="flex items-center justify-between gap-5 self-stretch">
+                <h3 className="text-foreground text-sm leading-none font-medium">
+                  Hourly usage
+                </h3>
+
+                {/* CPU/Memory 토글 - shadcn/ui ToggleGroup */}
+                <ToggleGroup
+                  type="single"
+                  value={selectedMetric}
+                  onValueChange={(value) => value && setSelectedMetric(value)}
+                  variant="outline"
+                  size="sm"
+                  className="w-[160px]"
+                >
+                  <ToggleGroupItem
+                    value="cpu"
+                    aria-label="CPU"
+                    className="flex-1"
+                  >
+                    CPU
+                  </ToggleGroupItem>
+                  <ToggleGroupItem
+                    value="memory"
+                    aria-label="Memory"
+                    className="flex-1"
+                  >
+                    Memory
+                  </ToggleGroupItem>
+                </ToggleGroup>
+              </div>
+
+              {/* 차트 래퍼 */}
+              <div className="flex flex-grow flex-col items-start gap-2.5 self-stretch">
+                <ChartContainer
+                  config={hourlyChartConfig}
+                  className="h-[340px] w-full"
+                >
+                  <AreaChart
+                    accessibilityLayer
+                    data={hourlyData}
+                    margin={{
+                      left: 6,
+                      right: 12,
+                    }}
+                  >
+                    <CartesianGrid vertical={false} />
+                    <XAxis
+                      dataKey="hour"
+                      tickLine={false}
+                      axisLine={false}
+                      tickMargin={8}
+                      tickFormatter={(value) => value}
+                    />
+                    <YAxis
+                      tickLine={false}
+                      axisLine={false}
+                      tickMargin={8}
+                      tickFormatter={(value) => {
+                        if (value >= 1000) {
+                          return `${(value / 1000).toFixed(1)}GiB`;
+                        }
+                        return `${value}MiB`;
+                      }}
+                    />
+                    <ChartTooltip
+                      cursor={false}
+                      content={<ChartTooltipContent hideLabel />}
+                    />
+                    <Area
+                      dataKey="value"
+                      type="step"
+                      fill="var(--color-hourly)"
+                      fillOpacity={0.4}
+                      stroke="var(--color-hourly)"
+                    />
+                  </AreaChart>
+                </ChartContainer>
+              </div>
             </div>
 
-            {/* 카드들 */}
-            <div className="flex min-w-0 flex-1 items-start gap-4 self-stretch">
-              {/* CPU Card */}
-              <Card className="flex min-w-0 flex-1 flex-col">
-                <CardHeader className="items-center pb-2">
-                  <CardTitle className="text-base">CPU</CardTitle>
-                  <CardDescription className="text-xs">
-                    Resource Usage
-                  </CardDescription>
-                </CardHeader>
-                <CardContent className="flex-1 pb-2">
-                  <ChartContainer
-                    config={cpuChartConfig}
-                    className="mx-auto aspect-square max-h-[120px]"
-                  >
-                    <RadialBarChart
-                      data={cpuData}
-                      innerRadius={20}
-                      outerRadius={50}
-                    >
-                      <ChartTooltip
-                        cursor={false}
-                        content={
-                          <ChartTooltipContent hideLabel nameKey="metric" />
-                        }
-                      />
-                      <RadialBar dataKey="value" background />
-                    </RadialBarChart>
-                  </ChartContainer>
-                </CardContent>
-                <CardFooter className="flex-col gap-1 text-xs">
-                  <div className="text-muted-foreground text-center leading-tight">
-                    Usage: 0.06 | Requests: 1.10 | Limits: 0.20 | Allocatable:
-                    4.00
-                  </div>
-                </CardFooter>
-              </Card>
+            {/* 오른쪽: Usage Type Distribution Chart */}
+            <div className="flex min-w-0 flex-1 flex-col items-start gap-2 self-stretch p-4">
+              {/* 제목 */}
+              <div className="flex h-8 items-center gap-2.5 self-stretch">
+                <h3 className="text-foreground text-sm leading-none font-medium">
+                  Usage Type Distribution Chart
+                </h3>
+              </div>
 
-              {/* Memory Card */}
-              <Card className="flex min-w-0 flex-1 flex-col">
-                <CardHeader className="items-center pb-2">
-                  <CardTitle className="text-base">Memory</CardTitle>
-                  <CardDescription className="text-xs">
-                    Resource Usage
-                  </CardDescription>
-                </CardHeader>
-                <CardContent className="flex-1 pb-2">
-                  <ChartContainer
-                    config={memoryChartConfig}
-                    className="mx-auto aspect-square max-h-[120px]"
-                  >
-                    <RadialBarChart
-                      data={memoryData}
-                      innerRadius={20}
-                      outerRadius={50}
+              {/* 카드들 */}
+              <div className="flex min-w-0 flex-1 items-stretch gap-4 self-stretch">
+                {/* CPU Card */}
+                <Card className="bg-background flex min-w-0 flex-1 flex-col gap-1 rounded-md p-3">
+                  <CardHeader className="items-center gap-0 p-0">
+                    <CardTitle className="text-base">CPU</CardTitle>
+                  </CardHeader>
+                  <CardContent className="flex-1 p-0 pb-2">
+                    <ChartContainer
+                      config={cpuChartConfig}
+                      className="mx-auto aspect-square max-h-[120px]"
                     >
-                      <ChartTooltip
-                        cursor={false}
-                        content={
-                          <ChartTooltipContent hideLabel nameKey="metric" />
-                        }
-                      />
-                      <RadialBar dataKey="value" background />
-                    </RadialBarChart>
-                  </ChartContainer>
-                </CardContent>
-                <CardFooter className="flex-col gap-1 text-xs">
-                  <div className="text-muted-foreground text-center leading-tight">
-                    Usage: 1.3GiB | Requests: 304.0MiB | Limits: 468.0MiB |
-                    Allocatable: 3.7GiB
-                  </div>
-                </CardFooter>
-              </Card>
+                      <RadialBarChart
+                        data={cpuData}
+                        innerRadius={20}
+                        outerRadius={50}
+                      >
+                        <ChartTooltip
+                          cursor={false}
+                          content={
+                            <ChartTooltipContent hideLabel nameKey="metric" />
+                          }
+                        />
+                        <RadialBar dataKey="value" background />
+                      </RadialBarChart>
+                    </ChartContainer>
+                  </CardContent>
+                  <CardFooter className="p-0">
+                    <ItemGroup className="w-full gap-0.5">
+                      <Item className="gap-1.5 px-0.5 py-0 text-sm">
+                        <ItemMedia variant="icon" className="h-2 w-2">
+                          <div className="bg-chart-1 h-1 w-1 rounded-full" />
+                        </ItemMedia>
+                        <ItemContent>
+                          <ItemTitle className="text-muted-foreground text-sm leading-normal font-normal">
+                            Usage: 0.06
+                          </ItemTitle>
+                        </ItemContent>
+                      </Item>
+                      <Item className="gap-1.5 px-0.5 py-0 text-sm">
+                        <ItemMedia variant="icon" className="h-2 w-2">
+                          <div className="bg-chart-2 h-1 w-1 rounded-full" />
+                        </ItemMedia>
+                        <ItemContent>
+                          <ItemTitle className="text-muted-foreground text-sm leading-normal font-normal">
+                            Requests: 1.10
+                          </ItemTitle>
+                        </ItemContent>
+                      </Item>
+                      <Item className="gap-1.5 px-0.5 py-0 text-sm">
+                        <ItemMedia variant="icon" className="h-2 w-2">
+                          <div className="bg-chart-3 h-1 w-1 rounded-full" />
+                        </ItemMedia>
+                        <ItemContent>
+                          <ItemTitle className="text-muted-foreground text-sm leading-normal font-normal">
+                            Limits: 0.20
+                          </ItemTitle>
+                        </ItemContent>
+                      </Item>
+                      <Item className="gap-1.5 px-0.5 py-0 text-sm">
+                        <ItemMedia variant="icon" className="h-2 w-2">
+                          <div className="bg-chart-4 h-1 w-1 rounded-full" />
+                        </ItemMedia>
+                        <ItemContent>
+                          <ItemTitle className="text-muted-foreground text-sm leading-normal font-normal">
+                            Allocatable Capacity: 4.00
+                          </ItemTitle>
+                        </ItemContent>
+                      </Item>
+                      <Item className="gap-1.5 px-0.5 py-0 text-sm">
+                        <ItemMedia variant="icon" className="h-2 w-2">
+                          <div className="bg-chart-5 h-1 w-1 rounded-full" />
+                        </ItemMedia>
+                        <ItemContent>
+                          <ItemTitle className="text-muted-foreground text-sm leading-normal font-normal">
+                            Capacity: 4.00
+                          </ItemTitle>
+                        </ItemContent>
+                      </Item>
+                    </ItemGroup>
+                  </CardFooter>
+                </Card>
 
-              {/* Pods Card */}
-              <Card className="flex min-w-0 flex-1 flex-col">
-                <CardHeader className="items-center pb-2">
-                  <CardTitle className="text-base">Pods</CardTitle>
-                  <CardDescription className="text-xs">
-                    Resource Usage
-                  </CardDescription>
-                </CardHeader>
-                <CardContent className="flex-1 pb-2">
-                  <ChartContainer
-                    config={podsChartConfig}
-                    className="mx-auto aspect-square max-h-[120px]"
-                  >
-                    <RadialBarChart
-                      data={podsData}
-                      innerRadius={20}
-                      outerRadius={50}
+                {/* Memory Card */}
+                <Card className="bg-background flex min-w-0 flex-1 flex-col gap-1 rounded-md p-3">
+                  <CardHeader className="items-center gap-0 p-0">
+                    <CardTitle className="text-base">Memory</CardTitle>
+                  </CardHeader>
+                  <CardContent className="flex-1 p-0 pb-2">
+                    <ChartContainer
+                      config={memoryChartConfig}
+                      className="mx-auto aspect-square max-h-[120px]"
                     >
-                      <ChartTooltip
-                        cursor={false}
-                        content={
-                          <ChartTooltipContent hideLabel nameKey="metric" />
-                        }
-                      />
-                      <RadialBar dataKey="value" background />
-                    </RadialBarChart>
-                  </ChartContainer>
-                </CardContent>
-                <CardFooter className="flex-col gap-1 text-xs">
-                  <div className="text-muted-foreground text-center leading-tight">
-                    Usage: 15 | Allocatable: 110 | Capacity: 110
-                  </div>
-                </CardFooter>
-              </Card>
+                      <RadialBarChart
+                        data={memoryData}
+                        innerRadius={20}
+                        outerRadius={50}
+                      >
+                        <ChartTooltip
+                          cursor={false}
+                          content={
+                            <ChartTooltipContent hideLabel nameKey="metric" />
+                          }
+                        />
+                        <RadialBar dataKey="value" background />
+                      </RadialBarChart>
+                    </ChartContainer>
+                  </CardContent>
+                  <CardFooter className="p-0">
+                    <ItemGroup className="w-full gap-0.5">
+                      <Item className="gap-1.5 px-0.5 py-0 text-sm">
+                        <ItemMedia variant="icon" className="h-2 w-2">
+                          <div className="bg-chart-1 h-1 w-1 rounded-full" />
+                        </ItemMedia>
+                        <ItemContent>
+                          <ItemTitle className="text-muted-foreground text-sm leading-normal font-normal">
+                            Usage: 1.3GiB
+                          </ItemTitle>
+                        </ItemContent>
+                      </Item>
+                      <Item className="gap-1.5 px-0.5 py-0 text-sm">
+                        <ItemMedia variant="icon" className="h-2 w-2">
+                          <div className="bg-chart-2 h-1 w-1 rounded-full" />
+                        </ItemMedia>
+                        <ItemContent>
+                          <ItemTitle className="text-muted-foreground text-sm leading-normal font-normal">
+                            Requests: 304.0MiB
+                          </ItemTitle>
+                        </ItemContent>
+                      </Item>
+                      <Item className="gap-1.5 px-0.5 py-0 text-sm">
+                        <ItemMedia variant="icon" className="h-2 w-2">
+                          <div className="bg-chart-3 h-1 w-1 rounded-full" />
+                        </ItemMedia>
+                        <ItemContent>
+                          <ItemTitle className="text-muted-foreground text-sm leading-normal font-normal">
+                            Limits: 468.0MiB
+                          </ItemTitle>
+                        </ItemContent>
+                      </Item>
+                      <Item className="gap-1.5 px-0.5 py-0 text-sm">
+                        <ItemMedia variant="icon" className="h-2 w-2">
+                          <div className="bg-chart-4 h-1 w-1 rounded-full" />
+                        </ItemMedia>
+                        <ItemContent>
+                          <ItemTitle className="text-muted-foreground text-sm leading-normal font-normal">
+                            Allocatable Capacity: 3.7GiB
+                          </ItemTitle>
+                        </ItemContent>
+                      </Item>
+                      <Item className="gap-1.5 px-0.5 py-0 text-sm">
+                        <ItemMedia variant="icon" className="h-2 w-2">
+                          <div className="bg-chart-5 h-1 w-1 rounded-full" />
+                        </ItemMedia>
+                        <ItemContent>
+                          <ItemTitle className="text-muted-foreground text-sm leading-normal font-normal">
+                            Capacity: 3.8GiB
+                          </ItemTitle>
+                        </ItemContent>
+                      </Item>
+                    </ItemGroup>
+                  </CardFooter>
+                </Card>
+
+                {/* Pods Card */}
+                <Card className="bg-background flex min-w-0 flex-1 flex-col gap-1 rounded-md p-3">
+                  <CardHeader className="items-center gap-0 p-0">
+                    <CardTitle className="text-base">Pods</CardTitle>
+                  </CardHeader>
+                  <CardContent className="flex-1 p-0 pb-2">
+                    <ChartContainer
+                      config={podsChartConfig}
+                      className="mx-auto aspect-square max-h-[120px]"
+                    >
+                      <RadialBarChart
+                        data={podsData}
+                        innerRadius={20}
+                        outerRadius={50}
+                      >
+                        <ChartTooltip
+                          cursor={false}
+                          content={
+                            <ChartTooltipContent hideLabel nameKey="metric" />
+                          }
+                        />
+                        <RadialBar dataKey="value" background />
+                      </RadialBarChart>
+                    </ChartContainer>
+                  </CardContent>
+                  <CardFooter className="p-0">
+                    <ItemGroup className="w-full gap-0.5">
+                      <Item className="gap-1.5 px-0.5 py-0 text-sm">
+                        <ItemMedia variant="icon" className="h-2 w-2">
+                          <div className="bg-chart-1 h-1 w-1 rounded-full" />
+                        </ItemMedia>
+                        <ItemContent>
+                          <ItemTitle className="text-muted-foreground text-sm leading-normal font-normal">
+                            Usage: 15
+                          </ItemTitle>
+                        </ItemContent>
+                      </Item>
+                      <Item className="gap-1.5 px-0.5 py-0 text-sm">
+                        <ItemMedia variant="icon" className="h-2 w-2">
+                          <div className="bg-chart-2 h-1 w-1 rounded-full" />
+                        </ItemMedia>
+                        <ItemContent>
+                          <ItemTitle className="text-muted-foreground text-sm leading-normal font-normal">
+                            Allocatable: 110
+                          </ItemTitle>
+                        </ItemContent>
+                      </Item>
+                      <Item className="gap-1.5 px-0.5 py-0 text-sm">
+                        <ItemMedia variant="icon" className="h-2 w-2">
+                          <div className="bg-chart-3 h-1 w-1 rounded-full" />
+                        </ItemMedia>
+                        <ItemContent>
+                          <ItemTitle className="text-muted-foreground text-sm leading-normal font-normal">
+                            Capacity: 110
+                          </ItemTitle>
+                        </ItemContent>
+                      </Item>
+                    </ItemGroup>
+                  </CardFooter>
+                </Card>
+              </div>
             </div>
           </div>
         </div>
@@ -452,7 +587,7 @@ export function ChartData({ className }: ChartDataProps) {
           <div className="flex flex-col items-start self-stretch">
             <Table className="w-full table-fixed">
               <TableHeader>
-                <TableRow className="border-border">
+                <TableRow className="border-border h-[40px]">
                   <TableHead className="text-foreground w-1/5 text-sm leading-5 font-medium">
                     Head Text
                   </TableHead>
@@ -472,7 +607,7 @@ export function ChartData({ className }: ChartDataProps) {
               </TableHeader>
               <TableBody>
                 {warningData.map((row) => (
-                  <TableRow key={row.id} className="border-border">
+                  <TableRow key={row.id} className="border-border h-[52px]">
                     <TableCell className="text-foreground text-sm leading-5 font-normal">
                       {row.col1}
                     </TableCell>
