@@ -120,17 +120,6 @@ export function LoginForm({
           </form>
         </CardContent>
       </Card>
-      <p className="text-muted-foreground px-20 text-center text-xs">
-        By clicking continue, you agree to our{" "}
-        <a href="#" className="underline underline-offset-4">
-          Terms of Service
-        </a>{" "}
-        and{" "}
-        <a href="#" className="underline underline-offset-4">
-          Privacy Policy
-        </a>
-        .
-      </p>
     </div>
   );
 }
@@ -193,7 +182,7 @@ export function SignupForm({
                       fill="currentColor"
                     />
                   </svg>
-                  Sign up with Google
+                  Sign up with Google Workspace
                 </Button>
               </Field>
               <FieldSeparator className="*:data-[slot=field-separator-content]:bg-card">
@@ -255,10 +244,17 @@ export function SignupForm({
           </form>
         </CardContent>
       </Card>
-      <FieldDescription className="px-6 text-center">
-        By clicking continue, you agree to our <a href="#">Terms of Service</a>{" "}
-        and <a href="#">Privacy Policy</a>.
-      </FieldDescription>
+      <p className="text-muted-foreground px-20 text-center text-xs">
+        By clicking continue, you agree to our{" "}
+        <a href="#" className="underline underline-offset-4">
+          Terms of Service
+        </a>{" "}
+        and{" "}
+        <a href="#" className="underline underline-offset-4">
+          Privacy Policy
+        </a>
+        .
+      </p>
     </div>
   );
 }
