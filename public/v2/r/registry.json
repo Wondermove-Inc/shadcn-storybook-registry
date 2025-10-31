@@ -2726,6 +2726,41 @@
           "type": "registry:component"
         }
       ]
+    },
+    {
+      "name": "chart-data-story",
+      "type": "registry:component",
+      "title": "Chart Data Story",
+      "description": "Dark theme system monitoring dashboard with hourly usage bar chart, radial distribution charts, and warnings table",
+      "categories": [
+        "templates",
+        "storybook",
+        "charts",
+        "dashboard",
+        "monitoring"
+      ],
+      "author": "Lloyd Richards <lloyd.d.richards@gmail.com>",
+      "registryDependencies": [
+        "chart",
+        "table",
+        "badge",
+        "toggle-group",
+        "card"
+      ],
+      "dependencies": [
+        "recharts",
+        "lucide-react"
+      ],
+      "files": [
+        {
+          "path": "src/registry/templates/contents/chart-data.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "src/registry/templates/contents/chart-data.stories.tsx",
+          "type": "registry:component"
+        }
+      ]
     }
   ]
 }
