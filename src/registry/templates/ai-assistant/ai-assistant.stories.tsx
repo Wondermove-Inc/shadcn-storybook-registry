@@ -7,8 +7,13 @@ import {
 } from "@/components/ui/resizable";
 import { AIAssistant } from "@/registry/templates/ai-assistant/ai-assistant";
 import { Button } from "@/components/ui/button";
-import { Textarea } from "@/components/ui/textarea";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import {
+  InputGroup,
+  InputGroupAddon,
+  InputGroupButton,
+  InputGroupTextarea,
+} from "@/components/ui/input-group";
 import {
   Dialog,
   DialogClose,
@@ -177,66 +182,54 @@ export const BeforeUtterance: Story = {
                   </div>
                 </div>
 
-                {/* 🎯 목적: InputGroup 컴포넌트 기반 채팅 입력 영역 */}
-                <div
-                  className="bg-secondary border-border flex w-full flex-col rounded-lg border shadow-sm"
-                  style={{ maxHeight: "400px" }}
-                >
-                  {/* Textarea 영역 with ScrollArea */}
-                  <ScrollArea className="max-h-96 p-3">
-                    <Textarea
+                {/* 🎯 목적: 공식 InputGroup 컴포넌트 기반 채팅 입력 영역 */}
+                <InputGroup className="h-auto max-h-96 w-full flex-col">
+                  {/* Textarea 영역 - 스크롤 기능 내장 */}
+                  <ScrollArea className="max-h-80 p-3">
+                    <InputGroupTextarea
                       placeholder="Ask, Search or Chat..."
                       value={message}
                       onChange={(e) => setMessage(e.target.value)}
-                      className="text-primary placeholder:text-muted-foreground min-h-0 resize-none border-0 bg-transparent p-0 text-sm leading-5 focus-visible:ring-0"
+                      className="min-h-0 resize-none px-0 py-0 text-left text-sm leading-5"
                       rows={1}
                     />
                   </ScrollArea>
 
-                  {/* InputGroupAddonBlock - 하단 컨트롤 영역 */}
-                  <div className="flex items-center justify-between px-3 pt-1.5 pb-3">
+                  {/* InputGroupAddon - 하단 컨트롤 영역 */}
+                  <InputGroupAddon align="block-end">
                     {/* 좌측 컨트롤 그룹 */}
-                    <div className="flex items-center gap-2">
+                    <div className="flex flex-1 items-center gap-2">
                       {/* Agent InputGroupButton */}
-                      <div className="flex items-start">
-                        <div className="bg-background/50 border-border flex h-7 items-center justify-center gap-1.5 rounded-full border px-2.5 shadow-sm">
-                          <Infinity className="h-4 w-4" />
-                          <span className="text-foreground text-xs leading-4 font-medium">
-                            Agent
-                          </span>
-                          <ChevronDown className="h-4 w-4" />
-                        </div>
-                      </div>
+                      <InputGroupButton
+                        size="xs"
+                        className="rounded-full border"
+                      >
+                        <Infinity className="h-4 w-4" />
+                        Agent
+                        <ChevronDown className="h-4 w-4" />
+                      </InputGroupButton>
 
                       {/* Auto InputGroupButton */}
-                      <div className="flex items-start">
-                        <div className="flex h-6 items-center justify-center gap-1 rounded-sm bg-transparent px-2">
-                          <span className="text-muted-foreground text-sm leading-5 font-medium">
-                            Auto
-                          </span>
-                          <ChevronDown className="h-4 w-4" />
-                        </div>
-                      </div>
+                      <InputGroupButton size="xs" variant="ghost">
+                        Auto
+                        <ChevronDown className="h-4 w-4" />
+                      </InputGroupButton>
                     </div>
 
                     {/* 우측 전송 버튼 그룹 */}
-                    <div className="flex items-center gap-2">
-                      <div className="flex items-start">
-                        <div
-                          className={`flex h-6 w-6 items-center justify-center rounded-full shadow-sm transition-all ${
-                            isSendEnabled
-                              ? "bg-primary hover:bg-primary/90 cursor-pointer"
-                              : "bg-muted cursor-not-allowed opacity-50"
-                          }`}
-                        >
-                          <ArrowUp
-                            className={`h-4 w-4 ${isSendEnabled ? "text-primary-foreground" : "text-muted-foreground"}`}
-                          />
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+                    <InputGroupButton
+                      size="icon-xs"
+                      className={`rounded-full ${
+                        isSendEnabled
+                          ? "bg-primary text-primary-foreground hover:bg-primary/90"
+                          : "bg-muted text-muted-foreground cursor-not-allowed opacity-50"
+                      }`}
+                      disabled={!isSendEnabled}
+                    >
+                      <ArrowUp className="h-4 w-4" />
+                    </InputGroupButton>
+                  </InputGroupAddon>
+                </InputGroup>
               </div>
 
               {/* 🎯 목적: Past Chats 섹션 */}
@@ -399,68 +392,56 @@ export const AnswersText: Story = {
                     <div className="flex flex-col items-end gap-4">
                       {/* 사용자 질문 버튼 또는 편집 InputGroup */}
                       {isEditingUserMessage ? (
-                        <div
-                          className="bg-secondary border-border flex w-full flex-col rounded-lg border shadow-sm"
-                          style={{ maxHeight: "400px" }}
-                        >
-                          {/* Textarea 영역 with ScrollArea */}
-                          <ScrollArea className="max-h-96 p-3">
-                            <Textarea
+                        <InputGroup className="h-auto max-h-96 flex-col">
+                          {/* Textarea 영역 - 스크롤 기능 내장 */}
+                          <ScrollArea className="max-h-80 p-3">
+                            <InputGroupTextarea
                               value={userMessageText}
                               onChange={(e) =>
                                 setUserMessageText(e.target.value)
                               }
                               onBlur={() => setIsEditingUserMessage(false)}
-                              className="text-primary placeholder:text-muted-foreground min-h-0 resize-none border-0 bg-transparent p-0 text-sm leading-5 focus-visible:ring-0"
+                              className="min-h-0 resize-none px-0 py-0 text-left text-sm leading-5"
                               rows={1}
                               autoFocus
                             />
                           </ScrollArea>
 
-                          {/* InputGroupAddonBlock - 하단 컨트롤 영역 */}
-                          <div className="flex items-center justify-between px-3 pt-1.5 pb-3">
+                          {/* InputGroupAddon - 하단 컨트롤 영역 */}
+                          <InputGroupAddon align="block-end">
                             {/* 좌측 컨트롤 그룹 */}
-                            <div className="flex items-center gap-2">
+                            <div className="flex flex-1 items-center gap-2">
                               {/* Agent InputGroupButton */}
-                              <div className="flex items-start">
-                                <div className="bg-background/50 border-border flex h-7 items-center justify-center gap-1.5 rounded-full border px-2.5 shadow-sm">
-                                  <Infinity className="h-4 w-4" />
-                                  <span className="text-foreground text-xs leading-4 font-medium">
-                                    Agent
-                                  </span>
-                                  <ChevronDown className="h-4 w-4" />
-                                </div>
-                              </div>
+                              <InputGroupButton
+                                size="xs"
+                                className="rounded-full border"
+                              >
+                                <Infinity className="h-4 w-4" />
+                                Agent
+                                <ChevronDown className="h-4 w-4" />
+                              </InputGroupButton>
 
                               {/* Auto InputGroupButton */}
-                              <div className="flex items-start">
-                                <div className="flex h-6 items-center justify-center gap-1 rounded-sm bg-transparent px-2">
-                                  <span className="text-muted-foreground text-sm leading-5 font-medium">
-                                    Auto
-                                  </span>
-                                  <ChevronDown className="h-4 w-4" />
-                                </div>
-                              </div>
+                              <InputGroupButton size="xs" variant="ghost">
+                                Auto
+                                <ChevronDown className="h-4 w-4" />
+                              </InputGroupButton>
                             </div>
 
                             {/* 우측 전송 버튼 그룹 */}
-                            <div className="flex items-center gap-2">
-                              <div className="flex items-start">
-                                <div
-                                  className={`flex h-6 w-6 items-center justify-center rounded-full shadow-sm transition-all ${
-                                    userMessageText.trim().length > 0
-                                      ? "bg-primary hover:bg-primary/90 cursor-pointer"
-                                      : "bg-muted cursor-not-allowed opacity-50"
-                                  }`}
-                                >
-                                  <ArrowUp
-                                    className={`h-4 w-4 ${userMessageText.trim().length > 0 ? "text-primary-foreground" : "text-muted-foreground"}`}
-                                  />
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
+                            <InputGroupButton
+                              size="icon-xs"
+                              className={`rounded-full ${
+                                userMessageText.trim().length > 0
+                                  ? "bg-primary text-primary-foreground hover:bg-primary/90"
+                                  : "bg-muted text-muted-foreground cursor-not-allowed opacity-50"
+                              }`}
+                              disabled={userMessageText.trim().length === 0}
+                            >
+                              <ArrowUp className="h-4 w-4" />
+                            </InputGroupButton>
+                          </InputGroupAddon>
+                        </InputGroup>
                       ) : (
                         <Button
                           variant="outline"
@@ -543,66 +524,51 @@ export const AnswersText: Story = {
                 </div>
               </div>
 
-              {/* 🎯 목적: InputGroup 컴포넌트 (뷰포트 하단 고정) */}
-              <div
-                className="bg-secondary border-border absolute right-4 bottom-4 left-4 flex flex-col rounded-lg border shadow-sm"
-                style={{ maxHeight: "400px" }}
-              >
-                {/* Textarea 영역 with ScrollArea */}
-                <ScrollArea className="max-h-96 p-3">
-                  <Textarea
+              {/* 🎯 목적: 공식 InputGroup 컴포넌트 (뷰포트 하단 고정) */}
+              <InputGroup className="absolute right-0 bottom-4 left-0 h-auto max-h-96 flex-col">
+                {/* Textarea 영역 - 스크롤 기능 내장 */}
+                <ScrollArea className="max-h-80 p-3">
+                  <InputGroupTextarea
                     placeholder="Ask, Search or Chat..."
                     value={message}
                     onChange={(e) => setMessage(e.target.value)}
-                    className="text-primary placeholder:text-muted-foreground min-h-0 resize-none border-0 bg-transparent p-0 text-sm leading-5 focus-visible:ring-0"
+                    className="min-h-0 resize-none px-0 py-0 text-left text-sm leading-5"
                     rows={1}
                   />
                 </ScrollArea>
 
-                {/* InputGroupAddonBlock - 하단 컨트롤 영역 */}
-                <div className="flex items-center justify-between px-3 pt-1.5 pb-3">
+                {/* InputGroupAddon - 하단 컨트롤 영역 */}
+                <InputGroupAddon align="block-end">
                   {/* 좌측 컨트롤 그룹 */}
-                  <div className="flex items-center gap-2">
+                  <div className="flex flex-1 items-center gap-2">
                     {/* Agent InputGroupButton */}
-                    <div className="flex items-start">
-                      <div className="bg-background/50 border-border flex h-7 items-center justify-center gap-1.5 rounded-full border px-2.5 shadow-sm">
-                        <Infinity className="h-4 w-4" />
-                        <span className="text-foreground text-xs leading-4 font-medium">
-                          Agent
-                        </span>
-                        <ChevronDown className="h-4 w-4" />
-                      </div>
-                    </div>
+                    <InputGroupButton size="xs" className="rounded-full border">
+                      <Infinity className="h-4 w-4" />
+                      Agent
+                      <ChevronDown className="h-4 w-4" />
+                    </InputGroupButton>
 
                     {/* Auto InputGroupButton */}
-                    <div className="flex items-start">
-                      <div className="flex h-6 items-center justify-center gap-1 rounded-sm bg-transparent px-2">
-                        <span className="text-muted-foreground text-sm leading-5 font-medium">
-                          Auto
-                        </span>
-                        <ChevronDown className="h-4 w-4" />
-                      </div>
-                    </div>
+                    <InputGroupButton size="xs" variant="ghost">
+                      Auto
+                      <ChevronDown className="h-4 w-4" />
+                    </InputGroupButton>
                   </div>
 
                   {/* 우측 전송 버튼 그룹 */}
-                  <div className="flex items-center gap-2">
-                    <div className="flex items-start">
-                      <div
-                        className={`flex h-6 w-6 items-center justify-center rounded-full shadow-sm transition-all ${
-                          isSendEnabled
-                            ? "bg-primary hover:bg-primary/90 cursor-pointer"
-                            : "bg-muted cursor-not-allowed opacity-50"
-                        }`}
-                      >
-                        <ArrowUp
-                          className={`h-4 w-4 ${isSendEnabled ? "text-primary-foreground" : "text-muted-foreground"}`}
-                        />
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
+                  <InputGroupButton
+                    size="icon-xs"
+                    className={`rounded-full ${
+                      isSendEnabled
+                        ? "bg-primary text-primary-foreground hover:bg-primary/90"
+                        : "bg-muted text-muted-foreground cursor-not-allowed opacity-50"
+                    }`}
+                    disabled={!isSendEnabled}
+                  >
+                    <ArrowUp className="h-4 w-4" />
+                  </InputGroupButton>
+                </InputGroupAddon>
+              </InputGroup>
             </aside>
           </ResizablePanel>
         </ResizablePanelGroup>
@@ -726,68 +692,56 @@ export const AnswersChart: Story = {
                     <div className="flex flex-col items-end gap-4">
                       {/* 사용자 질문 버튼 또는 편집 InputGroup */}
                       {isEditingUserMessage ? (
-                        <div
-                          className="bg-secondary border-border flex w-full flex-col rounded-lg border shadow-sm"
-                          style={{ maxHeight: "400px" }}
-                        >
-                          {/* Textarea 영역 with ScrollArea */}
-                          <ScrollArea className="max-h-96 p-3">
-                            <Textarea
+                        <InputGroup className="h-auto max-h-96 flex-col">
+                          {/* Textarea 영역 - 스크롤 기능 내장 */}
+                          <ScrollArea className="max-h-80 p-3">
+                            <InputGroupTextarea
                               value={userMessageText}
                               onChange={(e) =>
                                 setUserMessageText(e.target.value)
                               }
                               onBlur={() => setIsEditingUserMessage(false)}
-                              className="text-primary placeholder:text-muted-foreground min-h-0 resize-none border-0 bg-transparent p-0 text-sm leading-5 focus-visible:ring-0"
+                              className="min-h-0 resize-none px-0 py-0 text-left text-sm leading-5"
                               rows={1}
                               autoFocus
                             />
                           </ScrollArea>
 
-                          {/* InputGroupAddonBlock - 하단 컨트롤 영역 */}
-                          <div className="flex items-center justify-between px-3 pt-1.5 pb-3">
+                          {/* InputGroupAddon - 하단 컨트롤 영역 */}
+                          <InputGroupAddon align="block-end">
                             {/* 좌측 컨트롤 그룹 */}
-                            <div className="flex items-center gap-2">
+                            <div className="flex flex-1 items-center gap-2">
                               {/* Agent InputGroupButton */}
-                              <div className="flex items-start">
-                                <div className="bg-background/50 border-border flex h-7 items-center justify-center gap-1.5 rounded-full border px-2.5 shadow-sm">
-                                  <Infinity className="h-4 w-4" />
-                                  <span className="text-foreground text-xs leading-4 font-medium">
-                                    Agent
-                                  </span>
-                                  <ChevronDown className="h-4 w-4" />
-                                </div>
-                              </div>
+                              <InputGroupButton
+                                size="xs"
+                                className="rounded-full border"
+                              >
+                                <Infinity className="h-4 w-4" />
+                                Agent
+                                <ChevronDown className="h-4 w-4" />
+                              </InputGroupButton>
 
                               {/* Auto InputGroupButton */}
-                              <div className="flex items-start">
-                                <div className="flex h-6 items-center justify-center gap-1 rounded-sm bg-transparent px-2">
-                                  <span className="text-muted-foreground text-sm leading-5 font-medium">
-                                    Auto
-                                  </span>
-                                  <ChevronDown className="h-4 w-4" />
-                                </div>
-                              </div>
+                              <InputGroupButton size="xs" variant="ghost">
+                                Auto
+                                <ChevronDown className="h-4 w-4" />
+                              </InputGroupButton>
                             </div>
 
                             {/* 우측 전송 버튼 그룹 */}
-                            <div className="flex items-center gap-2">
-                              <div className="flex items-start">
-                                <div
-                                  className={`flex h-6 w-6 items-center justify-center rounded-full shadow-sm transition-all ${
-                                    userMessageText.trim().length > 0
-                                      ? "bg-primary hover:bg-primary/90 cursor-pointer"
-                                      : "bg-muted cursor-not-allowed opacity-50"
-                                  }`}
-                                >
-                                  <ArrowUp
-                                    className={`h-4 w-4 ${userMessageText.trim().length > 0 ? "text-primary-foreground" : "text-muted-foreground"}`}
-                                  />
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
+                            <InputGroupButton
+                              size="icon-xs"
+                              className={`rounded-full ${
+                                userMessageText.trim().length > 0
+                                  ? "bg-primary text-primary-foreground hover:bg-primary/90"
+                                  : "bg-muted text-muted-foreground cursor-not-allowed opacity-50"
+                              }`}
+                              disabled={userMessageText.trim().length === 0}
+                            >
+                              <ArrowUp className="h-4 w-4" />
+                            </InputGroupButton>
+                          </InputGroupAddon>
+                        </InputGroup>
                       ) : (
                         <Button
                           variant="outline"
@@ -1404,66 +1358,51 @@ export const AnswersChart: Story = {
                 </div>
               </div>
 
-              {/* 🎯 목적: InputGroup 컴포넌트 (뷰포트 하단 고정) */}
-              <div
-                className="bg-secondary border-border absolute right-4 bottom-4 left-4 flex flex-col rounded-lg border shadow-sm"
-                style={{ maxHeight: "400px" }}
-              >
-                {/* Textarea 영역 with ScrollArea */}
-                <ScrollArea className="max-h-96 p-3">
-                  <Textarea
+              {/* 🎯 목적: 공식 InputGroup 컴포넌트 (뷰포트 하단 고정) */}
+              <InputGroup className="absolute right-0 bottom-4 left-0 h-auto max-h-96 flex-col">
+                {/* Textarea 영역 - 스크롤 기능 내장 */}
+                <ScrollArea className="max-h-80 p-3">
+                  <InputGroupTextarea
                     placeholder="Ask, Search or Chat..."
                     value={message}
                     onChange={(e) => setMessage(e.target.value)}
-                    className="text-primary placeholder:text-muted-foreground min-h-0 resize-none border-0 bg-transparent p-0 text-sm leading-5 focus-visible:ring-0"
+                    className="min-h-0 resize-none px-0 py-0 text-left text-sm leading-5"
                     rows={1}
                   />
                 </ScrollArea>
 
-                {/* InputGroupAddonBlock - 하단 컨트롤 영역 */}
-                <div className="flex items-center justify-between px-3 pt-1.5 pb-3">
+                {/* InputGroupAddon - 하단 컨트롤 영역 */}
+                <InputGroupAddon align="block-end">
                   {/* 좌측 컨트롤 그룹 */}
-                  <div className="flex items-center gap-2">
+                  <div className="flex flex-1 items-center gap-2">
                     {/* Agent InputGroupButton */}
-                    <div className="flex items-start">
-                      <div className="bg-background/50 border-border flex h-7 items-center justify-center gap-1.5 rounded-full border px-2.5 shadow-sm">
-                        <Infinity className="h-4 w-4" />
-                        <span className="text-foreground text-xs leading-4 font-medium">
-                          Agent
-                        </span>
-                        <ChevronDown className="h-4 w-4" />
-                      </div>
-                    </div>
+                    <InputGroupButton size="xs" className="rounded-full border">
+                      <Infinity className="h-4 w-4" />
+                      Agent
+                      <ChevronDown className="h-4 w-4" />
+                    </InputGroupButton>
 
                     {/* Auto InputGroupButton */}
-                    <div className="flex items-start">
-                      <div className="flex h-6 items-center justify-center gap-1 rounded-sm bg-transparent px-2">
-                        <span className="text-muted-foreground text-sm leading-5 font-medium">
-                          Auto
-                        </span>
-                        <ChevronDown className="h-4 w-4" />
-                      </div>
-                    </div>
+                    <InputGroupButton size="xs" variant="ghost">
+                      Auto
+                      <ChevronDown className="h-4 w-4" />
+                    </InputGroupButton>
                   </div>
 
                   {/* 우측 전송 버튼 그룹 */}
-                  <div className="flex items-center gap-2">
-                    <div className="flex items-start">
-                      <div
-                        className={`flex h-6 w-6 items-center justify-center rounded-full shadow-sm transition-all ${
-                          isSendEnabled
-                            ? "bg-primary hover:bg-primary/90 cursor-pointer"
-                            : "bg-muted cursor-not-allowed opacity-50"
-                        }`}
-                      >
-                        <ArrowUp
-                          className={`h-4 w-4 ${isSendEnabled ? "text-primary-foreground" : "text-muted-foreground"}`}
-                        />
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
+                  <InputGroupButton
+                    size="icon-xs"
+                    className={`rounded-full ${
+                      isSendEnabled
+                        ? "bg-primary text-primary-foreground hover:bg-primary/90"
+                        : "bg-muted text-muted-foreground cursor-not-allowed opacity-50"
+                    }`}
+                    disabled={!isSendEnabled}
+                  >
+                    <ArrowUp className="h-4 w-4" />
+                  </InputGroupButton>
+                </InputGroupAddon>
+              </InputGroup>
             </aside>
           </ResizablePanel>
         </ResizablePanelGroup>
