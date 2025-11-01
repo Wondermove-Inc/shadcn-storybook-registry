@@ -354,8 +354,13 @@ export const AnswersText: Story = {
           <ResizableHandle className="w-1 cursor-col-resize bg-transparent transition-colors hover:bg-blue-500/20 active:bg-blue-500/30" />
 
           {/* AI Assistant 패널 - After Utterance 상태 */}
-          <ResizablePanel defaultSize={20} minSize={8} maxSize={80}>
-            <aside className="border-border bg-sidebar relative flex h-full shrink-0 flex-col border-l p-4">
+          <ResizablePanel
+            defaultSize={20}
+            minSize={8}
+            maxSize={80}
+            className="relative"
+          >
+            <aside className="border-border bg-sidebar flex h-full shrink-0 flex-col border-l p-4">
               {/* 🎯 목적: 헤더 섹션 */}
               <div className="flex shrink-0 flex-col gap-2">
                 <div className="flex items-center justify-between">
@@ -523,9 +528,11 @@ export const AnswersText: Story = {
                   </ScrollArea>
                 </div>
               </div>
+            </aside>
 
-              {/* 🎯 목적: 공식 InputGroup 컴포넌트 (뷰포트 하단 고정) */}
-              <InputGroup className="absolute right-0 bottom-4 left-0 h-auto max-h-96 flex-col">
+            {/* 🎯 목적: 공식 InputGroup 컴포넌트 (콘텐츠 영역과 동일한 width로 하단 고정) */}
+            <div className="absolute right-4 bottom-4 left-4">
+              <InputGroup className="h-auto max-h-96 flex-col">
                 {/* Textarea 영역 - 스크롤 기능 내장 */}
                 <ScrollArea className="max-h-80 p-3">
                   <InputGroupTextarea
@@ -569,7 +576,7 @@ export const AnswersText: Story = {
                   </InputGroupButton>
                 </InputGroupAddon>
               </InputGroup>
-            </aside>
+            </div>
           </ResizablePanel>
         </ResizablePanelGroup>
       </div>
@@ -654,8 +661,13 @@ export const AnswersChart: Story = {
           <ResizableHandle className="w-1 cursor-col-resize bg-transparent transition-colors hover:bg-blue-500/20 active:bg-blue-500/30" />
 
           {/* AI Assistant 패널 - Chart Answers 상태 */}
-          <ResizablePanel defaultSize={20} minSize={8} maxSize={80}>
-            <aside className="border-border bg-sidebar relative flex h-full shrink-0 flex-col border-l p-4">
+          <ResizablePanel
+            defaultSize={20}
+            minSize={8}
+            maxSize={80}
+            className="relative"
+          >
+            <aside className="border-border bg-sidebar flex h-full shrink-0 flex-col border-l p-4">
               {/* 🎯 목적: 헤더 섹션 */}
               <div className="flex shrink-0 flex-col gap-2">
                 <div className="flex items-center justify-between">
@@ -1357,9 +1369,11 @@ export const AnswersChart: Story = {
                   </Button>
                 </div>
               </div>
+            </aside>
 
-              {/* 🎯 목적: 공식 InputGroup 컴포넌트 (뷰포트 하단 고정) */}
-              <InputGroup className="absolute right-0 bottom-4 left-0 h-auto max-h-96 flex-col">
+            {/* 🎯 목적: 공식 InputGroup 컴포넌트 (콘텐츠 영역과 동일한 width로 하단 고정) */}
+            <div className="absolute right-4 bottom-4 left-4">
+              <InputGroup className="h-auto max-h-96 flex-col">
                 {/* Textarea 영역 - 스크롤 기능 내장 */}
                 <ScrollArea className="max-h-80 p-3">
                   <InputGroupTextarea
@@ -1403,7 +1417,7 @@ export const AnswersChart: Story = {
                   </InputGroupButton>
                 </InputGroupAddon>
               </InputGroup>
-            </aside>
+            </div>
           </ResizablePanel>
         </ResizablePanelGroup>
       </div>
