@@ -183,14 +183,16 @@ export const BeforeUtterance: Story = {
                 </div>
 
                 {/* 🎯 목적: 공식 InputGroup 컴포넌트 기반 채팅 입력 영역 */}
-                <InputGroup className="h-auto max-h-96 w-full flex-col">
+                <InputGroup className="w-full flex-col">
                   {/* Textarea 영역 - 스크롤 기능 내장 */}
-                  <ScrollArea className="max-h-80 p-3">
+                  <ScrollArea className="h-20 w-full p-3">
+                    
+                    
                     <InputGroupTextarea
                       placeholder="Ask, Search or Chat..."
                       value={message}
                       onChange={(e) => setMessage(e.target.value)}
-                      className="min-h-0 resize-none px-0 py-0 text-left text-sm leading-5"
+                      className="min-h-0 w-full resize-none px-0 py-0 text-left text-start text-sm leading-5"
                       rows={1}
                     />
                   </ScrollArea>
@@ -202,6 +204,7 @@ export const BeforeUtterance: Story = {
                       {/* Agent InputGroupButton */}
                       <InputGroupButton
                         size="xs"
+                        variant="outline"
                         className="rounded-full border"
                       >
                         <Infinity className="h-4 w-4" />
@@ -397,9 +400,9 @@ export const AnswersText: Story = {
                     <div className="flex flex-col items-end gap-4">
                       {/* 사용자 질문 버튼 또는 편집 InputGroup */}
                       {isEditingUserMessage ? (
-                        <InputGroup className="h-auto max-h-96 flex-col">
+                        <InputGroup className="!bg-secondary dark:!bg-secondary flex-col">
                           {/* Textarea 영역 - 스크롤 기능 내장 */}
-                          <ScrollArea className="max-h-80 p-3">
+                          <ScrollArea className="max-h-96 min-h-12 p-3">
                             <InputGroupTextarea
                               value={userMessageText}
                               onChange={(e) =>
@@ -446,6 +449,7 @@ export const AnswersText: Story = {
                               <ArrowUp className="h-4 w-4" />
                             </InputGroupButton>
                           </InputGroupAddon>
+                          
                         </InputGroup>
                       ) : (
                         <Button
@@ -531,15 +535,16 @@ export const AnswersText: Story = {
             </aside>
 
             {/* 🎯 목적: 공식 InputGroup 컴포넌트 (콘텐츠 영역과 동일한 width로 하단 고정) */}
-            <div className="absolute right-4 bottom-4 left-4">
-              <InputGroup className="h-auto max-h-96 flex-col">
+            <div className="absolute right-4 bottom-4 left-4 z-50">
+              <InputGroup className="!bg-secondary dark:!bg-secondary flex-col">
                 {/* Textarea 영역 - 스크롤 기능 내장 */}
-                <ScrollArea className="max-h-80 p-3">
+                
+                <ScrollArea className="h-auto w-full p-3" maxHeight={300}>
                   <InputGroupTextarea
                     placeholder="Ask, Search or Chat..."
                     value={message}
                     onChange={(e) => setMessage(e.target.value)}
-                    className="min-h-0 resize-none px-0 py-0 text-left text-sm leading-5"
+                    className="min-h-0 w-full resize-none px-0 py-0 text-left text-start text-sm leading-5"
                     rows={1}
                   />
                 </ScrollArea>
@@ -549,7 +554,11 @@ export const AnswersText: Story = {
                   {/* 좌측 컨트롤 그룹 */}
                   <div className="flex flex-1 items-center gap-2">
                     {/* Agent InputGroupButton */}
-                    <InputGroupButton size="xs" className="rounded-full border">
+                    <InputGroupButton
+                      size="xs"
+                      variant="outline"
+                      className="rounded-full border"
+                    >
                       <Infinity className="h-4 w-4" />
                       Agent
                       <ChevronDown className="h-4 w-4" />
@@ -704,9 +713,9 @@ export const AnswersChart: Story = {
                     <div className="flex flex-col items-end gap-4">
                       {/* 사용자 질문 버튼 또는 편집 InputGroup */}
                       {isEditingUserMessage ? (
-                        <InputGroup className="h-auto max-h-96 flex-col">
+                        <InputGroup className="!bg-secondary dark:!bg-secondary flex-col">
                           {/* Textarea 영역 - 스크롤 기능 내장 */}
-                          <ScrollArea className="max-h-80 p-3">
+                          <ScrollArea className="max-h-96 min-h-12 p-3">
                             <InputGroupTextarea
                               value={userMessageText}
                               onChange={(e) =>
@@ -1372,15 +1381,15 @@ export const AnswersChart: Story = {
             </aside>
 
             {/* 🎯 목적: 공식 InputGroup 컴포넌트 (콘텐츠 영역과 동일한 width로 하단 고정) */}
-            <div className="absolute right-4 bottom-4 left-4">
-              <InputGroup className="h-auto max-h-96 flex-col">
+            <div className="absolute right-4 bottom-4 left-4 z-50">
+              <InputGroup className="!bg-secondary dark:!bg-secondary flex-col">
                 {/* Textarea 영역 - 스크롤 기능 내장 */}
-                <ScrollArea className="max-h-80 p-3">
+                <ScrollArea className="h-auto max-h-96 w-full p-3">
                   <InputGroupTextarea
                     placeholder="Ask, Search or Chat..."
                     value={message}
                     onChange={(e) => setMessage(e.target.value)}
-                    className="min-h-0 resize-none px-0 py-0 text-left text-sm leading-5"
+                    className="min-h-0 w-full resize-none px-0 py-0 text-left text-start text-sm leading-5"
                     rows={1}
                   />
                 </ScrollArea>
@@ -1390,7 +1399,11 @@ export const AnswersChart: Story = {
                   {/* 좌측 컨트롤 그룹 */}
                   <div className="flex flex-1 items-center gap-2">
                     {/* Agent InputGroupButton */}
-                    <InputGroupButton size="xs" className="rounded-full border">
+                    <InputGroupButton
+                      size="xs"
+                      variant="outline"
+                      className="rounded-full border"
+                    >
                       <Infinity className="h-4 w-4" />
                       Agent
                       <ChevronDown className="h-4 w-4" />
