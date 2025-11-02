@@ -247,10 +247,10 @@ export function ChartData({ className }: ChartDataProps) {
             </ToggleGroup>
           </div>
 
-          {/* 차트 영역 - 1단 레이아웃 */}
-          <div className="border-input flex rounded-md border">
+          {/* 차트 영역 - 반응형 레이아웃 (900px 이하에서 세로 정렬) */}
+          <div className="border-input flex flex-col rounded-md border lg:flex-row">
             {/* 왼쪽: 시간별 사용량 차트 */}
-            <div className="border-input flex min-w-0 flex-1 flex-col items-start gap-4 border-r bg-transparent p-4">
+            <div className="border-input flex min-w-0 flex-1 flex-col items-start gap-4 border-b bg-transparent p-4 lg:border-r lg:border-b-0">
               {/* 제목과 토글 영역 */}
               <div className="flex items-center justify-between gap-5 self-stretch">
                 <h3 className="text-foreground text-sm leading-none font-medium">
