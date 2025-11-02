@@ -1,5 +1,6 @@
 import * as React from "react";
 import type { Meta, StoryObj } from "@storybook/react-vite";
+import { BrowserRouter } from "react-router-dom";
 import { ChartData } from "./chart-data";
 
 /**
@@ -30,5 +31,9 @@ export const DefaultNodata: Story = {
  * 개요 대시보드 상태의 차트 컴포넌트입니다.
  */
 export const Overview: Story = {
-  render: () => <ChartData />,
+  render: () => (
+    <BrowserRouter>
+      <ChartData variant="overview" />
+    </BrowserRouter>
+  ),
 };

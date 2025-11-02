@@ -42,10 +42,11 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { ChartContainer, ChartConfig } from "@/components/ui/chart";
-import { RadialBar, RadialBarChart } from "recharts";
+import { RadialBar, RadialBarChart, Pie, PieChart } from "recharts";
 import { TriangleAlert, BadgeCheck, ChevronDown } from "lucide-react";
 import { Area, AreaChart, CartesianGrid, XAxis, YAxis } from "recharts";
 import { ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
+import { Link } from "react-router-dom";
 
 /**
  * 🎯 목적: ChartData 컴포넌트 Props 타입 정의
@@ -108,134 +109,134 @@ const workerHourlyMemoryData = [
  * 🎯 목적: Master Nodes CPU 사용량 데이터
  */
 const masterCpuData = [
-  { metric: "usage", value: 0.06, fill: "var(--color-usage)" },
-  { metric: "requests", value: 1.1, fill: "var(--color-requests)" },
-  { metric: "limits", value: 0.2, fill: "var(--color-limits)" },
-  { metric: "allocatable", value: 4.0, fill: "var(--color-allocatable)" },
-  { metric: "capacity", value: 4.0, fill: "var(--color-capacity)" },
+  { metric: "usage", value: 0.06, fill: "var(--chart-1)" },
+  { metric: "requests", value: 1.1, fill: "var(--chart-2)" },
+  { metric: "limits", value: 0.2, fill: "var(--chart-3)" },
+  { metric: "allocatable", value: 4.0, fill: "var(--chart-4)" },
+  { metric: "capacity", value: 4.0, fill: "var(--chart-5)" },
 ];
 
 /**
  * 🎯 목적: Worker Nodes CPU 사용량 데이터
  */
 const workerCpuData = [
-  { metric: "usage", value: 0.12, fill: "var(--color-usage)" },
-  { metric: "requests", value: 2.5, fill: "var(--color-requests)" },
-  { metric: "limits", value: 0.8, fill: "var(--color-limits)" },
-  { metric: "allocatable", value: 8.0, fill: "var(--color-allocatable)" },
-  { metric: "capacity", value: 8.0, fill: "var(--color-capacity)" },
+  { metric: "usage", value: 0.12, fill: "var(--chart-1)" },
+  { metric: "requests", value: 2.5, fill: "var(--chart-2)" },
+  { metric: "limits", value: 0.8, fill: "var(--chart-3)" },
+  { metric: "allocatable", value: 8.0, fill: "var(--chart-4)" },
+  { metric: "capacity", value: 8.0, fill: "var(--chart-5)" },
 ];
 
 /**
  * 🎯 목적: Master Nodes Memory 사용량 데이터
  */
 const masterMemoryData = [
-  { metric: "usage", value: 1.3, fill: "var(--color-usage)" },
-  { metric: "requests", value: 304.0, fill: "var(--color-requests)" },
-  { metric: "limits", value: 468.0, fill: "var(--color-limits)" },
-  { metric: "allocatable", value: 3700, fill: "var(--color-allocatable)" },
-  { metric: "capacity", value: 3800, fill: "var(--color-capacity)" },
+  { metric: "usage", value: 1.3, fill: "var(--chart-1)" },
+  { metric: "requests", value: 304.0, fill: "var(--chart-2)" },
+  { metric: "limits", value: 468.0, fill: "var(--chart-3)" },
+  { metric: "allocatable", value: 3700, fill: "var(--chart-4)" },
+  { metric: "capacity", value: 3800, fill: "var(--chart-5)" },
 ];
 
 /**
  * 🎯 목적: Worker Nodes Memory 사용량 데이터
  */
 const workerMemoryData = [
-  { metric: "usage", value: 2.8, fill: "var(--color-usage)" },
-  { metric: "requests", value: 512.0, fill: "var(--color-requests)" },
-  { metric: "limits", value: 896.0, fill: "var(--color-limits)" },
-  { metric: "allocatable", value: 7200, fill: "var(--color-allocatable)" },
-  { metric: "capacity", value: 7600, fill: "var(--color-capacity)" },
+  { metric: "usage", value: 2.8, fill: "var(--chart-1)" },
+  { metric: "requests", value: 512.0, fill: "var(--chart-2)" },
+  { metric: "limits", value: 896.0, fill: "var(--chart-3)" },
+  { metric: "allocatable", value: 7200, fill: "var(--chart-4)" },
+  { metric: "capacity", value: 7600, fill: "var(--chart-5)" },
 ];
 
 /**
  * 🎯 목적: Master Nodes Pods 데이터
  */
 const masterPodsData = [
-  { metric: "usage", value: 15, fill: "var(--color-usage)" },
-  { metric: "allocatable", value: 110, fill: "var(--color-allocatable)" },
-  { metric: "capacity", value: 110, fill: "var(--color-capacity)" },
+  { metric: "usage", value: 15, fill: "var(--chart-1)" },
+  { metric: "allocatable", value: 110, fill: "var(--chart-2)" },
+  { metric: "capacity", value: 110, fill: "var(--chart-3)" },
 ];
 
 /**
  * 🎯 목적: Worker Nodes Pods 데이터
  */
 const workerPodsData = [
-  { metric: "usage", value: 28, fill: "var(--color-usage)" },
-  { metric: "allocatable", value: 220, fill: "var(--color-allocatable)" },
-  { metric: "capacity", value: 220, fill: "var(--color-capacity)" },
+  { metric: "usage", value: 28, fill: "var(--chart-1)" },
+  { metric: "allocatable", value: 220, fill: "var(--chart-2)" },
+  { metric: "capacity", value: 220, fill: "var(--chart-3)" },
 ];
 
 /**
  * 🎯 목적: Master Nodes Network 데이터
  */
 const masterNetworkData = [
-  { metric: "inbound", value: 1.2, fill: "var(--color-usage)" },
-  { metric: "outbound", value: 0.8, fill: "var(--color-requests)" },
-  { metric: "total", value: 2.0, fill: "var(--color-limits)" },
+  { metric: "inbound", value: 1.2, fill: "var(--chart-1)" },
+  { metric: "outbound", value: 0.8, fill: "var(--chart-2)" },
+  { metric: "total", value: 2.0, fill: "var(--chart-3)" },
 ];
 
 /**
  * 🎯 목적: Worker Nodes Network 데이터
  */
 const workerNetworkData = [
-  { metric: "inbound", value: 2.5, fill: "var(--color-usage)" },
-  { metric: "outbound", value: 1.8, fill: "var(--color-requests)" },
-  { metric: "total", value: 4.3, fill: "var(--color-limits)" },
+  { metric: "inbound", value: 2.5, fill: "var(--chart-1)" },
+  { metric: "outbound", value: 1.8, fill: "var(--chart-2)" },
+  { metric: "total", value: 4.3, fill: "var(--chart-3)" },
 ];
 
 /**
  * 🎯 목적: Master Nodes Storage 데이터
  */
 const masterStorageData = [
-  { metric: "used", value: 45.2, fill: "var(--color-usage)" },
-  { metric: "available", value: 154.8, fill: "var(--color-requests)" },
-  { metric: "total", value: 200.0, fill: "var(--color-limits)" },
+  { metric: "used", value: 45.2, fill: "var(--chart-1)" },
+  { metric: "available", value: 154.8, fill: "var(--chart-2)" },
+  { metric: "total", value: 200.0, fill: "var(--chart-3)" },
 ];
 
 /**
  * 🎯 목적: Worker Nodes Storage 데이터
  */
 const workerStorageData = [
-  { metric: "used", value: 89.7, fill: "var(--color-usage)" },
-  { metric: "available", value: 310.3, fill: "var(--color-requests)" },
-  { metric: "total", value: 400.0, fill: "var(--color-limits)" },
+  { metric: "used", value: 89.7, fill: "var(--chart-1)" },
+  { metric: "available", value: 310.3, fill: "var(--chart-2)" },
+  { metric: "total", value: 400.0, fill: "var(--chart-3)" },
 ];
 
 /**
  * 🎯 목적: Master Nodes Events 데이터
  */
 const masterEventsData = [
-  { metric: "normal", value: 142, fill: "var(--color-usage)" },
-  { metric: "warning", value: 8, fill: "var(--color-requests)" },
-  { metric: "error", value: 2, fill: "var(--color-limits)" },
+  { metric: "normal", value: 142, fill: "var(--chart-1)" },
+  { metric: "warning", value: 8, fill: "var(--chart-2)" },
+  { metric: "error", value: 2, fill: "var(--chart-3)" },
 ];
 
 /**
  * 🎯 목적: Worker Nodes Events 데이터
  */
 const workerEventsData = [
-  { metric: "normal", value: 289, fill: "var(--color-usage)" },
-  { metric: "warning", value: 15, fill: "var(--color-requests)" },
-  { metric: "error", value: 4, fill: "var(--color-limits)" },
+  { metric: "normal", value: 289, fill: "var(--chart-1)" },
+  { metric: "warning", value: 15, fill: "var(--chart-2)" },
+  { metric: "error", value: 4, fill: "var(--chart-3)" },
 ];
 
 /**
  * 🎯 목적: Master Nodes Health 데이터
  */
 const masterHealthData = [
-  { metric: "ready", value: 3, fill: "var(--color-usage)" },
-  { metric: "notready", value: 0, fill: "var(--color-requests)" },
-  { metric: "total", value: 3, fill: "var(--color-limits)" },
+  { metric: "ready", value: 3, fill: "var(--chart-1)" },
+  { metric: "notready", value: 0, fill: "var(--chart-2)" },
+  { metric: "total", value: 3, fill: "var(--chart-3)" },
 ];
 
 /**
  * 🎯 목적: Worker Nodes Health 데이터
  */
 const workerHealthData = [
-  { metric: "ready", value: 6, fill: "var(--color-usage)" },
-  { metric: "notready", value: 1, fill: "var(--color-requests)" },
-  { metric: "total", value: 7, fill: "var(--color-limits)" },
+  { metric: "ready", value: 6, fill: "var(--chart-1)" },
+  { metric: "notready", value: 1, fill: "var(--chart-2)" },
+  { metric: "total", value: 7, fill: "var(--chart-3)" },
 ];
 
 /**
@@ -351,9 +352,54 @@ const noDataEventsData = [
 ];
 
 const noDataHealthData = [
-  { metric: "ready", value: 0, fill: "var(--color-usage)" },
-  { metric: "notready", value: 0, fill: "var(--color-requests)" },
-  { metric: "total", value: 0, fill: "var(--color-limits)" },
+  { metric: "ready", value: 0, fill: "var(--chart-1)" },
+  { metric: "notready", value: 0, fill: "var(--chart-2)" },
+  { metric: "total", value: 0, fill: "var(--chart-3)" },
+];
+
+/**
+ * 🎯 목적: Overview 전용 Kubernetes 리소스 데이터
+ */
+const overviewPodsData = [
+  { metric: "succeeded", value: 1, fill: "var(--chart-1)" },
+  { metric: "running", value: 12, fill: "var(--chart-2)" },
+  { metric: "pending", value: 5, fill: "var(--chart-3)" },
+];
+
+const overviewDeploymentsData = [
+  { metric: "succeeded", value: 0, fill: "var(--chart-1)" },
+  { metric: "running", value: 3, fill: "var(--chart-2)" },
+  { metric: "pending", value: 1, fill: "var(--chart-3)" },
+];
+
+const overviewDaemonSetsData = [
+  { metric: "succeeded", value: 0, fill: "var(--chart-1)" },
+  { metric: "running", value: 1, fill: "var(--chart-2)" },
+  { metric: "pending", value: 3, fill: "var(--chart-3)" },
+];
+
+const overviewStatefulSetsData = [
+  { metric: "succeeded", value: 0, fill: "var(--chart-1)" },
+  { metric: "running", value: 0, fill: "var(--chart-2)" },
+  { metric: "pending", value: 0, fill: "var(--chart-3)" },
+];
+
+const overviewReplicaSetsData = [
+  { metric: "succeeded", value: 0, fill: "var(--chart-1)" },
+  { metric: "running", value: 3, fill: "var(--chart-2)" },
+  { metric: "pending", value: 1, fill: "var(--chart-3)" },
+];
+
+const overviewJobsData = [
+  { metric: "succeeded", value: 1, fill: "var(--chart-1)" },
+  { metric: "running", value: 0, fill: "var(--chart-2)" },
+  { metric: "pending", value: 0, fill: "var(--chart-3)" },
+];
+
+const overviewCronJobsData = [
+  { metric: "succeeded", value: 0, fill: "var(--chart-1)" },
+  { metric: "running", value: 0, fill: "var(--chart-2)" },
+  { metric: "pending", value: 0, fill: "var(--chart-3)" },
 ];
 
 /**
@@ -365,8 +411,14 @@ export function ChartData({ className, variant = "default" }: ChartDataProps) {
   const [selectedNamespace, setSelectedNamespace] = React.useState("default");
 
   // 🎯 목적: selectedNode와 variant에 따라 다른 데이터 선택
-  const getNodeData = (masterData: any[], workerData: any[], noData: any[]) => {
+  const getNodeData = (
+    masterData: any[],
+    workerData: any[],
+    noData: any[],
+    overviewData?: any[],
+  ) => {
     if (variant === "no-data") return noData;
+    if (variant === "overview" && overviewData) return overviewData;
     return selectedNode === "master" ? masterData : workerData;
   };
 
@@ -380,36 +432,43 @@ export function ChartData({ className, variant = "default" }: ChartDataProps) {
     masterCpuData,
     workerCpuData,
     noDataCpuData,
+    overviewPodsData,
   );
   const currentMemoryData = getNodeData(
     masterMemoryData,
     workerMemoryData,
     noDataMemoryData,
+    overviewDeploymentsData,
   );
   const currentPodsData = getNodeData(
     masterPodsData,
     workerPodsData,
     noDataPodsData,
+    overviewDaemonSetsData,
   );
   const currentNetworkData = getNodeData(
     masterNetworkData,
     workerNetworkData,
     noDataNetworkData,
+    overviewStatefulSetsData,
   );
   const currentStorageData = getNodeData(
     masterStorageData,
     workerStorageData,
     noDataStorageData,
+    overviewReplicaSetsData,
   );
   const currentEventsData = getNodeData(
     masterEventsData,
     workerEventsData,
     noDataEventsData,
+    overviewJobsData,
   );
   const currentHealthData = getNodeData(
     masterHealthData,
     workerHealthData,
     noDataHealthData,
+    overviewCronJobsData,
   );
 
   // 🎯 목적: variant에 따라 '--' 또는 실제 값 표시
@@ -694,6 +753,61 @@ export function ChartData({ className, variant = "default" }: ChartDataProps) {
     },
   } satisfies ChartConfig;
 
+  // 🎯 목적: Overview용 공통 차트 설정 (Succeeded/Running/Pending)
+  const overviewChartConfig = {
+    value: {
+      label: "Status Value",
+    },
+    succeeded: {
+      label: "Succeeded",
+      color: "var(--chart-1)",
+    },
+    running: {
+      label: "Running",
+      color: "var(--chart-2)",
+    },
+    pending: {
+      label: "Pending",
+      color: "var(--chart-3)",
+    },
+  } satisfies ChartConfig;
+
+  // 🎯 목적: Overview용 공통 범례 컴포넌트
+  const OverviewLegend = ({ data }: { data: any[] }) => (
+    <>
+      <Item className="gap-1.5 px-0.5 py-0 text-sm">
+        <ItemMedia variant="icon" className="h-2 w-2">
+          <div className="bg-chart-1 h-1 w-1 rounded-full" />
+        </ItemMedia>
+        <ItemContent>
+          <ItemTitle className="text-muted-foreground text-sm leading-normal font-normal">
+            Succeeded: {data.find((d) => d.metric === "succeeded")?.value || 0}
+          </ItemTitle>
+        </ItemContent>
+      </Item>
+      <Item className="gap-1.5 px-0.5 py-0 text-sm">
+        <ItemMedia variant="icon" className="h-2 w-2">
+          <div className="bg-chart-2 h-1 w-1 rounded-full" />
+        </ItemMedia>
+        <ItemContent>
+          <ItemTitle className="text-muted-foreground text-sm leading-normal font-normal">
+            Running: {data.find((d) => d.metric === "running")?.value || 0}
+          </ItemTitle>
+        </ItemContent>
+      </Item>
+      <Item className="gap-1.5 px-0.5 py-0 text-sm">
+        <ItemMedia variant="icon" className="h-2 w-2">
+          <div className="bg-chart-3 h-1 w-1 rounded-full" />
+        </ItemMedia>
+        <ItemContent>
+          <ItemTitle className="text-muted-foreground text-sm leading-normal font-normal">
+            Pending: {data.find((d) => d.metric === "pending")?.value || 0}
+          </ItemTitle>
+        </ItemContent>
+      </Item>
+    </>
+  );
+
   return (
     <div className={`bg-background min-h-screen w-full p-5 ${className || ""}`}>
       <div className="mx-auto flex max-w-[1400px] flex-col gap-5">
@@ -894,83 +1008,118 @@ export function ChartData({ className, variant = "default" }: ChartDataProps) {
                   className={`bg-background flex flex-col gap-1 rounded-md p-3 ${variant === "overview" ? "" : "min-w-0 flex-1"}`}
                 >
                   <CardHeader className="items-center gap-0 p-0">
-                    <CardTitle className="text-base">CPU</CardTitle>
+                    {variant === "overview" ? (
+                      <Link
+                        to="/pods"
+                        className="text-base font-semibold transition-colors hover:text-blue-600 hover:underline"
+                      >
+                        Pods (18)
+                      </Link>
+                    ) : (
+                      <CardTitle className="text-base">CPU</CardTitle>
+                    )}
                   </CardHeader>
                   <CardContent className="flex-1 p-0 pb-2">
                     <ChartContainer
-                      config={cpuChartConfig}
+                      config={
+                        variant === "overview"
+                          ? overviewChartConfig
+                          : cpuChartConfig
+                      }
                       className="mx-auto aspect-square max-h-[120px]"
                     >
-                      <RadialBarChart
-                        data={currentCpuData}
-                        innerRadius={20}
-                        outerRadius={50}
-                      >
-                        <ChartTooltip
-                          cursor={false}
-                          content={
-                            <ChartTooltipContent hideLabel nameKey="metric" />
-                          }
-                        />
-                        <RadialBar dataKey="value" background />
-                      </RadialBarChart>
+                      {variant === "overview" ? (
+                        <PieChart>
+                          <ChartTooltip
+                            cursor={false}
+                            content={<ChartTooltipContent hideLabel />}
+                          />
+                          <Pie
+                            data={currentCpuData}
+                            dataKey="value"
+                            nameKey="metric"
+                            innerRadius={20}
+                          />
+                        </PieChart>
+                      ) : (
+                        <RadialBarChart
+                          data={currentCpuData}
+                          innerRadius={20}
+                          outerRadius={50}
+                        >
+                          <ChartTooltip
+                            cursor={false}
+                            content={
+                              <ChartTooltipContent hideLabel nameKey="metric" />
+                            }
+                          />
+                          <RadialBar dataKey="value" background />
+                        </RadialBarChart>
+                      )}
                     </ChartContainer>
                   </CardContent>
                   <CardFooter className="p-0">
                     <ItemGroup className="w-full gap-0.5">
-                      <Item className="gap-1.5 px-0.5 py-0 text-sm">
-                        <ItemMedia variant="icon" className="h-2 w-2">
-                          <div className="bg-chart-1 h-1 w-1 rounded-full" />
-                        </ItemMedia>
-                        <ItemContent>
-                          <ItemTitle className="text-muted-foreground text-sm leading-normal font-normal">
-                            Usage: {formatValue(cpuValues.usage.toFixed(2))}
-                          </ItemTitle>
-                        </ItemContent>
-                      </Item>
-                      <Item className="gap-1.5 px-0.5 py-0 text-sm">
-                        <ItemMedia variant="icon" className="h-2 w-2">
-                          <div className="bg-chart-2 h-1 w-1 rounded-full" />
-                        </ItemMedia>
-                        <ItemContent>
-                          <ItemTitle className="text-muted-foreground text-sm leading-normal font-normal">
-                            Requests:{" "}
-                            {formatValue(cpuValues.requests.toFixed(2))}
-                          </ItemTitle>
-                        </ItemContent>
-                      </Item>
-                      <Item className="gap-1.5 px-0.5 py-0 text-sm">
-                        <ItemMedia variant="icon" className="h-2 w-2">
-                          <div className="bg-chart-3 h-1 w-1 rounded-full" />
-                        </ItemMedia>
-                        <ItemContent>
-                          <ItemTitle className="text-muted-foreground text-sm leading-normal font-normal">
-                            Limits: {formatValue(cpuValues.limits.toFixed(2))}
-                          </ItemTitle>
-                        </ItemContent>
-                      </Item>
-                      <Item className="gap-1.5 px-0.5 py-0 text-sm">
-                        <ItemMedia variant="icon" className="h-2 w-2">
-                          <div className="bg-chart-4 h-1 w-1 rounded-full" />
-                        </ItemMedia>
-                        <ItemContent>
-                          <ItemTitle className="text-muted-foreground text-sm leading-normal font-normal">
-                            Allocatable Capacity:{" "}
-                            {formatValue(cpuValues.allocatable.toFixed(2))}
-                          </ItemTitle>
-                        </ItemContent>
-                      </Item>
-                      <Item className="gap-1.5 px-0.5 py-0 text-sm">
-                        <ItemMedia variant="icon" className="h-2 w-2">
-                          <div className="bg-chart-5 h-1 w-1 rounded-full" />
-                        </ItemMedia>
-                        <ItemContent>
-                          <ItemTitle className="text-muted-foreground text-sm leading-normal font-normal">
-                            Capacity:{" "}
-                            {formatValue(cpuValues.capacity.toFixed(2))}
-                          </ItemTitle>
-                        </ItemContent>
-                      </Item>
+                      {variant === "overview" ? (
+                        <OverviewLegend data={currentCpuData} />
+                      ) : (
+                        <>
+                          <Item className="gap-1.5 px-0.5 py-0 text-sm">
+                            <ItemMedia variant="icon" className="h-2 w-2">
+                              <div className="bg-chart-1 h-1 w-1 rounded-full" />
+                            </ItemMedia>
+                            <ItemContent>
+                              <ItemTitle className="text-muted-foreground text-sm leading-normal font-normal">
+                                Usage: {formatValue(cpuValues.usage.toFixed(2))}
+                              </ItemTitle>
+                            </ItemContent>
+                          </Item>
+                          <Item className="gap-1.5 px-0.5 py-0 text-sm">
+                            <ItemMedia variant="icon" className="h-2 w-2">
+                              <div className="bg-chart-2 h-1 w-1 rounded-full" />
+                            </ItemMedia>
+                            <ItemContent>
+                              <ItemTitle className="text-muted-foreground text-sm leading-normal font-normal">
+                                Requests:{" "}
+                                {formatValue(cpuValues.requests.toFixed(2))}
+                              </ItemTitle>
+                            </ItemContent>
+                          </Item>
+                          <Item className="gap-1.5 px-0.5 py-0 text-sm">
+                            <ItemMedia variant="icon" className="h-2 w-2">
+                              <div className="bg-chart-3 h-1 w-1 rounded-full" />
+                            </ItemMedia>
+                            <ItemContent>
+                              <ItemTitle className="text-muted-foreground text-sm leading-normal font-normal">
+                                Limits:{" "}
+                                {formatValue(cpuValues.limits.toFixed(2))}
+                              </ItemTitle>
+                            </ItemContent>
+                          </Item>
+                          <Item className="gap-1.5 px-0.5 py-0 text-sm">
+                            <ItemMedia variant="icon" className="h-2 w-2">
+                              <div className="bg-chart-4 h-1 w-1 rounded-full" />
+                            </ItemMedia>
+                            <ItemContent>
+                              <ItemTitle className="text-muted-foreground text-sm leading-normal font-normal">
+                                Allocatable Capacity:{" "}
+                                {formatValue(cpuValues.allocatable.toFixed(2))}
+                              </ItemTitle>
+                            </ItemContent>
+                          </Item>
+                          <Item className="gap-1.5 px-0.5 py-0 text-sm">
+                            <ItemMedia variant="icon" className="h-2 w-2">
+                              <div className="bg-chart-5 h-1 w-1 rounded-full" />
+                            </ItemMedia>
+                            <ItemContent>
+                              <ItemTitle className="text-muted-foreground text-sm leading-normal font-normal">
+                                Capacity:{" "}
+                                {formatValue(cpuValues.capacity.toFixed(2))}
+                              </ItemTitle>
+                            </ItemContent>
+                          </Item>
+                        </>
+                      )}
                     </ItemGroup>
                   </CardFooter>
                 </Card>
@@ -980,81 +1129,117 @@ export function ChartData({ className, variant = "default" }: ChartDataProps) {
                   className={`bg-background flex flex-col gap-1 rounded-md p-3 ${variant === "overview" ? "" : "min-w-0 flex-1"}`}
                 >
                   <CardHeader className="items-center gap-0 p-0">
-                    <CardTitle className="text-base">Memory</CardTitle>
+                    {variant === "overview" ? (
+                      <Link
+                        to="/deployments"
+                        className="text-base font-semibold transition-colors hover:text-blue-600 hover:underline"
+                      >
+                        Deployments (4)
+                      </Link>
+                    ) : (
+                      <CardTitle className="text-base">Memory</CardTitle>
+                    )}
                   </CardHeader>
                   <CardContent className="flex-1 p-0 pb-2">
                     <ChartContainer
-                      config={memoryChartConfig}
+                      config={
+                        variant === "overview"
+                          ? overviewChartConfig
+                          : memoryChartConfig
+                      }
                       className="mx-auto aspect-square max-h-[120px]"
                     >
-                      <RadialBarChart
-                        data={currentMemoryData}
-                        innerRadius={20}
-                        outerRadius={50}
-                      >
-                        <ChartTooltip
-                          cursor={false}
-                          content={
-                            <ChartTooltipContent hideLabel nameKey="metric" />
-                          }
-                        />
-                        <RadialBar dataKey="value" background />
-                      </RadialBarChart>
+                      {variant === "overview" ? (
+                        <PieChart>
+                          <ChartTooltip
+                            cursor={false}
+                            content={<ChartTooltipContent hideLabel />}
+                          />
+                          <Pie
+                            data={currentMemoryData}
+                            dataKey="value"
+                            nameKey="metric"
+                            innerRadius={20}
+                          />
+                        </PieChart>
+                      ) : (
+                        <RadialBarChart
+                          data={currentMemoryData}
+                          innerRadius={20}
+                          outerRadius={50}
+                        >
+                          <ChartTooltip
+                            cursor={false}
+                            content={
+                              <ChartTooltipContent hideLabel nameKey="metric" />
+                            }
+                          />
+                          <RadialBar dataKey="value" background />
+                        </RadialBarChart>
+                      )}
                     </ChartContainer>
                   </CardContent>
                   <CardFooter className="p-0">
                     <ItemGroup className="w-full gap-0.5">
-                      <Item className="gap-1.5 px-0.5 py-0 text-sm">
-                        <ItemMedia variant="icon" className="h-2 w-2">
-                          <div className="bg-chart-1 h-1 w-1 rounded-full" />
-                        </ItemMedia>
-                        <ItemContent>
-                          <ItemTitle className="text-muted-foreground text-sm leading-normal font-normal">
-                            Usage: {formatMemoryValue(memoryValues.usage)}
-                          </ItemTitle>
-                        </ItemContent>
-                      </Item>
-                      <Item className="gap-1.5 px-0.5 py-0 text-sm">
-                        <ItemMedia variant="icon" className="h-2 w-2">
-                          <div className="bg-chart-2 h-1 w-1 rounded-full" />
-                        </ItemMedia>
-                        <ItemContent>
-                          <ItemTitle className="text-muted-foreground text-sm leading-normal font-normal">
-                            Requests: {formatMemoryValue(memoryValues.requests)}
-                          </ItemTitle>
-                        </ItemContent>
-                      </Item>
-                      <Item className="gap-1.5 px-0.5 py-0 text-sm">
-                        <ItemMedia variant="icon" className="h-2 w-2">
-                          <div className="bg-chart-3 h-1 w-1 rounded-full" />
-                        </ItemMedia>
-                        <ItemContent>
-                          <ItemTitle className="text-muted-foreground text-sm leading-normal font-normal">
-                            Limits: {formatMemoryValue(memoryValues.limits)}
-                          </ItemTitle>
-                        </ItemContent>
-                      </Item>
-                      <Item className="gap-1.5 px-0.5 py-0 text-sm">
-                        <ItemMedia variant="icon" className="h-2 w-2">
-                          <div className="bg-chart-4 h-1 w-1 rounded-full" />
-                        </ItemMedia>
-                        <ItemContent>
-                          <ItemTitle className="text-muted-foreground text-sm leading-normal font-normal">
-                            Allocatable Capacity:{" "}
-                            {formatMemoryValue(memoryValues.allocatable)}
-                          </ItemTitle>
-                        </ItemContent>
-                      </Item>
-                      <Item className="gap-1.5 px-0.5 py-0 text-sm">
-                        <ItemMedia variant="icon" className="h-2 w-2">
-                          <div className="bg-chart-5 h-1 w-1 rounded-full" />
-                        </ItemMedia>
-                        <ItemContent>
-                          <ItemTitle className="text-muted-foreground text-sm leading-normal font-normal">
-                            Capacity: {formatMemoryValue(memoryValues.capacity)}
-                          </ItemTitle>
-                        </ItemContent>
-                      </Item>
+                      {variant === "overview" ? (
+                        <OverviewLegend data={currentMemoryData} />
+                      ) : (
+                        <>
+                          <Item className="gap-1.5 px-0.5 py-0 text-sm">
+                            <ItemMedia variant="icon" className="h-2 w-2">
+                              <div className="bg-chart-1 h-1 w-1 rounded-full" />
+                            </ItemMedia>
+                            <ItemContent>
+                              <ItemTitle className="text-muted-foreground text-sm leading-normal font-normal">
+                                Usage: {formatMemoryValue(memoryValues.usage)}
+                              </ItemTitle>
+                            </ItemContent>
+                          </Item>
+                          <Item className="gap-1.5 px-0.5 py-0 text-sm">
+                            <ItemMedia variant="icon" className="h-2 w-2">
+                              <div className="bg-chart-2 h-1 w-1 rounded-full" />
+                            </ItemMedia>
+                            <ItemContent>
+                              <ItemTitle className="text-muted-foreground text-sm leading-normal font-normal">
+                                Requests:{" "}
+                                {formatMemoryValue(memoryValues.requests)}
+                              </ItemTitle>
+                            </ItemContent>
+                          </Item>
+                          <Item className="gap-1.5 px-0.5 py-0 text-sm">
+                            <ItemMedia variant="icon" className="h-2 w-2">
+                              <div className="bg-chart-3 h-1 w-1 rounded-full" />
+                            </ItemMedia>
+                            <ItemContent>
+                              <ItemTitle className="text-muted-foreground text-sm leading-normal font-normal">
+                                Limits: {formatMemoryValue(memoryValues.limits)}
+                              </ItemTitle>
+                            </ItemContent>
+                          </Item>
+                          <Item className="gap-1.5 px-0.5 py-0 text-sm">
+                            <ItemMedia variant="icon" className="h-2 w-2">
+                              <div className="bg-chart-4 h-1 w-1 rounded-full" />
+                            </ItemMedia>
+                            <ItemContent>
+                              <ItemTitle className="text-muted-foreground text-sm leading-normal font-normal">
+                                Allocatable Capacity:{" "}
+                                {formatMemoryValue(memoryValues.allocatable)}
+                              </ItemTitle>
+                            </ItemContent>
+                          </Item>
+                          <Item className="gap-1.5 px-0.5 py-0 text-sm">
+                            <ItemMedia variant="icon" className="h-2 w-2">
+                              <div className="bg-chart-5 h-1 w-1 rounded-full" />
+                            </ItemMedia>
+                            <ItemContent>
+                              <ItemTitle className="text-muted-foreground text-sm leading-normal font-normal">
+                                Capacity:{" "}
+                                {formatMemoryValue(memoryValues.capacity)}
+                              </ItemTitle>
+                            </ItemContent>
+                          </Item>
+                        </>
+                      )}
                     </ItemGroup>
                   </CardFooter>
                 </Card>
@@ -1064,325 +1249,252 @@ export function ChartData({ className, variant = "default" }: ChartDataProps) {
                   className={`bg-background flex flex-col gap-1 rounded-md p-3 ${variant === "overview" ? "" : "min-w-0 flex-1"}`}
                 >
                   <CardHeader className="items-center gap-0 p-0">
-                    <CardTitle className="text-base">Pods</CardTitle>
+                    {variant === "overview" ? (
+                      <Link
+                        to="/daemon-sets"
+                        className="text-base font-semibold transition-colors hover:text-blue-600 hover:underline"
+                      >
+                        Daemon Sets (4)
+                      </Link>
+                    ) : (
+                      <CardTitle className="text-base">Pods</CardTitle>
+                    )}
                   </CardHeader>
                   <CardContent className="flex-1 p-0 pb-2">
                     <ChartContainer
-                      config={podsChartConfig}
+                      config={
+                        variant === "overview"
+                          ? overviewChartConfig
+                          : podsChartConfig
+                      }
                       className="mx-auto aspect-square max-h-[120px]"
                     >
-                      <RadialBarChart
-                        data={currentPodsData}
-                        innerRadius={20}
-                        outerRadius={50}
-                      >
-                        <ChartTooltip
-                          cursor={false}
-                          content={
-                            <ChartTooltipContent hideLabel nameKey="metric" />
-                          }
-                        />
-                        <RadialBar dataKey="value" background />
-                      </RadialBarChart>
+                      {variant === "overview" ? (
+                        <PieChart>
+                          <ChartTooltip
+                            cursor={false}
+                            content={<ChartTooltipContent hideLabel />}
+                          />
+                          <Pie
+                            data={currentPodsData}
+                            dataKey="value"
+                            nameKey="metric"
+                            innerRadius={20}
+                          />
+                        </PieChart>
+                      ) : (
+                        <RadialBarChart
+                          data={currentPodsData}
+                          innerRadius={20}
+                          outerRadius={50}
+                        >
+                          <ChartTooltip
+                            cursor={false}
+                            content={
+                              <ChartTooltipContent hideLabel nameKey="metric" />
+                            }
+                          />
+                          <RadialBar dataKey="value" background />
+                        </RadialBarChart>
+                      )}
                     </ChartContainer>
                   </CardContent>
                   <CardFooter className="p-0">
                     <ItemGroup className="w-full gap-0.5">
-                      <Item className="gap-1.5 px-0.5 py-0 text-sm">
-                        <ItemMedia variant="icon" className="h-2 w-2">
-                          <div className="bg-chart-1 h-1 w-1 rounded-full" />
-                        </ItemMedia>
-                        <ItemContent>
-                          <ItemTitle className="text-muted-foreground text-sm leading-normal font-normal">
-                            Usage: {formatValue(podsValues.usage.toString())}
-                          </ItemTitle>
-                        </ItemContent>
-                      </Item>
-                      <Item className="gap-1.5 px-0.5 py-0 text-sm">
-                        <ItemMedia variant="icon" className="h-2 w-2">
-                          <div className="bg-chart-2 h-1 w-1 rounded-full" />
-                        </ItemMedia>
-                        <ItemContent>
-                          <ItemTitle className="text-muted-foreground text-sm leading-normal font-normal">
-                            Allocatable:{" "}
-                            {formatValue(podsValues.allocatable.toString())}
-                          </ItemTitle>
-                        </ItemContent>
-                      </Item>
-                      <Item className="gap-1.5 px-0.5 py-0 text-sm">
-                        <ItemMedia variant="icon" className="h-2 w-2">
-                          <div className="bg-chart-3 h-1 w-1 rounded-full" />
-                        </ItemMedia>
-                        <ItemContent>
-                          <ItemTitle className="text-muted-foreground text-sm leading-normal font-normal">
-                            Capacity:{" "}
-                            {formatValue(podsValues.capacity.toString())}
-                          </ItemTitle>
-                        </ItemContent>
-                      </Item>
+                      {variant === "overview" ? (
+                        <OverviewLegend data={currentPodsData} />
+                      ) : (
+                        <>
+                          <Item className="gap-1.5 px-0.5 py-0 text-sm">
+                            <ItemMedia variant="icon" className="h-2 w-2">
+                              <div className="bg-chart-1 h-1 w-1 rounded-full" />
+                            </ItemMedia>
+                            <ItemContent>
+                              <ItemTitle className="text-muted-foreground text-sm leading-normal font-normal">
+                                Usage:{" "}
+                                {formatValue(podsValues.usage.toString())}
+                              </ItemTitle>
+                            </ItemContent>
+                          </Item>
+                          <Item className="gap-1.5 px-0.5 py-0 text-sm">
+                            <ItemMedia variant="icon" className="h-2 w-2">
+                              <div className="bg-chart-2 h-1 w-1 rounded-full" />
+                            </ItemMedia>
+                            <ItemContent>
+                              <ItemTitle className="text-muted-foreground text-sm leading-normal font-normal">
+                                Allocatable:{" "}
+                                {formatValue(podsValues.allocatable.toString())}
+                              </ItemTitle>
+                            </ItemContent>
+                          </Item>
+                          <Item className="gap-1.5 px-0.5 py-0 text-sm">
+                            <ItemMedia variant="icon" className="h-2 w-2">
+                              <div className="bg-chart-3 h-1 w-1 rounded-full" />
+                            </ItemMedia>
+                            <ItemContent>
+                              <ItemTitle className="text-muted-foreground text-sm leading-normal font-normal">
+                                Capacity:{" "}
+                                {formatValue(podsValues.capacity.toString())}
+                              </ItemTitle>
+                            </ItemContent>
+                          </Item>
+                        </>
+                      )}
                     </ItemGroup>
                   </CardFooter>
                 </Card>
 
-                {/* Network Card */}
-                <Card
-                  className={`bg-background flex flex-col gap-1 rounded-md p-3 ${variant === "overview" ? "" : "min-w-0 flex-1"}`}
-                >
-                  <CardHeader className="items-center gap-0 p-0">
-                    <CardTitle className="text-base">Network</CardTitle>
-                  </CardHeader>
-                  <CardContent className="flex-1 p-0 pb-2">
-                    <ChartContainer
-                      config={networkChartConfig}
-                      className="mx-auto aspect-square max-h-[120px]"
-                    >
-                      <RadialBarChart
-                        data={currentNetworkData}
-                        innerRadius={20}
-                        outerRadius={50}
+                {/* Network Card - Overview에서만 표시 */}
+                {variant === "overview" && (
+                  <Card className="bg-background flex flex-col gap-1 rounded-md p-3">
+                    <CardHeader className="items-center gap-0 p-0">
+                      <Link
+                        to="/stateful-sets"
+                        className="text-base font-semibold transition-colors hover:text-blue-600 hover:underline"
                       >
-                        <ChartTooltip
-                          cursor={false}
-                          content={
-                            <ChartTooltipContent hideLabel nameKey="metric" />
-                          }
-                        />
-                        <RadialBar dataKey="value" background />
-                      </RadialBarChart>
-                    </ChartContainer>
-                  </CardContent>
-                  <CardFooter className="p-0">
-                    <ItemGroup className="w-full gap-0.5">
-                      <Item className="gap-1.5 px-0.5 py-0 text-sm">
-                        <ItemMedia variant="icon" className="h-2 w-2">
-                          <div className="bg-chart-1 h-1 w-1 rounded-full" />
-                        </ItemMedia>
-                        <ItemContent>
-                          <ItemTitle className="text-muted-foreground text-sm leading-normal font-normal">
-                            Inbound:{" "}
-                            {formatValue(networkValues.inbound.toFixed(1))}GB/s
-                          </ItemTitle>
-                        </ItemContent>
-                      </Item>
-                      <Item className="gap-1.5 px-0.5 py-0 text-sm">
-                        <ItemMedia variant="icon" className="h-2 w-2">
-                          <div className="bg-chart-2 h-1 w-1 rounded-full" />
-                        </ItemMedia>
-                        <ItemContent>
-                          <ItemTitle className="text-muted-foreground text-sm leading-normal font-normal">
-                            Outbound:{" "}
-                            {formatValue(networkValues.outbound.toFixed(1))}GB/s
-                          </ItemTitle>
-                        </ItemContent>
-                      </Item>
-                      <Item className="gap-1.5 px-0.5 py-0 text-sm">
-                        <ItemMedia variant="icon" className="h-2 w-2">
-                          <div className="bg-chart-3 h-1 w-1 rounded-full" />
-                        </ItemMedia>
-                        <ItemContent>
-                          <ItemTitle className="text-muted-foreground text-sm leading-normal font-normal">
-                            Total: {formatValue(networkValues.total.toFixed(1))}
-                            GB/s
-                          </ItemTitle>
-                        </ItemContent>
-                      </Item>
-                    </ItemGroup>
-                  </CardFooter>
-                </Card>
+                        Stateful Sets (0)
+                      </Link>
+                    </CardHeader>
+                    <CardContent className="flex-1 p-0 pb-2">
+                      <ChartContainer
+                        config={overviewChartConfig}
+                        className="mx-auto aspect-square max-h-[120px]"
+                      >
+                        <PieChart>
+                          <ChartTooltip
+                            cursor={false}
+                            content={<ChartTooltipContent hideLabel />}
+                          />
+                          <Pie
+                            data={currentNetworkData}
+                            dataKey="value"
+                            nameKey="metric"
+                            innerRadius={20}
+                          />
+                        </PieChart>
+                      </ChartContainer>
+                    </CardContent>
+                    <CardFooter className="p-0">
+                      <ItemGroup className="w-full gap-0.5">
+                        <OverviewLegend data={currentNetworkData} />
+                      </ItemGroup>
+                    </CardFooter>
+                  </Card>
+                )}
 
-                {/* Storage Card */}
-                <Card
-                  className={`bg-background flex flex-col gap-1 rounded-md p-3 ${variant === "overview" ? "" : "min-w-0 flex-1"}`}
-                >
-                  <CardHeader className="items-center gap-0 p-0">
-                    <CardTitle className="text-base">Storage</CardTitle>
-                  </CardHeader>
-                  <CardContent className="flex-1 p-0 pb-2">
-                    <ChartContainer
-                      config={storageChartConfig}
-                      className="mx-auto aspect-square max-h-[120px]"
-                    >
-                      <RadialBarChart
-                        data={currentStorageData}
-                        innerRadius={20}
-                        outerRadius={50}
+                {/* Storage Card - Overview에서만 표시 */}
+                {variant === "overview" && (
+                  <Card className="bg-background flex flex-col gap-1 rounded-md p-3">
+                    <CardHeader className="items-center gap-0 p-0">
+                      <Link
+                        to="/replica-sets"
+                        className="text-base font-semibold transition-colors hover:text-blue-600 hover:underline"
                       >
-                        <ChartTooltip
-                          cursor={false}
-                          content={
-                            <ChartTooltipContent hideLabel nameKey="metric" />
-                          }
-                        />
-                        <RadialBar dataKey="value" background />
-                      </RadialBarChart>
-                    </ChartContainer>
-                  </CardContent>
-                  <CardFooter className="p-0">
-                    <ItemGroup className="w-full gap-0.5">
-                      <Item className="gap-1.5 px-0.5 py-0 text-sm">
-                        <ItemMedia variant="icon" className="h-2 w-2">
-                          <div className="bg-chart-1 h-1 w-1 rounded-full" />
-                        </ItemMedia>
-                        <ItemContent>
-                          <ItemTitle className="text-muted-foreground text-sm leading-normal font-normal">
-                            Used: {formatValue(storageValues.used.toFixed(1))}GB
-                          </ItemTitle>
-                        </ItemContent>
-                      </Item>
-                      <Item className="gap-1.5 px-0.5 py-0 text-sm">
-                        <ItemMedia variant="icon" className="h-2 w-2">
-                          <div className="bg-chart-2 h-1 w-1 rounded-full" />
-                        </ItemMedia>
-                        <ItemContent>
-                          <ItemTitle className="text-muted-foreground text-sm leading-normal font-normal">
-                            Available:{" "}
-                            {formatValue(storageValues.available.toFixed(1))}GB
-                          </ItemTitle>
-                        </ItemContent>
-                      </Item>
-                      <Item className="gap-1.5 px-0.5 py-0 text-sm">
-                        <ItemMedia variant="icon" className="h-2 w-2">
-                          <div className="bg-chart-3 h-1 w-1 rounded-full" />
-                        </ItemMedia>
-                        <ItemContent>
-                          <ItemTitle className="text-muted-foreground text-sm leading-normal font-normal">
-                            Total: {formatValue(storageValues.total.toFixed(1))}
-                            GB
-                          </ItemTitle>
-                        </ItemContent>
-                      </Item>
-                    </ItemGroup>
-                  </CardFooter>
-                </Card>
+                        Replica Sets (4)
+                      </Link>
+                    </CardHeader>
+                    <CardContent className="flex-1 p-0 pb-2">
+                      <ChartContainer
+                        config={overviewChartConfig}
+                        className="mx-auto aspect-square max-h-[120px]"
+                      >
+                        <PieChart>
+                          <ChartTooltip
+                            cursor={false}
+                            content={<ChartTooltipContent hideLabel />}
+                          />
+                          <Pie
+                            data={currentStorageData}
+                            dataKey="value"
+                            nameKey="metric"
+                            innerRadius={20}
+                          />
+                        </PieChart>
+                      </ChartContainer>
+                    </CardContent>
+                    <CardFooter className="p-0">
+                      <ItemGroup className="w-full gap-0.5">
+                        <OverviewLegend data={currentStorageData} />
+                      </ItemGroup>
+                    </CardFooter>
+                  </Card>
+                )}
 
-                {/* Events Card */}
-                <Card
-                  className={`bg-background flex flex-col gap-1 rounded-md p-3 ${variant === "overview" ? "" : "min-w-0 flex-1"}`}
-                >
-                  <CardHeader className="items-center gap-0 p-0">
-                    <CardTitle className="text-base">Events</CardTitle>
-                  </CardHeader>
-                  <CardContent className="flex-1 p-0 pb-2">
-                    <ChartContainer
-                      config={eventsChartConfig}
-                      className="mx-auto aspect-square max-h-[120px]"
-                    >
-                      <RadialBarChart
-                        data={currentEventsData}
-                        innerRadius={20}
-                        outerRadius={50}
+                {/* Events Card - Overview에서만 표시 */}
+                {variant === "overview" && (
+                  <Card className="bg-background flex flex-col gap-1 rounded-md p-3">
+                    <CardHeader className="items-center gap-0 p-0">
+                      <Link
+                        to="/jobs"
+                        className="text-base font-semibold transition-colors hover:text-blue-600 hover:underline"
                       >
-                        <ChartTooltip
-                          cursor={false}
-                          content={
-                            <ChartTooltipContent hideLabel nameKey="metric" />
-                          }
-                        />
-                        <RadialBar dataKey="value" background />
-                      </RadialBarChart>
-                    </ChartContainer>
-                  </CardContent>
-                  <CardFooter className="p-0">
-                    <ItemGroup className="w-full gap-0.5">
-                      <Item className="gap-1.5 px-0.5 py-0 text-sm">
-                        <ItemMedia variant="icon" className="h-2 w-2">
-                          <div className="bg-chart-1 h-1 w-1 rounded-full" />
-                        </ItemMedia>
-                        <ItemContent>
-                          <ItemTitle className="text-muted-foreground text-sm leading-normal font-normal">
-                            Normal:{" "}
-                            {formatValue(eventsValues.normal.toString())}
-                          </ItemTitle>
-                        </ItemContent>
-                      </Item>
-                      <Item className="gap-1.5 px-0.5 py-0 text-sm">
-                        <ItemMedia variant="icon" className="h-2 w-2">
-                          <div className="bg-chart-2 h-1 w-1 rounded-full" />
-                        </ItemMedia>
-                        <ItemContent>
-                          <ItemTitle className="text-muted-foreground text-sm leading-normal font-normal">
-                            Warning:{" "}
-                            {formatValue(eventsValues.warning.toString())}
-                          </ItemTitle>
-                        </ItemContent>
-                      </Item>
-                      <Item className="gap-1.5 px-0.5 py-0 text-sm">
-                        <ItemMedia variant="icon" className="h-2 w-2">
-                          <div className="bg-chart-3 h-1 w-1 rounded-full" />
-                        </ItemMedia>
-                        <ItemContent>
-                          <ItemTitle className="text-muted-foreground text-sm leading-normal font-normal">
-                            Error: {formatValue(eventsValues.error.toString())}
-                          </ItemTitle>
-                        </ItemContent>
-                      </Item>
-                    </ItemGroup>
-                  </CardFooter>
-                </Card>
+                        Jobs (1)
+                      </Link>
+                    </CardHeader>
+                    <CardContent className="flex-1 p-0 pb-2">
+                      <ChartContainer
+                        config={overviewChartConfig}
+                        className="mx-auto aspect-square max-h-[120px]"
+                      >
+                        <PieChart>
+                          <ChartTooltip
+                            cursor={false}
+                            content={<ChartTooltipContent hideLabel />}
+                          />
+                          <Pie
+                            data={currentEventsData}
+                            dataKey="value"
+                            nameKey="metric"
+                            innerRadius={20}
+                          />
+                        </PieChart>
+                      </ChartContainer>
+                    </CardContent>
+                    <CardFooter className="p-0">
+                      <ItemGroup className="w-full gap-0.5">
+                        <OverviewLegend data={currentEventsData} />
+                      </ItemGroup>
+                    </CardFooter>
+                  </Card>
+                )}
 
-                {/* Health Card */}
-                <Card
-                  className={`bg-background flex flex-col gap-1 rounded-md p-3 ${variant === "overview" ? "" : "min-w-0 flex-1"}`}
-                >
-                  <CardHeader className="items-center gap-0 p-0">
-                    <CardTitle className="text-base">Health</CardTitle>
-                  </CardHeader>
-                  <CardContent className="flex-1 p-0 pb-2">
-                    <ChartContainer
-                      config={healthChartConfig}
-                      className="mx-auto aspect-square max-h-[120px]"
-                    >
-                      <RadialBarChart
-                        data={currentHealthData}
-                        innerRadius={20}
-                        outerRadius={50}
+                {/* Health Card - Overview에서만 표시 */}
+                {variant === "overview" && (
+                  <Card className="bg-background flex flex-col gap-1 rounded-md p-3">
+                    <CardHeader className="items-center gap-0 p-0">
+                      <Link
+                        to="/cron-jobs"
+                        className="text-base font-semibold transition-colors hover:text-blue-600 hover:underline"
                       >
-                        <ChartTooltip
-                          cursor={false}
-                          content={
-                            <ChartTooltipContent hideLabel nameKey="metric" />
-                          }
-                        />
-                        <RadialBar dataKey="value" background />
-                      </RadialBarChart>
-                    </ChartContainer>
-                  </CardContent>
-                  <CardFooter className="p-0">
-                    <ItemGroup className="w-full gap-0.5">
-                      <Item className="gap-1.5 px-0.5 py-0 text-sm">
-                        <ItemMedia variant="icon" className="h-2 w-2">
-                          <div className="bg-chart-1 h-1 w-1 rounded-full" />
-                        </ItemMedia>
-                        <ItemContent>
-                          <ItemTitle className="text-muted-foreground text-sm leading-normal font-normal">
-                            Ready: {formatValue(healthValues.ready.toString())}
-                          </ItemTitle>
-                        </ItemContent>
-                      </Item>
-                      <Item className="gap-1.5 px-0.5 py-0 text-sm">
-                        <ItemMedia variant="icon" className="h-2 w-2">
-                          <div className="bg-chart-2 h-1 w-1 rounded-full" />
-                        </ItemMedia>
-                        <ItemContent>
-                          <ItemTitle className="text-muted-foreground text-sm leading-normal font-normal">
-                            Not Ready:{" "}
-                            {formatValue(healthValues.notready.toString())}
-                          </ItemTitle>
-                        </ItemContent>
-                      </Item>
-                      <Item className="gap-1.5 px-0.5 py-0 text-sm">
-                        <ItemMedia variant="icon" className="h-2 w-2">
-                          <div className="bg-chart-3 h-1 w-1 rounded-full" />
-                        </ItemMedia>
-                        <ItemContent>
-                          <ItemTitle className="text-muted-foreground text-sm leading-normal font-normal">
-                            Total: {formatValue(healthValues.total.toString())}
-                          </ItemTitle>
-                        </ItemContent>
-                      </Item>
-                    </ItemGroup>
-                  </CardFooter>
-                </Card>
+                        Cron Jobs (0)
+                      </Link>
+                    </CardHeader>
+                    <CardContent className="flex-1 p-0 pb-2">
+                      <ChartContainer
+                        config={overviewChartConfig}
+                        className="mx-auto aspect-square max-h-[120px]"
+                      >
+                        <PieChart>
+                          <ChartTooltip
+                            cursor={false}
+                            content={<ChartTooltipContent hideLabel />}
+                          />
+                          <Pie
+                            data={currentHealthData}
+                            dataKey="value"
+                            nameKey="metric"
+                            innerRadius={20}
+                          />
+                        </PieChart>
+                      </ChartContainer>
+                    </CardContent>
+                    <CardFooter className="p-0">
+                      <ItemGroup className="w-full gap-0.5">
+                        <OverviewLegend data={currentHealthData} />
+                      </ItemGroup>
+                    </CardFooter>
+                  </Card>
+                )}
               </div>
             </div>
           </div>
