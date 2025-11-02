@@ -1,3 +1,4 @@
+import * as React from "react";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { ChartData } from "./chart-data";
 
@@ -17,3 +18,10 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {};
+
+/**
+ * 데이터가 없는 상태의 차트 컴포넌트입니다.
+ */
+export const NoData: Story = {
+  render: () => <ChartData variant="no-data" />,
+};

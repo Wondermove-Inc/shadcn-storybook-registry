@@ -37,6 +37,7 @@ import { ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
  */
 interface ChartDataProps {
   className?: string;
+  variant?: "default" | "no-data";
 }
 
 /**
@@ -131,11 +132,58 @@ const warningData = [
 ];
 
 /**
+ * 🎯 목적: No Data 상태용 빈 데이터
+ */
+const noDataHourlyData = [
+  { hour: "15:00", value: 0 },
+  { hour: "16:00", value: 0 },
+  { hour: "17:00", value: 0 },
+  { hour: "18:00", value: 0 },
+  { hour: "19:00", value: 0 },
+  { hour: "20:00", value: 0 },
+];
+
+const noDataCpuData = [
+  { metric: "usage", value: 0, fill: "var(--color-usage)" },
+  { metric: "requests", value: 0, fill: "var(--color-requests)" },
+  { metric: "limits", value: 0, fill: "var(--color-limits)" },
+  { metric: "allocatable", value: 0, fill: "var(--color-allocatable)" },
+  { metric: "capacity", value: 0, fill: "var(--color-capacity)" },
+];
+
+const noDataMemoryData = [
+  { metric: "usage", value: 0, fill: "var(--color-usage)" },
+  { metric: "requests", value: 0, fill: "var(--color-requests)" },
+  { metric: "limits", value: 0, fill: "var(--color-limits)" },
+  { metric: "allocatable", value: 0, fill: "var(--color-allocatable)" },
+  { metric: "capacity", value: 0, fill: "var(--color-capacity)" },
+];
+
+const noDataPodsData = [
+  { metric: "usage", value: 0, fill: "var(--color-usage)" },
+  { metric: "allocatable", value: 0, fill: "var(--color-allocatable)" },
+  { metric: "capacity", value: 0, fill: "var(--color-capacity)" },
+];
+
+/**
  * 차트와 테이블 조합의 모니터링 차트데이터 입니다.
  */
-export function ChartData({ className }: ChartDataProps) {
+export function ChartData({ className, variant = "default" }: ChartDataProps) {
   const [selectedNode, setSelectedNode] = React.useState("master");
   const [selectedMetric, setSelectedMetric] = React.useState("cpu");
+
+  // 🎯 목적: variant에 따라 다른 데이터 선택
+  const currentHourlyData =
+    variant === "no-data" ? noDataHourlyData : hourlyData;
+  const currentCpuData = variant === "no-data" ? noDataCpuData : cpuData;
+  const currentMemoryData =
+    variant === "no-data" ? noDataMemoryData : memoryData;
+  const currentPodsData = variant === "no-data" ? noDataPodsData : podsData;
+
+  // 🎯 목적: variant에 따라 '--' 또는 실제 값 표시
+  const formatValue = (value: string | number) => {
+    return variant === "no-data" ? "--" : value;
+  };
 
   // 🎯 목적: 시간별 사용량 차트 설정
   const hourlyChartConfig = {
@@ -291,7 +339,7 @@ export function ChartData({ className }: ChartDataProps) {
                 >
                   <AreaChart
                     accessibilityLayer
-                    data={hourlyData}
+                    data={currentHourlyData}
                     margin={{
                       left: 6,
                       right: 12,
@@ -354,7 +402,7 @@ export function ChartData({ className }: ChartDataProps) {
                       className="mx-auto aspect-square max-h-[120px]"
                     >
                       <RadialBarChart
-                        data={cpuData}
+                        data={currentCpuData}
                         innerRadius={20}
                         outerRadius={50}
                       >
@@ -376,7 +424,7 @@ export function ChartData({ className }: ChartDataProps) {
                         </ItemMedia>
                         <ItemContent>
                           <ItemTitle className="text-muted-foreground text-sm leading-normal font-normal">
-                            Usage: 0.06
+                            Usage: {formatValue("0.06")}
                           </ItemTitle>
                         </ItemContent>
                       </Item>
@@ -386,7 +434,7 @@ export function ChartData({ className }: ChartDataProps) {
                         </ItemMedia>
                         <ItemContent>
                           <ItemTitle className="text-muted-foreground text-sm leading-normal font-normal">
-                            Requests: 1.10
+                            Requests: {formatValue("1.10")}
                           </ItemTitle>
                         </ItemContent>
                       </Item>
@@ -396,7 +444,7 @@ export function ChartData({ className }: ChartDataProps) {
                         </ItemMedia>
                         <ItemContent>
                           <ItemTitle className="text-muted-foreground text-sm leading-normal font-normal">
-                            Limits: 0.20
+                            Limits: {formatValue("0.20")}
                           </ItemTitle>
                         </ItemContent>
                       </Item>
@@ -406,7 +454,7 @@ export function ChartData({ className }: ChartDataProps) {
                         </ItemMedia>
                         <ItemContent>
                           <ItemTitle className="text-muted-foreground text-sm leading-normal font-normal">
-                            Allocatable Capacity: 4.00
+                            Allocatable Capacity: {formatValue("4.00")}
                           </ItemTitle>
                         </ItemContent>
                       </Item>
@@ -416,7 +464,7 @@ export function ChartData({ className }: ChartDataProps) {
                         </ItemMedia>
                         <ItemContent>
                           <ItemTitle className="text-muted-foreground text-sm leading-normal font-normal">
-                            Capacity: 4.00
+                            Capacity: {formatValue("4.00")}
                           </ItemTitle>
                         </ItemContent>
                       </Item>
@@ -435,7 +483,7 @@ export function ChartData({ className }: ChartDataProps) {
                       className="mx-auto aspect-square max-h-[120px]"
                     >
                       <RadialBarChart
-                        data={memoryData}
+                        data={currentMemoryData}
                         innerRadius={20}
                         outerRadius={50}
                       >
@@ -457,7 +505,7 @@ export function ChartData({ className }: ChartDataProps) {
                         </ItemMedia>
                         <ItemContent>
                           <ItemTitle className="text-muted-foreground text-sm leading-normal font-normal">
-                            Usage: 1.3GiB
+                            Usage: {formatValue("1.3GiB")}
                           </ItemTitle>
                         </ItemContent>
                       </Item>
@@ -467,7 +515,7 @@ export function ChartData({ className }: ChartDataProps) {
                         </ItemMedia>
                         <ItemContent>
                           <ItemTitle className="text-muted-foreground text-sm leading-normal font-normal">
-                            Requests: 304.0MiB
+                            Requests: {formatValue("304.0MiB")}
                           </ItemTitle>
                         </ItemContent>
                       </Item>
@@ -477,7 +525,7 @@ export function ChartData({ className }: ChartDataProps) {
                         </ItemMedia>
                         <ItemContent>
                           <ItemTitle className="text-muted-foreground text-sm leading-normal font-normal">
-                            Limits: 468.0MiB
+                            Limits: {formatValue("468.0MiB")}
                           </ItemTitle>
                         </ItemContent>
                       </Item>
@@ -487,7 +535,7 @@ export function ChartData({ className }: ChartDataProps) {
                         </ItemMedia>
                         <ItemContent>
                           <ItemTitle className="text-muted-foreground text-sm leading-normal font-normal">
-                            Allocatable Capacity: 3.7GiB
+                            Allocatable Capacity: {formatValue("3.7GiB")}
                           </ItemTitle>
                         </ItemContent>
                       </Item>
@@ -497,7 +545,7 @@ export function ChartData({ className }: ChartDataProps) {
                         </ItemMedia>
                         <ItemContent>
                           <ItemTitle className="text-muted-foreground text-sm leading-normal font-normal">
-                            Capacity: 3.8GiB
+                            Capacity: {formatValue("3.8GiB")}
                           </ItemTitle>
                         </ItemContent>
                       </Item>
@@ -516,7 +564,7 @@ export function ChartData({ className }: ChartDataProps) {
                       className="mx-auto aspect-square max-h-[120px]"
                     >
                       <RadialBarChart
-                        data={podsData}
+                        data={currentPodsData}
                         innerRadius={20}
                         outerRadius={50}
                       >
@@ -538,7 +586,7 @@ export function ChartData({ className }: ChartDataProps) {
                         </ItemMedia>
                         <ItemContent>
                           <ItemTitle className="text-muted-foreground text-sm leading-normal font-normal">
-                            Usage: 15
+                            Usage: {formatValue("15")}
                           </ItemTitle>
                         </ItemContent>
                       </Item>
@@ -548,7 +596,7 @@ export function ChartData({ className }: ChartDataProps) {
                         </ItemMedia>
                         <ItemContent>
                           <ItemTitle className="text-muted-foreground text-sm leading-normal font-normal">
-                            Allocatable: 110
+                            Allocatable: {formatValue("110")}
                           </ItemTitle>
                         </ItemContent>
                       </Item>
@@ -558,7 +606,7 @@ export function ChartData({ className }: ChartDataProps) {
                         </ItemMedia>
                         <ItemContent>
                           <ItemTitle className="text-muted-foreground text-sm leading-normal font-normal">
-                            Capacity: 110
+                            Capacity: {formatValue("110")}
                           </ItemTitle>
                         </ItemContent>
                       </Item>
