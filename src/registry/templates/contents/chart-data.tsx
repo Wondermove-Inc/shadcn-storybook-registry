@@ -26,6 +26,15 @@ import {
   EmptyMedia,
 } from "@/components/ui/empty";
 import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuCheckboxItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Button } from "@/components/ui/button";
+import {
   Card,
   CardContent,
   CardFooter,
@@ -34,7 +43,7 @@ import {
 } from "@/components/ui/card";
 import { ChartContainer, ChartConfig } from "@/components/ui/chart";
 import { RadialBar, RadialBarChart } from "recharts";
-import { TriangleAlert, BadgeCheck } from "lucide-react";
+import { TriangleAlert, BadgeCheck, ChevronDown } from "lucide-react";
 import { Area, AreaChart, CartesianGrid, XAxis, YAxis } from "recharts";
 import { ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
 
@@ -353,6 +362,7 @@ const noDataHealthData = [
 export function ChartData({ className, variant = "default" }: ChartDataProps) {
   const [selectedNode, setSelectedNode] = React.useState("master");
   const [selectedMetric, setSelectedMetric] = React.useState("cpu");
+  const [selectedNamespace, setSelectedNamespace] = React.useState("default");
 
   // 🎯 목적: selectedNode와 variant에 따라 다른 데이터 선택
   const getNodeData = (masterData: any[], workerData: any[], noData: any[]) => {
@@ -695,22 +705,65 @@ export function ChartData({ className, variant = "default" }: ChartDataProps) {
               {"{Menuname}"}
             </h1>
 
-            {/* Master/Worker 노드 토글 */}
-            <ToggleGroup
-              type="single"
-              value={selectedNode}
-              onValueChange={(value) => value && setSelectedNode(value)}
-              variant="outline"
-              size="default"
-              className="w-[360px]"
-            >
-              <ToggleGroupItem value="master" aria-label="Master Nodes">
-                Master Nodes
-              </ToggleGroupItem>
-              <ToggleGroupItem value="worker" aria-label="Worker Nodes">
-                Worker Nodes
-              </ToggleGroupItem>
-            </ToggleGroup>
+            {/* Overview에서는 Namespace 드롭다운, 다른 스토리에서는 Master/Worker 노드 토글 */}
+            {variant === "overview" ? (
+              <DropdownMenu>
+                <DropdownMenuTrigger>
+                  <Button variant="outline" className="min-w-[180px]">
+                    Namespace: {selectedNamespace}
+                    <ChevronDown className="ml-2 h-4 w-4" />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent className="w-56" align="start">
+                  <DropdownMenuLabel>All Namespaces</DropdownMenuLabel>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuCheckboxItem
+                    checked={selectedNamespace === "default"}
+                    onCheckedChange={() => setSelectedNamespace("default")}
+                  >
+                    default
+                  </DropdownMenuCheckboxItem>
+                  <DropdownMenuCheckboxItem
+                    checked={selectedNamespace === "cilium-secrets"}
+                    onCheckedChange={() =>
+                      setSelectedNamespace("cilium-secrets")
+                    }
+                  >
+                    cilium-secrets
+                  </DropdownMenuCheckboxItem>
+                  <DropdownMenuCheckboxItem
+                    checked={selectedNamespace === "kube-node-lease"}
+                    onCheckedChange={() =>
+                      setSelectedNamespace("kube-node-lease")
+                    }
+                  >
+                    kube-node-lease
+                  </DropdownMenuCheckboxItem>
+                  <DropdownMenuCheckboxItem
+                    checked={selectedNamespace === "kube-public"}
+                    onCheckedChange={() => setSelectedNamespace("kube-public")}
+                  >
+                    kube-public
+                  </DropdownMenuCheckboxItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            ) : (
+              <ToggleGroup
+                type="single"
+                value={selectedNode}
+                onValueChange={(value) => value && setSelectedNode(value)}
+                variant="outline"
+                size="default"
+                className="w-[360px]"
+              >
+                <ToggleGroupItem value="master" aria-label="Master Nodes">
+                  Master Nodes
+                </ToggleGroupItem>
+                <ToggleGroupItem value="worker" aria-label="Worker Nodes">
+                  Worker Nodes
+                </ToggleGroupItem>
+              </ToggleGroup>
+            )}
           </div>
 
           {/* 차트 영역 - 반응형 레이아웃 (900px 이하에서 세로 정렬) */}
@@ -834,11 +887,11 @@ export function ChartData({ className, variant = "default" }: ChartDataProps) {
 
               {/* 카드들 */}
               <div
-                className={`flex min-w-0 flex-1 items-stretch self-stretch ${variant === "overview" ? "flex-wrap gap-2" : "gap-4"}`}
+                className={`min-w-0 flex-1 self-stretch ${variant === "overview" ? "grid grid-cols-[repeat(auto-fit,minmax(200px,1fr))] gap-2" : "flex items-stretch gap-4"}`}
               >
                 {/* CPU Card */}
                 <Card
-                  className={`bg-background flex flex-col gap-1 rounded-md p-3 ${variant === "overview" ? "w-[200px] min-w-0 flex-shrink-0" : "min-w-0 flex-1"}`}
+                  className={`bg-background flex flex-col gap-1 rounded-md p-3 ${variant === "overview" ? "" : "min-w-0 flex-1"}`}
                 >
                   <CardHeader className="items-center gap-0 p-0">
                     <CardTitle className="text-base">CPU</CardTitle>
@@ -924,7 +977,7 @@ export function ChartData({ className, variant = "default" }: ChartDataProps) {
 
                 {/* Memory Card */}
                 <Card
-                  className={`bg-background flex flex-col gap-1 rounded-md p-3 ${variant === "overview" ? "w-[200px] min-w-0 flex-shrink-0" : "min-w-0 flex-1"}`}
+                  className={`bg-background flex flex-col gap-1 rounded-md p-3 ${variant === "overview" ? "" : "min-w-0 flex-1"}`}
                 >
                   <CardHeader className="items-center gap-0 p-0">
                     <CardTitle className="text-base">Memory</CardTitle>
@@ -1008,7 +1061,7 @@ export function ChartData({ className, variant = "default" }: ChartDataProps) {
 
                 {/* Pods Card */}
                 <Card
-                  className={`bg-background flex flex-col gap-1 rounded-md p-3 ${variant === "overview" ? "w-[200px] min-w-0 flex-shrink-0" : "min-w-0 flex-1"}`}
+                  className={`bg-background flex flex-col gap-1 rounded-md p-3 ${variant === "overview" ? "" : "min-w-0 flex-1"}`}
                 >
                   <CardHeader className="items-center gap-0 p-0">
                     <CardTitle className="text-base">Pods</CardTitle>
@@ -1073,7 +1126,7 @@ export function ChartData({ className, variant = "default" }: ChartDataProps) {
 
                 {/* Network Card */}
                 <Card
-                  className={`bg-background flex flex-col gap-1 rounded-md p-3 ${variant === "overview" ? "w-[200px] min-w-0 flex-shrink-0" : "min-w-0 flex-1"}`}
+                  className={`bg-background flex flex-col gap-1 rounded-md p-3 ${variant === "overview" ? "" : "min-w-0 flex-1"}`}
                 >
                   <CardHeader className="items-center gap-0 p-0">
                     <CardTitle className="text-base">Network</CardTitle>
@@ -1139,7 +1192,7 @@ export function ChartData({ className, variant = "default" }: ChartDataProps) {
 
                 {/* Storage Card */}
                 <Card
-                  className={`bg-background flex flex-col gap-1 rounded-md p-3 ${variant === "overview" ? "w-[200px] min-w-0 flex-shrink-0" : "min-w-0 flex-1"}`}
+                  className={`bg-background flex flex-col gap-1 rounded-md p-3 ${variant === "overview" ? "" : "min-w-0 flex-1"}`}
                 >
                   <CardHeader className="items-center gap-0 p-0">
                     <CardTitle className="text-base">Storage</CardTitle>
@@ -1204,7 +1257,7 @@ export function ChartData({ className, variant = "default" }: ChartDataProps) {
 
                 {/* Events Card */}
                 <Card
-                  className={`bg-background flex flex-col gap-1 rounded-md p-3 ${variant === "overview" ? "w-[200px] min-w-0 flex-shrink-0" : "min-w-0 flex-1"}`}
+                  className={`bg-background flex flex-col gap-1 rounded-md p-3 ${variant === "overview" ? "" : "min-w-0 flex-1"}`}
                 >
                   <CardHeader className="items-center gap-0 p-0">
                     <CardTitle className="text-base">Events</CardTitle>
@@ -1269,7 +1322,7 @@ export function ChartData({ className, variant = "default" }: ChartDataProps) {
 
                 {/* Health Card */}
                 <Card
-                  className={`bg-background flex flex-col gap-1 rounded-md p-3 ${variant === "overview" ? "w-[200px] min-w-0 flex-shrink-0" : "min-w-0 flex-1"}`}
+                  className={`bg-background flex flex-col gap-1 rounded-md p-3 ${variant === "overview" ? "" : "min-w-0 flex-1"}`}
                 >
                   <CardHeader className="items-center gap-0 p-0">
                     <CardTitle className="text-base">Health</CardTitle>

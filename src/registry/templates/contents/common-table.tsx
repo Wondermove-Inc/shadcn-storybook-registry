@@ -263,7 +263,7 @@ export function CommonTable({
             <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
               {/* 네임스페이스 드롭다운 */}
               <DropdownMenu>
-                <DropdownMenuTrigger asChild>
+                <DropdownMenuTrigger>
                   <Button
                     variant="outline"
                     onClick={() => console.log("Dropdown trigger clicked")}
