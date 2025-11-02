@@ -185,9 +185,7 @@ export const BeforeUtterance: Story = {
                 {/* 🎯 목적: 공식 InputGroup 컴포넌트 기반 채팅 입력 영역 */}
                 <InputGroup className="w-full flex-col">
                   {/* Textarea 영역 - 스크롤 기능 내장 */}
-                  <ScrollArea className="h-20 w-full p-3">
-                    
-                    
+                  <ScrollArea className="w-full p-3" maxHeight={300}>
                     <InputGroupTextarea
                       placeholder="Ask, Search or Chat..."
                       value={message}
@@ -396,13 +394,13 @@ export const AnswersText: Story = {
 
                 {/* 🎯 목적: AI 응답 섹션 (스크롤 가능) - InputGroup 공간 제외 */}
                 <div className="min-h-0 flex-1">
-                  <ScrollArea className="h-full" >
-                    <div className="flex flex-col items-end gap-4" >
+                  <ScrollArea className="h-full">
+                    <div className="flex flex-col items-end gap-4">
                       {/* 사용자 질문 버튼 또는 편집 InputGroup */}
                       {isEditingUserMessage ? (
                         <InputGroup className="!bg-secondary dark:!bg-secondary flex-col">
                           {/* Textarea 영역 - 스크롤 기능 내장 */}
-                          <ScrollArea className=" min-h-12 p-3" maxHeight={300}>
+                          <ScrollArea className="min-h-12 p-3" maxHeight={300}>
                             <InputGroupTextarea
                               value={userMessageText}
                               onChange={(e) =>
@@ -449,7 +447,6 @@ export const AnswersText: Story = {
                               <ArrowUp className="h-4 w-4" />
                             </InputGroupButton>
                           </InputGroupAddon>
-                          
                         </InputGroup>
                       ) : (
                         <Button
@@ -538,7 +535,7 @@ export const AnswersText: Story = {
             <div className="absolute right-4 bottom-4 left-4 z-50">
               <InputGroup className="!bg-secondary dark:!bg-secondary flex-col">
                 {/* Textarea 영역 - 스크롤 기능 내장 */}
-                
+
                 <ScrollArea className="h-auto w-full p-3" maxHeight={300}>
                   <InputGroupTextarea
                     placeholder="Ask, Search or Chat..."
@@ -1384,7 +1381,7 @@ export const AnswersChart: Story = {
             <div className="absolute right-4 bottom-4 left-4 z-50">
               <InputGroup className="!bg-secondary dark:!bg-secondary flex-col">
                 {/* Textarea 영역 - 스크롤 기능 내장 */}
-                <ScrollArea className="h-auto max-h-96 w-full p-3">
+                <ScrollArea className="h-auto w-full p-3" maxHeight={300}>
                   <InputGroupTextarea
                     placeholder="Ask, Search or Chat..."
                     value={message}
