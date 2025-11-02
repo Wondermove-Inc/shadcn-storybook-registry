@@ -396,13 +396,13 @@ export const AnswersText: Story = {
 
                 {/* 🎯 목적: AI 응답 섹션 (스크롤 가능) - InputGroup 공간 제외 */}
                 <div className="min-h-0 flex-1">
-                  <ScrollArea className="h-full">
-                    <div className="flex flex-col items-end gap-4">
+                  <ScrollArea className="h-full" >
+                    <div className="flex flex-col items-end gap-4" >
                       {/* 사용자 질문 버튼 또는 편집 InputGroup */}
                       {isEditingUserMessage ? (
                         <InputGroup className="!bg-secondary dark:!bg-secondary flex-col">
                           {/* Textarea 영역 - 스크롤 기능 내장 */}
-                          <ScrollArea className="max-h-96 min-h-12 p-3">
+                          <ScrollArea className=" min-h-12 p-3" maxHeight={300}>
                             <InputGroupTextarea
                               value={userMessageText}
                               onChange={(e) =>
