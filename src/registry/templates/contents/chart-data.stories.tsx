@@ -22,6 +22,13 @@ export const Default: Story = {};
 /**
  * 데이터가 없는 상태의 차트 컴포넌트입니다.
  */
-export const NoData: Story = {
+export const DefaultNodata: Story = {
   render: () => <ChartData variant="no-data" />,
+};
+
+/**
+ * 개요 대시보드 상태의 차트 컴포넌트입니다.
+ */
+export const Overview: Story = {
+  render: () => <ChartData />,
 };

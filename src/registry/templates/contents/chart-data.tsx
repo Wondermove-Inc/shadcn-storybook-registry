@@ -19,6 +19,13 @@ import {
   ItemTitle,
 } from "@/components/ui/item";
 import {
+  Empty,
+  EmptyHeader,
+  EmptyTitle,
+  EmptyDescription,
+  EmptyMedia,
+} from "@/components/ui/empty";
+import {
   Card,
   CardContent,
   CardFooter,
@@ -41,9 +48,9 @@ interface ChartDataProps {
 }
 
 /**
- * 🎯 목적: 시간별 사용량 데이터 (JSON UIDL 기반)
+ * 🎯 목적: Master Nodes CPU 시간별 사용량 데이터
  */
-const hourlyData = [
+const masterHourlyCpuData = [
   { hour: "15:00", value: 953.7 },
   { hour: "16:00", value: 1600 },
   { hour: "17:00", value: 2800 },
@@ -53,9 +60,45 @@ const hourlyData = [
 ];
 
 /**
- * 🎯 목적: CPU 사용량 데이터 (Simple Radial Chart 형식)
+ * 🎯 목적: Worker Nodes CPU 시간별 사용량 데이터
  */
-const cpuData = [
+const workerHourlyCpuData = [
+  { hour: "15:00", value: 1205.3 },
+  { hour: "16:00", value: 2100 },
+  { hour: "17:00", value: 3200 },
+  { hour: "18:00", value: 2400 },
+  { hour: "19:00", value: 1800 },
+  { hour: "20:00", value: 2200 },
+];
+
+/**
+ * 🎯 목적: Master Nodes Memory 시간별 사용량 데이터
+ */
+const masterHourlyMemoryData = [
+  { hour: "15:00", value: 1024.5 },
+  { hour: "16:00", value: 1536.2 },
+  { hour: "17:00", value: 2048.8 },
+  { hour: "18:00", value: 1792.4 },
+  { hour: "19:00", value: 1280.6 },
+  { hour: "20:00", value: 1600.3 },
+];
+
+/**
+ * 🎯 목적: Worker Nodes Memory 시간별 사용량 데이터
+ */
+const workerHourlyMemoryData = [
+  { hour: "15:00", value: 2048.7 },
+  { hour: "16:00", value: 2560.4 },
+  { hour: "17:00", value: 3072.1 },
+  { hour: "18:00", value: 2816.8 },
+  { hour: "19:00", value: 2304.5 },
+  { hour: "20:00", value: 2688.2 },
+];
+
+/**
+ * 🎯 목적: Master Nodes CPU 사용량 데이터
+ */
+const masterCpuData = [
   { metric: "usage", value: 0.06, fill: "var(--color-usage)" },
   { metric: "requests", value: 1.1, fill: "var(--color-requests)" },
   { metric: "limits", value: 0.2, fill: "var(--color-limits)" },
@@ -64,9 +107,20 @@ const cpuData = [
 ];
 
 /**
- * 🎯 목적: Memory 사용량 데이터 (Simple Radial Chart 형식)
+ * 🎯 목적: Worker Nodes CPU 사용량 데이터
  */
-const memoryData = [
+const workerCpuData = [
+  { metric: "usage", value: 0.12, fill: "var(--color-usage)" },
+  { metric: "requests", value: 2.5, fill: "var(--color-requests)" },
+  { metric: "limits", value: 0.8, fill: "var(--color-limits)" },
+  { metric: "allocatable", value: 8.0, fill: "var(--color-allocatable)" },
+  { metric: "capacity", value: 8.0, fill: "var(--color-capacity)" },
+];
+
+/**
+ * 🎯 목적: Master Nodes Memory 사용량 데이터
+ */
+const masterMemoryData = [
   { metric: "usage", value: 1.3, fill: "var(--color-usage)" },
   { metric: "requests", value: 304.0, fill: "var(--color-requests)" },
   { metric: "limits", value: 468.0, fill: "var(--color-limits)" },
@@ -75,12 +129,32 @@ const memoryData = [
 ];
 
 /**
- * 🎯 목적: Pods 데이터 (Simple Radial Chart 형식)
+ * 🎯 목적: Worker Nodes Memory 사용량 데이터
  */
-const podsData = [
+const workerMemoryData = [
+  { metric: "usage", value: 2.8, fill: "var(--color-usage)" },
+  { metric: "requests", value: 512.0, fill: "var(--color-requests)" },
+  { metric: "limits", value: 896.0, fill: "var(--color-limits)" },
+  { metric: "allocatable", value: 7200, fill: "var(--color-allocatable)" },
+  { metric: "capacity", value: 7600, fill: "var(--color-capacity)" },
+];
+
+/**
+ * 🎯 목적: Master Nodes Pods 데이터
+ */
+const masterPodsData = [
   { metric: "usage", value: 15, fill: "var(--color-usage)" },
   { metric: "allocatable", value: 110, fill: "var(--color-allocatable)" },
   { metric: "capacity", value: 110, fill: "var(--color-capacity)" },
+];
+
+/**
+ * 🎯 목적: Worker Nodes Pods 데이터
+ */
+const workerPodsData = [
+  { metric: "usage", value: 28, fill: "var(--color-usage)" },
+  { metric: "allocatable", value: 220, fill: "var(--color-allocatable)" },
+  { metric: "capacity", value: 220, fill: "var(--color-capacity)" },
 ];
 
 /**
@@ -132,9 +206,21 @@ const warningData = [
 ];
 
 /**
- * 🎯 목적: No Data 상태용 빈 데이터
+ * 🎯 목적: No Data 상태용 빈 CPU 시간별 데이터
  */
-const noDataHourlyData = [
+const noDataHourlyCpuData = [
+  { hour: "15:00", value: 0 },
+  { hour: "16:00", value: 0 },
+  { hour: "17:00", value: 0 },
+  { hour: "18:00", value: 0 },
+  { hour: "19:00", value: 0 },
+  { hour: "20:00", value: 0 },
+];
+
+/**
+ * 🎯 목적: No Data 상태용 빈 Memory 시간별 데이터
+ */
+const noDataHourlyMemoryData = [
   { hour: "15:00", value: 0 },
   { hour: "16:00", value: 0 },
   { hour: "17:00", value: 0 },
@@ -172,24 +258,104 @@ export function ChartData({ className, variant = "default" }: ChartDataProps) {
   const [selectedNode, setSelectedNode] = React.useState("master");
   const [selectedMetric, setSelectedMetric] = React.useState("cpu");
 
-  // 🎯 목적: variant에 따라 다른 데이터 선택
-  const currentHourlyData =
-    variant === "no-data" ? noDataHourlyData : hourlyData;
-  const currentCpuData = variant === "no-data" ? noDataCpuData : cpuData;
-  const currentMemoryData =
-    variant === "no-data" ? noDataMemoryData : memoryData;
-  const currentPodsData = variant === "no-data" ? noDataPodsData : podsData;
+  // 🎯 목적: selectedNode와 variant에 따라 다른 데이터 선택
+  const getNodeData = (masterData: any[], workerData: any[], noData: any[]) => {
+    if (variant === "no-data") return noData;
+    return selectedNode === "master" ? masterData : workerData;
+  };
+
+  // 🎯 목적: selectedMetric(CPU/Memory)에 따라 시간별 데이터 선택
+  const currentHourlyData = getNodeData(
+    selectedMetric === "cpu" ? masterHourlyCpuData : masterHourlyMemoryData,
+    selectedMetric === "cpu" ? workerHourlyCpuData : workerHourlyMemoryData,
+    selectedMetric === "cpu" ? noDataHourlyCpuData : noDataHourlyMemoryData,
+  );
+  const currentCpuData = getNodeData(
+    masterCpuData,
+    workerCpuData,
+    noDataCpuData,
+  );
+  const currentMemoryData = getNodeData(
+    masterMemoryData,
+    workerMemoryData,
+    noDataMemoryData,
+  );
+  const currentPodsData = getNodeData(
+    masterPodsData,
+    workerPodsData,
+    noDataPodsData,
+  );
 
   // 🎯 목적: variant에 따라 '--' 또는 실제 값 표시
   const formatValue = (value: string | number) => {
     return variant === "no-data" ? "--" : value;
   };
 
-  // 🎯 목적: 시간별 사용량 차트 설정
+  // 🎯 목적: 현재 선택된 노드의 실제 데이터 값 추출
+  const getCpuValues = () => {
+    const data =
+      variant === "no-data"
+        ? noDataCpuData
+        : selectedNode === "master"
+          ? masterCpuData
+          : workerCpuData;
+    return {
+      usage: data.find((d) => d.metric === "usage")?.value || 0,
+      requests: data.find((d) => d.metric === "requests")?.value || 0,
+      limits: data.find((d) => d.metric === "limits")?.value || 0,
+      allocatable: data.find((d) => d.metric === "allocatable")?.value || 0,
+      capacity: data.find((d) => d.metric === "capacity")?.value || 0,
+    };
+  };
+
+  const getMemoryValues = () => {
+    const data =
+      variant === "no-data"
+        ? noDataMemoryData
+        : selectedNode === "master"
+          ? masterMemoryData
+          : workerMemoryData;
+    return {
+      usage: data.find((d) => d.metric === "usage")?.value || 0,
+      requests: data.find((d) => d.metric === "requests")?.value || 0,
+      limits: data.find((d) => d.metric === "limits")?.value || 0,
+      allocatable: data.find((d) => d.metric === "allocatable")?.value || 0,
+      capacity: data.find((d) => d.metric === "capacity")?.value || 0,
+    };
+  };
+
+  const getPodsValues = () => {
+    const data =
+      variant === "no-data"
+        ? noDataPodsData
+        : selectedNode === "master"
+          ? masterPodsData
+          : workerPodsData;
+    return {
+      usage: data.find((d) => d.metric === "usage")?.value || 0,
+      allocatable: data.find((d) => d.metric === "allocatable")?.value || 0,
+      capacity: data.find((d) => d.metric === "capacity")?.value || 0,
+    };
+  };
+
+  const cpuValues = getCpuValues();
+  const memoryValues = getMemoryValues();
+  const podsValues = getPodsValues();
+
+  // 🎯 목적: 메모리 값을 적절한 단위로 포맷팅
+  const formatMemoryValue = (value: number) => {
+    if (variant === "no-data") return "--";
+    if (value >= 1000) {
+      return `${(value / 1000).toFixed(1)}GiB`;
+    }
+    return `${value.toFixed(1)}MiB`;
+  };
+
+  // 🎯 목적: 시간별 사용량 차트 설정 (CPU/Memory에 따라 다른 색상)
   const hourlyChartConfig = {
     hourly: {
       label: "Hourly Usage",
-      color: "var(--chart-1)",
+      color: selectedMetric === "cpu" ? "var(--chart-1)" : "var(--chart-3)",
     },
   } satisfies ChartConfig;
 
@@ -302,7 +468,7 @@ export function ChartData({ className, variant = "default" }: ChartDataProps) {
               {/* 제목과 토글 영역 */}
               <div className="flex items-center justify-between gap-5 self-stretch">
                 <h3 className="text-foreground text-sm leading-none font-medium">
-                  Hourly usage
+                  Hourly {selectedMetric === "cpu" ? "CPU" : "Memory"} usage
                 </h3>
 
                 {/* CPU/Memory 토글 - shadcn/ui ToggleGroup */}
@@ -358,10 +524,19 @@ export function ChartData({ className, variant = "default" }: ChartDataProps) {
                       axisLine={false}
                       tickMargin={8}
                       tickFormatter={(value) => {
-                        if (value >= 1000) {
-                          return `${(value / 1000).toFixed(1)}GiB`;
+                        if (selectedMetric === "cpu") {
+                          // CPU: 1000 이상이면 GiB, 아니면 MiB
+                          if (value >= 1000) {
+                            return `${(value / 1000).toFixed(1)}GiB`;
+                          }
+                          return `${value}MiB`;
+                        } else {
+                          // Memory: 1000 이상이면 GiB, 아니면 MiB
+                          if (value >= 1000) {
+                            return `${(value / 1000).toFixed(1)}GiB`;
+                          }
+                          return `${value}MiB`;
                         }
-                        return `${value}MiB`;
                       }}
                     />
                     <ChartTooltip
@@ -371,9 +546,17 @@ export function ChartData({ className, variant = "default" }: ChartDataProps) {
                     <Area
                       dataKey="value"
                       type="step"
-                      fill="var(--color-hourly)"
+                      fill={
+                        selectedMetric === "cpu"
+                          ? "var(--chart-1)"
+                          : "var(--chart-3)"
+                      }
                       fillOpacity={0.4}
-                      stroke="var(--color-hourly)"
+                      stroke={
+                        selectedMetric === "cpu"
+                          ? "var(--chart-1)"
+                          : "var(--chart-3)"
+                      }
                     />
                   </AreaChart>
                 </ChartContainer>
@@ -424,7 +607,7 @@ export function ChartData({ className, variant = "default" }: ChartDataProps) {
                         </ItemMedia>
                         <ItemContent>
                           <ItemTitle className="text-muted-foreground text-sm leading-normal font-normal">
-                            Usage: {formatValue("0.06")}
+                            Usage: {formatValue(cpuValues.usage.toFixed(2))}
                           </ItemTitle>
                         </ItemContent>
                       </Item>
@@ -434,7 +617,8 @@ export function ChartData({ className, variant = "default" }: ChartDataProps) {
                         </ItemMedia>
                         <ItemContent>
                           <ItemTitle className="text-muted-foreground text-sm leading-normal font-normal">
-                            Requests: {formatValue("1.10")}
+                            Requests:{" "}
+                            {formatValue(cpuValues.requests.toFixed(2))}
                           </ItemTitle>
                         </ItemContent>
                       </Item>
@@ -444,7 +628,7 @@ export function ChartData({ className, variant = "default" }: ChartDataProps) {
                         </ItemMedia>
                         <ItemContent>
                           <ItemTitle className="text-muted-foreground text-sm leading-normal font-normal">
-                            Limits: {formatValue("0.20")}
+                            Limits: {formatValue(cpuValues.limits.toFixed(2))}
                           </ItemTitle>
                         </ItemContent>
                       </Item>
@@ -454,7 +638,8 @@ export function ChartData({ className, variant = "default" }: ChartDataProps) {
                         </ItemMedia>
                         <ItemContent>
                           <ItemTitle className="text-muted-foreground text-sm leading-normal font-normal">
-                            Allocatable Capacity: {formatValue("4.00")}
+                            Allocatable Capacity:{" "}
+                            {formatValue(cpuValues.allocatable.toFixed(2))}
                           </ItemTitle>
                         </ItemContent>
                       </Item>
@@ -464,7 +649,8 @@ export function ChartData({ className, variant = "default" }: ChartDataProps) {
                         </ItemMedia>
                         <ItemContent>
                           <ItemTitle className="text-muted-foreground text-sm leading-normal font-normal">
-                            Capacity: {formatValue("4.00")}
+                            Capacity:{" "}
+                            {formatValue(cpuValues.capacity.toFixed(2))}
                           </ItemTitle>
                         </ItemContent>
                       </Item>
@@ -505,7 +691,7 @@ export function ChartData({ className, variant = "default" }: ChartDataProps) {
                         </ItemMedia>
                         <ItemContent>
                           <ItemTitle className="text-muted-foreground text-sm leading-normal font-normal">
-                            Usage: {formatValue("1.3GiB")}
+                            Usage: {formatMemoryValue(memoryValues.usage)}
                           </ItemTitle>
                         </ItemContent>
                       </Item>
@@ -515,7 +701,7 @@ export function ChartData({ className, variant = "default" }: ChartDataProps) {
                         </ItemMedia>
                         <ItemContent>
                           <ItemTitle className="text-muted-foreground text-sm leading-normal font-normal">
-                            Requests: {formatValue("304.0MiB")}
+                            Requests: {formatMemoryValue(memoryValues.requests)}
                           </ItemTitle>
                         </ItemContent>
                       </Item>
@@ -525,7 +711,7 @@ export function ChartData({ className, variant = "default" }: ChartDataProps) {
                         </ItemMedia>
                         <ItemContent>
                           <ItemTitle className="text-muted-foreground text-sm leading-normal font-normal">
-                            Limits: {formatValue("468.0MiB")}
+                            Limits: {formatMemoryValue(memoryValues.limits)}
                           </ItemTitle>
                         </ItemContent>
                       </Item>
@@ -535,7 +721,8 @@ export function ChartData({ className, variant = "default" }: ChartDataProps) {
                         </ItemMedia>
                         <ItemContent>
                           <ItemTitle className="text-muted-foreground text-sm leading-normal font-normal">
-                            Allocatable Capacity: {formatValue("3.7GiB")}
+                            Allocatable Capacity:{" "}
+                            {formatMemoryValue(memoryValues.allocatable)}
                           </ItemTitle>
                         </ItemContent>
                       </Item>
@@ -545,7 +732,7 @@ export function ChartData({ className, variant = "default" }: ChartDataProps) {
                         </ItemMedia>
                         <ItemContent>
                           <ItemTitle className="text-muted-foreground text-sm leading-normal font-normal">
-                            Capacity: {formatValue("3.8GiB")}
+                            Capacity: {formatMemoryValue(memoryValues.capacity)}
                           </ItemTitle>
                         </ItemContent>
                       </Item>
@@ -586,7 +773,7 @@ export function ChartData({ className, variant = "default" }: ChartDataProps) {
                         </ItemMedia>
                         <ItemContent>
                           <ItemTitle className="text-muted-foreground text-sm leading-normal font-normal">
-                            Usage: {formatValue("15")}
+                            Usage: {formatValue(podsValues.usage.toString())}
                           </ItemTitle>
                         </ItemContent>
                       </Item>
@@ -596,7 +783,8 @@ export function ChartData({ className, variant = "default" }: ChartDataProps) {
                         </ItemMedia>
                         <ItemContent>
                           <ItemTitle className="text-muted-foreground text-sm leading-normal font-normal">
-                            Allocatable: {formatValue("110")}
+                            Allocatable:{" "}
+                            {formatValue(podsValues.allocatable.toString())}
                           </ItemTitle>
                         </ItemContent>
                       </Item>
@@ -606,7 +794,8 @@ export function ChartData({ className, variant = "default" }: ChartDataProps) {
                         </ItemMedia>
                         <ItemContent>
                           <ItemTitle className="text-muted-foreground text-sm leading-normal font-normal">
-                            Capacity: {formatValue("110")}
+                            Capacity:{" "}
+                            {formatValue(podsValues.capacity.toString())}
                           </ItemTitle>
                         </ItemContent>
                       </Item>
@@ -618,81 +807,97 @@ export function ChartData({ className, variant = "default" }: ChartDataProps) {
           </div>
         </div>
 
-        {/* 경고 테이블 */}
+        {/* 경고 테이블 또는 Empty 상태 */}
         <div className="flex flex-1 flex-col items-start gap-1 self-stretch">
-          {/* 헤더 */}
-          <div className="flex items-center gap-1">
-            <TriangleAlert className="h-4 w-4 text-amber-500" />
-            <span className="text-lg leading-none font-normal text-amber-500">
-              Warnings
-            </span>
-            <span className="text-muted-foreground text-base leading-6 font-light">
-              (3)
-            </span>
-          </div>
+          {variant === "no-data" ? (
+            <Empty className="min-h-[300px] w-full">
+              <EmptyHeader>
+                <EmptyMedia variant="icon">
+                  <BadgeCheck className="h-6 w-6" />
+                </EmptyMedia>
+                <EmptyTitle>No issues found</EmptyTitle>
+                <EmptyDescription>
+                  Everything is fine in the cluster
+                </EmptyDescription>
+              </EmptyHeader>
+            </Empty>
+          ) : (
+            <>
+              {/* 헤더 */}
+              <div className="flex items-center gap-1">
+                <TriangleAlert className="h-4 w-4 text-amber-500" />
+                <span className="text-lg leading-none font-normal text-amber-500">
+                  Warnings
+                </span>
+                <span className="text-muted-foreground text-base leading-6 font-light">
+                  (3)
+                </span>
+              </div>
 
-          {/* 테이블 */}
-          <div className="flex flex-col items-start self-stretch">
-            <Table className="w-full table-fixed">
-              <TableHeader>
-                <TableRow className="border-border h-[40px]">
-                  <TableHead className="text-foreground w-1/5 text-sm leading-5 font-medium">
-                    Head Text
-                  </TableHead>
-                  <TableHead className="text-foreground w-1/5 text-sm leading-5 font-medium">
-                    Head Text
-                  </TableHead>
-                  <TableHead className="text-foreground w-1/5 text-sm leading-5 font-medium">
-                    Head Text
-                  </TableHead>
-                  <TableHead className="text-foreground w-1/5 text-sm leading-5 font-medium">
-                    Head Text
-                  </TableHead>
-                  <TableHead className="text-foreground w-1/5 text-sm leading-5 font-medium">
-                    Head Text
-                  </TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {warningData.map((row) => (
-                  <TableRow key={row.id} className="border-border h-[52px]">
-                    <TableCell className="text-foreground text-sm leading-5 font-normal">
-                      {row.col1}
-                    </TableCell>
-                    <TableCell className="text-foreground text-sm leading-5 font-normal">
-                      {row.col2}
-                    </TableCell>
-                    <TableCell className="text-foreground text-sm leading-5 font-normal">
-                      {row.col3}
-                    </TableCell>
-                    <TableCell className="text-foreground text-sm leading-5 font-normal">
-                      {row.col4}
-                    </TableCell>
-                    <TableCell>
-                      {row.isVerified ? (
-                        <Badge
-                          variant="secondary"
-                          className="bg-blue-500 text-white dark:bg-blue-600"
-                        >
-                          <BadgeCheck className="h-3 w-3" />
-                          {row.badge}
-                        </Badge>
-                      ) : (
-                        <Badge variant="default">{row.badge}</Badge>
-                      )}
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </div>
+              {/* 테이블 */}
+              <div className="flex flex-col items-start self-stretch">
+                <Table className="w-full table-fixed">
+                  <TableHeader>
+                    <TableRow className="border-border h-[40px]">
+                      <TableHead className="text-foreground w-1/5 text-sm leading-5 font-medium">
+                        Head Text
+                      </TableHead>
+                      <TableHead className="text-foreground w-1/5 text-sm leading-5 font-medium">
+                        Head Text
+                      </TableHead>
+                      <TableHead className="text-foreground w-1/5 text-sm leading-5 font-medium">
+                        Head Text
+                      </TableHead>
+                      <TableHead className="text-foreground w-1/5 text-sm leading-5 font-medium">
+                        Head Text
+                      </TableHead>
+                      <TableHead className="text-foreground w-1/5 text-sm leading-5 font-medium">
+                        Head Text
+                      </TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {warningData.map((row) => (
+                      <TableRow key={row.id} className="border-border h-[52px]">
+                        <TableCell className="text-foreground text-sm leading-5 font-normal">
+                          {row.col1}
+                        </TableCell>
+                        <TableCell className="text-foreground text-sm leading-5 font-normal">
+                          {row.col2}
+                        </TableCell>
+                        <TableCell className="text-foreground text-sm leading-5 font-normal">
+                          {row.col3}
+                        </TableCell>
+                        <TableCell className="text-foreground text-sm leading-5 font-normal">
+                          {row.col4}
+                        </TableCell>
+                        <TableCell>
+                          {row.isVerified ? (
+                            <Badge
+                              variant="secondary"
+                              className="bg-blue-500 text-white dark:bg-blue-600"
+                            >
+                              <BadgeCheck className="h-3 w-3" />
+                              {row.badge}
+                            </Badge>
+                          ) : (
+                            <Badge variant="default">{row.badge}</Badge>
+                          )}
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </div>
 
-          {/* Caption */}
-          <div className="flex flex-shrink-0 items-center justify-center gap-2.5 self-stretch pt-4">
-            <span className="text-muted-foreground flex-1 text-center text-sm leading-5 font-normal">
-              Caption text
-            </span>
-          </div>
+              {/* Caption */}
+              <div className="flex flex-shrink-0 items-center justify-center gap-2.5 self-stretch pt-4">
+                <span className="text-muted-foreground flex-1 text-center text-sm leading-5 font-normal">
+                  Caption text
+                </span>
+              </div>
+            </>
+          )}
         </div>
       </div>
     </div>
