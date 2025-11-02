@@ -44,7 +44,7 @@ import { ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
  */
 interface ChartDataProps {
   className?: string;
-  variant?: "default" | "no-data";
+  variant?: "default" | "no-data" | "overview";
 }
 
 /**
@@ -462,115 +462,123 @@ export function ChartData({ className, variant = "default" }: ChartDataProps) {
           </div>
 
           {/* 차트 영역 - 반응형 레이아웃 (900px 이하에서 세로 정렬) */}
-          <div className="border-input flex flex-col rounded-md border lg:flex-row">
-            {/* 왼쪽: 시간별 사용량 차트 */}
-            <div className="border-input flex min-w-0 flex-1 flex-col items-start gap-4 border-b bg-transparent p-4 lg:border-r lg:border-b-0">
-              {/* 제목과 토글 영역 */}
-              <div className="flex items-center justify-between gap-5 self-stretch">
-                <h3 className="text-foreground text-sm leading-none font-medium">
-                  Hourly {selectedMetric === "cpu" ? "CPU" : "Memory"} usage
-                </h3>
+          <div
+            className={`flex flex-col rounded-md lg:flex-row ${variant === "overview" ? "" : "border-input border"}`}
+          >
+            {/* 왼쪽: 시간별 사용량 차트 (overview에서는 숨김) */}
+            {variant !== "overview" && (
+              <div className="border-input flex min-w-0 flex-1 flex-col items-start gap-4 border-b bg-transparent p-4 lg:border-r lg:border-b-0">
+                {/* 제목과 토글 영역 */}
+                <div className="flex items-center justify-between gap-5 self-stretch">
+                  <h3 className="text-foreground text-sm leading-none font-medium">
+                    Hourly {selectedMetric === "cpu" ? "CPU" : "Memory"} usage
+                  </h3>
 
-                {/* CPU/Memory 토글 - shadcn/ui ToggleGroup */}
-                <ToggleGroup
-                  type="single"
-                  value={selectedMetric}
-                  onValueChange={(value) => value && setSelectedMetric(value)}
-                  variant="outline"
-                  size="sm"
-                  className="w-[160px]"
-                >
-                  <ToggleGroupItem
-                    value="cpu"
-                    aria-label="CPU"
-                    className="flex-1"
+                  {/* CPU/Memory 토글 - shadcn/ui ToggleGroup */}
+                  <ToggleGroup
+                    type="single"
+                    value={selectedMetric}
+                    onValueChange={(value) => value && setSelectedMetric(value)}
+                    variant="outline"
+                    size="sm"
+                    className="w-[160px]"
                   >
-                    CPU
-                  </ToggleGroupItem>
-                  <ToggleGroupItem
-                    value="memory"
-                    aria-label="Memory"
-                    className="flex-1"
-                  >
-                    Memory
-                  </ToggleGroupItem>
-                </ToggleGroup>
-              </div>
+                    <ToggleGroupItem
+                      value="cpu"
+                      aria-label="CPU"
+                      className="flex-1"
+                    >
+                      CPU
+                    </ToggleGroupItem>
+                    <ToggleGroupItem
+                      value="memory"
+                      aria-label="Memory"
+                      className="flex-1"
+                    >
+                      Memory
+                    </ToggleGroupItem>
+                  </ToggleGroup>
+                </div>
 
-              {/* 차트 래퍼 */}
-              <div className="flex flex-grow flex-col items-start gap-2.5 self-stretch">
-                <ChartContainer
-                  config={hourlyChartConfig}
-                  className="h-[340px] w-full"
-                >
-                  <AreaChart
-                    accessibilityLayer
-                    data={currentHourlyData}
-                    margin={{
-                      left: 6,
-                      right: 12,
-                    }}
+                {/* 차트 래퍼 */}
+                <div className="flex flex-grow flex-col items-start gap-2.5 self-stretch">
+                  <ChartContainer
+                    config={hourlyChartConfig}
+                    className="h-[340px] w-full"
                   >
-                    <CartesianGrid vertical={false} />
-                    <XAxis
-                      dataKey="hour"
-                      tickLine={false}
-                      axisLine={false}
-                      tickMargin={8}
-                      tickFormatter={(value) => value}
-                    />
-                    <YAxis
-                      tickLine={false}
-                      axisLine={false}
-                      tickMargin={8}
-                      tickFormatter={(value) => {
-                        if (selectedMetric === "cpu") {
-                          // CPU: 1000 이상이면 GiB, 아니면 MiB
-                          if (value >= 1000) {
-                            return `${(value / 1000).toFixed(1)}GiB`;
-                          }
-                          return `${value}MiB`;
-                        } else {
-                          // Memory: 1000 이상이면 GiB, 아니면 MiB
-                          if (value >= 1000) {
-                            return `${(value / 1000).toFixed(1)}GiB`;
-                          }
-                          return `${value}MiB`;
-                        }
+                    <AreaChart
+                      accessibilityLayer
+                      data={currentHourlyData}
+                      margin={{
+                        left: 6,
+                        right: 12,
                       }}
-                    />
-                    <ChartTooltip
-                      cursor={false}
-                      content={<ChartTooltipContent hideLabel />}
-                    />
-                    <Area
-                      dataKey="value"
-                      type="step"
-                      fill={
-                        selectedMetric === "cpu"
-                          ? "var(--chart-1)"
-                          : "var(--chart-3)"
-                      }
-                      fillOpacity={0.4}
-                      stroke={
-                        selectedMetric === "cpu"
-                          ? "var(--chart-1)"
-                          : "var(--chart-3)"
-                      }
-                    />
-                  </AreaChart>
-                </ChartContainer>
+                    >
+                      <CartesianGrid vertical={false} />
+                      <XAxis
+                        dataKey="hour"
+                        tickLine={false}
+                        axisLine={false}
+                        tickMargin={8}
+                        tickFormatter={(value) => value}
+                      />
+                      <YAxis
+                        tickLine={false}
+                        axisLine={false}
+                        tickMargin={8}
+                        tickFormatter={(value) => {
+                          if (selectedMetric === "cpu") {
+                            // CPU: 1000 이상이면 GiB, 아니면 MiB
+                            if (value >= 1000) {
+                              return `${(value / 1000).toFixed(1)}GiB`;
+                            }
+                            return `${value}MiB`;
+                          } else {
+                            // Memory: 1000 이상이면 GiB, 아니면 MiB
+                            if (value >= 1000) {
+                              return `${(value / 1000).toFixed(1)}GiB`;
+                            }
+                            return `${value}MiB`;
+                          }
+                        }}
+                      />
+                      <ChartTooltip
+                        cursor={false}
+                        content={<ChartTooltipContent hideLabel />}
+                      />
+                      <Area
+                        dataKey="value"
+                        type="step"
+                        fill={
+                          selectedMetric === "cpu"
+                            ? "var(--chart-1)"
+                            : "var(--chart-3)"
+                        }
+                        fillOpacity={0.4}
+                        stroke={
+                          selectedMetric === "cpu"
+                            ? "var(--chart-1)"
+                            : "var(--chart-3)"
+                        }
+                      />
+                    </AreaChart>
+                  </ChartContainer>
+                </div>
               </div>
-            </div>
+            )}
 
             {/* 오른쪽: Usage Type Distribution Chart */}
-            <div className="flex min-w-0 flex-1 flex-col items-start gap-2 self-stretch p-4">
-              {/* 제목 */}
-              <div className="flex h-8 items-center gap-2.5 self-stretch">
-                <h3 className="text-foreground text-sm leading-none font-medium">
-                  Usage Type Distribution Chart
-                </h3>
-              </div>
+            <div
+              className={`flex min-w-0 flex-1 flex-col items-start ${variant === "overview" ? "gap-0" : "gap-2"} self-stretch ${variant === "overview" ? "" : "p-4"}`}
+            >
+              {/* 제목 (overview에서는 숨김) */}
+              {variant !== "overview" && (
+                <div className="flex h-8 items-center gap-2.5 self-stretch">
+                  <h3 className="text-foreground text-sm leading-none font-medium">
+                    Usage Type Distribution Chart
+                  </h3>
+                </div>
+              )}
 
               {/* 카드들 */}
               <div className="flex min-w-0 flex-1 items-stretch gap-4 self-stretch">
@@ -807,98 +815,103 @@ export function ChartData({ className, variant = "default" }: ChartDataProps) {
           </div>
         </div>
 
-        {/* 경고 테이블 또는 Empty 상태 */}
-        <div className="flex flex-1 flex-col items-start gap-1 self-stretch">
-          {variant === "no-data" ? (
-            <Empty className="min-h-[300px] w-full">
-              <EmptyHeader>
-                <EmptyMedia variant="icon">
-                  <BadgeCheck className="h-6 w-6" />
-                </EmptyMedia>
-                <EmptyTitle>No issues found</EmptyTitle>
-                <EmptyDescription>
-                  Everything is fine in the cluster
-                </EmptyDescription>
-              </EmptyHeader>
-            </Empty>
-          ) : (
-            <>
-              {/* 헤더 */}
-              <div className="flex items-center gap-1">
-                <TriangleAlert className="h-4 w-4 text-amber-500" />
-                <span className="text-lg leading-none font-normal text-amber-500">
-                  Warnings
-                </span>
-                <span className="text-muted-foreground text-base leading-6 font-light">
-                  (3)
-                </span>
-              </div>
+        {/* 경고 테이블 또는 Empty 상태 (overview에서는 숨김) */}
+        {variant !== "overview" && (
+          <div className="flex flex-1 flex-col items-start gap-1 self-stretch">
+            {variant === "no-data" ? (
+              <Empty className="min-h-[300px] w-full">
+                <EmptyHeader>
+                  <EmptyMedia variant="icon">
+                    <BadgeCheck className="h-6 w-6" />
+                  </EmptyMedia>
+                  <EmptyTitle>No issues found</EmptyTitle>
+                  <EmptyDescription>
+                    Everything is fine in the cluster
+                  </EmptyDescription>
+                </EmptyHeader>
+              </Empty>
+            ) : (
+              <>
+                {/* 헤더 */}
+                <div className="flex items-center gap-1">
+                  <TriangleAlert className="h-4 w-4 text-amber-500" />
+                  <span className="text-lg leading-none font-normal text-amber-500">
+                    Warnings
+                  </span>
+                  <span className="text-muted-foreground text-base leading-6 font-light">
+                    (3)
+                  </span>
+                </div>
 
-              {/* 테이블 */}
-              <div className="flex flex-col items-start self-stretch">
-                <Table className="w-full table-fixed">
-                  <TableHeader>
-                    <TableRow className="border-border h-[40px]">
-                      <TableHead className="text-foreground w-1/5 text-sm leading-5 font-medium">
-                        Head Text
-                      </TableHead>
-                      <TableHead className="text-foreground w-1/5 text-sm leading-5 font-medium">
-                        Head Text
-                      </TableHead>
-                      <TableHead className="text-foreground w-1/5 text-sm leading-5 font-medium">
-                        Head Text
-                      </TableHead>
-                      <TableHead className="text-foreground w-1/5 text-sm leading-5 font-medium">
-                        Head Text
-                      </TableHead>
-                      <TableHead className="text-foreground w-1/5 text-sm leading-5 font-medium">
-                        Head Text
-                      </TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {warningData.map((row) => (
-                      <TableRow key={row.id} className="border-border h-[52px]">
-                        <TableCell className="text-foreground text-sm leading-5 font-normal">
-                          {row.col1}
-                        </TableCell>
-                        <TableCell className="text-foreground text-sm leading-5 font-normal">
-                          {row.col2}
-                        </TableCell>
-                        <TableCell className="text-foreground text-sm leading-5 font-normal">
-                          {row.col3}
-                        </TableCell>
-                        <TableCell className="text-foreground text-sm leading-5 font-normal">
-                          {row.col4}
-                        </TableCell>
-                        <TableCell>
-                          {row.isVerified ? (
-                            <Badge
-                              variant="secondary"
-                              className="bg-blue-500 text-white dark:bg-blue-600"
-                            >
-                              <BadgeCheck className="h-3 w-3" />
-                              {row.badge}
-                            </Badge>
-                          ) : (
-                            <Badge variant="default">{row.badge}</Badge>
-                          )}
-                        </TableCell>
+                {/* 테이블 */}
+                <div className="flex flex-col items-start self-stretch">
+                  <Table className="w-full table-fixed">
+                    <TableHeader>
+                      <TableRow className="border-border h-[40px]">
+                        <TableHead className="text-foreground w-1/5 text-sm leading-5 font-medium">
+                          Head Text
+                        </TableHead>
+                        <TableHead className="text-foreground w-1/5 text-sm leading-5 font-medium">
+                          Head Text
+                        </TableHead>
+                        <TableHead className="text-foreground w-1/5 text-sm leading-5 font-medium">
+                          Head Text
+                        </TableHead>
+                        <TableHead className="text-foreground w-1/5 text-sm leading-5 font-medium">
+                          Head Text
+                        </TableHead>
+                        <TableHead className="text-foreground w-1/5 text-sm leading-5 font-medium">
+                          Head Text
+                        </TableHead>
                       </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              </div>
+                    </TableHeader>
+                    <TableBody>
+                      {warningData.map((row) => (
+                        <TableRow
+                          key={row.id}
+                          className="border-border h-[52px]"
+                        >
+                          <TableCell className="text-foreground text-sm leading-5 font-normal">
+                            {row.col1}
+                          </TableCell>
+                          <TableCell className="text-foreground text-sm leading-5 font-normal">
+                            {row.col2}
+                          </TableCell>
+                          <TableCell className="text-foreground text-sm leading-5 font-normal">
+                            {row.col3}
+                          </TableCell>
+                          <TableCell className="text-foreground text-sm leading-5 font-normal">
+                            {row.col4}
+                          </TableCell>
+                          <TableCell>
+                            {row.isVerified ? (
+                              <Badge
+                                variant="secondary"
+                                className="bg-blue-500 text-white dark:bg-blue-600"
+                              >
+                                <BadgeCheck className="h-3 w-3" />
+                                {row.badge}
+                              </Badge>
+                            ) : (
+                              <Badge variant="default">{row.badge}</Badge>
+                            )}
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </div>
 
-              {/* Caption */}
-              <div className="flex flex-shrink-0 items-center justify-center gap-2.5 self-stretch pt-4">
-                <span className="text-muted-foreground flex-1 text-center text-sm leading-5 font-normal">
-                  Caption text
-                </span>
-              </div>
-            </>
-          )}
-        </div>
+                {/* Caption */}
+                <div className="flex flex-shrink-0 items-center justify-center gap-2.5 self-stretch pt-4">
+                  <span className="text-muted-foreground flex-1 text-center text-sm leading-5 font-normal">
+                    Caption text
+                  </span>
+                </div>
+              </>
+            )}
+          </div>
+        )}
       </div>
     </div>
   );
