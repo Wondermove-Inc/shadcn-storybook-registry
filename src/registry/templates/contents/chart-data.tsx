@@ -158,6 +158,78 @@ const workerPodsData = [
 ];
 
 /**
+ * 🎯 목적: Master Nodes Network 데이터
+ */
+const masterNetworkData = [
+  { metric: "inbound", value: 1.2, fill: "var(--color-usage)" },
+  { metric: "outbound", value: 0.8, fill: "var(--color-requests)" },
+  { metric: "total", value: 2.0, fill: "var(--color-limits)" },
+];
+
+/**
+ * 🎯 목적: Worker Nodes Network 데이터
+ */
+const workerNetworkData = [
+  { metric: "inbound", value: 2.5, fill: "var(--color-usage)" },
+  { metric: "outbound", value: 1.8, fill: "var(--color-requests)" },
+  { metric: "total", value: 4.3, fill: "var(--color-limits)" },
+];
+
+/**
+ * 🎯 목적: Master Nodes Storage 데이터
+ */
+const masterStorageData = [
+  { metric: "used", value: 45.2, fill: "var(--color-usage)" },
+  { metric: "available", value: 154.8, fill: "var(--color-requests)" },
+  { metric: "total", value: 200.0, fill: "var(--color-limits)" },
+];
+
+/**
+ * 🎯 목적: Worker Nodes Storage 데이터
+ */
+const workerStorageData = [
+  { metric: "used", value: 89.7, fill: "var(--color-usage)" },
+  { metric: "available", value: 310.3, fill: "var(--color-requests)" },
+  { metric: "total", value: 400.0, fill: "var(--color-limits)" },
+];
+
+/**
+ * 🎯 목적: Master Nodes Events 데이터
+ */
+const masterEventsData = [
+  { metric: "normal", value: 142, fill: "var(--color-usage)" },
+  { metric: "warning", value: 8, fill: "var(--color-requests)" },
+  { metric: "error", value: 2, fill: "var(--color-limits)" },
+];
+
+/**
+ * 🎯 목적: Worker Nodes Events 데이터
+ */
+const workerEventsData = [
+  { metric: "normal", value: 289, fill: "var(--color-usage)" },
+  { metric: "warning", value: 15, fill: "var(--color-requests)" },
+  { metric: "error", value: 4, fill: "var(--color-limits)" },
+];
+
+/**
+ * 🎯 목적: Master Nodes Health 데이터
+ */
+const masterHealthData = [
+  { metric: "ready", value: 3, fill: "var(--color-usage)" },
+  { metric: "notready", value: 0, fill: "var(--color-requests)" },
+  { metric: "total", value: 3, fill: "var(--color-limits)" },
+];
+
+/**
+ * 🎯 목적: Worker Nodes Health 데이터
+ */
+const workerHealthData = [
+  { metric: "ready", value: 6, fill: "var(--color-usage)" },
+  { metric: "notready", value: 1, fill: "var(--color-requests)" },
+  { metric: "total", value: 7, fill: "var(--color-limits)" },
+];
+
+/**
  * 🎯 목적: 경고 테이블 데이터
  */
 const warningData = [
@@ -251,6 +323,30 @@ const noDataPodsData = [
   { metric: "capacity", value: 0, fill: "var(--color-capacity)" },
 ];
 
+const noDataNetworkData = [
+  { metric: "inbound", value: 0, fill: "var(--color-usage)" },
+  { metric: "outbound", value: 0, fill: "var(--color-requests)" },
+  { metric: "total", value: 0, fill: "var(--color-limits)" },
+];
+
+const noDataStorageData = [
+  { metric: "used", value: 0, fill: "var(--color-usage)" },
+  { metric: "available", value: 0, fill: "var(--color-requests)" },
+  { metric: "total", value: 0, fill: "var(--color-limits)" },
+];
+
+const noDataEventsData = [
+  { metric: "normal", value: 0, fill: "var(--color-usage)" },
+  { metric: "warning", value: 0, fill: "var(--color-requests)" },
+  { metric: "error", value: 0, fill: "var(--color-limits)" },
+];
+
+const noDataHealthData = [
+  { metric: "ready", value: 0, fill: "var(--color-usage)" },
+  { metric: "notready", value: 0, fill: "var(--color-requests)" },
+  { metric: "total", value: 0, fill: "var(--color-limits)" },
+];
+
 /**
  * 차트와 테이블 조합의 모니터링 차트데이터 입니다.
  */
@@ -284,6 +380,26 @@ export function ChartData({ className, variant = "default" }: ChartDataProps) {
     masterPodsData,
     workerPodsData,
     noDataPodsData,
+  );
+  const currentNetworkData = getNodeData(
+    masterNetworkData,
+    workerNetworkData,
+    noDataNetworkData,
+  );
+  const currentStorageData = getNodeData(
+    masterStorageData,
+    workerStorageData,
+    noDataStorageData,
+  );
+  const currentEventsData = getNodeData(
+    masterEventsData,
+    workerEventsData,
+    noDataEventsData,
+  );
+  const currentHealthData = getNodeData(
+    masterHealthData,
+    workerHealthData,
+    noDataHealthData,
   );
 
   // 🎯 목적: variant에 따라 '--' 또는 실제 값 표시
@@ -338,9 +454,69 @@ export function ChartData({ className, variant = "default" }: ChartDataProps) {
     };
   };
 
+  const getNetworkValues = () => {
+    const data =
+      variant === "no-data"
+        ? noDataNetworkData
+        : selectedNode === "master"
+          ? masterNetworkData
+          : workerNetworkData;
+    return {
+      inbound: data.find((d) => d.metric === "inbound")?.value || 0,
+      outbound: data.find((d) => d.metric === "outbound")?.value || 0,
+      total: data.find((d) => d.metric === "total")?.value || 0,
+    };
+  };
+
+  const getStorageValues = () => {
+    const data =
+      variant === "no-data"
+        ? noDataStorageData
+        : selectedNode === "master"
+          ? masterStorageData
+          : workerStorageData;
+    return {
+      used: data.find((d) => d.metric === "used")?.value || 0,
+      available: data.find((d) => d.metric === "available")?.value || 0,
+      total: data.find((d) => d.metric === "total")?.value || 0,
+    };
+  };
+
+  const getEventsValues = () => {
+    const data =
+      variant === "no-data"
+        ? noDataEventsData
+        : selectedNode === "master"
+          ? masterEventsData
+          : workerEventsData;
+    return {
+      normal: data.find((d) => d.metric === "normal")?.value || 0,
+      warning: data.find((d) => d.metric === "warning")?.value || 0,
+      error: data.find((d) => d.metric === "error")?.value || 0,
+    };
+  };
+
+  const getHealthValues = () => {
+    const data =
+      variant === "no-data"
+        ? noDataHealthData
+        : selectedNode === "master"
+          ? masterHealthData
+          : workerHealthData;
+    return {
+      ready: data.find((d) => d.metric === "ready")?.value || 0,
+      notready: data.find((d) => d.metric === "notready")?.value || 0,
+      total: data.find((d) => d.metric === "total")?.value || 0,
+    };
+  };
+
   const cpuValues = getCpuValues();
   const memoryValues = getMemoryValues();
   const podsValues = getPodsValues();
+  const networkValues = getNetworkValues();
+  const storageValues = getStorageValues();
+  const eventsValues = getEventsValues();
+  const healthValues = getHealthValues();
 
   // 🎯 목적: 메모리 값을 적절한 단위로 포맷팅
   const formatMemoryValue = (value: number) => {
@@ -428,6 +604,82 @@ export function ChartData({ className, variant = "default" }: ChartDataProps) {
     },
     capacity: {
       label: "Capacity",
+      color: "var(--chart-3)",
+    },
+  } satisfies ChartConfig;
+
+  // 🎯 목적: Network Radial 차트 설정
+  const networkChartConfig = {
+    value: {
+      label: "Network Value",
+    },
+    inbound: {
+      label: "Inbound",
+      color: "var(--chart-1)",
+    },
+    outbound: {
+      label: "Outbound",
+      color: "var(--chart-2)",
+    },
+    total: {
+      label: "Total",
+      color: "var(--chart-3)",
+    },
+  } satisfies ChartConfig;
+
+  // 🎯 목적: Storage Radial 차트 설정
+  const storageChartConfig = {
+    value: {
+      label: "Storage Value",
+    },
+    used: {
+      label: "Used",
+      color: "var(--chart-1)",
+    },
+    available: {
+      label: "Available",
+      color: "var(--chart-2)",
+    },
+    total: {
+      label: "Total",
+      color: "var(--chart-3)",
+    },
+  } satisfies ChartConfig;
+
+  // 🎯 목적: Events Radial 차트 설정
+  const eventsChartConfig = {
+    value: {
+      label: "Events Value",
+    },
+    normal: {
+      label: "Normal",
+      color: "var(--chart-1)",
+    },
+    warning: {
+      label: "Warning",
+      color: "var(--chart-2)",
+    },
+    error: {
+      label: "Error",
+      color: "var(--chart-3)",
+    },
+  } satisfies ChartConfig;
+
+  // 🎯 목적: Health Radial 차트 설정
+  const healthChartConfig = {
+    value: {
+      label: "Health Value",
+    },
+    ready: {
+      label: "Ready",
+      color: "var(--chart-1)",
+    },
+    notready: {
+      label: "Not Ready",
+      color: "var(--chart-2)",
+    },
+    total: {
+      label: "Total",
       color: "var(--chart-3)",
     },
   } satisfies ChartConfig;
@@ -581,9 +833,13 @@ export function ChartData({ className, variant = "default" }: ChartDataProps) {
               )}
 
               {/* 카드들 */}
-              <div className="flex min-w-0 flex-1 items-stretch gap-4 self-stretch">
+              <div
+                className={`flex min-w-0 flex-1 items-stretch self-stretch ${variant === "overview" ? "flex-wrap gap-2" : "gap-4"}`}
+              >
                 {/* CPU Card */}
-                <Card className="bg-background flex min-w-0 flex-1 flex-col gap-1 rounded-md p-3">
+                <Card
+                  className={`bg-background flex flex-col gap-1 rounded-md p-3 ${variant === "overview" ? "w-[200px] min-w-0 flex-shrink-0" : "min-w-0 flex-1"}`}
+                >
                   <CardHeader className="items-center gap-0 p-0">
                     <CardTitle className="text-base">CPU</CardTitle>
                   </CardHeader>
@@ -667,7 +923,9 @@ export function ChartData({ className, variant = "default" }: ChartDataProps) {
                 </Card>
 
                 {/* Memory Card */}
-                <Card className="bg-background flex min-w-0 flex-1 flex-col gap-1 rounded-md p-3">
+                <Card
+                  className={`bg-background flex flex-col gap-1 rounded-md p-3 ${variant === "overview" ? "w-[200px] min-w-0 flex-shrink-0" : "min-w-0 flex-1"}`}
+                >
                   <CardHeader className="items-center gap-0 p-0">
                     <CardTitle className="text-base">Memory</CardTitle>
                   </CardHeader>
@@ -749,7 +1007,9 @@ export function ChartData({ className, variant = "default" }: ChartDataProps) {
                 </Card>
 
                 {/* Pods Card */}
-                <Card className="bg-background flex min-w-0 flex-1 flex-col gap-1 rounded-md p-3">
+                <Card
+                  className={`bg-background flex flex-col gap-1 rounded-md p-3 ${variant === "overview" ? "w-[200px] min-w-0 flex-shrink-0" : "min-w-0 flex-1"}`}
+                >
                   <CardHeader className="items-center gap-0 p-0">
                     <CardTitle className="text-base">Pods</CardTitle>
                   </CardHeader>
@@ -804,6 +1064,266 @@ export function ChartData({ className, variant = "default" }: ChartDataProps) {
                           <ItemTitle className="text-muted-foreground text-sm leading-normal font-normal">
                             Capacity:{" "}
                             {formatValue(podsValues.capacity.toString())}
+                          </ItemTitle>
+                        </ItemContent>
+                      </Item>
+                    </ItemGroup>
+                  </CardFooter>
+                </Card>
+
+                {/* Network Card */}
+                <Card
+                  className={`bg-background flex flex-col gap-1 rounded-md p-3 ${variant === "overview" ? "w-[200px] min-w-0 flex-shrink-0" : "min-w-0 flex-1"}`}
+                >
+                  <CardHeader className="items-center gap-0 p-0">
+                    <CardTitle className="text-base">Network</CardTitle>
+                  </CardHeader>
+                  <CardContent className="flex-1 p-0 pb-2">
+                    <ChartContainer
+                      config={networkChartConfig}
+                      className="mx-auto aspect-square max-h-[120px]"
+                    >
+                      <RadialBarChart
+                        data={currentNetworkData}
+                        innerRadius={20}
+                        outerRadius={50}
+                      >
+                        <ChartTooltip
+                          cursor={false}
+                          content={
+                            <ChartTooltipContent hideLabel nameKey="metric" />
+                          }
+                        />
+                        <RadialBar dataKey="value" background />
+                      </RadialBarChart>
+                    </ChartContainer>
+                  </CardContent>
+                  <CardFooter className="p-0">
+                    <ItemGroup className="w-full gap-0.5">
+                      <Item className="gap-1.5 px-0.5 py-0 text-sm">
+                        <ItemMedia variant="icon" className="h-2 w-2">
+                          <div className="bg-chart-1 h-1 w-1 rounded-full" />
+                        </ItemMedia>
+                        <ItemContent>
+                          <ItemTitle className="text-muted-foreground text-sm leading-normal font-normal">
+                            Inbound:{" "}
+                            {formatValue(networkValues.inbound.toFixed(1))}GB/s
+                          </ItemTitle>
+                        </ItemContent>
+                      </Item>
+                      <Item className="gap-1.5 px-0.5 py-0 text-sm">
+                        <ItemMedia variant="icon" className="h-2 w-2">
+                          <div className="bg-chart-2 h-1 w-1 rounded-full" />
+                        </ItemMedia>
+                        <ItemContent>
+                          <ItemTitle className="text-muted-foreground text-sm leading-normal font-normal">
+                            Outbound:{" "}
+                            {formatValue(networkValues.outbound.toFixed(1))}GB/s
+                          </ItemTitle>
+                        </ItemContent>
+                      </Item>
+                      <Item className="gap-1.5 px-0.5 py-0 text-sm">
+                        <ItemMedia variant="icon" className="h-2 w-2">
+                          <div className="bg-chart-3 h-1 w-1 rounded-full" />
+                        </ItemMedia>
+                        <ItemContent>
+                          <ItemTitle className="text-muted-foreground text-sm leading-normal font-normal">
+                            Total: {formatValue(networkValues.total.toFixed(1))}
+                            GB/s
+                          </ItemTitle>
+                        </ItemContent>
+                      </Item>
+                    </ItemGroup>
+                  </CardFooter>
+                </Card>
+
+                {/* Storage Card */}
+                <Card
+                  className={`bg-background flex flex-col gap-1 rounded-md p-3 ${variant === "overview" ? "w-[200px] min-w-0 flex-shrink-0" : "min-w-0 flex-1"}`}
+                >
+                  <CardHeader className="items-center gap-0 p-0">
+                    <CardTitle className="text-base">Storage</CardTitle>
+                  </CardHeader>
+                  <CardContent className="flex-1 p-0 pb-2">
+                    <ChartContainer
+                      config={storageChartConfig}
+                      className="mx-auto aspect-square max-h-[120px]"
+                    >
+                      <RadialBarChart
+                        data={currentStorageData}
+                        innerRadius={20}
+                        outerRadius={50}
+                      >
+                        <ChartTooltip
+                          cursor={false}
+                          content={
+                            <ChartTooltipContent hideLabel nameKey="metric" />
+                          }
+                        />
+                        <RadialBar dataKey="value" background />
+                      </RadialBarChart>
+                    </ChartContainer>
+                  </CardContent>
+                  <CardFooter className="p-0">
+                    <ItemGroup className="w-full gap-0.5">
+                      <Item className="gap-1.5 px-0.5 py-0 text-sm">
+                        <ItemMedia variant="icon" className="h-2 w-2">
+                          <div className="bg-chart-1 h-1 w-1 rounded-full" />
+                        </ItemMedia>
+                        <ItemContent>
+                          <ItemTitle className="text-muted-foreground text-sm leading-normal font-normal">
+                            Used: {formatValue(storageValues.used.toFixed(1))}GB
+                          </ItemTitle>
+                        </ItemContent>
+                      </Item>
+                      <Item className="gap-1.5 px-0.5 py-0 text-sm">
+                        <ItemMedia variant="icon" className="h-2 w-2">
+                          <div className="bg-chart-2 h-1 w-1 rounded-full" />
+                        </ItemMedia>
+                        <ItemContent>
+                          <ItemTitle className="text-muted-foreground text-sm leading-normal font-normal">
+                            Available:{" "}
+                            {formatValue(storageValues.available.toFixed(1))}GB
+                          </ItemTitle>
+                        </ItemContent>
+                      </Item>
+                      <Item className="gap-1.5 px-0.5 py-0 text-sm">
+                        <ItemMedia variant="icon" className="h-2 w-2">
+                          <div className="bg-chart-3 h-1 w-1 rounded-full" />
+                        </ItemMedia>
+                        <ItemContent>
+                          <ItemTitle className="text-muted-foreground text-sm leading-normal font-normal">
+                            Total: {formatValue(storageValues.total.toFixed(1))}
+                            GB
+                          </ItemTitle>
+                        </ItemContent>
+                      </Item>
+                    </ItemGroup>
+                  </CardFooter>
+                </Card>
+
+                {/* Events Card */}
+                <Card
+                  className={`bg-background flex flex-col gap-1 rounded-md p-3 ${variant === "overview" ? "w-[200px] min-w-0 flex-shrink-0" : "min-w-0 flex-1"}`}
+                >
+                  <CardHeader className="items-center gap-0 p-0">
+                    <CardTitle className="text-base">Events</CardTitle>
+                  </CardHeader>
+                  <CardContent className="flex-1 p-0 pb-2">
+                    <ChartContainer
+                      config={eventsChartConfig}
+                      className="mx-auto aspect-square max-h-[120px]"
+                    >
+                      <RadialBarChart
+                        data={currentEventsData}
+                        innerRadius={20}
+                        outerRadius={50}
+                      >
+                        <ChartTooltip
+                          cursor={false}
+                          content={
+                            <ChartTooltipContent hideLabel nameKey="metric" />
+                          }
+                        />
+                        <RadialBar dataKey="value" background />
+                      </RadialBarChart>
+                    </ChartContainer>
+                  </CardContent>
+                  <CardFooter className="p-0">
+                    <ItemGroup className="w-full gap-0.5">
+                      <Item className="gap-1.5 px-0.5 py-0 text-sm">
+                        <ItemMedia variant="icon" className="h-2 w-2">
+                          <div className="bg-chart-1 h-1 w-1 rounded-full" />
+                        </ItemMedia>
+                        <ItemContent>
+                          <ItemTitle className="text-muted-foreground text-sm leading-normal font-normal">
+                            Normal:{" "}
+                            {formatValue(eventsValues.normal.toString())}
+                          </ItemTitle>
+                        </ItemContent>
+                      </Item>
+                      <Item className="gap-1.5 px-0.5 py-0 text-sm">
+                        <ItemMedia variant="icon" className="h-2 w-2">
+                          <div className="bg-chart-2 h-1 w-1 rounded-full" />
+                        </ItemMedia>
+                        <ItemContent>
+                          <ItemTitle className="text-muted-foreground text-sm leading-normal font-normal">
+                            Warning:{" "}
+                            {formatValue(eventsValues.warning.toString())}
+                          </ItemTitle>
+                        </ItemContent>
+                      </Item>
+                      <Item className="gap-1.5 px-0.5 py-0 text-sm">
+                        <ItemMedia variant="icon" className="h-2 w-2">
+                          <div className="bg-chart-3 h-1 w-1 rounded-full" />
+                        </ItemMedia>
+                        <ItemContent>
+                          <ItemTitle className="text-muted-foreground text-sm leading-normal font-normal">
+                            Error: {formatValue(eventsValues.error.toString())}
+                          </ItemTitle>
+                        </ItemContent>
+                      </Item>
+                    </ItemGroup>
+                  </CardFooter>
+                </Card>
+
+                {/* Health Card */}
+                <Card
+                  className={`bg-background flex flex-col gap-1 rounded-md p-3 ${variant === "overview" ? "w-[200px] min-w-0 flex-shrink-0" : "min-w-0 flex-1"}`}
+                >
+                  <CardHeader className="items-center gap-0 p-0">
+                    <CardTitle className="text-base">Health</CardTitle>
+                  </CardHeader>
+                  <CardContent className="flex-1 p-0 pb-2">
+                    <ChartContainer
+                      config={healthChartConfig}
+                      className="mx-auto aspect-square max-h-[120px]"
+                    >
+                      <RadialBarChart
+                        data={currentHealthData}
+                        innerRadius={20}
+                        outerRadius={50}
+                      >
+                        <ChartTooltip
+                          cursor={false}
+                          content={
+                            <ChartTooltipContent hideLabel nameKey="metric" />
+                          }
+                        />
+                        <RadialBar dataKey="value" background />
+                      </RadialBarChart>
+                    </ChartContainer>
+                  </CardContent>
+                  <CardFooter className="p-0">
+                    <ItemGroup className="w-full gap-0.5">
+                      <Item className="gap-1.5 px-0.5 py-0 text-sm">
+                        <ItemMedia variant="icon" className="h-2 w-2">
+                          <div className="bg-chart-1 h-1 w-1 rounded-full" />
+                        </ItemMedia>
+                        <ItemContent>
+                          <ItemTitle className="text-muted-foreground text-sm leading-normal font-normal">
+                            Ready: {formatValue(healthValues.ready.toString())}
+                          </ItemTitle>
+                        </ItemContent>
+                      </Item>
+                      <Item className="gap-1.5 px-0.5 py-0 text-sm">
+                        <ItemMedia variant="icon" className="h-2 w-2">
+                          <div className="bg-chart-2 h-1 w-1 rounded-full" />
+                        </ItemMedia>
+                        <ItemContent>
+                          <ItemTitle className="text-muted-foreground text-sm leading-normal font-normal">
+                            Not Ready:{" "}
+                            {formatValue(healthValues.notready.toString())}
+                          </ItemTitle>
+                        </ItemContent>
+                      </Item>
+                      <Item className="gap-1.5 px-0.5 py-0 text-sm">
+                        <ItemMedia variant="icon" className="h-2 w-2">
+                          <div className="bg-chart-3 h-1 w-1 rounded-full" />
+                        </ItemMedia>
+                        <ItemContent>
+                          <ItemTitle className="text-muted-foreground text-sm leading-normal font-normal">
+                            Total: {formatValue(healthValues.total.toString())}
                           </ItemTitle>
                         </ItemContent>
                       </Item>
