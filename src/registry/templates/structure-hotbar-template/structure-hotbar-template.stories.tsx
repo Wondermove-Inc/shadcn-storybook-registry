@@ -1,5 +1,6 @@
 import React from "react";
 import type { Meta, StoryObj } from "@storybook/react-vite";
+import { Files, Plus } from "lucide-react";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { Hotbar } from "@/components/hotbar";
 
@@ -15,7 +16,7 @@ import { Hotbar } from "@/components/hotbar";
  * - 그룹별 독립적인 상태 관리 (상단 앱 그룹, 하단 기능 그룹)
  */
 const meta = {
-  title: "templates/StructureHotbar",
+  title: "templates/Hotbar",
   component: Hotbar,
   tags: ["autodocs"],
   parameters: {
@@ -92,11 +93,110 @@ export const Default: Story = {
                 상단: {activeTopItem} | 하단: {activeBottomItem}
               </span>
             </p>
-            <div className="bg-muted/50 mt-4 rounded-lg p-4">
-              <p className="text-muted-foreground text-xs">
-                💡 좌측 핫바의 아이콘들을 클릭해보세요!
-              </p>
-            </div>
+          </div>
+        </div>
+      </div>
+    );
+  },
+};
+
+/**
+ * Hotbar에 Badge 표시 기능이 포함된 예제입니다.
+ *
+ * 🎯 목적: Hotbar 아이콘에 알림 Badge가 표시되는 데모
+ * ✨ 특징:
+ * - 기본 Hotbar 기능 + Badge 알림 표시
+ * - 독립적인 상태 관리 (Default와 완전 분리)
+ * - 각 아이콘별 개별 Badge 상태 제어
+ * - 클릭 시 Badge 카운트 변경 데모
+ */
+export const Badge: Story = {
+  render: () => {
+    // 🎯 목적: Badge 예제용 독립적인 핫바 활성 아이템 상태 관리
+    const [activeTopItem, setActiveTopItem] = React.useState("skuber-app");
+    const [activeBottomItem, setActiveBottomItem] = React.useState("explorer");
+
+    // 🎯 목적: Badge가 있는 상단 앱 아이템 목록
+    const topItemsWithBadge = [
+      {
+        id: "daive-app",
+        imageUrl: "/images/apps/daive.svg",
+        label: "Daive App",
+        isActive: false,
+        badge: 8,
+        badgeVariant: "secondary" as const,
+      },
+      {
+        id: "skuber-app",
+        imageUrl: "/images/apps/skuber.svg",
+        label: "Skuber App",
+        isActive: false,
+        badge: "N",
+        badgeVariant: "destructive" as const,
+      },
+      {
+        id: "skuberiaas-app",
+        imageUrl: "/images/apps/skuberIaaS.svg",
+        label: "SkuberIaaS App",
+        isActive: false,
+      },
+    ];
+
+    // 🎯 목적: Badge가 있는 하단 기능 아이템 목록
+    const bottomItemsWithBadge = [
+      {
+        id: "explorer",
+        icon: Files,
+        label: "Explorer",
+        isActive: false,
+      },
+      {
+        id: "extensions",
+        icon: Plus,
+        label: "Extensions",
+        isActive: false,
+      },
+    ];
+
+    // 🎯 목적: Badge 예제용 독립적인 핫바 아이템 클릭 핸들러
+    const handleItemClick = (itemId: string) => {
+      // 상단 그룹 앱 아이템 클릭 시
+      if (itemId.startsWith("daive") || itemId.startsWith("skuber")) {
+        setActiveTopItem(itemId);
+      }
+      // 하단 그룹 기능 아이템 클릭 시
+      else if (
+        itemId.startsWith("explorer") ||
+        itemId.startsWith("extensions")
+      ) {
+        setActiveBottomItem(itemId);
+      }
+    };
+
+    return (
+      <div className="bg-background flex h-screen w-full">
+        {/* VS Code Activity Bar 스타일 핫바 - Badge 예제용 */}
+        <Hotbar
+          topItems={topItemsWithBadge}
+          items={bottomItemsWithBadge}
+          activeTopItem={activeTopItem}
+          activeBottomItem={activeBottomItem}
+          onItemClick={handleItemClick}
+        />
+
+        {/* 메인 콘텐츠 영역 - Badge 예제 설명 */}
+        <div className="flex flex-1 items-center justify-center p-8">
+          <div className="text-center">
+            <h2 className="mb-2 text-lg font-semibold">Hotbar Badge 예제</h2>
+            <p className="text-muted-foreground text-sm">
+              Hotbar 아이콘에 Badge 알림이 표시되는 예제입니다.
+            </p>
+            <p className="text-muted-foreground mt-2 text-xs">
+              현재 활성 아이템:{" "}
+              <span className="font-medium">
+                상단: {activeTopItem} | 하단: {activeBottomItem}
+              </span>
+            </p>
           </div>
         </div>
       </div>

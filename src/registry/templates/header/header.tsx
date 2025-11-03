@@ -207,11 +207,10 @@ function AiAssistantIconFilled() {
         strokeLinecap="round"
         strokeLinejoin="round"
         fill="currentColor"
-        fillOpacity="0.3"
       />
       <path
         d="M9.99998 8.66669V10M5.99998 8.66669V10"
-        stroke="currentColor"
+        stroke="var(--background)"
         strokeWidth="1.33"
         strokeLinecap="round"
         strokeLinejoin="round"

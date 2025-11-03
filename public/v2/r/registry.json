@@ -2761,6 +2761,21 @@
           "type": "registry:component"
         }
       ]
+    },
+    {
+      "name": "structure-hotbar-template",
+      "type": "registry:component",
+      "title": "Hotbar Template",
+      "description": "VS Code Activity Bar 스타일의 독립적인 Hotbar 템플릿입니다. 상단 앱 그룹과 하단 기능 그룹으로 구성되어 있으며, 각 그룹은 독립적으로 활성 상태가 관리됩니다.",
+      "categories": ["templates", "storybook"],
+      "registryDependencies": ["sidebar"],
+      "dependencies": ["lucide-react"],
+      "files": [
+        {
+          "path": "src/registry/templates/structure-hotbar-template/structure-hotbar-template.stories.tsx",
+          "type": "registry:component"
+        }
+      ]
     }
   ]
 }

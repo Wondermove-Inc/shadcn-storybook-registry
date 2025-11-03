@@ -33,10 +33,11 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Separator } from "@/components/ui/separator";
+import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 
 /**
- * 🎯 목적: Hotbar 아이템의 타입 정의 - 아이콘 또는 이미지 지원
+ * 🎯 목적: Hotbar 아이템의 타입 정의 - 아이콘 또는 이미지 지원, Badge 표시 기능 포함
  */
 export interface HotbarItem {
   id: string;
@@ -44,6 +45,8 @@ export interface HotbarItem {
   imageUrl?: string; // 이미지 URL (선택적)
   label: string;
   isActive?: boolean;
+  badge?: string | number; // Badge 텍스트 또는 숫자 (선택적)
+  badgeVariant?: "default" | "secondary" | "destructive" | "outline"; // Badge 스타일 (선택적)
 }
 
 /**
@@ -169,32 +172,44 @@ export function Hotbar({
                     : item.isActive;
                   return (
                     <SidebarMenuItem key={item.id}>
-                      <SidebarMenuButton
-                        tooltip={{
-                          children: item.label,
-                          hidden: false,
-                        }}
-                        onClick={() => onItemClick?.(item.id)}
-                        isActive={isActive}
-                        className={`h-8 w-8 items-center justify-center p-0 ${
-                          isActive
-                            ? "ring-accent-foreground rounded-md ring-[1.5px]"
-                            : ""
-                        }`}
-                        size="sm"
-                      >
-                        {/* 이미지 또는 아이콘 조건부 렌더링 */}
-                        {item.imageUrl ? (
-                          <img
-                            src={item.imageUrl}
-                            alt={item.label}
-                            className="h-8 w-8"
-                          />
-                        ) : item.icon ? (
-                          <item.icon />
-                        ) : null}
-                        <span className="sr-only">{item.label}</span>
-                      </SidebarMenuButton>
+                      <div className="relative">
+                        <SidebarMenuButton
+                          tooltip={{
+                            children: item.label,
+                            hidden: false,
+                          }}
+                          onClick={() => onItemClick?.(item.id)}
+                          isActive={isActive}
+                          className={`h-8 w-8 items-center justify-center p-0 ${
+                            isActive
+                              ? "ring-accent-foreground rounded-md ring-[1.5px]"
+                              : ""
+                          }`}
+                          size="sm"
+                        >
+                          {/* 이미지 또는 아이콘 조건부 렌더링 */}
+                          {item.imageUrl ? (
+                            <img
+                              src={item.imageUrl}
+                              alt={item.label}
+                              className="h-8 w-8"
+                            />
+                          ) : item.icon ? (
+                            <item.icon />
+                          ) : null}
+                          <span className="sr-only">{item.label}</span>
+                        </SidebarMenuButton>
+
+                        {/* Badge 표시 - 아이콘 우상단에 배치 */}
+                        {item.badge && (
+                          <Badge
+                            variant={item.badgeVariant || "destructive"}
+                            className="absolute -top-1 -right-1 h-4 min-w-[16px] px-1 text-[10px] leading-none font-semibold"
+                          >
+                            {item.badge}
+                          </Badge>
+                        )}
+                      </div>
                     </SidebarMenuItem>
                   );
                 })}
@@ -220,28 +235,40 @@ export function Hotbar({
                     : item.isActive;
                   return (
                     <SidebarMenuItem key={item.id}>
-                      <SidebarMenuButton
-                        tooltip={{
-                          children: item.label,
-                          hidden: false,
-                        }}
-                        onClick={() => onItemClick?.(item.id)}
-                        isActive={isActive}
-                        className="h-8 w-8 items-center justify-center"
-                        size="sm"
-                      >
-                        {/* 이미지 또는 아이콘 조건부 렌더링 */}
-                        {item.imageUrl ? (
-                          <img
-                            src={item.imageUrl}
-                            alt={item.label}
-                            className="h-8 w-8"
-                          />
-                        ) : item.icon ? (
-                          <item.icon />
-                        ) : null}
-                        <span className="sr-only">{item.label}</span>
-                      </SidebarMenuButton>
+                      <div className="relative">
+                        <SidebarMenuButton
+                          tooltip={{
+                            children: item.label,
+                            hidden: false,
+                          }}
+                          onClick={() => onItemClick?.(item.id)}
+                          isActive={isActive}
+                          className="h-8 w-8 items-center justify-center"
+                          size="sm"
+                        >
+                          {/* 이미지 또는 아이콘 조건부 렌더링 */}
+                          {item.imageUrl ? (
+                            <img
+                              src={item.imageUrl}
+                              alt={item.label}
+                              className="h-8 w-8"
+                            />
+                          ) : item.icon ? (
+                            <item.icon />
+                          ) : null}
+                          <span className="sr-only">{item.label}</span>
+                        </SidebarMenuButton>
+
+                        {/* Badge 표시 - 아이콘 우상단에 배치 */}
+                        {item.badge && (
+                          <Badge
+                            variant={item.badgeVariant || "destructive"}
+                            className="absolute -top-1 -right-1 h-4 min-w-[16px] px-1 text-[10px] leading-none font-semibold"
+                          >
+                            {item.badge}
+                          </Badge>
+                        )}
+                      </div>
                     </SidebarMenuItem>
                   );
                 })}
@@ -261,27 +288,39 @@ export function Hotbar({
               return (
                 <DropdownMenu key={item.id}>
                   <DropdownMenuTrigger asChild>
-                    <SidebarMenuButton
-                      tooltip={{
-                        children: item.label,
-                        hidden: false,
-                      }}
-                      isActive={isActive}
-                      className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground h-8 w-8 items-center justify-center"
-                      size="sm"
-                    >
-                      {/* 이미지 또는 아이콘 조건부 렌더링 */}
-                      {item.imageUrl ? (
-                        <img
-                          src={item.imageUrl}
-                          alt={item.label}
-                          className="h-6 w-6 object-contain"
-                        />
-                      ) : item.icon ? (
-                        <item.icon />
-                      ) : null}
-                      <span className="sr-only">{item.label}</span>
-                    </SidebarMenuButton>
+                    <div className="relative">
+                      <SidebarMenuButton
+                        tooltip={{
+                          children: item.label,
+                          hidden: false,
+                        }}
+                        isActive={isActive}
+                        className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground h-8 w-8 items-center justify-center"
+                        size="sm"
+                      >
+                        {/* 이미지 또는 아이콘 조건부 렌더링 */}
+                        {item.imageUrl ? (
+                          <img
+                            src={item.imageUrl}
+                            alt={item.label}
+                            className="h-6 w-6 object-contain"
+                          />
+                        ) : item.icon ? (
+                          <item.icon />
+                        ) : null}
+                        <span className="sr-only">{item.label}</span>
+                      </SidebarMenuButton>
+
+                      {/* Badge 표시 - 아이콘 우상단에 배치 */}
+                      {item.badge && (
+                        <Badge
+                          variant={item.badgeVariant || "destructive"}
+                          className="absolute -top-1 -right-1 h-4 min-w-[16px] px-1 text-[10px] leading-none font-semibold"
+                        >
+                          {item.badge}
+                        </Badge>
+                      )}
+                    </div>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent
                     className="w-[--radix-dropdown-menu-trigger-width] min-w-56 rounded-lg"
@@ -339,29 +378,40 @@ export function Hotbar({
 
             // 다른 버튼들 (Settings 등)은 기본 버튼으로 처리
             return (
-              <SidebarMenuButton
-                key={item.id}
-                tooltip={{
-                  children: item.label,
-                  hidden: false,
-                }}
-                onClick={() => onItemClick?.(item.id)}
-                isActive={isActive}
-                className="h-8 w-8 items-center justify-center"
-                size="sm"
-              >
-                {/* 이미지 또는 아이콘 조건부 렌더링 */}
-                {item.imageUrl ? (
-                  <img
-                    src={item.imageUrl}
-                    alt={item.label}
-                    className="h-6 w-6 object-contain"
-                  />
-                ) : item.icon ? (
-                  <item.icon />
-                ) : null}
-                <span className="sr-only">{item.label}</span>
-              </SidebarMenuButton>
+              <div key={item.id} className="relative">
+                <SidebarMenuButton
+                  tooltip={{
+                    children: item.label,
+                    hidden: false,
+                  }}
+                  onClick={() => onItemClick?.(item.id)}
+                  isActive={isActive}
+                  className="h-8 w-8 items-center justify-center"
+                  size="sm"
+                >
+                  {/* 이미지 또는 아이콘 조건부 렌더링 */}
+                  {item.imageUrl ? (
+                    <img
+                      src={item.imageUrl}
+                      alt={item.label}
+                      className="h-6 w-6 object-contain"
+                    />
+                  ) : item.icon ? (
+                    <item.icon />
+                  ) : null}
+                  <span className="sr-only">{item.label}</span>
+                </SidebarMenuButton>
+
+                {/* Badge 표시 - 아이콘 우상단에 배치 */}
+                {item.badge && (
+                  <Badge
+                    variant={item.badgeVariant || "destructive"}
+                    className="absolute -top-1 -right-1 h-4 min-w-[16px] px-1 text-[10px] leading-none font-semibold"
+                  >
+                    {item.badge}
+                  </Badge>
+                )}
+              </div>
             );
           })}
         </div>
