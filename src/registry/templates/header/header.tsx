@@ -59,7 +59,7 @@ function SearchInputGroup({
 }
 
 /**
- * 🎯 목적: 왼쪽 패널 토글 아이콘
+ * 🎯 목적: 왼쪽 패널 토글 아이콘 (outline 버전)
  */
 function PanelLeftIcon() {
   return (
@@ -82,7 +82,34 @@ function PanelLeftIcon() {
 }
 
 /**
- * 🎯 목적: 하단 패널 토글 아이콘
+ * 🎯 목적: 왼쪽 패널 토글 아이콘 (filled 버전 - 활성 상태)
+ */
+function PanelLeftIconFilled() {
+  return (
+    <svg
+      width="16"
+      height="16"
+      viewBox="0 0 16 16"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M3.33333 2H12.6667C13.403 2 14 2.59695 14 3.33333V12.6667C14 13.403 13.403 14 12.6667 14H3.33333C2.59695 14 2 13.403 2 12.6667V3.33333C2 2.59695 2.59695 2 3.33333 2Z"
+        stroke="currentColor"
+        strokeWidth="1.33"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M2 3.33333C2 2.59695 2.59695 2 3.33333 2H6V14H3.33333C2.59695 14 2 13.403 2 12.6667V3.33333Z"
+        fill="currentColor"
+      />
+    </svg>
+  );
+}
+
+/**
+ * 🎯 목적: 하단 패널 토글 아이콘 (outline 버전)
  */
 function PanelBottomIcon() {
   return (
@@ -105,7 +132,34 @@ function PanelBottomIcon() {
 }
 
 /**
- * 🎯 목적: AI 어시스턴트 아이콘
+ * 🎯 목적: 하단 패널 토글 아이콘 (filled 버전 - 활성 상태)
+ */
+function PanelBottomIconFilled() {
+  return (
+    <svg
+      width="16"
+      height="16"
+      viewBox="0 0 16 16"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M3.33333 2H12.6667C13.403 2 14 2.59695 14 3.33333V12.6667C14 13.403 13.403 14 12.6667 14H3.33333C2.59695 14 2 13.403 2 12.6667V3.33333C2 2.59695 2.59695 2 3.33333 2Z"
+        stroke="currentColor"
+        strokeWidth="1.33"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M2 10C2 9.44772 2.44772 9 3 9H13C13.5523 9 14 9.44772 14 10V12.6667C14 13.403 13.403 14 12.6667 14H3.33333C2.59695 14 2 13.403 2 12.6667V10Z"
+        fill="currentColor"
+      />
+    </svg>
+  );
+}
+
+/**
+ * 🎯 목적: AI 어시스턴트 아이콘 (outline 버전)
  */
 function AiAssistantIcon() {
   return (
@@ -118,6 +172,45 @@ function AiAssistantIcon() {
     >
       <path
         d="M7.99998 5.33335V2.66669H5.33331M1.33331 9.33335H2.66665M13.3333 9.33335H14.6666M9.99998 8.66669V10M5.99998 8.66669V10M3.99998 5.33335H12C12.7364 5.33335 13.3333 5.93031 13.3333 6.66669V12C13.3333 12.7364 12.7364 13.3334 12 13.3334H3.99998C3.2636 13.3334 2.66665 12.7364 2.66665 12V6.66669C2.66665 5.93031 3.2636 5.33335 3.99998 5.33335Z"
+        stroke="currentColor"
+        strokeWidth="1.33"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+
+/**
+ * 🎯 목적: AI 어시스턴트 아이콘 (filled 버전 - 활성 상태)
+ */
+function AiAssistantIconFilled() {
+  return (
+    <svg
+      width="16"
+      height="16"
+      viewBox="0 0 16 16"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M7.99998 5.33335V2.66669H5.33331M1.33331 9.33335H2.66665M13.3333 9.33335H14.6666"
+        stroke="currentColor"
+        strokeWidth="1.33"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M3.99998 5.33335H12C12.7364 5.33335 13.3333 5.93031 13.3333 6.66669V12C13.3333 12.7364 12.7364 13.3334 12 13.3334H3.99998C3.2636 13.3334 2.66665 12.7364 2.66665 12V6.66669C2.66665 5.93031 3.2636 5.33335 3.99998 5.33335Z"
+        stroke="currentColor"
+        strokeWidth="1.33"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        fill="currentColor"
+        fillOpacity="0.3"
+      />
+      <path
+        d="M9.99998 8.66669V10M5.99998 8.66669V10"
         stroke="currentColor"
         strokeWidth="1.33"
         strokeLinecap="round"
@@ -167,6 +260,7 @@ function NavigationButtonGroup({
 /**
  * 🎯 목적: 헤더 우측 버튼 그룹 컴포넌트
  * 반응형 디자인을 위해 shrink-0 적용하여 버튼 크기 고정
+ * 패널 상태에 따라 outline/filled 아이콘 표시
  */
 function HeaderButtonGroup({
   onPanelLeftToggle,
@@ -186,40 +280,42 @@ function HeaderButtonGroup({
   return (
     <div className="flex shrink-0 items-center">
       <div className="flex items-center">
-        {/* 왼쪽 패널 토글 버튼 */}
+        {/* 왼쪽 패널 토글 버튼 - 활성 상태에 따라 filled/outline 아이콘 표시 */}
         <Button
           variant="ghost"
           size="icon"
           onClick={onPanelLeftToggle}
-          className={`flex h-8 w-8 shrink-0 items-center justify-center gap-2 rounded-lg bg-transparent p-2 ${
-            isPanelLeftActive ? "" : "opacity-50"
-          }`}
+          className="flex h-8 w-8 shrink-0 items-center justify-center gap-2 rounded-lg bg-transparent p-2"
         >
-          <PanelLeftIcon />
+          {isPanelLeftActive ? <PanelLeftIconFilled /> : <PanelLeftIcon />}
         </Button>
 
-        {/* 하단 패널 토글 버튼 */}
+        {/* 하단 패널 토글 버튼 - 활성 상태에 따라 filled/outline 아이콘 표시 */}
         <Button
           variant="ghost"
           size="icon"
           onClick={onPanelBottomToggle}
-          className={`flex h-8 w-8 shrink-0 items-center justify-center gap-2 rounded-lg bg-transparent p-2 ${
-            isPanelBottomActive ? "" : "opacity-50"
-          }`}
+          className="flex h-8 w-8 shrink-0 items-center justify-center gap-2 rounded-lg bg-transparent p-2"
         >
-          <PanelBottomIcon />
+          {isPanelBottomActive ? (
+            <PanelBottomIconFilled />
+          ) : (
+            <PanelBottomIcon />
+          )}
         </Button>
 
-        {/* AI 어시스턴트 버튼 */}
+        {/* AI 어시스턴트 버튼 - 활성 상태에 따라 filled/outline 아이콘 표시 */}
         <Button
           variant="ghost"
           size="icon"
           onClick={onAiAssistantToggle}
-          className={`flex h-8 w-8 shrink-0 items-center justify-center gap-2 rounded-lg bg-transparent p-2 ${
-            isAiAssistantActive ? "" : "opacity-50"
-          }`}
+          className="flex h-8 w-8 shrink-0 items-center justify-center gap-2 rounded-lg bg-transparent p-2"
         >
-          <AiAssistantIcon />
+          {isAiAssistantActive ? (
+            <AiAssistantIconFilled />
+          ) : (
+            <AiAssistantIcon />
+          )}
         </Button>
       </div>
     </div>
