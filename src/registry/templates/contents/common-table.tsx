@@ -144,7 +144,9 @@ export function CommonTable({
   className,
   showChart = false,
 }: CommonTableProps) {
-  const [selectedNamespace, setSelectedNamespace] = React.useState("default");
+  const [selectedNamespaces, setSelectedNamespaces] = React.useState<string[]>([
+    "default",
+  ]);
   const [searchValue, setSearchValue] = React.useState("");
   const [data, setData] = React.useState(tableData);
   const [isPropertiesOpen, setIsPropertiesOpen] = React.useState(false);
@@ -155,6 +157,32 @@ export function CommonTable({
 
   // 🎯 목적: 차트 관련 상태 (showChart가 true일 때만 사용)
   const [selectedMetric, setSelectedMetric] = React.useState("cpu");
+
+  /**
+   * 🎯 목적: 네임스페이스 다중 선택 처리 함수
+   */
+  const handleNamespaceToggle = (namespace: string) => {
+    setSelectedNamespaces((prev) => {
+      const isSelected = prev.includes(namespace);
+      if (isSelected) {
+        // 선택 해제 (최소 1개는 유지)
+        return prev.length > 1 ? prev.filter((ns) => ns !== namespace) : prev;
+      } else {
+        // 선택 추가
+        return [...prev, namespace];
+      }
+    });
+  };
+
+  /**
+   * 🎯 목적: 선택된 네임스페이스 표시 텍스트 생성
+   */
+  const getNamespaceDisplayText = () => {
+    if (selectedNamespaces.length === 1) {
+      return `Namespace: ${selectedNamespaces[0]}`;
+    }
+    return `Namespaces: ${selectedNamespaces.length} selected`;
+  };
 
   // 🎯 목적: 차트 데이터 정의 (CPU/Memory 메트릭)
   const chartData = [
@@ -269,7 +297,7 @@ export function CommonTable({
                     onClick={() => console.log("Dropdown trigger clicked")}
                     className="w-full max-w-none min-w-[180px] sm:w-auto"
                   >
-                    Namespace: {selectedNamespace}
+                    {getNamespaceDisplayText()}
                     <ChevronDown className="ml-2 h-4 w-4" />
                   </Button>
                 </DropdownMenuTrigger>
@@ -277,37 +305,37 @@ export function CommonTable({
                   <DropdownMenuLabel>All Namespaces</DropdownMenuLabel>
                   <DropdownMenuSeparator />
                   <DropdownMenuCheckboxItem
-                    checked={selectedNamespace === "default"}
+                    checked={selectedNamespaces.includes("default")}
                     onCheckedChange={() => {
                       console.log("Default clicked");
-                      setSelectedNamespace("default");
+                      handleNamespaceToggle("default");
                     }}
                   >
                     default
                   </DropdownMenuCheckboxItem>
                   <DropdownMenuCheckboxItem
-                    checked={selectedNamespace === "cilium-secrets"}
+                    checked={selectedNamespaces.includes("cilium-secrets")}
                     onCheckedChange={() => {
                       console.log("cilium-secrets clicked");
-                      setSelectedNamespace("cilium-secrets");
+                      handleNamespaceToggle("cilium-secrets");
                     }}
                   >
                     cilium-secrets
                   </DropdownMenuCheckboxItem>
                   <DropdownMenuCheckboxItem
-                    checked={selectedNamespace === "kube-node-lease"}
+                    checked={selectedNamespaces.includes("kube-node-lease")}
                     onCheckedChange={() => {
                       console.log("kube-node-lease clicked");
-                      setSelectedNamespace("kube-node-lease");
+                      handleNamespaceToggle("kube-node-lease");
                     }}
                   >
                     kube-node-lease
                   </DropdownMenuCheckboxItem>
                   <DropdownMenuCheckboxItem
-                    checked={selectedNamespace === "kube-public"}
+                    checked={selectedNamespaces.includes("kube-public")}
                     onCheckedChange={() => {
                       console.log("kube-public clicked");
-                      setSelectedNamespace("kube-public");
+                      handleNamespaceToggle("kube-public");
                     }}
                   >
                     kube-public
