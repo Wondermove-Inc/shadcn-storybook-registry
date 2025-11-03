@@ -2,7 +2,6 @@ import React from "react";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { BaseStructureTemplate } from "./base-structure-template";
 import { Header } from "@/registry/templates/header/header";
-import { SidebarTemplate } from "@/registry/templates/sidebar/sidebar";
 import { AIAssistant } from "@/registry/templates/ai-assistant/ai-assistant";
 import { ResizableAppSidebar } from "@/components/resizable-app-sidebar";
 import {
@@ -11,8 +10,24 @@ import {
   ResizablePanelGroup,
 } from "@/components/ui/resizable";
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
-import { SidebarProvider } from "@/components/ui/sidebar";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import {
+  SidebarProvider,
+  SidebarGroup,
+  SidebarGroupLabel,
+  SidebarGroupAction,
+  SidebarGroupContent,
+  SidebarMenu,
+  SidebarMenuItem,
+  SidebarMenuButton,
+} from "@/components/ui/sidebar";
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/components/ui/collapsible";
 import {
   X,
   Bell,
@@ -24,6 +39,8 @@ import {
   Search,
   Filter,
   MoreHorizontal,
+  ChevronRight,
+  ChevronDown,
 } from "lucide-react";
 import {
   InputGroup,
@@ -141,6 +158,32 @@ export const Structure: Story = {
 
     // 🎯 목적: 하단 패널 표시 상태 관리
     const [isPanelVisible, setIsPanelVisible] = React.useState(true);
+
+    // 🎯 목적: Extensions 섹션 확장 상태 관리 (메인 Structure 스토리용)
+    const [isMainExtensionsOpen, setIsMainExtensionsOpen] =
+      React.useState(false);
+
+    // 🎯 목적: UIDL 기반 확장 프로그램 데이터 (메인 Structure 스토리용)
+    const mainExtensionItems = [
+      {
+        id: "skuber-plus",
+        name: "Skuber+",
+        description: "Enhanced Kubernetes management with advanced features",
+        avatar: "SP",
+      },
+      {
+        id: "skuber-plus-iaas",
+        name: "Skuber+ for IaaS",
+        description: "Infrastructure as a Service integration for Skuber+",
+        avatar: "SI",
+      },
+      {
+        id: "skuber-management",
+        name: "Skuber Management",
+        description: "Complete Kubernetes cluster management solution",
+        avatar: "SM",
+      },
+    ];
 
     // 🎯 목적: AI Assistant 토글 핸들러
     const handleAIAssistantToggle = () => {
@@ -288,21 +331,19 @@ export const Structure: Story = {
                     {activeBottomItem === "explorer" ? (
                       <ResizableAppSidebar className="border-r" />
                     ) : activeBottomItem === "extensions" ? (
-                      <div className="bg-card flex h-full w-full flex-col overflow-hidden border-r p-2">
-                        {/* Extensions Header */}
-                        <div className="flex items-center justify-between gap-4 px-2 py-1 opacity-70">
-                          <span className="text-card-foreground flex-1 text-xs leading-4 font-medium">
+                      <div className="bg-sidebar flex h-full w-full flex-col overflow-hidden border-r p-2">
+                        {/* Extensions Header - shadcn Sidebar 컴포넌트 사용 */}
+                        <SidebarGroup className="flex-row items-center justify-between">
+                          <SidebarGroupLabel className="px-0">
                             Extensions
-                          </span>
-                          <Button
-                            variant="ghost"
-                            size="icon"
-                            className="text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground h-5 w-5 p-0 opacity-70"
+                          </SidebarGroupLabel>
+                          <SidebarGroupAction
                             title="More options"
+                            className="relative top-auto right-auto"
                           >
                             <MoreHorizontal className="h-4 w-4" />
-                          </Button>
-                        </div>
+                          </SidebarGroupAction>
+                        </SidebarGroup>
 
                         {/* Search Section */}
                         <div className="flex flex-col gap-2 p-2">
@@ -321,75 +362,97 @@ export const Structure: Story = {
                           </InputGroup>
                         </div>
 
-                        {/* Extensions List */}
-                        <div className="flex-1 overflow-y-auto">
-                          {/* Installed Section */}
-                          <div className="flex items-center gap-2 overflow-hidden rounded-lg p-2">
-                            <div className="flex items-center">
-                              <svg
-                                width="20"
-                                height="20"
-                                viewBox="0 0 20 20"
-                                fill="none"
-                                xmlns="http://www.w3.org/2000/svg"
-                              >
-                                <path
-                                  d="M7.5 15L12.5 10L7.5 5"
-                                  stroke="currentColor"
-                                  strokeWidth="1.67"
-                                  strokeLinecap="round"
-                                  strokeLinejoin="round"
-                                />
-                              </svg>
-                            </div>
-                            <div className="flex flex-1 flex-col justify-center gap-1">
-                              <span className="text-muted-foreground text-sm leading-5">
-                                Installed
-                              </span>
-                            </div>
-                            <div className="bg-muted flex items-center justify-center overflow-hidden rounded-full border border-transparent px-1">
-                              <span className="text-muted-foreground text-xs">
-                                3
-                              </span>
-                            </div>
-                          </div>
+                        {/* Extensions List - shadcn SidebarMenu 컴포넌트 사용 */}
+                        <SidebarGroupContent>
+                          <SidebarMenu>
+                            <SidebarMenuItem>
+                              <SidebarMenuButton>
+                                <ChevronRight className="h-4 w-4" />
+                                <span>Installed</span>
+                                <Badge
+                                  variant="default"
+                                  className="ml-auto rounded-full"
+                                >
+                                  3
+                                </Badge>
+                              </SidebarMenuButton>
+                            </SidebarMenuItem>
 
-                          {/* Separator */}
-                          <div className="flex flex-col gap-2 px-2">
-                            <div className="bg-border h-px w-full opacity-10"></div>
-                          </div>
+                            {/* Recommended Section with Collapsible */}
+                            <Collapsible
+                              open={isMainExtensionsOpen}
+                              onOpenChange={setIsMainExtensionsOpen}
+                            >
+                              <SidebarMenuItem>
+                                <CollapsibleTrigger asChild>
+                                  <SidebarMenuButton>
+                                    {isMainExtensionsOpen ? (
+                                      <ChevronDown className="h-4 w-4" />
+                                    ) : (
+                                      <ChevronRight className="h-4 w-4" />
+                                    )}
+                                    <span>Recommended</span>
+                                    <Badge
+                                      variant="default"
+                                      className="ml-auto rounded-full"
+                                    >
+                                      {mainExtensionItems.length}
+                                    </Badge>
+                                  </SidebarMenuButton>
+                                </CollapsibleTrigger>
+                              </SidebarMenuItem>
 
-                          {/* Recommended Section */}
-                          <div className="flex items-center gap-2 overflow-hidden rounded-lg p-2">
-                            <div className="flex items-center">
-                              <svg
-                                width="20"
-                                height="20"
-                                viewBox="0 0 20 20"
-                                fill="none"
-                                xmlns="http://www.w3.org/2000/svg"
-                              >
-                                <path
-                                  d="M7.5 15L12.5 10L7.5 5"
-                                  stroke="currentColor"
-                                  strokeWidth="1.67"
-                                  strokeLinecap="round"
-                                  strokeLinejoin="round"
-                                />
-                              </svg>
-                            </div>
-                            <div className="flex flex-1 flex-col justify-center gap-1">
-                              <span className="text-muted-foreground text-sm leading-5">
-                                Recommended
-                              </span>
-                            </div>
-                            <div className="bg-muted flex items-center justify-center overflow-hidden rounded-full border border-transparent px-1">
-                              <span className="text-muted-foreground text-xs">
-                                3
-                              </span>
-                            </div>
-                          </div>
-                        </div>
+                              {/* UIDL 기반 확장된 Extension 아이템들 */}
+                              <CollapsibleContent className="space-y-0">
+                                {mainExtensionItems.map((item, index) => (
+                                  <React.Fragment key={item.id}>
+                                    <div className="flex items-center gap-3 px-4 py-3">
+                                      {/* Avatar */}
+                                      <Avatar className="h-8 w-8">
+                                        <AvatarFallback className="text-xs font-medium">
+                                          {item.avatar}
+                                        </AvatarFallback>
+                                      </Avatar>
+
+                                      {/* Content */}
+                                      <div className="min-w-0 flex-1">
+                                        <div className="text-foreground truncate text-sm font-medium">
+                                          {item.name}
+                                        </div>
+                                        <div className="text-muted-foreground truncate text-xs">
+                                          {item.description}
+                                        </div>
+                                      </div>
+
+                                      {/* Add Button */}
+                                      <Button
+                                        variant="outline"
+                                        size="sm"
+                                        className="h-7 px-3 text-xs"
+                                        onClick={(e) => {
+                                          e.stopPropagation();
+                                          console.log(
+                                            "Extension Add button clicked:",
+                                            item.name,
+                                          );
+                                        }}
+                                      >
+                                        Add
+                                      </Button>
+                                    </div>
+
+                                    {/* Separator between items (except last) */}
+                                    {index < mainExtensionItems.length - 1 && (
+                                      <div className="px-4">
+                                        <Separator className="bg-border/50" />
+                                      </div>
+                                    )}
+                                  </React.Fragment>
+                                ))}
+                              </CollapsibleContent>
+                            </Collapsible>
+                          </SidebarMenu>
+                        </SidebarGroupContent>
                       </div>
                     ) : (
                       <ResizableAppSidebar className="border-r" />
@@ -743,134 +806,194 @@ export const StructureSidebarExtensions: Story = {
       },
     },
   },
-  render: () => (
-    <div className="h-screen w-full">
-      <ResizablePanelGroup direction="horizontal" className="h-full w-full">
-        {/* 사이드바 영역 - 리사이징 가능 */}
-        <ResizablePanel defaultSize={15} minSize={5} maxSize={80}>
-          <div className="bg-sidebar flex h-full w-full flex-col overflow-hidden border-r p-2">
-            {/* Extensions Header */}
-            <div className="flex items-center justify-between gap-4 px-2 py-1 opacity-70">
-              <span className="text-card-foreground flex-1 text-xs leading-4 font-medium">
-                Extensions
-              </span>
-              <Button
-                variant="ghost"
-                size="icon"
-                className="text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground h-5 w-5 p-0 opacity-70"
-                title="More options"
-              >
-                <MoreHorizontal className="h-4 w-4" />
-              </Button>
-            </div>
+  decorators: [
+    (Story) => (
+      <SidebarProvider>
+        <Story />
+      </SidebarProvider>
+    ),
+  ],
+  render: () => {
+    // 🎯 목적: Recommended 섹션 확장 상태 관리
+    const [isRecommendedOpen, setIsRecommendedOpen] = React.useState(false);
 
-            {/* Search Section */}
-            <div className="flex flex-col gap-2 p-2">
-              <span className="text-muted-foreground text-xs leading-4">
-                Search Extensions in Marketplace
-              </span>
+    // 🎯 목적: UIDL 기반 확장 프로그램 데이터
+    const extensionItems = [
+      {
+        id: "skuber-plus",
+        name: "Skuber+",
+        description: "Enhanced Kubernetes management with advanced features",
+        avatar: "SP",
+      },
+      {
+        id: "skuber-plus-iaas",
+        name: "Skuber+ for IaaS",
+        description: "Infrastructure as a Service integration for Skuber+",
+        avatar: "SI",
+      },
+      {
+        id: "skuber-management",
+        name: "Skuber Management",
+        description: "Complete Kubernetes cluster management solution",
+        avatar: "SM",
+      },
+    ];
 
-              <InputGroup>
-                <InputGroupAddon>
-                  <Search />
-                </InputGroupAddon>
-                <InputGroupInput placeholder="Search" />
-                <InputGroupAddon align="inline-end">
-                  <Filter />
-                </InputGroupAddon>
-              </InputGroup>
-            </div>
+    return (
+      <div className="h-screen w-full">
+        <ResizablePanelGroup direction="horizontal" className="h-full w-full">
+          {/* 사이드바 영역 - 리사이징 가능 */}
+          <ResizablePanel defaultSize={15} minSize={5} maxSize={80}>
+            <div className="bg-sidebar flex h-full w-full flex-col overflow-hidden border-r p-2">
+              {/* Extensions Header - shadcn Sidebar 컴포넌트 사용 */}
+              <SidebarGroup className="flex-row items-center justify-between">
+                <SidebarGroupLabel className="px-0">
+                  Extensions
+                </SidebarGroupLabel>
+                <SidebarGroupAction
+                  title="More options"
+                  className="relative top-auto right-auto"
+                >
+                  <MoreHorizontal className="h-4 w-4" />
+                </SidebarGroupAction>
+              </SidebarGroup>
 
-            {/* Extensions List */}
-            <div className="flex-1 overflow-y-auto">
-              {/* Installed Section */}
-              <div className="flex items-center gap-2 overflow-hidden rounded-lg p-2">
-                <div className="flex items-center">
-                  <svg
-                    width="20"
-                    height="20"
-                    viewBox="0 0 20 20"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
+              {/* Search Section */}
+              <div className="flex flex-col gap-2 p-2">
+                <span className="text-muted-foreground text-xs leading-4">
+                  Search Extensions in Marketplace
+                </span>
+
+                <InputGroup>
+                  <InputGroupAddon>
+                    <Search />
+                  </InputGroupAddon>
+                  <InputGroupInput placeholder="Search" />
+                  <InputGroupAddon align="inline-end">
+                    <Filter />
+                  </InputGroupAddon>
+                </InputGroup>
+              </div>
+
+              {/* Extensions List - shadcn SidebarMenu 컴포넌트 사용 */}
+              <SidebarGroupContent>
+                <SidebarMenu>
+                  <SidebarMenuItem>
+                    <SidebarMenuButton>
+                      <ChevronRight className="h-4 w-4" />
+                      <span>Installed</span>
+                      <Badge variant="default" className="ml-auto rounded-full">
+                        3
+                      </Badge>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+
+                  {/* Recommended Section with Collapsible */}
+                  <Collapsible
+                    open={isRecommendedOpen}
+                    onOpenChange={setIsRecommendedOpen}
                   >
-                    <path
-                      d="M7.5 15L12.5 10L7.5 5"
-                      stroke="currentColor"
-                      strokeWidth="1.67"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                  </svg>
-                </div>
-                <div className="flex flex-1 flex-col justify-center gap-1">
-                  <span className="text-muted-foreground text-sm leading-5">
-                    Installed
-                  </span>
-                </div>
-                <div className="bg-muted flex items-center justify-center overflow-hidden rounded-full border border-transparent px-1">
-                  <span className="text-muted-foreground text-xs">3</span>
-                </div>
-              </div>
+                    <SidebarMenuItem>
+                      <CollapsibleTrigger asChild>
+                        <SidebarMenuButton>
+                          {isRecommendedOpen ? (
+                            <ChevronDown className="h-4 w-4" />
+                          ) : (
+                            <ChevronRight className="h-4 w-4" />
+                          )}
+                          <span>Recommended</span>
+                          <Badge
+                            variant="default"
+                            className="ml-auto rounded-full"
+                          >
+                            {extensionItems.length}
+                          </Badge>
+                        </SidebarMenuButton>
+                      </CollapsibleTrigger>
+                    </SidebarMenuItem>
 
-              {/* Separator */}
-              <div className="flex flex-col gap-2 px-2">
-                <div className="bg-border h-px w-full opacity-10"></div>
-              </div>
+                    {/* UIDL 기반 확장된 Extension 아이템들 */}
+                    <CollapsibleContent className="space-y-0">
+                      {extensionItems.map((item, index) => (
+                        <React.Fragment key={item.id}>
+                          <div className="flex items-center gap-3 px-4 py-3">
+                            {/* Avatar */}
+                            <Avatar className="h-8 w-8">
+                              <AvatarFallback className="text-xs font-medium">
+                                {item.avatar}
+                              </AvatarFallback>
+                            </Avatar>
 
-              {/* Recommended Section */}
-              <div className="flex items-center gap-2 overflow-hidden rounded-lg p-2">
-                <div className="flex items-center">
-                  <svg
-                    width="20"
-                    height="20"
-                    viewBox="0 0 20 20"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M7.5 15L12.5 10L7.5 5"
-                      stroke="currentColor"
-                      strokeWidth="1.67"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                  </svg>
-                </div>
-                <div className="flex flex-1 flex-col justify-center gap-1">
-                  <span className="text-muted-foreground text-sm leading-5">
-                    Recommended
-                  </span>
-                </div>
-                <div className="bg-muted flex items-center justify-center overflow-hidden rounded-full border border-transparent px-1">
-                  <span className="text-muted-foreground text-xs">3</span>
-                </div>
+                            {/* Content */}
+                            <div className="min-w-0 flex-1">
+                              <div className="text-foreground truncate text-sm font-medium">
+                                {item.name}
+                              </div>
+                              <div className="text-muted-foreground truncate text-xs">
+                                {item.description}
+                              </div>
+                            </div>
+
+                            {/* Add Button */}
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              className="h-7 px-3 text-xs"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                console.log(
+                                  "Extension Add button clicked:",
+                                  item.name,
+                                );
+                              }}
+                            >
+                              Add
+                            </Button>
+                          </div>
+
+                          {/* Separator between items (except last) */}
+                          {index < extensionItems.length - 1 && (
+                            <div className="px-4">
+                              <Separator className="bg-border/50" />
+                            </div>
+                          )}
+                        </React.Fragment>
+                      ))}
+                    </CollapsibleContent>
+                  </Collapsible>
+                </SidebarMenu>
+              </SidebarGroupContent>
+            </div>
+          </ResizablePanel>
+
+          {/* 리사이즈 핸들 */}
+          <ResizableHandle className="w-1 cursor-col-resize bg-transparent transition-colors hover:bg-blue-500/20 active:bg-blue-500/30" />
+
+          {/* 메인 콘텐츠 영역 */}
+          <ResizablePanel minSize={15}>
+            <div className="flex h-full items-center justify-center p-8">
+              <div className="text-center">
+                <h2 className="mb-2 text-lg font-semibold">
+                  Sidebar Extensions
+                </h2>
+                <p className="text-muted-foreground text-sm">
+                  확장 프로그램 관리 스타일의 Sidebar 컴포넌트만 독립적으로
+                  사용하는 예시입니다.
+                </p>
+                <p className="text-muted-foreground mt-2 text-xs">
+                  VS Code Extensions와 유사한 확장 프로그램 관리 구조를
+                  제공합니다.
+                </p>
+                <p className="text-muted-foreground mt-2 text-xs">
+                  Recommended 섹션을 클릭하면 확장 프로그램 목록이 펼쳐집니다.
+                </p>
               </div>
             </div>
-          </div>
-        </ResizablePanel>
-
-        {/* 리사이즈 핸들 */}
-        <ResizableHandle className="w-1 cursor-col-resize bg-transparent transition-colors hover:bg-blue-500/20 active:bg-blue-500/30" />
-
-        {/* 메인 콘텐츠 영역 */}
-        <ResizablePanel minSize={15}>
-          <div className="flex h-full items-center justify-center p-8">
-            <div className="text-center">
-              <h2 className="mb-2 text-lg font-semibold">Sidebar Extensions</h2>
-              <p className="text-muted-foreground text-sm">
-                확장 프로그램 관리 스타일의 Sidebar 컴포넌트만 독립적으로
-                사용하는 예시입니다.
-              </p>
-              <p className="text-muted-foreground mt-2 text-xs">
-                VS Code Extensions와 유사한 확장 프로그램 관리 구조를
-                제공합니다.
-              </p>
-            </div>
-          </div>
-        </ResizablePanel>
-      </ResizablePanelGroup>
-    </div>
-  ),
+          </ResizablePanel>
+        </ResizablePanelGroup>
+      </div>
+    );
+  },
 };
 
 /**
