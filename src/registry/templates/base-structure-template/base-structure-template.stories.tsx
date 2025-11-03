@@ -731,7 +731,9 @@ export const StructureHeader: Story = {
         onPanelLeftToggle={() => {}}
         onPanelBottomToggle={() => {}}
         onAiAssistantToggle={() => {}}
-        isPanelBottomActive={true}
+        isPanelLeftActive={false}
+        isPanelBottomActive={false}
+        isAiAssistantActive={false}
       />
       <div className="flex h-full items-center justify-center p-8">
         <div className="text-center">
