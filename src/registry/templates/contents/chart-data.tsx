@@ -810,7 +810,7 @@ export function ChartData({ className, variant = "default" }: ChartDataProps) {
 
   return (
     <div className={`bg-background min-h-screen w-full p-5 ${className || ""}`}>
-      <div className="mx-auto flex max-w-[1400px] flex-col gap-5">
+      <div className="mx-auto flex max-w-[1400px] flex-col gap-4">
         {/* 헤더와 차트 영역 */}
         <div className="flex flex-col gap-3">
           {/* 헤더 영역 */}

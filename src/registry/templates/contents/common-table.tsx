@@ -220,6 +220,10 @@ export function CommonTable({
         />
       ),
       enableSorting: false,
+      enableResizing: false,
+      size: 50,
+      minSize: 50,
+      maxSize: 50,
     },
     {
       accessorKey: "column2",
@@ -233,6 +237,10 @@ export function CommonTable({
         </Button>
       ),
       cell: ({ row }) => <div className="px-3">{row.original.column2}</div>,
+      size: 150,
+      minSize: 100,
+      maxSize: 300,
+      enableResizing: true,
     },
     {
       accessorKey: "column3",
@@ -246,6 +254,10 @@ export function CommonTable({
         </Button>
       ),
       cell: ({ row }) => <div className="px-3">{row.original.column3}</div>,
+      size: 150,
+      minSize: 100,
+      maxSize: 300,
+      enableResizing: true,
     },
     {
       accessorKey: "column4",
@@ -270,6 +282,10 @@ export function CommonTable({
           rowB.original.column4.text,
         );
       },
+      size: 200,
+      minSize: 120,
+      maxSize: 350,
+      enableResizing: true,
     },
     {
       accessorKey: "column5",
@@ -309,6 +325,10 @@ export function CommonTable({
           rowB.original.column5.text,
         );
       },
+      size: 180,
+      minSize: 100,
+      maxSize: 250,
+      enableResizing: true,
     },
     {
       accessorKey: "column6",
@@ -322,6 +342,10 @@ export function CommonTable({
         </Button>
       ),
       cell: ({ row }) => <div className="px-3">{row.original.column6}</div>,
+      size: 150,
+      minSize: 100,
+      maxSize: 300,
+      enableResizing: true,
     },
     {
       id: "actions",
@@ -340,11 +364,15 @@ export function CommonTable({
           </div>
         ),
       enableSorting: false,
+      enableResizing: false,
+      size: 80,
+      minSize: 80,
+      maxSize: 80,
     },
   ];
 
   /**
-   * 🎯 목적: TanStack Table 인스턴스 생성 - 정렬 기능 포함
+   * 🎯 목적: TanStack Table 인스턴스 생성 - 정렬 및 리사이징 기능 포함
    */
   const table = useReactTable({
     data,
@@ -352,6 +380,8 @@ export function CommonTable({
     onSortingChange: setSorting,
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
+    enableColumnResizing: true,
+    columnResizeMode: "onChange",
     state: {
       sorting,
     },
@@ -449,7 +479,7 @@ export function CommonTable({
     >
       {/* 전체 콘텐츠 영역 - 640px 미만에서 우측 마진 유지 */}
       <div className="flex-1 p-5 pr-1 sm:pr-5">
-        <div className="space-y-0.5">
+        <div className="space-y-4">
           {/* 상단 메뉴 섹션 */}
           <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
             {/* 왼쪽: 메뉴 이름과 아이템 개수 */}
@@ -544,13 +574,30 @@ export function CommonTable({
                             ? "text-right"
                             : ""
                       }
+                      style={{
+                        width: header.getSize(),
+                      }}
                     >
-                      {header.isPlaceholder
-                        ? null
-                        : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext(),
-                          )}
+                      <div className="relative">
+                        {header.isPlaceholder
+                          ? null
+                          : flexRender(
+                              header.column.columnDef.header,
+                              header.getContext(),
+                            )}
+                        {header.column.getCanResize() && (
+                          <div
+                            onMouseDown={header.getResizeHandler()}
+                            onTouchStart={header.getResizeHandler()}
+                            className="border-border hover:border-primary absolute top-0 right-0 h-full w-1 cursor-col-resize touch-none border-r select-none"
+                            style={{
+                              transform: header.column.getIsResizing()
+                                ? "translateX(0.5px)"
+                                : "",
+                            }}
+                          />
+                        )}
+                      </div>
                     </TableHead>
                   ))}
                 </TableRow>
