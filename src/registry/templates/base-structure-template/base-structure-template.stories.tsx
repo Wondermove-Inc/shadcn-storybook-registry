@@ -115,7 +115,13 @@ type Story = StoryObj<typeof meta>;
 export const Structure: Story = {
   decorators: [
     (Story) => (
-      <SidebarProvider>
+      <SidebarProvider
+        style={
+          {
+            "--sidebar-width-icon": "3rem", // 48px - shadcn/ui 공식 방법
+          } as React.CSSProperties
+        }
+      >
         <Story />
       </SidebarProvider>
     ),
@@ -152,9 +158,8 @@ export const Structure: Story = {
     // 🎯 목적: 사이드바 표시 상태 관리
     const [isSidebarVisible, setIsSidebarVisible] = React.useState(true);
 
-    // 🎯 목적: 핫바 활성 아이템 상태 관리 - 그룹별 독립 관리
-    const [activeTopItem, setActiveTopItem] = React.useState("daive-app");
-    const [activeBottomItem, setActiveBottomItem] = React.useState("explorer");
+    // 🎯 목적: 핫바 활성 아이템 상태 관리 - 단일 활성 상태
+    const [activeItem, setActiveItem] = React.useState("daive-app");
 
     // 🎯 목적: 하단 패널 표시 상태 관리
     const [isPanelVisible, setIsPanelVisible] = React.useState(true);
@@ -205,19 +210,10 @@ export const Structure: Story = {
       setIsPanelVisible((prev) => !prev);
     };
 
-    // 🎯 목적: 핫바 아이템 클릭 핸들러 - 그룹별 독립 관리
+    // 🎯 목적: 핫바 아이템 클릭 핸들러 - 단일 활성 상태 관리
     const handleHotbarItemClick = (itemId: string) => {
-      // 상단 그룹 앱 아이템 클릭 시
-      if (itemId.startsWith("daive") || itemId.startsWith("skuber")) {
-        setActiveTopItem(itemId);
-      }
-      // 하단 그룹 기능 아이템 클릭 시
-      else if (
-        itemId.startsWith("explorer") ||
-        itemId.startsWith("extensions")
-      ) {
-        setActiveBottomItem(itemId);
-      }
+      // 모든 핫바 아이템은 단일 활성 상태로 관리
+      setActiveItem(itemId);
 
       // 사이드바가 숨겨져 있다면 다시 표시
       if (!isSidebarVisible) {
@@ -311,8 +307,7 @@ export const Structure: Story = {
           {/* 핫바 영역 (고정 크기) - 모든 화면 크기에서 표시 */}
           <div className="w-[var(--sidebar-width-icon)] flex-shrink-0">
             <Hotbar
-              activeTopItem={activeTopItem}
-              activeBottomItem={activeBottomItem}
+              activeItem={activeItem}
               onItemClick={handleHotbarItemClick}
             />
           </div>
@@ -327,10 +322,10 @@ export const Structure: Story = {
               {isSidebarVisible && (
                 <>
                   <ResizablePanel defaultSize={12} minSize={5} maxSize={80}>
-                    {/* activeBottomItem 상태에 따라 사이드바 콘텐츠 동적 렌더링 */}
-                    {activeBottomItem === "explorer" ? (
+                    {/* activeItem 상태에 따라 사이드바 콘텐츠 동적 렌더링 */}
+                    {activeItem === "explorer" ? (
                       <ResizableAppSidebar className="border-r" />
-                    ) : activeBottomItem === "extensions" ? (
+                    ) : activeItem === "extensions" ? (
                       <div className="bg-sidebar flex h-full w-full flex-col overflow-hidden border-r p-2">
                         {/* Extensions Header - shadcn Sidebar 컴포넌트 사용 */}
                         <SidebarGroup className="flex-row items-center justify-between">
@@ -481,9 +476,7 @@ export const Structure: Story = {
                           <div className="text-center">
                             <p className="text-muted-foreground mt-2 text-xs">
                               현재 활성 핫바 아이템:{" "}
-                              <span className="font-medium">
-                                상단: {activeTopItem} | 하단: {activeBottomItem}
-                              </span>
+                              <span className="font-medium">{activeItem}</span>
                             </p>
                           </div>
                         </div>
@@ -636,9 +629,7 @@ export const Structure: Story = {
                       <div className="text-center">
                         <p className="text-muted-foreground mt-2 text-xs">
                           현재 활성 핫바 아이템:{" "}
-                          <span className="font-medium">
-                            상단: {activeTopItem} | 하단: {activeBottomItem}
-                          </span>
+                          <span className="font-medium">{activeItem}</span>
                         </p>
                       </div>
                     </div>
@@ -1171,39 +1162,31 @@ export const StructureTab: Story = {
 export const StructureHotbar: Story = {
   decorators: [
     (Story) => (
-      <SidebarProvider>
+      <SidebarProvider
+        style={
+          {
+            "--sidebar-width-icon": "3rem", // 48px - shadcn/ui 공식 방법
+          } as React.CSSProperties
+        }
+      >
         <Story />
       </SidebarProvider>
     ),
   ],
   render: () => {
-    // 🎯 목적: 핫바 활성 아이템 상태 관리 - 그룹별 독립 관리
-    const [activeTopItem, setActiveTopItem] = React.useState("daive-app");
-    const [activeBottomItem, setActiveBottomItem] = React.useState("explorer");
+    // 🎯 목적: 핫바 활성 아이템 상태 관리 - 단일 활성 상태
+    const [activeItem, setActiveItem] = React.useState("daive-app");
 
-    // 🎯 목적: 핫바 아이템 클릭 핸들러 - 그룹별 독립 관리
+    // 🎯 목적: 핫바 아이템 클릭 핸들러 - 단일 활성 상태 관리
     const handleItemClick = (itemId: string) => {
-      // 상단 그룹 앱 아이템 클릭 시
-      if (itemId.startsWith("daive") || itemId.startsWith("skuber")) {
-        setActiveTopItem(itemId);
-      }
-      // 하단 그룹 기능 아이템 클릭 시
-      else if (
-        itemId.startsWith("explorer") ||
-        itemId.startsWith("extensions")
-      ) {
-        setActiveBottomItem(itemId);
-      }
+      // 모든 핫바 아이템은 단일 활성 상태로 관리
+      setActiveItem(itemId);
     };
 
     return (
       <div className="bg-background flex h-screen w-full">
         {/* VS Code Activity Bar 스타일 핫바 */}
-        <Hotbar
-          activeTopItem={activeTopItem}
-          activeBottomItem={activeBottomItem}
-          onItemClick={handleItemClick}
-        />
+        <Hotbar activeItem={activeItem} onItemClick={handleItemClick} />
 
         {/* 메인 콘텐츠 영역 */}
         <div className="flex flex-1 items-center justify-center p-8">
@@ -1214,9 +1197,7 @@ export const StructureHotbar: Story = {
             </p>
             <p className="text-muted-foreground mt-2 text-xs">
               현재 활성 아이템:{" "}
-              <span className="font-medium">
-                상단: {activeTopItem} | 하단: {activeBottomItem}
-              </span>
+              <span className="font-medium">{activeItem}</span>
             </p>
           </div>
         </div>
