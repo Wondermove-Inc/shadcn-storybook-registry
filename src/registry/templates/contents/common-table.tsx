@@ -232,7 +232,7 @@ export function CommonTable({
           <ArrowUpDown />
         </Button>
       ),
-      cell: ({ row }) => <div>{row.original.column2}</div>,
+      cell: ({ row }) => <div className="px-3">{row.original.column2}</div>,
     },
     {
       accessorKey: "column3",
@@ -245,7 +245,7 @@ export function CommonTable({
           <ArrowUpDown />
         </Button>
       ),
-      cell: ({ row }) => <div>{row.original.column3}</div>,
+      cell: ({ row }) => <div className="px-3">{row.original.column3}</div>,
     },
     {
       accessorKey: "column4",
@@ -259,9 +259,11 @@ export function CommonTable({
         </Button>
       ),
       cell: ({ row }) => (
-        <Button variant="link" className="text-primary h-auto p-0">
-          {row.original.column4.text}
-        </Button>
+        <div className="px-3">
+          <Button variant="link" className="text-primary h-auto p-0">
+            {row.original.column4.text}
+          </Button>
+        </div>
       ),
       sortingFn: (rowA, rowB) => {
         return rowA.original.column4.text.localeCompare(
@@ -282,20 +284,24 @@ export function CommonTable({
       ),
       cell: ({ row }) => {
         const column5 = row.original.column5;
-        return column5.variant === "verified" ? (
-          <Badge
-            variant="secondary"
-            className="bg-blue-500 text-white dark:bg-blue-600"
-          >
-            <BadgeCheck className="h-3 w-3" />
-            {column5.text}
-          </Badge>
-        ) : (
-          <Badge
-            variant={column5.variant as "default" | "secondary" | "outline"}
-          >
-            {column5.text}
-          </Badge>
+        return (
+          <div className="px-3">
+            {column5.variant === "verified" ? (
+              <Badge
+                variant="secondary"
+                className="bg-blue-500 text-white dark:bg-blue-600"
+              >
+                <BadgeCheck className="h-3 w-3" />
+                {column5.text}
+              </Badge>
+            ) : (
+              <Badge
+                variant={column5.variant as "default" | "secondary" | "outline"}
+              >
+                {column5.text}
+              </Badge>
+            )}
+          </div>
         );
       },
       sortingFn: (rowA, rowB) => {
@@ -315,7 +321,7 @@ export function CommonTable({
           <ArrowUpDown />
         </Button>
       ),
-      cell: ({ row }) => <div>{row.original.column6}</div>,
+      cell: ({ row }) => <div className="px-3">{row.original.column6}</div>,
     },
     {
       id: "actions",
@@ -705,20 +711,20 @@ export function CommonTable({
             <Table>
               <TableBody>
                 <TableRow>
-                  <TableCell className="border-border border-b px-2 py-[14px]">
+                  <TableCell className="border-border border-b px-3 py-[14px]">
                     <span className="text-foreground text-sm">Created</span>
                   </TableCell>
-                  <TableCell className="border-border border-b px-2 py-[14px]">
+                  <TableCell className="border-border border-b px-3 py-[14px]">
                     <span className="text-foreground text-sm">
                       19d 4h 36m ago (2025-10-01T09:24:39+09:00)
                     </span>
                   </TableCell>
                 </TableRow>
                 <TableRow>
-                  <TableCell className="border-border border-b px-2 py-[14px]">
+                  <TableCell className="border-border border-b px-3 py-[14px]">
                     <span className="text-foreground text-sm">Name</span>
                   </TableCell>
-                  <TableCell className="border-border border-b px-2 py-[14px]">
+                  <TableCell className="border-border border-b px-3 py-[14px]">
                     <span className="text-foreground text-sm">
                       {selectedRowData
                         ? selectedRowData.column3
@@ -727,10 +733,10 @@ export function CommonTable({
                   </TableCell>
                 </TableRow>
                 <TableRow>
-                  <TableCell className="border-border border-b px-2 py-[14px]">
+                  <TableCell className="border-border border-b px-3 py-[14px]">
                     <span className="text-foreground text-sm">Labels</span>
                   </TableCell>
-                  <TableCell className="border-border border-b px-2 py-[14px]">
+                  <TableCell className="border-border border-b px-3 py-[14px]">
                     <Badge
                       variant="outline"
                       className="bg-background border-border text-xs font-semibold"
@@ -742,10 +748,10 @@ export function CommonTable({
                   </TableCell>
                 </TableRow>
                 <TableRow>
-                  <TableCell className="border-border border-b px-2 py-[14px]">
+                  <TableCell className="border-border border-b px-3 py-[14px]">
                     <span className="text-foreground text-sm">Annotations</span>
                   </TableCell>
-                  <TableCell className="border-border border-b px-2 py-[14px]">
+                  <TableCell className="border-border border-b px-3 py-[14px]">
                     <Badge
                       variant="outline"
                       className="bg-background border-border text-xs font-semibold"
@@ -755,10 +761,10 @@ export function CommonTable({
                   </TableCell>
                 </TableRow>
                 <TableRow>
-                  <TableCell className="border-border border-b px-2 py-[14px]">
+                  <TableCell className="border-border border-b px-3 py-[14px]">
                     <span className="text-foreground text-sm">Resource</span>
                   </TableCell>
-                  <TableCell className="border-border border-b px-2 py-2">
+                  <TableCell className="border-border border-b px-3 py-2">
                     <Button
                       variant="ghost"
                       className="text-foreground/80 hover:text-foreground h-8 px-3 text-sm font-medium underline"
@@ -769,10 +775,10 @@ export function CommonTable({
                   </TableCell>
                 </TableRow>
                 <TableRow>
-                  <TableCell className="border-border border-b px-2 py-[14px]">
+                  <TableCell className="border-border border-b px-3 py-[14px]">
                     <span className="text-foreground text-sm">Conversion</span>
                   </TableCell>
-                  <TableCell className="border-border border-b px-2 py-1.5">
+                  <TableCell className="border-border border-b px-3 py-1.5">
                     <Input
                       placeholder='{"strategy": "None"}'
                       className="text-muted-foreground bg-muted/50 h-9 font-mono text-sm"
@@ -781,10 +787,10 @@ export function CommonTable({
                   </TableCell>
                 </TableRow>
                 <TableRow>
-                  <TableCell className="border-border border-b px-2 py-[14px]">
+                  <TableCell className="border-border border-b px-3 py-[14px]">
                     <span className="text-foreground text-sm">Conditions</span>
                   </TableCell>
-                  <TableCell className="border-border border-b px-2 py-[14px]">
+                  <TableCell className="border-border border-b px-3 py-[14px]">
                     <Badge className="bg-primary text-primary-foreground border-0 text-xs font-semibold">
                       NamesAccepted
                     </Badge>
