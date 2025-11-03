@@ -8,7 +8,16 @@ import {
   BadgeCheck,
   ChevronsRight,
   ExternalLink,
+  ArrowUpDown,
 } from "lucide-react";
+import {
+  ColumnDef,
+  flexRender,
+  getCoreRowModel,
+  getSortedRowModel,
+  SortingState,
+  useReactTable,
+} from "@tanstack/react-table";
 import {
   Table,
   TableBody,
@@ -155,6 +164,9 @@ export function CommonTable({
     React.useState<TableRowData | null>(null);
   const [selectedRowId, setSelectedRowId] = React.useState<string | null>(null);
 
+  // 🎯 목적: 테이블 정렬 상태 관리
+  const [sorting, setSorting] = React.useState<SortingState>([]);
+
   // 🎯 목적: 차트 관련 상태 (showChart가 true일 때만 사용)
   const [selectedMetric, setSelectedMetric] = React.useState("cpu");
 
@@ -183,6 +195,161 @@ export function CommonTable({
     }
     return `Namespaces: ${selectedNamespaces.length} selected`;
   };
+
+  /**
+   * 🎯 목적: TanStack Table 컬럼 정의 - 정렬 기능이 포함된 헤더
+   */
+  const columns: ColumnDef<TableRowData>[] = [
+    {
+      id: "select",
+      header: () => (
+        <Checkbox
+          checked={isIndeterminate ? "indeterminate" : isAllSelected}
+          onCheckedChange={handleSelectAll}
+          aria-label="전체 선택"
+        />
+      ),
+      cell: ({ row }) => (
+        <Checkbox
+          checked={row.original.checked}
+          onCheckedChange={(checked) =>
+            handleRowCheckChange(row.original.id, !!checked)
+          }
+          aria-label={`행 ${row.original.id} 선택`}
+          onClick={(e) => e.stopPropagation()}
+        />
+      ),
+      enableSorting: false,
+    },
+    {
+      accessorKey: "column2",
+      header: ({ column }) => (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Head Text
+          <ArrowUpDown />
+        </Button>
+      ),
+      cell: ({ row }) => <div>{row.original.column2}</div>,
+    },
+    {
+      accessorKey: "column3",
+      header: ({ column }) => (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Head Text
+          <ArrowUpDown />
+        </Button>
+      ),
+      cell: ({ row }) => <div>{row.original.column3}</div>,
+    },
+    {
+      accessorKey: "column4",
+      header: ({ column }) => (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Head Text
+          <ArrowUpDown />
+        </Button>
+      ),
+      cell: ({ row }) => (
+        <Button variant="link" className="text-primary h-auto p-0">
+          {row.original.column4.text}
+        </Button>
+      ),
+      sortingFn: (rowA, rowB) => {
+        return rowA.original.column4.text.localeCompare(
+          rowB.original.column4.text,
+        );
+      },
+    },
+    {
+      accessorKey: "column5",
+      header: ({ column }) => (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Head Text
+          <ArrowUpDown />
+        </Button>
+      ),
+      cell: ({ row }) => {
+        const column5 = row.original.column5;
+        return column5.variant === "verified" ? (
+          <Badge
+            variant="secondary"
+            className="bg-blue-500 text-white dark:bg-blue-600"
+          >
+            <BadgeCheck className="h-3 w-3" />
+            {column5.text}
+          </Badge>
+        ) : (
+          <Badge
+            variant={column5.variant as "default" | "secondary" | "outline"}
+          >
+            {column5.text}
+          </Badge>
+        );
+      },
+      sortingFn: (rowA, rowB) => {
+        return rowA.original.column5.text.localeCompare(
+          rowB.original.column5.text,
+        );
+      },
+    },
+    {
+      accessorKey: "column6",
+      header: ({ column }) => (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Head Text
+          <ArrowUpDown />
+        </Button>
+      ),
+      cell: ({ row }) => <div>{row.original.column6}</div>,
+    },
+    {
+      id: "actions",
+      header: () => <div className="text-right"></div>,
+      cell: ({ row }) =>
+        row.original.column7 && (
+          <div className="text-right">
+            <Button
+              variant="ghost"
+              size="sm"
+              aria-label="행 옵션"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <EllipsisVertical className="h-4 w-4" />
+            </Button>
+          </div>
+        ),
+      enableSorting: false,
+    },
+  ];
+
+  /**
+   * 🎯 목적: TanStack Table 인스턴스 생성 - 정렬 기능 포함
+   */
+  const table = useReactTable({
+    data,
+    columns,
+    onSortingChange: setSorting,
+    getCoreRowModel: getCoreRowModel(),
+    getSortedRowModel: getSortedRowModel(),
+    state: {
+      sorting,
+    },
+  });
 
   // 🎯 목적: 차트 데이터 정의 (CPU/Memory 메트릭)
   const chartData = [
@@ -356,97 +523,70 @@ export function CommonTable({
             </div>
           </div>
 
-          {/* 테이블 섹션 - header와 gap-4 간격 */}
+          {/* 테이블 섹션 - TanStack Table 기반 정렬 가능한 테이블 */}
           <Table>
             <TableHeader>
-              <TableRow>
-                <TableHead className="w-12">
-                  <Checkbox
-                    checked={isIndeterminate ? "indeterminate" : isAllSelected}
-                    onCheckedChange={handleSelectAll}
-                    aria-label="전체 선택"
-                  />
-                </TableHead>
-                <TableHead>Head Text</TableHead>
-                <TableHead>Head Text</TableHead>
-                <TableHead>Head Text</TableHead>
-                <TableHead>Head Text</TableHead>
-                <TableHead>Head Text</TableHead>
-                <TableHead className="text-right"></TableHead>
-              </TableRow>
+              {table.getHeaderGroups().map((headerGroup) => (
+                <TableRow key={headerGroup.id}>
+                  {headerGroup.headers.map((header) => (
+                    <TableHead
+                      key={header.id}
+                      className={
+                        header.id === "select"
+                          ? "w-12"
+                          : header.id === "actions"
+                            ? "text-right"
+                            : ""
+                      }
+                    >
+                      {header.isPlaceholder
+                        ? null
+                        : flexRender(
+                            header.column.columnDef.header,
+                            header.getContext(),
+                          )}
+                    </TableHead>
+                  ))}
+                </TableRow>
+              ))}
             </TableHeader>
             <TableBody>
-              {data.map((row) => {
-                const isSelected = selectedRowId === row.id;
-                return (
-                  <TableRow
-                    key={row.id}
-                    data-table-row
-                    className={`cursor-pointer border-l-2 transition-colors ${
-                      isSelected
-                        ? "bg-muted/50 border-l-primary"
-                        : "hover:bg-muted/50 border-l-transparent"
-                    }`}
-                    onClick={(e) => handleRowClick(e, row)}
+              {table.getRowModel().rows?.length ? (
+                table.getRowModel().rows.map((row) => {
+                  const isSelected = selectedRowId === row.original.id;
+                  return (
+                    <TableRow
+                      key={row.id}
+                      data-table-row
+                      data-state={row.getIsSelected() ? "selected" : undefined}
+                      className={`cursor-pointer border-l-2 transition-colors ${
+                        isSelected
+                          ? "bg-muted/50 border-l-primary"
+                          : "hover:bg-muted/50 border-l-transparent"
+                      }`}
+                      onClick={(e) => handleRowClick(e, row.original)}
+                    >
+                      {row.getVisibleCells().map((cell) => (
+                        <TableCell key={cell.id}>
+                          {flexRender(
+                            cell.column.columnDef.cell,
+                            cell.getContext(),
+                          )}
+                        </TableCell>
+                      ))}
+                    </TableRow>
+                  );
+                })
+              ) : (
+                <TableRow>
+                  <TableCell
+                    colSpan={columns.length}
+                    className="h-24 text-center"
                   >
-                    <TableCell>
-                      <Checkbox
-                        checked={row.checked}
-                        onCheckedChange={(checked) =>
-                          handleRowCheckChange(row.id, !!checked)
-                        }
-                        aria-label={`행 ${row.id} 선택`}
-                        onClick={(e) => e.stopPropagation()}
-                      />
-                    </TableCell>
-                    <TableCell>{row.column2}</TableCell>
-                    <TableCell>{row.column3}</TableCell>
-                    <TableCell>
-                      <Button
-                        variant="link"
-                        className="text-primary h-auto p-0"
-                      >
-                        {row.column4.text}
-                      </Button>
-                    </TableCell>
-                    <TableCell>
-                      {row.column5.variant === "verified" ? (
-                        <Badge
-                          variant="secondary"
-                          className="bg-blue-500 text-white dark:bg-blue-600"
-                        >
-                          <BadgeCheck className="h-3 w-3" />
-                          {row.column5.text}
-                        </Badge>
-                      ) : (
-                        <Badge
-                          variant={
-                            row.column5.variant as
-                              | "default"
-                              | "secondary"
-                              | "outline"
-                          }
-                        >
-                          {row.column5.text}
-                        </Badge>
-                      )}
-                    </TableCell>
-                    <TableCell>{row.column6}</TableCell>
-                    <TableCell className="text-right">
-                      {row.column7 && (
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          aria-label="행 옵션"
-                          onClick={(e) => e.stopPropagation()}
-                        >
-                          <EllipsisVertical className="h-4 w-4" />
-                        </Button>
-                      )}
-                    </TableCell>
-                  </TableRow>
-                );
-              })}
+                    No results.
+                  </TableCell>
+                </TableRow>
+              )}
             </TableBody>
           </Table>
         </div>
