@@ -12,7 +12,6 @@ import {
   Trash2,
   FolderSync,
   Plus,
-  X,
   Bot,
   Search,
   ChevronRight,
@@ -31,7 +30,6 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { Separator } from "@/components/ui/separator";
-import { ScrollArea } from "@/components/ui/scroll-area";
 import {
   Select,
   SelectContent,
@@ -50,8 +48,17 @@ import {
   DialogTitle,
   DialogTrigger,
   DialogFooter,
-  DialogClose,
 } from "@/components/ui/dialog";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 import {
   Sidebar,
   SidebarContent,
@@ -500,9 +507,56 @@ function LLMModelsContent() {
   const [openaiApiEnabled, setOpenaiApiEnabled] = React.useState(true);
   const [anthropicApiEnabled, setAnthropicApiEnabled] = React.useState(false);
   const [googleApiEnabled, setGoogleApiEnabled] = React.useState(false);
-  const [openaiApiKey, setOpenaiApiKey] = React.useState("");
   const [anthropicApiKey, setAnthropicApiKey] = React.useState("");
   const [googleApiKey, setGoogleApiKey] = React.useState("");
+
+  // 🎯 목적: Alert Dialog 상태 관리 - 각 API Key provider별로 개별 상태
+  const [showOpenaiAlert, setShowOpenaiAlert] = React.useState(false);
+  const [showAnthropicAlert, setShowAnthropicAlert] = React.useState(false);
+  const [showGoogleAlert, setShowGoogleAlert] = React.useState(false);
+  const [pendingProvider, setPendingProvider] = React.useState<string>("");
+
+  // 🎯 목적: API Key toggle 변경 시 alert dialog 표시 로직
+  const handleApiToggle = (
+    provider: "openai" | "anthropic" | "google",
+    newValue: boolean,
+  ) => {
+    if (newValue) {
+      // toggle을 켤 때만 alert dialog 표시
+      setPendingProvider(provider);
+      if (provider === "openai") setShowOpenaiAlert(true);
+      else if (provider === "anthropic") setShowAnthropicAlert(true);
+      else if (provider === "google") setShowGoogleAlert(true);
+    } else {
+      // toggle을 끌 때는 즉시 적용
+      if (provider === "openai") setOpenaiApiEnabled(false);
+      else if (provider === "anthropic") setAnthropicApiEnabled(false);
+      else if (provider === "google") setGoogleApiEnabled(false);
+    }
+  };
+
+  // 🎯 목적: Alert Dialog에서 "Use API Key" 버튼 클릭 시 처리
+  const handleConfirmApiKey = () => {
+    if (pendingProvider === "openai") {
+      setOpenaiApiEnabled(true);
+      setShowOpenaiAlert(false);
+    } else if (pendingProvider === "anthropic") {
+      setAnthropicApiEnabled(true);
+      setShowAnthropicAlert(false);
+    } else if (pendingProvider === "google") {
+      setGoogleApiEnabled(true);
+      setShowGoogleAlert(false);
+    }
+    setPendingProvider("");
+  };
+
+  // 🎯 목적: Alert Dialog에서 "Cancel" 버튼 클릭 시 처리
+  const handleCancelApiKey = () => {
+    setShowOpenaiAlert(false);
+    setShowAnthropicAlert(false);
+    setShowGoogleAlert(false);
+    setPendingProvider("");
+  };
 
   return (
     <>
@@ -510,14 +564,14 @@ function LLMModelsContent() {
         {/* Search Field */}
         <div className="flex w-full flex-col gap-3">
           <Label htmlFor="llm-search" className="text-sm font-medium">
-            LLM Models
+            Control model usage
           </Label>
           <div className="relative flex items-center">
             <Search className="text-muted-foreground absolute left-3 h-4 w-4" />
             <Input
               id="llm-search"
               type="text"
-              placeholder="Search model"
+              placeholder="Search model..."
               className="bg-input/30 border-border pl-10"
             />
           </div>
@@ -595,15 +649,15 @@ function LLMModelsContent() {
             </div>
             <Switch
               checked={openaiApiEnabled}
-              onCheckedChange={setOpenaiApiEnabled}
+              onCheckedChange={(value) => handleApiToggle("openai", value)}
             />
           </div>
           <Input
             type="text"
             placeholder="Enter your OpenAI API Key"
             className="bg-input/30 border-border"
-            value={openaiApiKey}
-            onChange={(e) => setOpenaiApiKey(e.target.value)}
+            value="••••••••••••"
+            readOnly
           />
         </div>
 
@@ -623,7 +677,7 @@ function LLMModelsContent() {
             </div>
             <Switch
               checked={anthropicApiEnabled}
-              onCheckedChange={setAnthropicApiEnabled}
+              onCheckedChange={(value) => handleApiToggle("anthropic", value)}
             />
           </div>
           <Input
@@ -650,7 +704,7 @@ function LLMModelsContent() {
             </div>
             <Switch
               checked={googleApiEnabled}
-              onCheckedChange={setGoogleApiEnabled}
+              onCheckedChange={(value) => handleApiToggle("google", value)}
             />
           </div>
           <Input
@@ -661,6 +715,75 @@ function LLMModelsContent() {
             onChange={(e) => setGoogleApiKey(e.target.value)}
           />
         </div>
+
+        {/* 🎯 목적: OpenAI API Key 사용 확인 Alert Dialog */}
+        <AlertDialog open={showOpenaiAlert} onOpenChange={setShowOpenaiAlert}>
+          <AlertDialogContent className="gap-4 p-6 sm:max-w-[425px]">
+            <AlertDialogHeader className="gap-2">
+              <AlertDialogTitle>Use OpenAI API Key</AlertDialogTitle>
+              <AlertDialogDescription>
+                Are you sure you want to use your own OpenAI API key? Several of
+                Cursor's features require custom models (Tab, Apply from Chat,
+                Agent), which cannot be billed to an API key.
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter className="gap-2">
+              <AlertDialogCancel onClick={handleCancelApiKey}>
+                Cancel
+              </AlertDialogCancel>
+              <AlertDialogAction onClick={handleConfirmApiKey}>
+                Use API Key
+              </AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
+
+        {/* 🎯 목적: Anthropic API Key 사용 확인 Alert Dialog */}
+        <AlertDialog
+          open={showAnthropicAlert}
+          onOpenChange={setShowAnthropicAlert}
+        >
+          <AlertDialogContent className="gap-4 p-6 sm:max-w-[425px]">
+            <AlertDialogHeader className="gap-2">
+              <AlertDialogTitle>Use Anthropic API Key</AlertDialogTitle>
+              <AlertDialogDescription>
+                Are you sure you want to use your own Anthropic API key? Several
+                of Cursor's features require custom models (Tab, Apply from
+                Chat, Agent), which cannot be billed to an API key.
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter className="gap-2">
+              <AlertDialogCancel onClick={handleCancelApiKey}>
+                Cancel
+              </AlertDialogCancel>
+              <AlertDialogAction onClick={handleConfirmApiKey}>
+                Use API Key
+              </AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
+
+        {/* 🎯 목적: Google API Key 사용 확인 Alert Dialog */}
+        <AlertDialog open={showGoogleAlert} onOpenChange={setShowGoogleAlert}>
+          <AlertDialogContent className="gap-4 p-6 sm:max-w-[425px]">
+            <AlertDialogHeader className="gap-2">
+              <AlertDialogTitle>Use Google API Key</AlertDialogTitle>
+              <AlertDialogDescription>
+                Are you sure you want to use your own Google API key? Several of
+                Cursor's features require custom models (Tab, Apply from Chat,
+                Agent), which cannot be billed to an API key.
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter className="gap-2">
+              <AlertDialogCancel onClick={handleCancelApiKey}>
+                Cancel
+              </AlertDialogCancel>
+              <AlertDialogAction onClick={handleConfirmApiKey}>
+                Use API Key
+              </AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
       </div>
     </>
   );
