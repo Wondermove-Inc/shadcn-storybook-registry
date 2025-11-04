@@ -98,7 +98,7 @@ html.theme-default-dark {
   --destructive: oklch(0.704 0.191 22.216);
   --destructive-foreground: oklch(0.985 0 0);
   --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 4.5%);
+  --input: oklch(1 0 0 / 15%);
   --ring: oklch(0.556 0 0);
   --chart-1: oklch(0.488 0.243 264.376);
   --chart-2: oklch(0.696 0.17 162.48);
@@ -338,23 +338,23 @@ html.theme-violet-dark {
   .border-input {
     border-color: var(--color-border);
   }
-  
+
   .bg-input {
     background-color: var(--color-input);
   }
-  
+
   .bg-input\/30 {
     background-color: oklch(from var(--color-input) l c h / 0.3);
   }
-  
+
   .dark\:bg-input\/30 {
     background-color: oklab(0.999998 -0.00000980496 0.0000234246 / 0.045);
   }
-  
+
   .dark\:bg-input\/50 {
     background-color: oklab(0.999998 -0.00000980496 0.0000234246 / 0.075);
   }
-  
+
   .bg-input\/80 {
     background-color: oklch(from var(--color-input) l c h / 0.8);
   }
@@ -523,4 +523,15 @@ html.theme-violet-dark {
   --color-blue-800: oklch(0.45 0.197 265.522);
   --color-blue-900: oklch(0.398 0.143 266.996);
   --color-blue-950: oklch(0.296 0.093 269.542);
+}
+
+.dark {
+  --sidebar: hsl(240 5.9% 10%);
+  --sidebar-foreground: hsl(240 4.8% 95.9%);
+  --sidebar-primary: hsl(224.3 76.3% 48%);
+  --sidebar-primary-foreground: hsl(0 0% 100%);
+  --sidebar-accent: hsl(240 3.7% 15.9%);
+  --sidebar-accent-foreground: hsl(240 4.8% 95.9%);
+  --sidebar-border: hsl(240 3.7% 15.9%);
+  --sidebar-ring: hsl(217.2 91.2% 59.8%);
 }

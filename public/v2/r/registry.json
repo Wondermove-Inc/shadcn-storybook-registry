@@ -2776,6 +2776,21 @@
           "type": "registry:component"
         }
       ]
+    },
+    {
+      "name": "settings-template",
+      "type": "registry:component",
+      "title": "Settings Template",
+      "description": "Dialog 내부에 Sidebar가 포함된 설정 템플릿입니다. VS Code 설정 페이지와 유사한 레이아웃으로 설정 카테고리 네비게이션과 콘텐츠 영역을 제공합니다.",
+      "categories": ["templates", "storybook"],
+      "registryDependencies": ["sidebar", "dialog", "breadcrumb"],
+      "dependencies": ["lucide-react"],
+      "files": [
+        {
+          "path": "src/registry/templates/settings-template/settings-template.stories.tsx",
+          "type": "registry:component"
+        }
+      ]
     }
   ]
 }

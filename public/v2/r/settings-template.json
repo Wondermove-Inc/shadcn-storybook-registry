@@ -1,0 +1,26 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "settings-template",
+  "type": "registry:component",
+  "title": "Settings Template",
+  "description": "Dialog 내부에 Sidebar가 포함된 설정 템플릿입니다. VS Code 설정 페이지와 유사한 레이아웃으로 설정 카테고리 네비게이션과 콘텐츠 영역을 제공합니다.",
+  "dependencies": [
+    "lucide-react"
+  ],
+  "registryDependencies": [
+    "sidebar",
+    "dialog",
+    "breadcrumb"
+  ],
+  "files": [
+    {
+      "path": "src/registry/templates/settings-template/settings-template.stories.tsx",
+      "content": "import React from \"react\";\nimport type { Meta, StoryObj } from \"@storybook/react-vite\";\nimport { SettingsDialog } from \"../../../../components/settings-dialog\";\n\n/**\n * 다이얼로그 내에 사이드바가 포함된 설정 템플릿입니다.\n *\n * 🎯 목적: Dialog 안에서 사용 가능한 Sidebar 컴포넌트 데모\n * ✨ 특징:\n * - Dialog 모달 내부에 Sidebar 레이아웃 구현\n * - 설정 카테고리별 네비게이션 제공\n * - 반응형 디자인 (모바일에서는 사이드바 숨김)\n * - Breadcrumb 네비게이션 포함\n * - 12개의 설정 카테고리 메뉴\n */\nconst meta = {\n  title: \"templates/Settings\",\n  component: SettingsDialog,\n  tags: [\"autodocs\"],\n  parameters: {\n    layout: \"fullscreen\",\n    docs: {\n      description: {\n        component: `Dialog 내부에 Sidebar가 포함된 설정 템플릿입니다. VS Code의 설정 페이지와 유사한 레이아웃으로, 좌측에는 설정 카테고리 네비게이션이, 우측에는 설정 내용이 표시됩니다. 모바일에서는 사이드바가 숨겨지고 콘텐츠만 표시됩니다.`,\n      },\n    },\n  },\n} satisfies Meta<typeof SettingsDialog>;\n\nexport default meta;\n\ntype Story = StoryObj<typeof meta>;\n\n/**\n * 기본 설정 다이얼로그 템플릿입니다.\n *\n * 🎯 목적: Dialog 내 Sidebar 레이아웃의 완전한 기능 데모\n * ✨ 특징:\n * - 설정 카테고리: Notifications, Navigation, Home, Appearance 등 12개 메뉴\n * - 활성 메뉴: \"Messages & media\" 기본 선택\n * - 반응형 레이아웃: 데스크톱에서만 사이드바 표시\n * - Breadcrumb: Settings > Messages & media 경로 표시\n */\nexport const Default: Story = {\n  render: () => {\n    return (\n      <div className=\"bg-background flex h-screen w-full items-center justify-center\">\n        <SettingsDialog />\n      </div>\n    );\n  },\n};\n\n/**\n * 설정 다이얼로그를 위한 인터랙션 테스트입니다.\n *\n * 🎯 목적: Dialog 열기/닫기 및 사이드바 네비게이션 테스트\n * ✨ 테스트 항목:\n * - Dialog trigger 버튼 클릭\n * - 사이드바 메뉴 항목들 확인\n * - Breadcrumb 네비게이션 확인\n * - 콘텐츠 영역 렌더링 확인\n */\nexport const InteractionTest: Story = {\n  tags: [\"!dev\", \"!autodocs\"],\n  render: () => {\n    return (\n      <div className=\"bg-background flex h-screen w-full items-center justify-center p-8\">\n        <div className=\"text-center\">\n          <h2 className=\"mb-4 text-lg font-semibold\">\n            Setting Dialog Template\n          </h2>\n          <p className=\"text-muted-foreground mb-6 text-sm\">\n            Dialog 내부에 Sidebar가 포함된 설정 템플릿을 테스트합니다.\n          </p>\n          <SettingsDialog />\n        </div>\n      </div>\n    );\n  },\n};\n",
+      "type": "registry:component"
+    }
+  ],
+  "categories": [
+    "templates",
+    "storybook"
+  ]
+}
