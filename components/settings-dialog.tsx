@@ -13,6 +13,7 @@ import {
   FolderSync,
   Plus,
   X,
+  Bot,
 } from "lucide-react";
 
 import {
@@ -66,6 +67,7 @@ const data = {
     { name: "Kubernetes", icon: Container },
     { name: "Editor", icon: Code },
     { name: "Terminal", icon: Terminal },
+    { name: "LLM Models", icon: Bot },
   ],
 };
 
@@ -485,6 +487,23 @@ function TerminalContent() {
   );
 }
 
+// 🎯 목적: LLM Models 메뉴의 콘텐츠 영역 - LLM 모델 관련 설정
+function LLMModelsContent() {
+  return (
+    <>
+      {/* LLM Models 설정 영역 - 현재는 기본 메시지만 표시 */}
+      <div className="flex flex-col gap-6">
+        <div className="text-center">
+          <h3 className="mb-2 text-lg font-semibold">LLM Models</h3>
+          <p className="text-muted-foreground">
+            LLM 모델 설정이 여기에 표시됩니다.
+          </p>
+        </div>
+      </div>
+    </>
+  );
+}
+
 // 🎯 목적: Kubernetes 메뉴의 콘텐츠 영역 - 쿠버네티스 관련 설정
 function KubernetesContent() {
   const [kubectlBinaryDownload, setKubectlBinaryDownload] =
@@ -771,6 +790,7 @@ export function SettingsDialog() {
               {activeMenu === "Kubernetes" && <KubernetesContent />}
               {activeMenu === "Editor" && <EditorContent />}
               {activeMenu === "Terminal" && <TerminalContent />}
+              {activeMenu === "LLM Models" && <LLMModelsContent />}
             </div>
           </main>
         </SidebarProvider>
