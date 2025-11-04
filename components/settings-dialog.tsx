@@ -1,7 +1,19 @@
 "use client";
 
 import * as React from "react";
-import { AppWindow, Network, Container, Code, Terminal } from "lucide-react";
+import {
+  AppWindow,
+  Network,
+  Container,
+  Code,
+  Terminal,
+  FileQuestion,
+  FileText,
+  Trash2,
+  FolderSync,
+  Plus,
+  X,
+} from "lucide-react";
 
 import {
   Breadcrumb,
@@ -15,6 +27,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
+import { Separator } from "@/components/ui/separator";
 import {
   Select,
   SelectContent,
@@ -29,8 +42,11 @@ import {
   Dialog,
   DialogContent,
   DialogDescription,
+  DialogHeader,
   DialogTitle,
   DialogTrigger,
+  DialogFooter,
+  DialogClose,
 } from "@/components/ui/dialog";
 import {
   Sidebar,
@@ -469,6 +485,234 @@ function TerminalContent() {
   );
 }
 
+// 🎯 목적: Kubernetes 메뉴의 콘텐츠 영역 - 쿠버네티스 관련 설정
+function KubernetesContent() {
+  const [kubectlBinaryDownload, setKubectlBinaryDownload] =
+    React.useState(false);
+  const [showHelmRepoDialog, setShowHelmRepoDialog] = React.useState(false);
+  const [helmRepoName, setHelmRepoName] = React.useState("");
+  const [helmRepoUrl, setHelmRepoUrl] = React.useState("");
+
+  return (
+    <>
+      {/* Kubectl binary download */}
+      <div className="flex items-start gap-3">
+        <div className="flex flex-1 flex-col gap-2">
+          <div className="flex items-center gap-3">
+            <Label
+              htmlFor="kubectl-binary-download"
+              className="text-foreground flex-1 text-sm font-medium"
+            >
+              Kubectl binary download
+            </Label>
+            <Switch
+              id="kubectl-binary-download"
+              checked={kubectlBinaryDownload}
+              onCheckedChange={setKubectlBinaryDownload}
+            />
+          </div>
+          <p className="text-muted-foreground text-sm">
+            Download kubectl binaries matching the kubernetes cluster version
+          </p>
+        </div>
+      </div>
+
+      {/* Download mirror */}
+      <div className="flex w-full flex-col gap-3">
+        <Label
+          htmlFor="download-mirror"
+          className="text-foreground text-sm font-medium"
+        >
+          Download mirror
+        </Label>
+        <Select defaultValue="google">
+          <SelectTrigger className="bg-input/30 border-border w-full">
+            <SelectValue />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="google">Default (Google)</SelectItem>
+            <SelectItem value="azure">Azure</SelectItem>
+            <SelectItem value="custom">Custom</SelectItem>
+          </SelectContent>
+        </Select>
+      </div>
+
+      {/* Directory for binaries */}
+      <div className="flex w-full flex-col gap-3">
+        <Label
+          htmlFor="directory-binaries"
+          className="text-foreground text-sm font-medium"
+        >
+          Directory for binaries
+        </Label>
+        <Input
+          id="directory-binaries"
+          type="text"
+          placeholder="/Users/mihyeon/Library/Application Support/DAIVE/binaries"
+          className="bg-input/30 border-border"
+          disabled={!kubectlBinaryDownload}
+        />
+        <p className="text-muted-foreground text-sm">
+          The directory to download binaries into.
+        </p>
+      </div>
+
+      {/* Path to kubectl binary */}
+      <div className="flex w-full flex-col gap-3">
+        <Label
+          htmlFor="kubectl-binary-path"
+          className="text-foreground text-sm font-medium"
+        >
+          Path to kubectl binary
+        </Label>
+        <Input
+          id="kubectl-binary-path"
+          type="text"
+          placeholder="/Users/mihyeon/Library/Application Support/DAIVE/binaries/kubectl"
+          className="bg-input/30 border-border"
+          disabled={kubectlBinaryDownload}
+        />
+      </div>
+
+      {/* Separator */}
+      <Separator className="bg-border" />
+
+      {/* Synced items */}
+      <div className="flex flex-col gap-3">
+        <Label className="text-foreground text-sm font-medium">
+          Synced items
+        </Label>
+
+        <div className="flex flex-col gap-2">
+          {/* Item 1 */}
+          <div className="hover:bg-accent/50 flex items-center gap-3 rounded-lg p-3">
+            <FileQuestion className="text-muted-foreground h-5 w-5" />
+            <div className="flex-1">
+              <p className="text-muted-foreground text-sm">
+                /Users/mihyeon/.kube
+              </p>
+            </div>
+            <Button variant="outline" size="sm" className="h-8 w-8 p-0">
+              <Trash2 className="h-4 w-4" />
+            </Button>
+          </div>
+
+          {/* Item 2 */}
+          <div className="hover:bg-accent/50 flex items-center gap-3 rounded-lg p-3">
+            <FileText className="text-muted-foreground h-5 w-5" />
+            <div className="flex-1">
+              <p className="text-muted-foreground text-sm">
+                /Users/mihyeon/Documents/ev5-25my-wide-exterior-01 6.png
+              </p>
+            </div>
+            <Button variant="outline" size="sm" className="h-8 w-8 p-0">
+              <Trash2 className="h-4 w-4" />
+            </Button>
+          </div>
+        </div>
+
+        {/* Sync kubeconfig button */}
+        <div className="flex justify-end">
+          <Button className="w-fit">
+            <FolderSync className="h-4 w-4" />
+            Sync kubeconfig
+          </Button>
+        </div>
+      </div>
+
+      {/* Separator */}
+      <Separator className="bg-border" />
+
+      {/* Helm charts */}
+      <div className="flex items-end gap-3">
+        <div className="flex flex-1 flex-col gap-3">
+          <Label
+            htmlFor="helm-charts"
+            className="text-foreground text-sm font-medium"
+          >
+            Helm charts
+          </Label>
+          <Select defaultValue="repositories">
+            <SelectTrigger className="bg-input/30 border-border w-full">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="repositories">Repositories</SelectItem>
+              <SelectItem value="stable">Stable</SelectItem>
+              <SelectItem value="incubator">Incubator</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
+        <Button onClick={() => setShowHelmRepoDialog(true)}>
+          Add custom helm repo
+        </Button>
+      </div>
+
+      {/* Add Custom Helm Repo Dialog */}
+      <Dialog open={showHelmRepoDialog} onOpenChange={setShowHelmRepoDialog}>
+        <DialogContent className="sm:max-w-[425px]">
+          <DialogHeader>
+            <DialogTitle>Add custom Helm Repo</DialogTitle>
+            <DialogDescription>Please add a helm repo.</DialogDescription>
+          </DialogHeader>
+
+          <div className="grid gap-4">
+            {/* Helm repo name */}
+            <div className="grid gap-3">
+              <Label htmlFor="helm-repo-name">Helm repo name</Label>
+              <Input
+                id="helm-repo-name"
+                type="text"
+                placeholder="Enter a name"
+                className="bg-input/30 border-border"
+                value={helmRepoName}
+                onChange={(e) => setHelmRepoName(e.target.value)}
+              />
+            </div>
+
+            {/* URL */}
+            <div className="grid gap-3">
+              <Label htmlFor="helm-repo-url">URL</Label>
+              <Input
+                id="helm-repo-url"
+                type="text"
+                placeholder="Enter a url"
+                className="bg-input/30 border-border"
+                value={helmRepoUrl}
+                onChange={(e) => setHelmRepoUrl(e.target.value)}
+              />
+            </div>
+          </div>
+
+          <DialogFooter>
+            <Button
+              variant="ghost"
+              onClick={() => setShowHelmRepoDialog(false)}
+            >
+              Cancel
+            </Button>
+            <Button
+              onClick={() => {
+                // 🎯 목적: Helm repo 추가 로직 (여기서는 단순히 Dialog 닫기)
+                console.log("Adding helm repo:", {
+                  name: helmRepoName,
+                  url: helmRepoUrl,
+                });
+                setHelmRepoName("");
+                setHelmRepoUrl("");
+                setShowHelmRepoDialog(false);
+              }}
+            >
+              <Plus className="h-4 w-4" />
+              Add
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+    </>
+  );
+}
+
 export function SettingsDialog() {
   const [open, setOpen] = React.useState(true);
   const [activeMenu, setActiveMenu] = React.useState("App");
@@ -524,13 +768,7 @@ export function SettingsDialog() {
             <div className="flex flex-1 flex-col gap-6 overflow-y-auto p-4 pt-0">
               {activeMenu === "App" && <AppContent />}
               {activeMenu === "Proxy" && <ProxyContent />}
-              {activeMenu === "Kubernetes" && (
-                <div className="flex h-32 items-center justify-center">
-                  <p className="text-muted-foreground">
-                    Kubernetes settings coming soon...
-                  </p>
-                </div>
-              )}
+              {activeMenu === "Kubernetes" && <KubernetesContent />}
               {activeMenu === "Editor" && <EditorContent />}
               {activeMenu === "Terminal" && <TerminalContent />}
             </div>
