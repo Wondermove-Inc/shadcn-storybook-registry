@@ -12,7 +12,6 @@ import {
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import {
   SidebarProvider,
   SidebarGroup,
@@ -41,6 +40,9 @@ import {
   MoreHorizontal,
   ChevronRight,
   ChevronDown,
+  Binoculars,
+  FolderKanban,
+  Server,
 } from "lucide-react";
 import {
   InputGroup,
@@ -168,25 +170,25 @@ export const Structure: Story = {
     const [isMainExtensionsOpen, setIsMainExtensionsOpen] =
       React.useState(false);
 
-    // 🎯 목적: UIDL 기반 확장 프로그램 데이터 (메인 Structure 스토리용)
+    // 🎯 목적: Hotbar 하단 3개 메뉴를 기반으로 한 확장 프로그램 데이터 (메인 Structure 스토리용)
     const mainExtensionItems = [
       {
-        id: "skuber-plus",
-        name: "Skuber+",
-        description: "Enhanced Kubernetes management with advanced features",
-        avatar: "SP",
-      },
-      {
-        id: "skuber-plus-iaas",
-        name: "Skuber+ for IaaS",
-        description: "Infrastructure as a Service integration for Skuber+",
-        avatar: "SI",
+        id: "skuber-observability",
+        name: "Skuber+ Observability",
+        description: "Real-time monitoring and system observability platform",
+        icon: Binoculars,
       },
       {
         id: "skuber-management",
-        name: "Skuber Management",
-        description: "Complete Kubernetes cluster management solution",
-        avatar: "SM",
+        name: "Skuber+ Management",
+        description: "Complete workflow and resource management solution",
+        icon: FolderKanban,
+      },
+      {
+        id: "skuber-optimization",
+        name: "Skuber+ Optimization",
+        description: "Performance optimization and server resource management",
+        icon: Server,
       },
     ];
 
@@ -364,33 +366,32 @@ export const Structure: Story = {
                               <SidebarMenuButton>
                                 <ChevronRight className="h-4 w-4" />
                                 <span>Installed</span>
-                                <Badge
-                                  variant="default"
-                                  className="ml-auto rounded-full"
-                                >
+                                <Badge className="ml-auto h-5 min-w-5 rounded-full px-1 font-mono tabular-nums">
                                   3
                                 </Badge>
                               </SidebarMenuButton>
                             </SidebarMenuItem>
+
+                            {/* Separator between Installed and Recommended */}
+                            <div className="px-2 py-1">
+                              <Separator />
+                            </div>
 
                             {/* Recommended Section with Collapsible */}
                             <Collapsible
                               open={isMainExtensionsOpen}
                               onOpenChange={setIsMainExtensionsOpen}
                             >
-                              <SidebarMenuItem>
+                              <SidebarMenuItem className="w-full overflow-hidden">
                                 <CollapsibleTrigger asChild>
-                                  <SidebarMenuButton>
+                                  <SidebarMenuButton className="w-full max-w-full">
                                     {isMainExtensionsOpen ? (
                                       <ChevronDown className="h-4 w-4" />
                                     ) : (
                                       <ChevronRight className="h-4 w-4" />
                                     )}
                                     <span>Recommended</span>
-                                    <Badge
-                                      variant="default"
-                                      className="ml-auto rounded-full"
-                                    >
+                                    <Badge className="ml-auto h-5 min-w-5 rounded-full px-1 font-mono tabular-nums">
                                       {mainExtensionItems.length}
                                     </Badge>
                                   </SidebarMenuButton>
@@ -402,12 +403,10 @@ export const Structure: Story = {
                                 {mainExtensionItems.map((item, index) => (
                                   <React.Fragment key={item.id}>
                                     <div className="flex items-center gap-3 px-4 py-3">
-                                      {/* Avatar */}
-                                      <Avatar className="h-8 w-8">
-                                        <AvatarFallback className="text-xs font-medium">
-                                          {item.avatar}
-                                        </AvatarFallback>
-                                      </Avatar>
+                                      {/* Icon */}
+                                      <div className="bg-muted flex h-8 w-8 shrink-0 items-center justify-center rounded-sm border">
+                                        <item.icon className="h-4 w-4" />
+                                      </div>
 
                                       {/* Content */}
                                       <div className="min-w-0 flex-1">
@@ -427,12 +426,12 @@ export const Structure: Story = {
                                         onClick={(e) => {
                                           e.stopPropagation();
                                           console.log(
-                                            "Extension Add button clicked:",
+                                            "Extension Sign up button clicked:",
                                             item.name,
                                           );
                                         }}
                                       >
-                                        Add
+                                        Sign up
                                       </Button>
                                     </div>
 
@@ -810,25 +809,25 @@ export const StructureSidebarExtensions: Story = {
     // 🎯 목적: Recommended 섹션 확장 상태 관리
     const [isRecommendedOpen, setIsRecommendedOpen] = React.useState(false);
 
-    // 🎯 목적: UIDL 기반 확장 프로그램 데이터
+    // 🎯 목적: Hotbar 하단 3개 메뉴를 기반으로 한 확장 프로그램 데이터
     const extensionItems = [
       {
-        id: "skuber-plus",
-        name: "Skuber+",
-        description: "Enhanced Kubernetes management with advanced features",
-        avatar: "SP",
-      },
-      {
-        id: "skuber-plus-iaas",
-        name: "Skuber+ for IaaS",
-        description: "Infrastructure as a Service integration for Skuber+",
-        avatar: "SI",
+        id: "skuber-observability",
+        name: "Skuber+ Observability",
+        description: "Real-time monitoring and system observability platform",
+        icon: Binoculars,
       },
       {
         id: "skuber-management",
-        name: "Skuber Management",
-        description: "Complete Kubernetes cluster management solution",
-        avatar: "SM",
+        name: "Skuber+ Management",
+        description: "Complete workflow and resource management solution",
+        icon: FolderKanban,
+      },
+      {
+        id: "skuber-optimization",
+        name: "Skuber+ Optimization",
+        description: "Performance optimization and server resource management",
+        icon: Server,
       },
     ];
 
@@ -875,11 +874,16 @@ export const StructureSidebarExtensions: Story = {
                     <SidebarMenuButton>
                       <ChevronRight className="h-4 w-4" />
                       <span>Installed</span>
-                      <Badge variant="default" className="ml-auto rounded-full">
+                      <Badge className="ml-auto h-5 min-w-5 rounded-full px-1 font-mono tabular-nums">
                         3
                       </Badge>
                     </SidebarMenuButton>
                   </SidebarMenuItem>
+
+                  {/* Separator between Installed and Recommended */}
+                  <div className="px-2 py-1">
+                    <Separator />
+                  </div>
 
                   {/* Recommended Section with Collapsible */}
                   <Collapsible
@@ -895,10 +899,7 @@ export const StructureSidebarExtensions: Story = {
                             <ChevronRight className="h-4 w-4" />
                           )}
                           <span>Recommended</span>
-                          <Badge
-                            variant="default"
-                            className="ml-auto rounded-full"
-                          >
+                          <Badge className="ml-auto h-5 min-w-5 rounded-full px-1 font-mono tabular-nums">
                             {extensionItems.length}
                           </Badge>
                         </SidebarMenuButton>
@@ -910,12 +911,10 @@ export const StructureSidebarExtensions: Story = {
                       {extensionItems.map((item, index) => (
                         <React.Fragment key={item.id}>
                           <div className="flex items-center gap-3 px-4 py-3">
-                            {/* Avatar */}
-                            <Avatar className="h-8 w-8">
-                              <AvatarFallback className="text-xs font-medium">
-                                {item.avatar}
-                              </AvatarFallback>
-                            </Avatar>
+                            {/* Icon */}
+                            <div className="bg-muted flex h-8 w-8 shrink-0 items-center justify-center rounded-sm border">
+                              <item.icon className="h-4 w-4" />
+                            </div>
 
                             {/* Content */}
                             <div className="min-w-0 flex-1">
@@ -935,12 +934,12 @@ export const StructureSidebarExtensions: Story = {
                               onClick={(e) => {
                                 e.stopPropagation();
                                 console.log(
-                                  "Extension Add button clicked:",
+                                  "Extension Sign up button clicked:",
                                   item.name,
                                 );
                               }}
                             >
-                              Add
+                              Sign up
                             </Button>
                           </div>
 

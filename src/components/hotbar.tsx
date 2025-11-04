@@ -168,7 +168,7 @@ export function Hotbar({
                     <SidebarMenuItem key={item.id} className="relative">
                       {/* VS Code 스타일 활성화 표시 - Hotbar 좌측 경계에 붙은 border */}
                       {isActive && (
-                        <div className="bg-primary absolute top-1/2 -left-2 h-8 w-[1.5px] -translate-y-1/2 rounded-r-sm" />
+                        <div className="bg-primary absolute top-1/2 -left-2 h-8 w-[2px] -translate-y-1/2 rounded-r-sm" />
                       )}
                       <SidebarMenuButton
                         tooltip={{
