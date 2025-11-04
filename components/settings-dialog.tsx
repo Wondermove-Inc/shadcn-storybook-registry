@@ -14,6 +14,8 @@ import {
   Plus,
   X,
   Bot,
+  Search,
+  ChevronRight,
 } from "lucide-react";
 
 import {
@@ -29,6 +31,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { Separator } from "@/components/ui/separator";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import {
   Select,
   SelectContent,
@@ -489,15 +492,174 @@ function TerminalContent() {
 
 // 🎯 목적: LLM Models 메뉴의 콘텐츠 영역 - LLM 모델 관련 설정
 function LLMModelsContent() {
+  const [claude45Sonnet, setClaude45Sonnet] = React.useState(true);
+  const [claude4Sonnet, setClaude4Sonnet] = React.useState(true);
+  const [gpt5Codex, setGpt5Codex] = React.useState(true);
+  const [gpt5, setGpt5] = React.useState(true);
+  const [claude45Haiku, setClaude45Haiku] = React.useState(false);
+  const [openaiApiEnabled, setOpenaiApiEnabled] = React.useState(true);
+  const [anthropicApiEnabled, setAnthropicApiEnabled] = React.useState(false);
+  const [googleApiEnabled, setGoogleApiEnabled] = React.useState(false);
+  const [openaiApiKey, setOpenaiApiKey] = React.useState("");
+  const [anthropicApiKey, setAnthropicApiKey] = React.useState("");
+  const [googleApiKey, setGoogleApiKey] = React.useState("");
+
   return (
     <>
-      {/* LLM Models 설정 영역 - 현재는 기본 메시지만 표시 */}
       <div className="flex flex-col gap-6">
-        <div className="text-center">
-          <h3 className="mb-2 text-lg font-semibold">LLM Models</h3>
-          <p className="text-muted-foreground">
-            LLM 모델 설정이 여기에 표시됩니다.
-          </p>
+        {/* Search Field */}
+        <div className="flex w-full flex-col gap-3">
+          <Label htmlFor="llm-search" className="text-sm font-medium">
+            LLM Models
+          </Label>
+          <div className="relative flex items-center">
+            <Search className="text-muted-foreground absolute left-3 h-4 w-4" />
+            <Input
+              id="llm-search"
+              type="text"
+              placeholder="Search model"
+              className="bg-input/30 border-border pl-10"
+            />
+          </div>
+        </div>
+
+        {/* Model List */}
+        <div className="flex flex-col gap-5">
+          {/* claude-4.5-sonnet */}
+          <div className="flex items-center gap-3">
+            <div className="flex-1">
+              <Label className="text-sm font-medium">claude-4.5-sonnet</Label>
+            </div>
+            <Switch
+              checked={claude45Sonnet}
+              onCheckedChange={setClaude45Sonnet}
+            />
+          </div>
+
+          {/* claude-4-sonnet */}
+          <div className="flex items-center gap-3">
+            <div className="flex-1">
+              <Label className="text-sm font-medium">claude-4-sonnet</Label>
+            </div>
+            <Switch
+              checked={claude4Sonnet}
+              onCheckedChange={setClaude4Sonnet}
+            />
+          </div>
+
+          {/* gpt-5-codex */}
+          <div className="flex items-center gap-3">
+            <div className="flex-1">
+              <Label className="text-sm font-medium">gpt-5-codex</Label>
+            </div>
+            <Switch checked={gpt5Codex} onCheckedChange={setGpt5Codex} />
+          </div>
+
+          {/* gpt-5 */}
+          <div className="flex items-center gap-3">
+            <div className="flex-1">
+              <Label className="text-sm font-medium">gpt-5</Label>
+            </div>
+            <Switch checked={gpt5} onCheckedChange={setGpt5} />
+          </div>
+
+          {/* claude-4.5-haiku */}
+          <div className="flex items-center gap-3">
+            <div className="flex-1">
+              <Label className="text-sm font-medium">claude-4.5-haiku</Label>
+            </div>
+            <Switch
+              checked={claude45Haiku}
+              onCheckedChange={setClaude45Haiku}
+            />
+          </div>
+
+          {/* View All Models Button */}
+          <Button variant="secondary" size="sm" className="w-fit">
+            <ChevronRight className="h-4 w-4" />
+            View All Models
+          </Button>
+        </div>
+
+        {/* Separator */}
+        <Separator className="bg-border" />
+
+        {/* OpenAI API Key */}
+        <div className="flex flex-col gap-3">
+          <div className="flex items-start gap-3">
+            <div className="flex flex-1 flex-col gap-2">
+              <Label className="text-sm font-medium">OpenAI API Key</Label>
+              <p className="text-muted-foreground text-sm">
+                You can put in your OpenAI key to use OpenAI models at cost.
+              </p>
+            </div>
+            <Switch
+              checked={openaiApiEnabled}
+              onCheckedChange={setOpenaiApiEnabled}
+            />
+          </div>
+          <Input
+            type="text"
+            placeholder="Enter your OpenAI API Key"
+            className="bg-input/30 border-border"
+            value={openaiApiKey}
+            onChange={(e) => setOpenaiApiKey(e.target.value)}
+          />
+        </div>
+
+        {/* Separator */}
+        <Separator className="bg-border" />
+
+        {/* Anthropic API Key */}
+        <div className="flex flex-col gap-3">
+          <div className="flex items-start gap-3">
+            <div className="flex flex-1 flex-col gap-2">
+              <Label className="text-sm font-medium">Anthropic API Key</Label>
+              <p className="text-muted-foreground text-sm">
+                You can put in your Anthropic key to use Claude at cost. When
+                enabled, this key will be used for all models beginning with
+                "claude-".
+              </p>
+            </div>
+            <Switch
+              checked={anthropicApiEnabled}
+              onCheckedChange={setAnthropicApiEnabled}
+            />
+          </div>
+          <Input
+            type="text"
+            placeholder="Enter your Anthropic API Key"
+            className="bg-input/30 border-border"
+            value={anthropicApiKey}
+            onChange={(e) => setAnthropicApiKey(e.target.value)}
+          />
+        </div>
+
+        {/* Separator */}
+        <Separator className="bg-border" />
+
+        {/* Google API Key */}
+        <div className="flex flex-col gap-3">
+          <div className="flex items-start gap-3">
+            <div className="flex flex-1 flex-col gap-2">
+              <Label className="text-sm font-medium">Google API Key</Label>
+              <p className="text-muted-foreground text-sm">
+                You can put in your Google AI Studio key to use Google models
+                at-cost.
+              </p>
+            </div>
+            <Switch
+              checked={googleApiEnabled}
+              onCheckedChange={setGoogleApiEnabled}
+            />
+          </div>
+          <Input
+            type="text"
+            placeholder="Enter your Google AI Studio API Key"
+            className="bg-input/30 border-border"
+            value={googleApiKey}
+            onChange={(e) => setGoogleApiKey(e.target.value)}
+          />
         </div>
       </div>
     </>
@@ -741,7 +903,7 @@ export function SettingsDialog() {
       <DialogTrigger asChild>
         <Button size="sm">Open Dialog</Button>
       </DialogTrigger>
-      <DialogContent className="h-[85%] max-w-[70%] flex-col overflow-hidden p-0 sm:h-[90%] sm:max-w-[65%] lg:max-w-[60%] xl:max-w-[55%]">
+      <DialogContent className="flex h-[85vh] max-h-[900px] max-w-[70%] flex-col overflow-hidden p-0 sm:h-[90vh] sm:max-w-[65%] lg:max-w-[60%] xl:max-w-[55%]">
         <DialogTitle className="sr-only">Settings</DialogTitle>
         <DialogDescription className="sr-only">
           Customize your settings here.
@@ -768,7 +930,7 @@ export function SettingsDialog() {
               </SidebarGroup>
             </SidebarContent>
           </Sidebar>
-          <main className="flex min-h-0 flex-1 flex-col overflow-hidden">
+          <main className="flex h-full min-h-0 flex-1 flex-col overflow-hidden">
             <header className="flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-12">
               <div className="flex items-center gap-2 px-4">
                 <Breadcrumb>
@@ -784,13 +946,18 @@ export function SettingsDialog() {
                 </Breadcrumb>
               </div>
             </header>
-            <div className="flex flex-1 flex-col gap-6 overflow-y-auto p-4 pt-0">
-              {activeMenu === "App" && <AppContent />}
-              {activeMenu === "Proxy" && <ProxyContent />}
-              {activeMenu === "Kubernetes" && <KubernetesContent />}
-              {activeMenu === "Editor" && <EditorContent />}
-              {activeMenu === "Terminal" && <TerminalContent />}
-              {activeMenu === "LLM Models" && <LLMModelsContent />}
+            <div
+              className="flex-1 overflow-y-auto"
+              style={{ maxHeight: "calc(100vh - 200px)" }}
+            >
+              <div className="flex flex-col gap-6 p-4 pt-0">
+                {activeMenu === "App" && <AppContent />}
+                {activeMenu === "Proxy" && <ProxyContent />}
+                {activeMenu === "Kubernetes" && <KubernetesContent />}
+                {activeMenu === "Editor" && <EditorContent />}
+                {activeMenu === "Terminal" && <TerminalContent />}
+                {activeMenu === "LLM Models" && <LLMModelsContent />}
+              </div>
             </div>
           </main>
         </SidebarProvider>
