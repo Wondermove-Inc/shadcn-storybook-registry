@@ -159,7 +159,7 @@ export const Structure: Story = {
     const [isSidebarVisible, setIsSidebarVisible] = React.useState(true);
 
     // 🎯 목적: 핫바 활성 아이템 상태 관리 - 단일 활성 상태
-    const [activeItem, setActiveItem] = React.useState("daive-app");
+    const [activeItem, setActiveItem] = React.useState("explorer");
 
     // 🎯 목적: 하단 패널 표시 상태 관리
     const [isPanelVisible, setIsPanelVisible] = React.useState(true);
@@ -1175,7 +1175,7 @@ export const StructureHotbar: Story = {
   ],
   render: () => {
     // 🎯 목적: 핫바 활성 아이템 상태 관리 - 단일 활성 상태
-    const [activeItem, setActiveItem] = React.useState("daive-app");
+    const [activeItem, setActiveItem] = React.useState("explorer");
 
     // 🎯 목적: 핫바 아이템 클릭 핸들러 - 단일 활성 상태 관리
     const handleItemClick = (itemId: string) => {
