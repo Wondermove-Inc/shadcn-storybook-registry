@@ -1,7 +1,16 @@
 "use client";
 
 import React from "react";
-import { BotMessageSquare, ShieldAlert, ArrowUpRight, X } from "lucide-react";
+import {
+  BotMessageSquare,
+  ShieldAlert,
+  ListChecks,
+  MessagesSquare,
+  ShieldHalf,
+  Shield,
+  ArrowUpRight,
+  X,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Item,
@@ -76,36 +85,36 @@ export function AIAssistant({ onClose, onStart, className }: AIAssistantProps) {
           <div className="flex w-full flex-col items-start gap-2">
             <Item variant="outline" className="w-full">
               <ItemMedia variant="icon" className="bg-muted border-border">
-                <ShieldAlert className="text-muted-foreground h-4 w-4" />
+                <ListChecks className="text-foreground h-4 w-4" />
               </ItemMedia>
               <ItemContent>
-                <ItemTitle>Security Alert</ItemTitle>
+                <ItemTitle>See Through Complexity</ItemTitle>
                 <ItemDescription>
-                  New login detected from unknown device.
+                  AI reads context and points you to the fix.
                 </ItemDescription>
               </ItemContent>
             </Item>
 
             <Item variant="outline" className="w-full">
               <ItemMedia variant="icon" className="bg-muted border-border">
-                <ShieldAlert className="text-muted-foreground h-4 w-4" />
+                <MessagesSquare className="text-foreground h-4 w-4" />
               </ItemMedia>
               <ItemContent>
-                <ItemTitle>Security Alert</ItemTitle>
+                <ItemTitle>Control Without Commands</ItemTitle>
                 <ItemDescription>
-                  New login detected from unknown device.
+                  Manage clusters in plain language.
                 </ItemDescription>
               </ItemContent>
             </Item>
 
             <Item variant="outline" className="w-full">
               <ItemMedia variant="icon" className="bg-muted border-border">
-                <ShieldAlert className="text-muted-foreground h-4 w-4" />
+                <Shield className="text-foreground h-4 w-4" />
               </ItemMedia>
               <ItemContent>
-                <ItemTitle>Security Alert</ItemTitle>
+                <ItemTitle>Secure by Design</ItemTitle>
                 <ItemDescription>
-                  New login detected from unknown device.
+                  AI spots risks before they hit.
                 </ItemDescription>
               </ItemContent>
             </Item>
