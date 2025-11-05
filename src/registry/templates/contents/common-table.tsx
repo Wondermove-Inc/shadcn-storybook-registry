@@ -154,7 +154,10 @@ export function CommonTable({
   showChart = false,
 }: CommonTableProps) {
   const [selectedNamespaces, setSelectedNamespaces] = React.useState<string[]>([
-    "default",
+    "monitoring",
+    "cilium-secrets",
+    "kube-node-lease",
+    "kube-public",
   ]);
   const [searchValue, setSearchValue] = React.useState("");
   const [data, setData] = React.useState(tableData);
@@ -170,12 +173,44 @@ export function CommonTable({
   // 🎯 목적: 차트 관련 상태 (showChart가 true일 때만 사용)
   const [selectedMetric, setSelectedMetric] = React.useState("cpu");
 
+  // 🎯 목적: 전체 네임스페이스 목록 정의
+  const allNamespaces = [
+    "monitoring",
+    "cilium-secrets",
+    "kube-node-lease",
+    "kube-public",
+  ];
+
   /**
-   * 🎯 목적: 네임스페이스 다중 선택 처리 함수
+   * 🎯 목적: All Namespaces 체크 처리 함수
+   */
+  const handleAllNamespacesToggle = (checked: boolean) => {
+    if (checked) {
+      // 모든 네임스페이스 선택
+      setSelectedNamespaces([...allNamespaces]);
+    } else {
+      // All Namespaces가 이미 선택된 상태에서 체크 해제 시도하면 무시 (체크 상태 유지)
+      if (isAllNamespacesSelected) {
+        return; // 아무것도 하지 않음
+      }
+      // 다른 경우에는 첫 번째 네임스페이스만 유지
+      setSelectedNamespaces([allNamespaces[0]]);
+    }
+  };
+
+  /**
+   * 🎯 목적: 개별 네임스페이스 선택 처리 함수
    */
   const handleNamespaceToggle = (namespace: string) => {
     setSelectedNamespaces((prev) => {
       const isSelected = prev.includes(namespace);
+
+      // All Namespaces가 선택된 상태에서 개별 네임스페이스 클릭 시
+      if (isAllNamespacesSelected) {
+        // 클릭한 네임스페이스만 선택
+        return [namespace];
+      }
+
       if (isSelected) {
         // 선택 해제 (최소 1개는 유지)
         return prev.length > 1 ? prev.filter((ns) => ns !== namespace) : prev;
@@ -187,13 +222,22 @@ export function CommonTable({
   };
 
   /**
+   * 🎯 목적: All Namespaces 체크 상태 계산
+   */
+  const isAllNamespacesSelected =
+    selectedNamespaces.length === allNamespaces.length;
+
+  /**
    * 🎯 목적: 선택된 네임스페이스 표시 텍스트 생성
    */
   const getNamespaceDisplayText = () => {
+    if (isAllNamespacesSelected) {
+      return "All Namespaces";
+    }
     if (selectedNamespaces.length === 1) {
       return `Namespace: ${selectedNamespaces[0]}`;
     }
-    return `Namespaces: ${selectedNamespaces.length} selected`;
+    return `${selectedNamespaces.length} Namespaces selected`;
   };
 
   /**
@@ -498,23 +542,28 @@ export function CommonTable({
                   <Button
                     variant="outline"
                     onClick={() => console.log("Dropdown trigger clicked")}
-                    className="w-full max-w-none min-w-[180px] sm:w-auto"
+                    className="w-full max-w-none min-w-[180px] justify-between sm:w-auto"
                   >
                     {getNamespaceDisplayText()}
-                    <ChevronDown className="ml-2 h-4 w-4" />
+                    <ChevronDown className="h-4 w-4" />
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent className="w-56" align="start">
-                  <DropdownMenuLabel>All Namespaces</DropdownMenuLabel>
+                  <DropdownMenuCheckboxItem
+                    checked={isAllNamespacesSelected}
+                    onCheckedChange={handleAllNamespacesToggle}
+                  >
+                    All Namespaces
+                  </DropdownMenuCheckboxItem>
                   <DropdownMenuSeparator />
                   <DropdownMenuCheckboxItem
-                    checked={selectedNamespaces.includes("default")}
+                    checked={selectedNamespaces.includes("monitoring")}
                     onCheckedChange={() => {
-                      console.log("Default clicked");
-                      handleNamespaceToggle("default");
+                      console.log("Monitoring clicked");
+                      handleNamespaceToggle("monitoring");
                     }}
                   >
-                    default
+                    monitoring
                   </DropdownMenuCheckboxItem>
                   <DropdownMenuCheckboxItem
                     checked={selectedNamespaces.includes("cilium-secrets")}

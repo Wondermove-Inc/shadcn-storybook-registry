@@ -15,6 +15,7 @@ import {
   Bot,
   Search,
   ChevronRight,
+  ChevronUp,
 } from "lucide-react";
 
 import {
@@ -504,6 +505,10 @@ function LLMModelsContent() {
   const [gpt5Codex, setGpt5Codex] = React.useState(true);
   const [gpt5, setGpt5] = React.useState(true);
   const [claude45Haiku, setClaude45Haiku] = React.useState(false);
+  const [showAllModels, setShowAllModels] = React.useState(false);
+  const [claude3Opus, setClaude3Opus] = React.useState(false);
+  const [claude3Sonnet, setClaude3Sonnet] = React.useState(false);
+  const [claude3Haiku, setClaude3Haiku] = React.useState(false);
   const [openaiApiEnabled, setOpenaiApiEnabled] = React.useState(true);
   const [anthropicApiEnabled, setAnthropicApiEnabled] = React.useState(false);
   const [googleApiEnabled, setGoogleApiEnabled] = React.useState(false);
@@ -572,7 +577,7 @@ function LLMModelsContent() {
               id="llm-search"
               type="text"
               placeholder="Search model..."
-              className="bg-input/30 border-border pl-10"
+              className="bg-input/30 border-border pl-9"
             />
           </div>
         </div>
@@ -628,10 +633,63 @@ function LLMModelsContent() {
             />
           </div>
 
-          {/* View All Models Button */}
-          <Button variant="secondary" size="sm" className="w-fit">
-            <ChevronRight className="h-4 w-4" />
-            View All Models
+          {/* 🎯 목적: 추가 모델들 - showAllModels가 true일 때만 표시 */}
+          {showAllModels && (
+            <>
+              {/* claude-3-opus-20240229 */}
+              <div className="flex items-center gap-3">
+                <div className="flex-1">
+                  <Label className="text-sm font-medium">
+                    claude-3-opus-20240229
+                  </Label>
+                </div>
+                <Switch
+                  checked={claude3Opus}
+                  onCheckedChange={setClaude3Opus}
+                />
+              </div>
+
+              {/* claude-3-sonnet-20240229 */}
+              <div className="flex items-center gap-3">
+                <div className="flex-1">
+                  <Label className="text-sm font-medium">
+                    claude-3-sonnet-20240229
+                  </Label>
+                </div>
+                <Switch
+                  checked={claude3Sonnet}
+                  onCheckedChange={setClaude3Sonnet}
+                />
+              </div>
+
+              {/* claude-3-haiku-20240307 */}
+              <div className="flex items-center gap-3">
+                <div className="flex-1">
+                  <Label className="text-sm font-medium">
+                    claude-3-haiku-20240307
+                  </Label>
+                </div>
+                <Switch
+                  checked={claude3Haiku}
+                  onCheckedChange={setClaude3Haiku}
+                />
+              </div>
+            </>
+          )}
+
+          {/* View All Models / Collapse Models Button */}
+          <Button
+            variant="secondary"
+            size="sm"
+            className="w-fit"
+            onClick={() => setShowAllModels(!showAllModels)}
+          >
+            {showAllModels ? (
+              <ChevronUp className="h-4 w-4" />
+            ) : (
+              <ChevronRight className="h-4 w-4" />
+            )}
+            {showAllModels ? "Collapse Models" : "View All Models"}
           </Button>
         </div>
 

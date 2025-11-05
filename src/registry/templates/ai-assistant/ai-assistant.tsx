@@ -90,7 +90,7 @@ export function AIAssistant({ onClose, onStart, className }: AIAssistantProps) {
               <ItemContent>
                 <ItemTitle>See Through Complexity</ItemTitle>
                 <ItemDescription>
-                  AI reads context and points you to the fix.
+                  AI reads context, shows the fix.
                 </ItemDescription>
               </ItemContent>
             </Item>
