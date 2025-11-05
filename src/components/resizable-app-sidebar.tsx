@@ -3,6 +3,7 @@
 import * as React from "react";
 import {
   ChevronRight,
+  ArrowRight,
   File,
   Folder,
   FolderOpen,
@@ -16,6 +17,13 @@ import {
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
 import { Button } from "@/components/ui/button";
+import {
+  Item,
+  ItemContent,
+  ItemTitle,
+  ItemDescription,
+  ItemActions,
+} from "@/components/ui/item";
 
 // 🎯 목적: 파일 트리 항목의 타입 정의
 interface FileTreeItem {
@@ -25,13 +33,6 @@ interface FileTreeItem {
   children?: FileTreeItem[];
   extension?: string;
 }
-
-// 🎯 목적: JSON 명세서에 따른 Changes 섹션 메뉴 아이템들
-const changedFiles: FileTreeItem[] = [
-  { id: "overview", name: "Clusters", type: "file", extension: "" },
-  { id: "settings", name: "Nodes", type: "file", extension: "" },
-  { id: "logs", name: "Workspaces", type: "file", extension: "" },
-];
 
 const projectFiles: FileTreeItem[] = [
   {
@@ -191,61 +192,36 @@ export function ResizableAppSidebar({
       className={`bg-sidebar flex h-full w-full flex-col ${className || ""}`}
     >
       {/* 🎯 목적: App 업데이트 알림 */}
-      <div className="px-3 py-2.5">
-        <Button
-          variant="ghost"
-          className="bg-secondary hover:bg-secondary/80 flex w-full items-center overflow-hidden rounded-lg px-3 py-2.5 transition-colors"
-          onClick={() => {
-            // 🎯 목적: 업그레이드 클릭 이벤트 (실제 구현에서는 업그레이드 페이지로 이동)
-            console.log("Upgrade to 1.5 clicked");
-          }}
+      <div className="px-4 pt-4 pb-2">
+        <Item
+          variant="outline"
+          size="sm"
+          asChild
+          className="w-full cursor-pointer"
         >
-          {/* ItemMedia + ItemContent - 아이콘과 텍스트 사이는 고정 gap-2 */}
-          <div className="flex min-w-0 flex-1 items-center gap-2">
-            <div className="flex shrink-0 items-center">
-              <BadgeAlert className="text-foreground h-5 w-5" />
-            </div>
-            <div className="flex min-w-0 flex-1 flex-col items-start justify-center gap-1">
-              <span className="text-muted-foreground w-full truncate text-left text-sm leading-5">
-                Upgrade to 1.5
-              </span>
-            </div>
-          </div>
-
-          {/* ItemActions - 텍스트와 화살표 사이만 반응형 gap */}
-          <div className="ml-2 flex shrink-0 items-center justify-end self-stretch sm:ml-1.5 md:ml-2">
-            <ChevronRight className="text-foreground h-4 w-4" />
-          </div>
-        </Button>
+          <button
+            onClick={() => {
+              // 🎯 목적: 업그레이드 클릭 이벤트 (실제 구현에서는 업그레이드 페이지로 이동)
+              console.log("Upgrade to 1.5 clicked");
+            }}
+          >
+            <ItemContent className="items-start text-left">
+              <ItemTitle>Upgrade Now</ItemTitle>
+              <ItemDescription>to 1.5 version</ItemDescription>
+            </ItemContent>
+            <ItemActions>
+              <Button variant="secondary" size="icon" className="h-8 w-8">
+                <ArrowRight className="h-4 w-4" />
+              </Button>
+            </ItemActions>
+          </button>
+        </Item>
       </div>
 
       {/* 🎯 목적: 콘텐츠 영역 */}
       <div className="flex min-h-0 flex-1 flex-col gap-0 overflow-auto">
-        {/* Overview 그룹 */}
-        <div className="relative flex w-full min-w-0 flex-col px-2 py-1">
-          <div className="text-sidebar-foreground/70 ring-sidebar-ring flex h-8 shrink-0 items-center rounded-md px-2 text-xs font-medium outline-hidden transition-[margin,opacity] duration-200 ease-linear focus-visible:ring-2 [&>svg]:size-4 [&>svg]:shrink-0">
-            Overview
-          </div>
-          <div className="w-full text-xs">
-            <ul className="flex w-full min-w-0 flex-col gap-0">
-              {changedFiles.map((item) => (
-                <li key={item.id} className="group/menu-item relative">
-                  <Button
-                    variant="ghost"
-                    onClick={() => handleFileSelect(item)}
-                    className="hover:bg-sidebar-accent hover:text-sidebar-accent-foreground h-8 w-full min-w-0 justify-start gap-2 px-2 py-1 text-xs"
-                  >
-                    <File className="h-4 w-4" />
-                    <span className="truncate">{item.name}</span>
-                  </Button>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </div>
-
         {/* Your Clusters 그룹 */}
-        <div className="flex w-full min-w-0 flex-col px-2 py-1">
+        <div className="flex w-full min-w-0 flex-col px-2">
           <div className="flex h-8 items-center justify-between rounded-md px-2">
             <span className="text-sidebar-foreground/70 text-xs font-medium">
               Your Clusters
