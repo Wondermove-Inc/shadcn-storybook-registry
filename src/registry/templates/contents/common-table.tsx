@@ -9,6 +9,11 @@ import {
   ChevronsRight,
   ExternalLink,
   ArrowUpDown,
+  Pen,
+  FolderSearch,
+  SquareTerminal,
+  History,
+  Trash2,
 } from "lucide-react";
 import {
   ColumnDef,
@@ -30,10 +35,23 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuCheckboxItem,
+  DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
+  DropdownMenuPortal,
 } from "@/components/ui/dropdown-menu";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
@@ -166,6 +184,7 @@ export function CommonTable({
   const [selectedRowData, setSelectedRowData] =
     React.useState<TableRowData | null>(null);
   const [selectedRowId, setSelectedRowId] = React.useState<string | null>(null);
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = React.useState(false);
 
   // 🎯 목적: 테이블 정렬 상태 관리
   const [sorting, setSorting] = React.useState<SortingState>([]);
@@ -465,6 +484,66 @@ export function CommonTable({
   };
 
   /**
+   * 🎯 목적: Delete 버튼 클릭 시 AlertDialog 열기
+   */
+  const handleDeleteClick = () => {
+    setIsDeleteDialogOpen(true);
+  };
+
+  /**
+   * 🎯 목적: Delete 확인 시 실제 삭제 처리
+   */
+  const handleDeleteConfirm = () => {
+    if (selectedRowData) {
+      // 실제 삭제 로직 (현재는 콘솔 로그)
+      console.log(`Deleting row: ${selectedRowData.id}`);
+      // 데이터에서 해당 행 제거
+      setData((prev) => prev.filter((row) => row.id !== selectedRowData.id));
+    }
+    setIsDeleteDialogOpen(false);
+  };
+
+  // 🎯 목적: 드롭다운 메뉴 항목들 정의 (함수 정의 이후에 배치)
+  const dropdownMenuItems = [
+    {
+      id: "edit",
+      label: "Edit",
+      icon: Pen,
+      action: () => console.log("Edit clicked"),
+      destructive: false,
+    },
+    {
+      id: "attach-pod",
+      label: "Attach to Pod",
+      icon: FolderSearch,
+      action: () => console.log("Attach to Pod clicked"),
+      destructive: false,
+    },
+    {
+      id: "pod-shell",
+      label: "Pod Shell",
+      icon: SquareTerminal,
+      action: () => console.log("Pod Shell clicked"),
+      destructive: false,
+    },
+    {
+      id: "pod-log",
+      label: "Pod Log",
+      icon: History,
+      action: () => console.log("Pod Log clicked"),
+      destructive: false,
+    },
+    { id: "separator", type: "separator" },
+    {
+      id: "delete",
+      label: "Delete",
+      icon: Trash2,
+      action: handleDeleteClick,
+      destructive: true,
+    },
+  ];
+
+  /**
    * 🎯 목적: 개별 체크박스 상태 변경 처리
    */
   const handleRowCheckChange = (id: string, checked: boolean) => {
@@ -714,9 +793,51 @@ export function CommonTable({
                 >
                   <ChevronsRight className="h-4 w-4" />
                 </Button>
-                <Button variant="ghost" size="icon-sm">
-                  <EllipsisVertical className="h-4 w-4" />
-                </Button>
+                <DropdownMenu>
+                  <DropdownMenuTrigger>
+                    <Button
+                      variant="ghost"
+                      size="icon-sm"
+                      onClick={() => console.log("Dropdown trigger clicked")}
+                    >
+                      <EllipsisVertical className="h-4 w-4" />
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuPortal>
+                    <DropdownMenuContent
+                      className="z-[200] w-[150px]"
+                      align="end"
+                      sideOffset={8}
+                      side="bottom"
+                      avoidCollisions={true}
+                      sticky="always"
+                    >
+                      {dropdownMenuItems.map((item) => {
+                        if (item.type === "separator") {
+                          return <DropdownMenuSeparator key={item.id} />;
+                        }
+
+                        const Icon = item.icon;
+                        return (
+                          <DropdownMenuItem
+                            key={item.id}
+                            onClick={item.action}
+                            className={`relative pl-8 ${
+                              item.destructive ? "text-destructive" : ""
+                            }`}
+                          >
+                            <Icon
+                              className={`absolute top-1/2 left-2 h-4 w-4 -translate-y-1/2 ${
+                                item.destructive ? "text-destructive" : ""
+                              }`}
+                            />
+                            {item.label}
+                          </DropdownMenuItem>
+                        );
+                      })}
+                    </DropdownMenuContent>
+                  </DropdownMenuPortal>
+                </DropdownMenu>
               </div>
               <div className="flex flex-col gap-1">
                 <span className="text-muted-foreground text-sm leading-5">
@@ -933,6 +1054,31 @@ export function CommonTable({
           </div>
         </div>
       )}
+
+      {/* 🎯 목적: Delete 확인 AlertDialog */}
+      <AlertDialog
+        open={isDeleteDialogOpen}
+        onOpenChange={setIsDeleteDialogOpen}
+      >
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Delete Resource</AlertDialogTitle>
+            <AlertDialogDescription>
+              Are you sure you want to delete "{selectedRowData?.column2}" (Row{" "}
+              {selectedRowData?.id})? This action cannot be undone.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction
+              onClick={handleDeleteConfirm}
+              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+            >
+              Delete
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 }
