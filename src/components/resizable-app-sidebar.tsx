@@ -222,18 +222,10 @@ export function ResizableAppSidebar({
       <div className="flex min-h-0 flex-1 flex-col gap-0 overflow-auto">
         {/* Your Clusters 그룹 */}
         <div className="flex w-full min-w-0 flex-col px-2">
-          <div className="flex h-8 items-center justify-between rounded-md px-2">
+          <div className="flex h-8 items-center rounded-md px-2">
             <span className="text-sidebar-foreground/70 text-xs font-medium">
               Your Clusters
             </span>
-            <Button
-              variant="ghost"
-              size="sm"
-              className="hover:bg-sidebar-accent hover:text-sidebar-accent-foreground h-4 w-4 p-0"
-            >
-              <Plus className="h-3 w-3" />
-              <span className="sr-only">Add Cluster</span>
-            </Button>
           </div>
           <div className="w-full text-xs">
             <ul className="flex w-full min-w-0 flex-col gap-0">

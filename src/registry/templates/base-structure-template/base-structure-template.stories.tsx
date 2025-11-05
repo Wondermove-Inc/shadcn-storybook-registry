@@ -330,7 +330,7 @@ export const Structure: Story = {
                     ) : activeItem === "extensions" ? (
                       <div className="bg-sidebar flex h-full w-full flex-col overflow-hidden border-r p-2">
                         {/* Extensions Header - shadcn Sidebar 컴포넌트 사용 */}
-                        <SidebarGroup className="flex-row items-center justify-between">
+                        <SidebarGroup className="flex-row items-center justify-between py-0">
                           <SidebarGroupLabel className="px-0">
                             Extensions
                           </SidebarGroupLabel>
@@ -838,7 +838,7 @@ export const StructureSidebarExtensions: Story = {
           <ResizablePanel defaultSize={15} minSize={5} maxSize={80}>
             <div className="bg-sidebar flex h-full w-full flex-col overflow-hidden border-r p-2">
               {/* Extensions Header - shadcn Sidebar 컴포넌트 사용 */}
-              <SidebarGroup className="flex-row items-center justify-between">
+              <SidebarGroup className="flex-row items-center justify-between py-0">
                 <SidebarGroupLabel className="px-0">
                   Extensions
                 </SidebarGroupLabel>
