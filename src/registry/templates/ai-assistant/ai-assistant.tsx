@@ -1,17 +1,15 @@
 "use client";
 
 import React from "react";
-import { X } from "lucide-react";
+import { BotMessageSquare, ShieldAlert, ArrowUpRight, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+  Item,
+  ItemMedia,
+  ItemContent,
+  ItemTitle,
+  ItemDescription,
+} from "@/components/ui/item";
 
 /**
  * 🎯 목적: AI Assistant 템플릿의 Props 타입 정의
@@ -23,32 +21,17 @@ interface AIAssistantProps {
 }
 
 /**
- * 🎯 목적: AI Assistant 설정 패널 템플릿 컴포넌트
+ * 🎯 목적: AI Assistant 패널 템플릿 컴포넌트
  *
  * 특징:
- * - AI Provider 선택 (Select 컴포넌트)
- * - API Key 입력 (Input 컴포넌트)
- * - 시작 버튼과 닫기 기능
+ * - 닫기 기능
  * - 다크 테마 최적화 디자인
  * - shadcn/ui 디자인 토큰 준수
  */
 export function AIAssistant({ onClose, onStart, className }: AIAssistantProps) {
-  // 🎯 목적: AI Provider 상태 관리
-  const [provider, setProvider] = React.useState("openai");
-
-  // 🎯 목적: API Key 상태 관리
-  const [apiKey, setApiKey] = React.useState("");
-
-  // 🎯 목적: AI Assistant 시작 핸들러
-  const handleStart = React.useCallback(() => {
-    if (apiKey.trim()) {
-      onStart?.(provider, apiKey);
-    }
-  }, [provider, apiKey, onStart]);
-
   return (
     <aside
-      className={`border-border bg-sidebar flex h-auto shrink-0 flex-col gap-9 border-l p-4 ${className || ""} `.trim()}
+      className={`border-border bg-sidebar flex h-auto shrink-0 flex-col gap-10 border-l p-4 ${className || ""} `.trim()}
     >
       {/* 🎯 목적: 헤더 섹션 */}
       <div className="relative flex flex-col gap-0.5">
@@ -68,50 +51,74 @@ export function AIAssistant({ onClose, onStart, className }: AIAssistantProps) {
             <span className="sr-only">Close AI Assistant</span>
           </Button>
         </div>
-        <p className="text-muted-foreground text-sm leading-5">
-          Please set up the API key to use the AI Assistant.
-        </p>
       </div>
 
-      {/* 🎯 목적: 폼 영역 */}
-      <div className="flex flex-col gap-6">
-        {/* 🎯 목적: AI Provider 선택 필드 */}
-        <div className="flex flex-col gap-3">
-          <Label className="text-foreground text-sm font-medium">
-            AI Provider
-          </Label>
-          <Select value={provider} onValueChange={setProvider}>
-            <SelectTrigger className="text-muted-foreground w-full">
-              <SelectValue placeholder="Select AI Provider" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="openai">OpenAI (GPT-4)</SelectItem>
-              <SelectItem value="anthropic">Anthropic (Claude)</SelectItem>
-              <SelectItem value="google">Google (Gemini)</SelectItem>
-            </SelectContent>
-          </Select>
-        </div>
-
-        {/* 🎯 목적: API Key 입력 필드 */}
-        <div className="flex flex-col gap-3">
-          <Label className="text-foreground text-sm font-medium">API Key</Label>
-          <Input
-            type="password"
-            placeholder="Please enter the API key"
-            value={apiKey}
-            onChange={(e) => setApiKey(e.target.value)}
-            className="text-muted-foreground placeholder:text-muted-foreground"
+      {/* 🎯 목적: UIDL 기반 메인 콘텐츠 */}
+      <div className="flex w-full flex-col items-center gap-10">
+        {/* 🎯 목적: 상단 섹션 - 봇 아이콘과 안내 텍스트 */}
+        <div className="flex flex-col items-center gap-3.5">
+          <BotMessageSquare
+            className="text-foreground h-11 w-11"
+            size={44}
+            strokeWidth={1.5}
           />
+          <p className="text-foreground text-center text-sm leading-5 font-normal">
+            Setup API Key for LLM
+            <br />
+            to activate Skuber+ AI Assistant
+            <br />
+            for your extreme productivity.
+          </p>
         </div>
 
-        {/* 🎯 목적: 시작 버튼 */}
-        <div className="flex justify-end">
+        {/* 🎯 목적: 알림 리스트 섹션 */}
+        <div className="flex w-full flex-col items-center gap-2">
+          <div className="flex w-full flex-col items-start gap-2">
+            <Item variant="outline" className="w-full">
+              <ItemMedia variant="icon" className="bg-muted border-border">
+                <ShieldAlert className="text-muted-foreground h-4 w-4" />
+              </ItemMedia>
+              <ItemContent>
+                <ItemTitle>Security Alert</ItemTitle>
+                <ItemDescription>
+                  New login detected from unknown device.
+                </ItemDescription>
+              </ItemContent>
+            </Item>
+
+            <Item variant="outline" className="w-full">
+              <ItemMedia variant="icon" className="bg-muted border-border">
+                <ShieldAlert className="text-muted-foreground h-4 w-4" />
+              </ItemMedia>
+              <ItemContent>
+                <ItemTitle>Security Alert</ItemTitle>
+                <ItemDescription>
+                  New login detected from unknown device.
+                </ItemDescription>
+              </ItemContent>
+            </Item>
+
+            <Item variant="outline" className="w-full">
+              <ItemMedia variant="icon" className="bg-muted border-border">
+                <ShieldAlert className="text-muted-foreground h-4 w-4" />
+              </ItemMedia>
+              <ItemContent>
+                <ItemTitle>Security Alert</ItemTitle>
+                <ItemDescription>
+                  New login detected from unknown device.
+                </ItemDescription>
+              </ItemContent>
+            </Item>
+          </div>
+
+          {/* 🎯 목적: Setup Now 버튼 */}
           <Button
-            onClick={handleStart}
-            disabled={!apiKey.trim()}
-            className="h-9 px-4 font-medium"
+            variant="link"
+            size="default"
+            className="text-foreground hover:text-foreground h-9 gap-2 p-2"
           >
-            Start AI Assistant
+            <span className="text-sm leading-5 font-medium">Setup Now</span>
+            <ArrowUpRight className="h-4 w-4" />
           </Button>
         </div>
       </div>
