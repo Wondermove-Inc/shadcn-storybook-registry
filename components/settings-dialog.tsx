@@ -16,6 +16,8 @@ import {
   Search,
   ChevronRight,
   ChevronUp,
+  ArrowRight,
+  Check,
 } from "lucide-react";
 
 import {
@@ -28,6 +30,18 @@ import {
 } from "@/components/ui/breadcrumb";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import {
+  InputGroup,
+  InputGroupAddon,
+  InputGroupButton,
+  InputGroupInput,
+} from "@/components/ui/input-group";
+import {
+  Field,
+  FieldLabel,
+  FieldContent,
+  FieldError,
+} from "@/components/ui/field";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { Separator } from "@/components/ui/separator";
@@ -514,6 +528,24 @@ function LLMModelsContent() {
   const [googleApiEnabled, setGoogleApiEnabled] = React.useState(false);
   const [anthropicApiKey, setAnthropicApiKey] = React.useState("");
   const [googleApiKey, setGoogleApiKey] = React.useState("");
+  const [openaiApiKey, setOpenaiApiKey] = React.useState("••••••••••••");
+  const [isOpenaiKeyModified, setIsOpenaiKeyModified] = React.useState(false);
+  const [isOpenaiKeyValid, setIsOpenaiKeyValid] = React.useState(true);
+  const [openaiKeyError, setOpenaiKeyError] = React.useState("");
+  const [isAnthropicKeyModified, setIsAnthropicKeyModified] =
+    React.useState(false);
+  const [isAnthropicKeyValid, setIsAnthropicKeyValid] = React.useState(true);
+  const [anthropicKeyError, setAnthropicKeyError] = React.useState("");
+  const [isGoogleKeyModified, setIsGoogleKeyModified] = React.useState(false);
+  const [isGoogleKeyValid, setIsGoogleKeyValid] = React.useState(true);
+  const [googleKeyError, setGoogleKeyError] = React.useState("");
+
+  // 🎯 목적: API Key 밸리데이션 함수 (OpenAI, Anthropic, Google 공통)
+  const validateApiKey = (value: string) => {
+    // 영문+숫자조합 OR 영문만 OR 숫자만 허용 (최소 1글자 이상)
+    const validPattern = /^[a-zA-Z0-9]+$/;
+    return validPattern.test(value) && value.length > 0;
+  };
 
   // 🎯 목적: Alert Dialog 상태 관리 - 각 API Key provider별로 개별 상태
   const [showOpenaiAlert, setShowOpenaiAlert] = React.useState(false);
@@ -697,10 +729,12 @@ function LLMModelsContent() {
         <Separator className="bg-border" />
 
         {/* OpenAI API Key */}
-        <div className="flex flex-col gap-3">
+        <Field>
           <div className="flex items-start gap-3">
             <div className="flex flex-1 flex-col gap-2">
-              <Label className="text-sm font-medium">OpenAI API Key</Label>
+              <FieldLabel className="text-sm font-medium">
+                OpenAI API Key
+              </FieldLabel>
               <p className="text-muted-foreground text-sm">
                 You can put in your OpenAI key to use OpenAI models at cost.
               </p>
@@ -710,23 +744,78 @@ function LLMModelsContent() {
               onCheckedChange={(value) => handleApiToggle("openai", value)}
             />
           </div>
-          <Input
-            type="text"
-            placeholder="Enter your OpenAI API Key"
-            className="bg-input/30 border-border"
-            value="••••••••••••"
-            readOnly
-          />
-        </div>
+          <FieldContent>
+            <InputGroup>
+              <InputGroupInput
+                type="password"
+                placeholder="Enter your OpenAI API Key"
+                value={openaiApiKey}
+                onChange={(e) => {
+                  setOpenaiApiKey(e.target.value);
+                  setIsOpenaiKeyModified(true);
+                  setOpenaiKeyError(""); // 입력 시 에러 메시지 제거
+                }}
+              />
+              <InputGroupAddon align="inline-end">
+                <InputGroupButton
+                  variant="default"
+                  size="xs"
+                  disabled={!isOpenaiKeyModified}
+                  onClick={() => {
+                    if (isOpenaiKeyModified && openaiApiKey.trim()) {
+                      // 🎯 목적: "Verify" 버튼 클릭 시 검증 로직 실행
+                      const trimmedKey = openaiApiKey.trim();
+                      console.log("Validating API Key:", trimmedKey);
+                      console.log(
+                        "Validation result:",
+                        validateApiKey(trimmedKey),
+                      );
+
+                      if (validateApiKey(trimmedKey)) {
+                        // 검증 성공: "Verified" 상태로 변경
+                        setIsOpenaiKeyModified(false);
+                        setIsOpenaiKeyValid(true);
+                        setOpenaiKeyError("");
+                        console.log(
+                          "Validation successful - button should show 'Verified'",
+                        );
+                      } else {
+                        // 검증 실패: "Invalid API Key" 에러 표시
+                        setIsOpenaiKeyValid(false);
+                        setOpenaiKeyError("Invalid API Key");
+                        console.log("Validation failed - showing error");
+                      }
+                    }
+                  }}
+                >
+                  {isOpenaiKeyModified ? (
+                    <>
+                      Verify
+                      <ArrowRight className="h-3 w-3" />
+                    </>
+                  ) : (
+                    <>
+                      <Check className="h-3 w-3" />
+                      Verified
+                    </>
+                  )}
+                </InputGroupButton>
+              </InputGroupAddon>
+            </InputGroup>
+          </FieldContent>
+          {openaiKeyError && <FieldError>{openaiKeyError}</FieldError>}
+        </Field>
 
         {/* Separator */}
         <Separator className="bg-border" />
 
         {/* Anthropic API Key */}
-        <div className="flex flex-col gap-3">
+        <Field>
           <div className="flex items-start gap-3">
             <div className="flex flex-1 flex-col gap-2">
-              <Label className="text-sm font-medium">Anthropic API Key</Label>
+              <FieldLabel className="text-sm font-medium">
+                Anthropic API Key
+              </FieldLabel>
               <p className="text-muted-foreground text-sm">
                 You can put in your Anthropic key to use Claude at cost. When
                 enabled, this key will be used for all models beginning with
@@ -738,23 +827,80 @@ function LLMModelsContent() {
               onCheckedChange={(value) => handleApiToggle("anthropic", value)}
             />
           </div>
-          <Input
-            type="text"
-            placeholder="Enter your Anthropic API Key"
-            className="bg-input/30 border-border"
-            value={anthropicApiKey}
-            onChange={(e) => setAnthropicApiKey(e.target.value)}
-          />
-        </div>
+          <FieldContent>
+            <InputGroup>
+              <InputGroupInput
+                type="password"
+                placeholder="Enter your Anthropic API Key"
+                value={anthropicApiKey}
+                onChange={(e) => {
+                  setAnthropicApiKey(e.target.value);
+                  setIsAnthropicKeyModified(true);
+                  setAnthropicKeyError(""); // 입력 시 에러 메시지 제거
+                }}
+              />
+              <InputGroupAddon align="inline-end">
+                <InputGroupButton
+                  variant="default"
+                  size="xs"
+                  disabled={!isAnthropicKeyModified}
+                  onClick={() => {
+                    if (isAnthropicKeyModified && anthropicApiKey.trim()) {
+                      // 🎯 목적: "Verify" 버튼 클릭 시 검증 로직 실행
+                      const trimmedKey = anthropicApiKey.trim();
+                      console.log("Validating Anthropic API Key:", trimmedKey);
+                      console.log(
+                        "Validation result:",
+                        validateApiKey(trimmedKey),
+                      );
+
+                      if (validateApiKey(trimmedKey)) {
+                        // 검증 성공: "Verified" 상태로 변경
+                        setIsAnthropicKeyModified(false);
+                        setIsAnthropicKeyValid(true);
+                        setAnthropicKeyError("");
+                        console.log(
+                          "Anthropic validation successful - button should show 'Verified'",
+                        );
+                      } else {
+                        // 검증 실패: "Invalid API Key" 에러 표시
+                        setIsAnthropicKeyValid(false);
+                        setAnthropicKeyError("Invalid API Key");
+                        console.log(
+                          "Anthropic validation failed - showing error",
+                        );
+                      }
+                    }
+                  }}
+                >
+                  {isAnthropicKeyModified ? (
+                    <>
+                      Verify
+                      <ArrowRight className="h-3 w-3" />
+                    </>
+                  ) : (
+                    <>
+                      <Check className="h-3 w-3" />
+                      Verified
+                    </>
+                  )}
+                </InputGroupButton>
+              </InputGroupAddon>
+            </InputGroup>
+          </FieldContent>
+          {anthropicKeyError && <FieldError>{anthropicKeyError}</FieldError>}
+        </Field>
 
         {/* Separator */}
         <Separator className="bg-border" />
 
         {/* Google API Key */}
-        <div className="flex flex-col gap-3">
+        <Field>
           <div className="flex items-start gap-3">
             <div className="flex flex-1 flex-col gap-2">
-              <Label className="text-sm font-medium">Google API Key</Label>
+              <FieldLabel className="text-sm font-medium">
+                Google API Key
+              </FieldLabel>
               <p className="text-muted-foreground text-sm">
                 You can put in your Google AI Studio key to use Google models
                 at-cost.
@@ -765,14 +911,67 @@ function LLMModelsContent() {
               onCheckedChange={(value) => handleApiToggle("google", value)}
             />
           </div>
-          <Input
-            type="text"
-            placeholder="Enter your Google AI Studio API Key"
-            className="bg-input/30 border-border"
-            value={googleApiKey}
-            onChange={(e) => setGoogleApiKey(e.target.value)}
-          />
-        </div>
+          <FieldContent>
+            <InputGroup>
+              <InputGroupInput
+                type="password"
+                placeholder="Enter your Google AI Studio API Key"
+                value={googleApiKey}
+                onChange={(e) => {
+                  setGoogleApiKey(e.target.value);
+                  setIsGoogleKeyModified(true);
+                  setGoogleKeyError(""); // 입력 시 에러 메시지 제거
+                }}
+              />
+              <InputGroupAddon align="inline-end">
+                <InputGroupButton
+                  variant="default"
+                  size="xs"
+                  disabled={!isGoogleKeyModified}
+                  onClick={() => {
+                    if (isGoogleKeyModified && googleApiKey.trim()) {
+                      // 🎯 목적: "Verify" 버튼 클릭 시 검증 로직 실행
+                      const trimmedKey = googleApiKey.trim();
+                      console.log("Validating Google API Key:", trimmedKey);
+                      console.log(
+                        "Validation result:",
+                        validateApiKey(trimmedKey),
+                      );
+
+                      if (validateApiKey(trimmedKey)) {
+                        // 검증 성공: "Verified" 상태로 변경
+                        setIsGoogleKeyModified(false);
+                        setIsGoogleKeyValid(true);
+                        setGoogleKeyError("");
+                        console.log(
+                          "Google validation successful - button should show 'Verified'",
+                        );
+                      } else {
+                        // 검증 실패: "Invalid API Key" 에러 표시
+                        setIsGoogleKeyValid(false);
+                        setGoogleKeyError("Invalid API Key");
+                        console.log("Google validation failed - showing error");
+                      }
+                    }
+                  }}
+                >
+                  {isGoogleKeyModified ? (
+                    <>
+                      Verify
+                      <ArrowRight className="h-3 w-3" />
+                    </>
+                  ) : (
+                    <>
+                      <Check className="h-3 w-3" />
+                      Verified
+                    </>
+                  )}
+                </InputGroupButton>
+              </InputGroupAddon>
+            </InputGroup>
+          </FieldContent>
+          {googleKeyError && <FieldError>{googleKeyError}</FieldError>}
+        </Field>
 
         {/* 🎯 목적: OpenAI API Key 사용 확인 Alert Dialog */}
         <AlertDialog open={showOpenaiAlert} onOpenChange={setShowOpenaiAlert}>
