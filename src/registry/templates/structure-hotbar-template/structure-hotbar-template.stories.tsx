@@ -1,6 +1,6 @@
 import React from "react";
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { Files, Blocks, Binoculars, FolderKanban, Server } from "lucide-react";
+import { Files, Blocks, CircleGauge, FolderKanban, Server } from "lucide-react";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { Hotbar } from "@/components/hotbar";
 
@@ -119,7 +119,7 @@ export const Badge: Story = {
       },
       {
         id: "skuber-observability",
-        icon: Binoculars,
+        icon: CircleGauge,
         label: "Skuber+ Observability",
         isActive: false,
         badge: 8,

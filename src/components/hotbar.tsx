@@ -4,7 +4,7 @@ import React from "react";
 import {
   Files,
   Blocks,
-  Binoculars,
+  CircleGauge,
   FolderKanban,
   Server,
   CircleUserRound,
@@ -88,7 +88,7 @@ const defaultHotbarItems: HotbarItem[] = [
   },
   {
     id: "skuber-observability",
-    icon: Binoculars,
+    icon: CircleGauge,
     label: "Skuber+ Observability",
     isActive: false,
   },

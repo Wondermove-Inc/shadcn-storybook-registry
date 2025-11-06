@@ -40,7 +40,7 @@ import {
   MoreHorizontal,
   ChevronRight,
   ChevronDown,
-  Binoculars,
+  CircleGauge,
   FolderKanban,
   Server,
 } from "lucide-react";
@@ -176,7 +176,7 @@ export const Structure: Story = {
         id: "skuber-observability",
         name: "Skuber+ Observability",
         description: "Real-time monitoring and system observability platform",
-        icon: Binoculars,
+        icon: CircleGauge,
       },
       {
         id: "skuber-management",
@@ -815,7 +815,7 @@ export const StructureSidebarExtensions: Story = {
         id: "skuber-observability",
         name: "Skuber+ Observability",
         description: "Real-time monitoring and system observability platform",
-        icon: Binoculars,
+        icon: CircleGauge,
       },
       {
         id: "skuber-management",
