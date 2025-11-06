@@ -26,7 +26,16 @@ type Story = StoryObj<typeof meta>;
 /**
  * 기본 CommonTable - 완전한 리소스 테이블 레이아웃
  */
-export const Default: Story = {};
+export const Default: Story = {
+  render: () => <CommonTable />,
+};
+
+/**
+ * Install 스토리 - 패키지 설치 정보를 표시하는 CommonTable (Version, Home, Maintainers, Keywords)
+ */
+export const Install: Story = {
+  render: () => <CommonTable contentType="install" />,
+};
 
 /**
  * Chart Data - 속성 패널에 차트가 포함된 CommonTable

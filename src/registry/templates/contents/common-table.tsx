@@ -19,6 +19,7 @@ import {
   RefreshCw,
   Play,
   Ruler,
+  Download,
 } from "lucide-react";
 import {
   ColumnDef,
@@ -62,6 +63,17 @@ import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Checkbox } from "@/components/ui/checkbox";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Item, ItemContent, ItemMedia } from "@/components/ui/item";
+import { Separator } from "@/components/ui/separator";
+import { Typography } from "@/components/ui/typography";
 import { Area, AreaChart, CartesianGrid, XAxis, YAxis } from "recharts";
 import {
   ChartContainer,
@@ -161,6 +173,7 @@ const tableData: TableRowData[] = [
 interface CommonTableProps {
   className?: string;
   showChart?: boolean; // 🎯 목적: 속성 패널에 차트 표시 여부
+  contentType?: "default" | "install"; // 🎯 목적: 속성 패널 내용 타입 (Default 또는 Install)
 }
 
 /**
@@ -175,6 +188,7 @@ interface CommonTableProps {
 export function CommonTable({
   className,
   showChart = false,
+  contentType = "default",
 }: CommonTableProps) {
   const [selectedNamespaces, setSelectedNamespaces] = React.useState<string[]>([
     "monitoring",
@@ -964,123 +978,305 @@ export function CommonTable({
                 </div>
               </div>
             )}
-            {/* 속성 테이블 - UIDL 명세에 따른 Table 컴포넌트 사용 */}
+
+            {/* 🎯 목적: Install 전용 Item 컴포넌트 */}
+            {contentType === "install" && (
+              <div className="mb-2">
+                <Item variant="outline" size="sm">
+                  <ItemMedia>
+                    <Avatar className="h-12 w-12">
+                      <AvatarImage
+                        src="/placeholder-avatar.png"
+                        alt="Package"
+                      />
+                      <AvatarFallback>PA</AvatarFallback>
+                    </Avatar>
+                  </ItemMedia>
+                  <ItemContent>
+                    <span className="text-sm font-medium">
+                      The Alertmanager handles alerts sent by client
+                      applications such as the Prometheus server.
+                    </span>
+                  </ItemContent>
+                  <Button>
+                    <Download className="h-4 w-4" />
+                    Install
+                  </Button>
+                </Item>
+              </div>
+            )}
+
+            {/* 🎯 목적: 속성 테이블 - contentType에 따라 다른 내용 표시 */}
             <Table>
               <TableBody>
-                <TableRow>
-                  <TableCell className="border-border border-b px-3 py-[14px]">
-                    <span className="text-foreground text-sm">Created</span>
-                  </TableCell>
-                  <TableCell className="border-border border-b px-3 py-[14px]">
-                    <span className="text-foreground text-sm">
-                      19d 4h 36m ago (2025-10-01T09:24:39+09:00)
-                    </span>
-                  </TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell className="border-border border-b px-3 py-[14px]">
-                    <span className="text-foreground text-sm">Name</span>
-                  </TableCell>
-                  <TableCell className="border-border border-b px-3 py-[14px]">
-                    <span className="text-foreground text-sm">
-                      {selectedRowData
-                        ? selectedRowData.column3
-                        : "ciliumcidrgroups.cilium.io"}
-                    </span>
-                  </TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell className="border-border border-b px-3 py-[14px]">
-                    <span className="text-foreground text-sm">Labels</span>
-                  </TableCell>
-                  <TableCell className="border-border border-b px-3 py-[14px]">
-                    <Badge
-                      variant="outline"
-                      className="bg-background border-border text-xs font-semibold"
-                    >
-                      {selectedRowData
-                        ? `column5=${selectedRowData.column5.text}`
-                        : "io.cilium.k8s.crd.schema.version=1.31.11"}
-                    </Badge>
-                  </TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell className="border-border border-b px-3 py-[14px]">
-                    <span className="text-foreground text-sm">Annotations</span>
-                  </TableCell>
-                  <TableCell className="border-border border-b px-3 py-[14px]">
-                    <Badge
-                      variant="outline"
-                      className="bg-background border-border text-xs font-semibold"
-                    >
-                      freelens.app/resource-version=v1
-                    </Badge>
-                  </TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell className="border-border border-b px-3 py-[14px]">
-                    <span className="text-foreground text-sm">Resource</span>
-                  </TableCell>
-                  <TableCell className="border-border border-b px-3 py-2">
-                    <Button
-                      variant="ghost"
-                      className="text-foreground/80 hover:text-foreground h-8 px-3 text-sm font-medium underline"
-                    >
-                      Ciliumendpoints
-                      <ExternalLink className="ml-2 h-4 w-4" />
-                    </Button>
-                  </TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell className="border-border border-b px-3 py-[14px]">
-                    <span className="text-foreground text-sm">Conversion</span>
-                  </TableCell>
-                  <TableCell className="border-border border-b px-3 py-1.5">
-                    <Input
-                      placeholder='{"strategy": "None"}'
-                      className="text-muted-foreground bg-muted/50 h-9 font-mono text-sm"
-                      readOnly
-                    />
-                  </TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell className="border-border border-b px-3 py-[14px]">
-                    <span className="text-foreground text-sm">Conditions</span>
-                  </TableCell>
-                  <TableCell className="border-border border-b px-3 py-[14px]">
-                    <Badge className="bg-primary text-primary-foreground border-0 text-xs font-semibold">
-                      NamesAccepted
-                    </Badge>
-                  </TableCell>
-                </TableRow>
+                {contentType === "install" ? (
+                  // Install 전용 테이블 내용 - UIDL 명세 기반
+                  <>
+                    <TableRow>
+                      <TableCell className="border-border border-b px-3 py-[14px]">
+                        <span className="text-foreground text-sm">Version</span>
+                      </TableCell>
+                      <TableCell className="border-border border-b px-2 py-[6px]">
+                        <Select defaultValue="1.28.0">
+                          <SelectTrigger className="h-9">
+                            <SelectValue />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="1.28.0">1.28.0</SelectItem>
+                            <SelectItem value="1.27.5">1.27.5</SelectItem>
+                            <SelectItem value="1.26.8">1.26.8</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableCell className="border-border border-b px-3 py-[14px]">
+                        <span className="text-foreground text-sm">Home</span>
+                      </TableCell>
+                      <TableCell className="border-border border-b px-2 py-2">
+                        <Button
+                          variant="ghost"
+                          className="text-foreground/80 hover:text-foreground h-8 px-0 text-sm font-medium underline"
+                        >
+                          https://prometheus.io/
+                          <ExternalLink className="ml-2 h-4 w-4" />
+                        </Button>
+                      </TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableCell className="border-border border-b px-3 py-[14px]">
+                        <span className="text-foreground text-sm">
+                          Maintainers
+                        </span>
+                      </TableCell>
+                      <TableCell className="border-border border-b px-3 py-[14px]">
+                        <span className="text-foreground text-sm">
+                          • monotek&lt;monotek23@gmail.com&gt;
+                        </span>
+                      </TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableCell className="border-border border-b px-3 py-[14px]">
+                        <span className="text-foreground text-sm">
+                          Keywords
+                        </span>
+                      </TableCell>
+                      <TableCell className="border-border border-b px-3 py-[14px]">
+                        <Badge className="bg-primary text-primary-foreground border-0 text-xs font-semibold">
+                          monitoring
+                        </Badge>
+                      </TableCell>
+                    </TableRow>
+                  </>
+                ) : (
+                  // Default 테이블 내용 (기존 내용)
+                  <>
+                    <TableRow>
+                      <TableCell className="border-border border-b px-3 py-[14px]">
+                        <span className="text-foreground text-sm">Created</span>
+                      </TableCell>
+                      <TableCell className="border-border border-b px-3 py-[14px]">
+                        <span className="text-foreground text-sm">
+                          19d 4h 36m ago (2025-10-01T09:24:39+09:00)
+                        </span>
+                      </TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableCell className="border-border border-b px-3 py-[14px]">
+                        <span className="text-foreground text-sm">Name</span>
+                      </TableCell>
+                      <TableCell className="border-border border-b px-3 py-[14px]">
+                        <span className="text-foreground text-sm">
+                          {selectedRowData
+                            ? selectedRowData.column3
+                            : "ciliumcidrgroups.cilium.io"}
+                        </span>
+                      </TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableCell className="border-border border-b px-3 py-[14px]">
+                        <span className="text-foreground text-sm">Labels</span>
+                      </TableCell>
+                      <TableCell className="border-border border-b px-3 py-[14px]">
+                        <Badge
+                          variant="outline"
+                          className="bg-background border-border text-xs font-semibold"
+                        >
+                          {selectedRowData
+                            ? `column5=${selectedRowData.column5.text}`
+                            : "io.cilium.k8s.crd.schema.version=1.31.11"}
+                        </Badge>
+                      </TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableCell className="border-border border-b px-3 py-[14px]">
+                        <span className="text-foreground text-sm">
+                          Annotations
+                        </span>
+                      </TableCell>
+                      <TableCell className="border-border border-b px-3 py-[14px]">
+                        <Badge
+                          variant="outline"
+                          className="bg-background border-border text-xs font-semibold"
+                        >
+                          freelens.app/resource-version=v1
+                        </Badge>
+                      </TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableCell className="border-border border-b px-3 py-[14px]">
+                        <span className="text-foreground text-sm">
+                          Resource
+                        </span>
+                      </TableCell>
+                      <TableCell className="border-border border-b px-3 py-2">
+                        <Button
+                          variant="ghost"
+                          className="text-foreground/80 hover:text-foreground h-8 px-3 text-sm font-medium underline"
+                        >
+                          Ciliumendpoints
+                          <ExternalLink className="ml-2 h-4 w-4" />
+                        </Button>
+                      </TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableCell className="border-border border-b px-3 py-[14px]">
+                        <span className="text-foreground text-sm">
+                          Conversion
+                        </span>
+                      </TableCell>
+                      <TableCell className="border-border border-b px-3 py-1.5">
+                        <Input
+                          placeholder='{"strategy": "None"}'
+                          className="text-muted-foreground bg-muted/50 h-9 font-mono text-sm"
+                          readOnly
+                        />
+                      </TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableCell className="border-border border-b px-3 py-[14px]">
+                        <span className="text-foreground text-sm">
+                          Conditions
+                        </span>
+                      </TableCell>
+                      <TableCell className="border-border border-b px-3 py-[14px]">
+                        <Badge className="bg-primary text-primary-foreground border-0 text-xs font-semibold">
+                          NamesAccepted
+                        </Badge>
+                      </TableCell>
+                    </TableRow>
+                  </>
+                )}
               </TableBody>
             </Table>
 
-            {/* Validation 섹션 - UIDL 명세에 따른 코드 블록 */}
-            <div className="mt-8 flex flex-col gap-4">
-              <span className="text-foreground text-base leading-none font-medium">
-                Validation
-              </span>
-              <div className="bg-muted/30 flex w-full flex-col items-center justify-center rounded-[10px] border p-4">
-                <div className="text-muted-foreground w-full text-left font-mono text-base leading-6">
-                  <div>
-                    import &#123; Button &#125; from
-                    &quot;@/components/ui/button&quot;
+            {/* Install 전용 Documentation 섹션 또는 기본 Validation 섹션 */}
+            {contentType === "install" ? (
+              <div className="mt-8 flex w-full flex-col gap-5">
+                {/* Overview 섹션 */}
+                <div className="flex flex-col gap-2">
+                  <h3 className="text-base leading-none font-medium">
+                    Overview
+                  </h3>
+                  <div className="flex items-center gap-1">
+                    <span className="text-sm leading-none font-light">
+                      As per
+                    </span>
+                    <Button
+                      variant="ghost"
+                      className="h-8 px-0 text-sm font-medium text-[#E5E5E5] underline underline-offset-4 hover:no-underline"
+                    >
+                      https://prometheus.io/documentation
+                    </Button>
                   </div>
-                  <br />
-                  <br />
-                  <div>
-                    export function{" "}
-                    <span className="font-bold">ButtonOutline</span>() &#123;
+                  <Typography variant="blockquote" className="mt-0">
+                    &quot;After all,&quot; he said, &quot;everyone enjoys a good
+                    joke, so it&apos;s only fair that they should pay for the
+                    privilege.&quot;
+                  </Typography>
+                </div>
+
+                <Separator />
+
+                {/* Prerequisites 섹션 */}
+                <div className="flex flex-col gap-2">
+                  <h3 className="text-base leading-none font-medium">
+                    Prerequisites
+                  </h3>
+                  <p className="text-sm leading-none font-light">
+                    Kubernetes 1.14+
+                  </p>
+                </div>
+
+                <Separator />
+
+                {/* Usage 섹션 */}
+                <div className="flex flex-col gap-2">
+                  <h3 className="text-base leading-none font-medium">Usage</h3>
+                  <p className="text-sm leading-none font-light">
+                    The chart is distributed as an{" "}
+                    <span className="underline">OCI Artifact</span> as well as
+                    via a traditional{" "}
+                    <span className="underline">Helm Repository</span>.<br />
+                    OCI Artifact:
+                  </p>
+                  <Typography variant="inlineCode">
+                    oci://ghcr.io/prometheus-community/charts/alertmanager
+                  </Typography>
+                  <p className="text-sm leading-none font-light">
+                    Helm Repository:
+                  </p>
+                  <Typography variant="inlineCode">
+                    https://prometheus-community.github.io/helm-charts
+                  </Typography>
+                  <p className="text-sm leading-none font-light">
+                    The installation instructions use the OCI registry. Refer to
+                    the helm repo command documentation for information on
+                    installing charts via the traditional repository.
+                  </p>
+                </div>
+
+                <Separator />
+
+                {/* Install Chart 섹션 */}
+                <div className="flex flex-col gap-4">
+                  <h3 className="text-base leading-none font-medium">
+                    Install Chart
+                  </h3>
+                  <div className="bg-muted/30 flex w-full flex-col items-center justify-center rounded-[10px] border p-4">
+                    <div className="text-muted-foreground w-full text-left font-mono text-base leading-6">
+                      helm install [RELEASE_NAME]
+                      oci://ghcr.io/prometheus-community/charts/alertmanager
+                    </div>
                   </div>
-                  <div>
-                    &nbsp;&nbsp;return &lt;Button
-                    variant=&quot;outline&quot;&gt;Outline&lt;/Button&gt;
-                  </div>
-                  <div>&#125;</div>
                 </div>
               </div>
-            </div>
+            ) : (
+              <div className="mt-8 flex flex-col gap-4">
+                <span className="text-foreground text-base leading-none font-medium">
+                  Validation
+                </span>
+                <div className="bg-muted/30 flex w-full flex-col items-center justify-center rounded-[10px] border p-4">
+                  <div className="text-muted-foreground w-full text-left font-mono text-base leading-6">
+                    <div>
+                      import &#123; Button &#125; from
+                      &quot;@/components/ui/button&quot;
+                    </div>
+                    <br />
+                    <br />
+                    <div>
+                      export function{" "}
+                      <span className="font-bold">ButtonOutline</span>() &#123;
+                    </div>
+                    <div>
+                      &nbsp;&nbsp;return &lt;Button
+                      variant=&quot;outline&quot;&gt;Outline&lt;/Button&gt;
+                    </div>
+                    <div>&#125;</div>
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
 
           {/* 고정 푸터 영역 */}
