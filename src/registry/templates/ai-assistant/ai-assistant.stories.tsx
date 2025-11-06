@@ -7,6 +7,7 @@ import {
 } from "@/components/ui/resizable";
 import { AIAssistant } from "@/registry/templates/ai-assistant/ai-assistant";
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import {
   InputGroup,
@@ -48,6 +49,8 @@ import {
   MoreHorizontal,
   TrendingUp,
   Expand,
+  StickyNote,
+  Check,
 } from "lucide-react";
 
 /**
@@ -583,6 +586,292 @@ export const AnswersText: Story = {
                 </InputGroupAddon>
               </InputGroup>
             </div>
+          </ResizablePanel>
+        </ResizablePanelGroup>
+      </div>
+    );
+  },
+};
+
+/**
+ * AI Assistant의 승인 요청 상태입니다.
+ * 사용자의 승인이 필요한 작업에 대한 인터페이스를 보여줍니다.
+ */
+export const Approval: Story = {
+  render: () => {
+    // 🎯 목적: 채팅 입력 상태 관리 (InputGroup용)
+    const [message, setMessage] = React.useState("");
+
+    // 🎯 목적: send 버튼 활성화 여부 계산
+    const isSendEnabled = message.trim().length > 0;
+
+    // 🎯 목적: 사용자 발화 버튼 편집 상태 관리
+    const [isEditingUserMessage, setIsEditingUserMessage] =
+      React.useState(false);
+    const [userMessageText, setUserMessageText] = React.useState(
+      "프로덕션 환경에 새로운 보안 정책을 배포해줘.",
+    );
+
+    return (
+      <div className="bg-background h-screen w-full">
+        <ResizablePanelGroup direction="horizontal" className="h-full w-full">
+          {/* 메인 콘텐츠 영역 */}
+          <ResizablePanel>
+            <div className="flex h-full items-center justify-center p-8">
+              <div className="text-center">
+                <h2 className="mb-2 text-lg font-semibold">
+                  AI Assistant 템플릿
+                </h2>
+                <p className="text-muted-foreground text-sm">
+                  승인 요청 상태의 AI Assistant 인터페이스입니다.
+                </p>
+              </div>
+            </div>
+          </ResizablePanel>
+
+          {/* AI Assistant 리사이즈 핸들 */}
+          <ResizableHandle className="w-1 cursor-col-resize bg-transparent transition-colors hover:bg-blue-500/20 active:bg-blue-500/30" />
+
+          {/* AI Assistant 패널 - Approval 상태 */}
+          <ResizablePanel
+            defaultSize={20}
+            minSize={8}
+            maxSize={80}
+            className="relative"
+          >
+            <aside className="border-border bg-sidebar flex h-full shrink-0 flex-col border-l p-4">
+              {/* 🎯 목적: 헤더 섹션 */}
+              <div className="flex shrink-0 flex-col gap-2">
+                <div className="flex items-center justify-between">
+                  <h3 className="text-foreground text-lg leading-7 font-semibold">
+                    New chat
+                  </h3>
+
+                  <div className="flex items-center">
+                    {/* History 버튼 */}
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="h-8 w-8 shrink-0 p-0 opacity-70 hover:opacity-100"
+                    >
+                      <History className="h-4 w-4" />
+                      <span className="sr-only">History</span>
+                    </Button>
+
+                    {/* Close 버튼 */}
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="h-8 w-8 shrink-0 p-0 opacity-70 hover:opacity-100"
+                    >
+                      <X className="h-4 w-4" />
+                      <span className="sr-only">Close AI Assistant</span>
+                    </Button>
+                  </div>
+                </div>
+
+                {/* 🎯 목적: AI 응답 섹션 (스크롤 가능) - InputGroup 공간 제외 */}
+                <div className="min-h-0 flex-1">
+                  <ScrollArea className="h-full">
+                    <div className="flex flex-col items-end gap-4">
+                      {/* 사용자 질문 버튼 또는 편집 InputGroup */}
+                      {isEditingUserMessage ? (
+                        <InputGroup className="!bg-secondary dark:!bg-secondary flex-col">
+                          {/* Textarea 영역 - 스크롤 기능 내장 */}
+                          <ScrollArea className="min-h-12 p-3" maxHeight={300}>
+                            <InputGroupTextarea
+                              value={userMessageText}
+                              onChange={(e) =>
+                                setUserMessageText(e.target.value)
+                              }
+                              onBlur={() => setIsEditingUserMessage(false)}
+                              className="min-h-0 resize-none px-0 py-0 text-left text-sm leading-5"
+                              rows={1}
+                              autoFocus
+                            />
+                          </ScrollArea>
+
+                          {/* InputGroupAddon - 하단 컨트롤 영역 */}
+                          <InputGroupAddon align="block-end">
+                            {/* 좌측 컨트롤 그룹 */}
+                            <div className="flex flex-1 items-center gap-2">
+                              {/* Agent InputGroupButton */}
+                              <InputGroupButton
+                                size="xs"
+                                className="rounded-full border"
+                              >
+                                <Infinity className="h-4 w-4" />
+                                Agent
+                                <ChevronDown className="h-4 w-4" />
+                              </InputGroupButton>
+
+                              {/* Auto InputGroupButton */}
+                              <InputGroupButton size="xs" variant="ghost">
+                                Auto
+                                <ChevronDown className="h-4 w-4" />
+                              </InputGroupButton>
+                            </div>
+
+                            {/* 우측 전송 버튼 그룹 */}
+                            <InputGroupButton
+                              size="icon-xs"
+                              className={`rounded-full ${
+                                userMessageText.trim().length > 0
+                                  ? "bg-primary text-primary-foreground hover:bg-primary/90"
+                                  : "bg-muted text-muted-foreground cursor-not-allowed opacity-50"
+                              }`}
+                              disabled={userMessageText.trim().length === 0}
+                            >
+                              <ArrowUp className="h-4 w-4" />
+                            </InputGroupButton>
+                          </InputGroupAddon>
+                        </InputGroup>
+                      ) : (
+                        <Button
+                          variant="outline"
+                          className="h-auto w-full cursor-pointer justify-start text-left text-sm font-medium break-words whitespace-normal"
+                          onClick={() => setIsEditingUserMessage(true)}
+                        >
+                          {userMessageText}
+                        </Button>
+                      )}
+
+                      {/* AI 응답 콘텐츠 - 승인 요청 */}
+                      <div className="flex w-full flex-col items-start gap-5">
+                        {/* Blockquote */}
+                        <div className="flex w-full flex-col items-start">
+                          <div className="border-border flex w-full shrink-0 items-center gap-2 border-l-2 px-0 py-0 pl-4">
+                            <span className="text-foreground flex-grow text-sm leading-5">
+                              프로덕션 환경에 보안 정책을 배포하기 전에 승인이
+                              필요합니다.
+                            </span>
+                          </div>
+                        </div>
+
+                        {/* 상세 승인 요청 내용 */}
+                        <div className="text-foreground self-stretch text-sm leading-5">
+                          <p>
+                            <strong>배포 요청 사항:</strong>
+                          </p>
+                          <p className="ml-3">
+                            정책명: Advanced Security Policy v2.1
+                          </p>
+                          <p className="ml-3">
+                            대상 환경: Production (운영 환경)
+                          </p>
+                          <p className="ml-3">
+                            예상 배포 시간: 2025-11-06 15:30 KST
+                          </p>
+                          <p className="ml-3">예상 소요 시간: 15-20분</p>
+                          <br />
+
+                          <p>
+                            <strong>주요 변경 사항:</strong>
+                          </p>
+                          <p className="ml-3">
+                            Multi-Factor Authentication (MFA) 필수화
+                          </p>
+                          <p className="ml-3">
+                            API 접근 권한 강화 (OAuth 2.0 + JWT)
+                          </p>
+                          <p className="ml-3">
+                            실시간 보안 로그 모니터링 활성화
+                          </p>
+                          <p className="ml-3">비승인 IP 대역 자동 차단 기능</p>
+                          <br />
+
+                          <p>
+                            <strong>영향도 분석:</strong>
+                          </p>
+                          <p className="ml-3">
+                            영향받는 사용자: 전체 직원 (약 150명)
+                          </p>
+                          <p className="ml-3">
+                            서비스 중단: 없음 (무중단 배포)
+                          </p>
+                          <p className="ml-3">
+                            사용자 액션 필요: MFA 설정 (첫 로그인 시)
+                          </p>
+                          <p className="ml-3">
+                            시스템 성능 영향: 미미 (1-2% 응답 시간 증가)
+                          </p>
+                          <br />
+
+                          <p>
+                            <strong>롤백 계획:</strong>
+                          </p>
+                          <p className="ml-3">
+                            자동 롤백: 5분 이내 (오류 감지 시)
+                          </p>
+                          <p className="ml-3">
+                            수동 롤백: 10분 이내 (관리자 요청 시)
+                          </p>
+                          <p className="ml-3">백업: 현재 정책 자동 백업 완료</p>
+                        </div>
+
+                        {/* Separator */}
+                        <div className="bg-border h-px w-full" />
+
+                        {/* 🎯 목적: UIDL 명세에 따른 승인 요청 UI */}
+                        <div className="border-primary flex h-auto w-full flex-col items-start gap-3 self-stretch rounded-[14px] border p-[10px]">
+                          {/* Badge with Plan label */}
+                          <Badge
+                            variant="default"
+                            className="flex items-center justify-center gap-1 overflow-hidden rounded-lg border-0 px-2 py-1"
+                          >
+                            <StickyNote className="h-3 w-3" />
+                            <span className="text-xs leading-4 font-semibold">
+                              Plan
+                            </span>
+                          </Badge>
+
+                          {/* Plan content */}
+                          <div className="text-foreground self-stretch text-sm leading-5">
+                            <span>• 1명의 유저를 신규 생성합니다.</span>
+                            <br />
+                            <span>• 1건의 정책을 변경합니다.</span>
+                            <br />
+                            <span>• 1명의 유저 권한을 삭제합니다.</span>
+                          </div>
+
+                          {/* Approval question */}
+                          <div className="text-foreground self-stretch text-sm leading-5">
+                            계획을 승인하시겠습니까?
+                          </div>
+
+                          {/* Button Group */}
+                          <div className="flex flex-shrink-0 items-start self-stretch">
+                            {/* Reject Button */}
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              className="flex flex-shrink-0 flex-grow items-center justify-center gap-2 rounded-l-md rounded-r-none"
+                            >
+                              <X className="h-4 w-4" />
+                              <span className="text-sm leading-5 font-medium">
+                                Reject
+                              </span>
+                            </Button>
+
+                            {/* Approve Button */}
+                            <Button
+                              variant="default"
+                              size="sm"
+                              className="flex flex-shrink-0 flex-grow items-center justify-center gap-2 rounded-l-none rounded-r-md"
+                            >
+                              <Check className="h-4 w-4" />
+                              <span className="text-sm leading-5 font-medium">
+                                Approve
+                              </span>
+                            </Button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </ScrollArea>
+                </div>
+              </div>
+            </aside>
           </ResizablePanel>
         </ResizablePanelGroup>
       </div>
