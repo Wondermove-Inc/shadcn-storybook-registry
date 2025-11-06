@@ -815,14 +815,9 @@ export const Approval: Story = {
                         {/* 🎯 목적: UIDL 명세에 따른 승인 요청 UI */}
                         <div className="border-primary flex h-auto w-full flex-col items-start gap-3 self-stretch rounded-[14px] border p-[10px]">
                           {/* Badge with Plan label */}
-                          <Badge
-                            variant="default"
-                            className="flex items-center justify-center gap-1 overflow-hidden rounded-lg border-0 px-2 py-1"
-                          >
-                            <StickyNote className="h-3 w-3" />
-                            <span className="text-xs leading-4 font-semibold">
-                              Plan
-                            </span>
+                          <Badge variant="default" className="h-5 gap-1">
+                            <StickyNote />
+                            Plan
                           </Badge>
 
                           {/* Plan content */}
@@ -883,6 +878,310 @@ export const Approval: Story = {
  * AI Assistant의 차트 답변 예시입니다.
  * 차트 카드 형태로 IAM 사용자 활동 데이터를 시각화하여 보여줍니다.
  */
+/**
+ * AI Assistant의 명확화 요청 상태입니다.
+ * 사용자의 추가 정보가 필요한 요청에 대한 인터페이스를 보여줍니다.
+ */
+export const Clarify: Story = {
+  render: () => {
+    // 🎯 목적: 채팅 입력 상태 관리 (InputGroup용)
+    const [message, setMessage] = React.useState("");
+
+    // 🎯 목적: send 버튼 활성화 여부 계산
+    const isSendEnabled = message.trim().length > 0;
+
+    // 🎯 목적: 사용자 발화 버튼 편집 상태 관리
+    const [isEditingUserMessage, setIsEditingUserMessage] =
+      React.useState(false);
+    const [userMessageText, setUserMessageText] =
+      React.useState("데이터베이스 성능을 개선해줘.");
+
+    return (
+      <div className="bg-background h-screen w-full">
+        <ResizablePanelGroup direction="horizontal" className="h-full w-full">
+          {/* 메인 콘텐츠 영역 */}
+          <ResizablePanel>
+            <div className="flex h-full items-center justify-center p-8">
+              <div className="text-center">
+                <h2 className="mb-2 text-lg font-semibold">
+                  AI Assistant 템플릿
+                </h2>
+                <p className="text-muted-foreground text-sm">
+                  명확화 요청 상태의 AI Assistant 인터페이스입니다.
+                </p>
+              </div>
+            </div>
+          </ResizablePanel>
+
+          {/* AI Assistant 리사이즈 핸들 */}
+          <ResizableHandle className="w-1 cursor-col-resize bg-transparent transition-colors hover:bg-blue-500/20 active:bg-blue-500/30" />
+
+          {/* AI Assistant 패널 - Clarify 상태 */}
+          <ResizablePanel
+            defaultSize={20}
+            minSize={8}
+            maxSize={80}
+            className="relative"
+          >
+            <aside className="border-border bg-sidebar flex h-full shrink-0 flex-col border-l p-4">
+              {/* 🎯 목적: 헤더 섹션 */}
+              <div className="flex shrink-0 flex-col gap-2">
+                <div className="flex items-center justify-between">
+                  <h3 className="text-foreground text-lg leading-7 font-semibold">
+                    New chat
+                  </h3>
+
+                  <div className="flex items-center">
+                    {/* History 버튼 */}
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="h-8 w-8 shrink-0 p-0 opacity-70 hover:opacity-100"
+                    >
+                      <History className="h-4 w-4" />
+                      <span className="sr-only">History</span>
+                    </Button>
+
+                    {/* Close 버튼 */}
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="h-8 w-8 shrink-0 p-0 opacity-70 hover:opacity-100"
+                    >
+                      <X className="h-4 w-4" />
+                      <span className="sr-only">Close AI Assistant</span>
+                    </Button>
+                  </div>
+                </div>
+
+                {/* 🎯 목적: AI 응답 섹션 (스크롤 가능) - InputGroup 공간 제외 */}
+                <div className="min-h-0 flex-1">
+                  <ScrollArea className="h-full">
+                    <div className="flex flex-col items-end gap-4">
+                      {/* 사용자 질문 버튼 또는 편집 InputGroup */}
+                      {isEditingUserMessage ? (
+                        <InputGroup className="!bg-secondary dark:!bg-secondary flex-col">
+                          {/* Textarea 영역 - 스크롤 기능 내장 */}
+                          <ScrollArea className="min-h-12 p-3" maxHeight={300}>
+                            <InputGroupTextarea
+                              value={userMessageText}
+                              onChange={(e) =>
+                                setUserMessageText(e.target.value)
+                              }
+                              onBlur={() => setIsEditingUserMessage(false)}
+                              className="min-h-0 resize-none px-0 py-0 text-left text-sm leading-5"
+                              rows={1}
+                              autoFocus
+                            />
+                          </ScrollArea>
+
+                          {/* InputGroupAddon - 하단 컨트롤 영역 */}
+                          <InputGroupAddon align="block-end">
+                            {/* 좌측 컨트롤 그룹 */}
+                            <div className="flex flex-1 items-center gap-2">
+                              {/* Agent InputGroupButton */}
+                              <InputGroupButton
+                                size="xs"
+                                className="rounded-full border"
+                              >
+                                <Infinity className="h-4 w-4" />
+                                Agent
+                                <ChevronDown className="h-4 w-4" />
+                              </InputGroupButton>
+
+                              {/* Auto InputGroupButton */}
+                              <InputGroupButton size="xs" variant="ghost">
+                                Auto
+                                <ChevronDown className="h-4 w-4" />
+                              </InputGroupButton>
+                            </div>
+
+                            {/* 우측 전송 버튼 그룹 */}
+                            <InputGroupButton
+                              size="icon-xs"
+                              className={`rounded-full ${
+                                userMessageText.trim().length > 0
+                                  ? "bg-primary text-primary-foreground hover:bg-primary/90"
+                                  : "bg-muted text-muted-foreground cursor-not-allowed opacity-50"
+                              }`}
+                              disabled={userMessageText.trim().length === 0}
+                            >
+                              <ArrowUp className="h-4 w-4" />
+                            </InputGroupButton>
+                          </InputGroupAddon>
+                        </InputGroup>
+                      ) : (
+                        <Button
+                          variant="outline"
+                          className="h-auto w-full cursor-pointer justify-start text-left text-sm font-medium break-words whitespace-normal"
+                          onClick={() => setIsEditingUserMessage(true)}
+                        >
+                          {userMessageText}
+                        </Button>
+                      )}
+
+                      {/* AI 응답 콘텐츠 - 명확화 요청 */}
+                      <div className="flex w-full flex-col items-start gap-5">
+                        {/* Blockquote */}
+                        <div className="flex w-full flex-col items-start">
+                          <div className="border-border flex w-full shrink-0 items-center gap-2 border-l-2 px-0 py-0 pl-4">
+                            <span className="text-foreground flex-grow text-sm leading-5">
+                              데이터베이스 성능 개선을 도와드리기 전에 몇 가지
+                              정보가 더 필요합니다.
+                            </span>
+                          </div>
+                        </div>
+
+                        {/* 상세 명확화 요청 내용 */}
+                        <div className="text-foreground self-stretch text-sm leading-5">
+                          <p>
+                            <strong>현재 상황 파악을 위한 질문:</strong>
+                          </p>
+                          <br />
+                          <p>
+                            <strong>1. 데이터베이스 환경</strong>
+                          </p>
+                          <p className="ml-3">
+                            • 어떤 데이터베이스를 사용하고 계시나요? (MySQL,
+                            PostgreSQL, MongoDB 등)
+                          </p>
+                          <p className="ml-3">
+                            • 데이터베이스 버전은 무엇인가요?
+                          </p>
+                          <p className="ml-3">
+                            • 클라우드 환경인가요, 온프레미스인가요?
+                          </p>
+                          <br />
+
+                          <p>
+                            <strong>2. 성능 문제 증상</strong>
+                          </p>
+                          <p className="ml-3">
+                            • 어떤 종류의 성능 문제를 겪고 계시나요?
+                          </p>
+                          <p className="ml-6">- 느린 쿼리 실행 시간</p>
+                          <p className="ml-6">- 높은 CPU 사용률</p>
+                          <p className="ml-6">- 메모리 부족</p>
+                          <p className="ml-6">- 동시 연결 수 제한</p>
+                          <p className="ml-6">- 디스크 I/O 병목</p>
+                          <p className="ml-3">
+                            • 문제가 언제부터 시작되었나요?
+                          </p>
+                          <p className="ml-3">• 특정 시간대에만 발생하나요?</p>
+                          <br />
+
+                          <p>
+                            <strong>3. 데이터베이스 규모</strong>
+                          </p>
+                          <p className="ml-3">
+                            • 데이터베이스 크기는 얼마나 되나요?
+                          </p>
+                          <p className="ml-3">
+                            • 일일 트랜잭션 수는 대략 몇 건인가요?
+                          </p>
+                          <p className="ml-3">
+                            • 동시 사용자 수는 몇 명 정도인가요?
+                          </p>
+                          <br />
+
+                          <p>
+                            <strong>4. 현재 설정</strong>
+                          </p>
+                          <p className="ml-3">
+                            • 인덱스는 적절히 설정되어 있나요?
+                          </p>
+                          <p className="ml-3">
+                            • 백업 및 유지보수 작업 일정이 있나요?
+                          </p>
+                          <p className="ml-3">
+                            • 모니터링 도구를 사용하고 계시나요?
+                          </p>
+                        </div>
+
+                        {/* Separator */}
+                        <div className="bg-border h-px w-full" />
+
+                        {/* 추가 안내 */}
+                        <div className="text-foreground self-stretch text-sm leading-5">
+                          <p>
+                            위 정보를 알려주시면 상황에 맞는 구체적인 성능 개선
+                            방안을 제안해드릴 수 있습니다.
+                          </p>
+                          <br />
+                          <p>
+                            현재 가장 시급한 문제가 무엇인지도 알려주시면
+                            우선순위를 정해 단계적으로 해결해나갈 수 있습니다.
+                          </p>
+                        </div>
+
+                        {/* Separator */}
+                        <div className="bg-border h-px w-full" />
+
+                        {/* 🎯 목적: UIDL 명세에 따른 정보 수집 Plan Card */}
+                        <div className="border-primary flex h-auto w-full flex-col items-start gap-3 self-stretch rounded-[14px] border p-[10px]">
+                          {/* Badge with Plan label */}
+                          <Badge variant="default" className="h-5 gap-1">
+                            <StickyNote />
+                            Plan
+                          </Badge>
+
+                          {/* Plan content */}
+                          <div className="text-foreground self-stretch text-sm leading-5">
+                            <span>
+                              • 데이터베이스 환경과 현재 상황을 파악합니다.
+                            </span>
+                            <br />
+                            <span>• 성능 문제의 원인을 분석합니다.</span>
+                            <br />
+                            <span>• 맞춤형 최적화 방안을 제안합니다.</span>
+                          </div>
+
+                          {/* Information request */}
+                          <div className="text-foreground self-stretch text-sm leading-5">
+                            위 질문들에 답변해주시면 단계별 개선 계획을
+                            수립해드리겠습니다.
+                          </div>
+
+                          {/* Button Group */}
+                          <div className="flex flex-shrink-0 items-start self-stretch">
+                            {/* Skip Button */}
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              className="flex flex-shrink-0 flex-grow items-center justify-center gap-2 rounded-l-md rounded-r-none"
+                            >
+                              <X className="h-4 w-4" />
+                              <span className="text-sm leading-5 font-medium">
+                                Skip
+                              </span>
+                            </Button>
+
+                            {/* Continue Button */}
+                            <Button
+                              variant="default"
+                              size="sm"
+                              className="flex flex-shrink-0 flex-grow items-center justify-center gap-2 rounded-l-none rounded-r-md"
+                            >
+                              <Check className="h-4 w-4" />
+                              <span className="text-sm leading-5 font-medium">
+                                Continue
+                              </span>
+                            </Button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </ScrollArea>
+                </div>
+              </div>
+            </aside>
+          </ResizablePanel>
+        </ResizablePanelGroup>
+      </div>
+    );
+  },
+};
+
 export const AnswersChart: Story = {
   render: () => {
     // 🎯 목적: 채팅 입력 상태 관리 (InputGroup용)
