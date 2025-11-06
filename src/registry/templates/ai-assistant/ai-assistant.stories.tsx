@@ -8,6 +8,7 @@ import {
 import { AIAssistant } from "@/registry/templates/ai-assistant/ai-assistant";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { ButtonGroup } from "@/components/ui/button-group";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import {
   InputGroup,
@@ -1069,49 +1070,6 @@ export const Clarify: Story = {
                           </p>
                           <p className="ml-3">• 특정 시간대에만 발생하나요?</p>
                           <br />
-
-                          <p>
-                            <strong>3. 데이터베이스 규모</strong>
-                          </p>
-                          <p className="ml-3">
-                            • 데이터베이스 크기는 얼마나 되나요?
-                          </p>
-                          <p className="ml-3">
-                            • 일일 트랜잭션 수는 대략 몇 건인가요?
-                          </p>
-                          <p className="ml-3">
-                            • 동시 사용자 수는 몇 명 정도인가요?
-                          </p>
-                          <br />
-
-                          <p>
-                            <strong>4. 현재 설정</strong>
-                          </p>
-                          <p className="ml-3">
-                            • 인덱스는 적절히 설정되어 있나요?
-                          </p>
-                          <p className="ml-3">
-                            • 백업 및 유지보수 작업 일정이 있나요?
-                          </p>
-                          <p className="ml-3">
-                            • 모니터링 도구를 사용하고 계시나요?
-                          </p>
-                        </div>
-
-                        {/* Separator */}
-                        <div className="bg-border h-px w-full" />
-
-                        {/* 추가 안내 */}
-                        <div className="text-foreground self-stretch text-sm leading-5">
-                          <p>
-                            위 정보를 알려주시면 상황에 맞는 구체적인 성능 개선
-                            방안을 제안해드릴 수 있습니다.
-                          </p>
-                          <br />
-                          <p>
-                            현재 가장 시급한 문제가 무엇인지도 알려주시면
-                            우선순위를 정해 단계적으로 해결해나갈 수 있습니다.
-                          </p>
                         </div>
 
                         {/* Separator */}
@@ -1138,36 +1096,63 @@ export const Clarify: Story = {
 
                           {/* Information request */}
                           <div className="text-foreground self-stretch text-sm leading-5">
-                            위 질문들에 답변해주시면 단계별 개선 계획을
-                            수립해드리겠습니다.
+                            어떤 방법으로 진행하시겠습니까?
                           </div>
 
                           {/* Button Group */}
-                          <div className="flex flex-shrink-0 items-start self-stretch">
-                            {/* Skip Button */}
+                          <ButtonGroup
+                            orientation="vertical"
+                            className="w-full"
+                          >
                             <Button
                               variant="outline"
-                              size="sm"
-                              className="flex flex-shrink-0 flex-grow items-center justify-center gap-2 rounded-l-md rounded-r-none"
+                              className="hover:bg-primary hover:text-primary-foreground justify-start gap-2"
                             >
-                              <X className="h-4 w-4" />
-                              <span className="text-sm leading-5 font-medium">
-                                Skip
-                              </span>
+                              <Badge
+                                variant="secondary"
+                                className="h-4 min-w-4 rounded-full px-1 font-mono tabular-nums"
+                              >
+                                1
+                              </Badge>
+                              Method 1
                             </Button>
-
-                            {/* Continue Button */}
                             <Button
-                              variant="default"
-                              size="sm"
-                              className="flex flex-shrink-0 flex-grow items-center justify-center gap-2 rounded-l-none rounded-r-md"
+                              variant="outline"
+                              className="hover:bg-primary hover:text-primary-foreground justify-start gap-2"
                             >
-                              <Check className="h-4 w-4" />
-                              <span className="text-sm leading-5 font-medium">
-                                Continue
-                              </span>
+                              <Badge
+                                variant="secondary"
+                                className="h-4 min-w-4 rounded-full px-1 font-mono tabular-nums"
+                              >
+                                2
+                              </Badge>
+                              Method 2
                             </Button>
-                          </div>
+                            <Button
+                              variant="outline"
+                              className="hover:bg-primary hover:text-primary-foreground justify-start gap-2"
+                            >
+                              <Badge
+                                variant="secondary"
+                                className="h-4 min-w-4 rounded-full px-1 font-mono tabular-nums"
+                              >
+                                3
+                              </Badge>
+                              Method 3
+                            </Button>
+                            <Button
+                              variant="outline"
+                              className="hover:bg-primary hover:text-primary-foreground justify-start gap-2"
+                            >
+                              <Badge
+                                variant="secondary"
+                                className="h-4 min-w-4 rounded-full px-1 font-mono tabular-nums"
+                              >
+                                4
+                              </Badge>
+                              Method 4
+                            </Button>
+                          </ButtonGroup>
                         </div>
                       </div>
                     </div>
