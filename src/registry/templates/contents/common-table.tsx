@@ -880,11 +880,13 @@ export function CommonTable({
                               item.destructive ? "text-destructive" : ""
                             }`}
                           >
-                            <Icon
-                              className={`absolute top-1/2 left-2 h-4 w-4 -translate-y-1/2 ${
-                                item.destructive ? "text-destructive" : ""
-                              }`}
-                            />
+                            {Icon && (
+                              <Icon
+                                className={`absolute top-1/2 left-2 h-4 w-4 -translate-y-1/2 ${
+                                  item.destructive ? "text-destructive" : ""
+                                }`}
+                              />
+                            )}
                             {item.label}
                           </DropdownMenuItem>
                         );
