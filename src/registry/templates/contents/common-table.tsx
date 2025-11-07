@@ -20,6 +20,8 @@ import {
   Play,
   Ruler,
   Download,
+  ArrowUpToLine,
+  OctagonPause,
 } from "lucide-react";
 import {
   ColumnDef,
@@ -585,6 +587,20 @@ export function CommonTable({
       label: "Scale",
       icon: Ruler,
       action: () => console.log("Scale clicked"),
+      destructive: false,
+    },
+    {
+      id: "upgrade",
+      label: "Upgrade",
+      icon: ArrowUpToLine,
+      action: () => console.log("Upgrade clicked"),
+      destructive: false,
+    },
+    {
+      id: "suspend",
+      label: "Suspend",
+      icon: OctagonPause,
+      action: () => console.log("Suspend clicked"),
       destructive: false,
     },
     { id: "separator", type: "separator" },
