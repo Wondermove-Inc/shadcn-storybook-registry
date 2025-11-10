@@ -203,29 +203,49 @@ export const Home: Story = {
         version: "1.01",
         provider: "digitalocean",
       },
-      { id: "5", name: "Aws Development", version: "1.01", provider: "aws" },
+      {
+        id: "5",
+        name: "IBM Cloud Development",
+        version: "1.01",
+        provider: "ibm",
+      },
     ];
 
-    // 🎯 목적: 각 클라우드 프로바이더별 흑백 로고 컴포넌트 렌더링
+    // 🎯 목적: 각 클라우드 프로바이더별 로고 이미지 렌더링
     const getProviderLogo = (provider: string) => {
-      const logoConfig: Record<string, { text: string; bg: string }> = {
-        aws: { text: "AWS", bg: "#232F3E" },
-        gcp: { text: "GCP", bg: "#4285F4" },
-        azure: { text: "Azure", bg: "#0078D4" },
-        openshift: { text: "OS", bg: "#EE0000" },
-        digitalocean: { text: "DO", bg: "#0080FF" },
+      const logoConfig: Record<string, { image: string; alt: string }> = {
+        azure: { image: "/images/apps/azure.png", alt: "Microsoft Azure" },
+        gcp: {
+          image: "/images/apps/google-cloud.png",
+          alt: "Google Cloud Platform",
+        },
+        openshift: { image: "/images/apps/openshift.png", alt: "OpenShift" },
+        digitalocean: {
+          image: "/images/apps/digital-ocean.png",
+          alt: "DigitalOcean",
+        },
+        ibm: { image: "/images/apps/ibm-cloud.png", alt: "IBM Cloud" },
       };
 
-      const config = logoConfig[provider] || { text: "?", bg: "#666666" };
+      const config = logoConfig[provider] || {
+        image: "",
+        alt: "Unknown Provider",
+      };
 
       return (
         <div
-          className="bg-muted flex h-10 w-10 items-center justify-center rounded"
+          className="flex h-10 w-10 items-center justify-center"
           style={{ filter: "grayscale(100%)" }}
         >
-          <span className="text-foreground text-xs font-bold">
-            {config.text}
-          </span>
+          {config.image ? (
+            <img
+              src={config.image}
+              alt={config.alt}
+              className="h-full w-full object-contain"
+            />
+          ) : (
+            <span className="text-foreground text-xs font-bold">?</span>
+          )}
         </div>
       );
     };
