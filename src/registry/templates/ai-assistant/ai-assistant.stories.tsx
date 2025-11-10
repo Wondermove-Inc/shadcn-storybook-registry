@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { ButtonGroup } from "@/components/ui/button-group";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { Textarea } from "@/components/ui/textarea";
 import {
   InputGroup,
   InputGroupAddon,
@@ -45,6 +46,7 @@ import {
   Infinity,
   ChevronDown,
   ArrowUp,
+  ArrowRight,
   ChevronRight,
   Copy,
   MoreHorizontal,
@@ -897,6 +899,18 @@ export const Clarify: Story = {
     const [userMessageText, setUserMessageText] =
       React.useState("데이터베이스 성능을 개선해줘.");
 
+    // 🎯 목적: Multi-select 방식의 Method 선택 상태 관리 (기본값: Method 1 선택)
+    const [selectedMethods, setSelectedMethods] = React.useState<number[]>([1]);
+
+    // 🎯 목적: Method 버튼 클릭 핸들러 (토글 방식)
+    const handleMethodToggle = (methodId: number) => {
+      setSelectedMethods((prev) =>
+        prev.includes(methodId)
+          ? prev.filter((id) => id !== methodId)
+          : [...prev, methodId],
+      );
+    };
+
     return (
       <div className="bg-background h-screen w-full">
         <ResizablePanelGroup direction="horizontal" className="h-full w-full">
@@ -1062,14 +1076,6 @@ export const Clarify: Story = {
                           </p>
                           <p className="ml-6">- 느린 쿼리 실행 시간</p>
                           <p className="ml-6">- 높은 CPU 사용률</p>
-                          <p className="ml-6">- 메모리 부족</p>
-                          <p className="ml-6">- 동시 연결 수 제한</p>
-                          <p className="ml-6">- 디스크 I/O 병목</p>
-                          <p className="ml-3">
-                            • 문제가 언제부터 시작되었나요?
-                          </p>
-                          <p className="ml-3">• 특정 시간대에만 발생하나요?</p>
-                          <br />
                         </div>
 
                         {/* Separator */}
@@ -1096,7 +1102,7 @@ export const Clarify: Story = {
 
                           {/* Information request */}
                           <div className="text-foreground self-stretch text-sm leading-5">
-                            어떤 방법으로 진행하시겠습니까?
+                            원하시는 작업 방향을 모두 선택해 주세요.
                           </div>
 
                           {/* Button Group */}
@@ -1106,7 +1112,12 @@ export const Clarify: Story = {
                           >
                             <Button
                               variant="outline"
-                              className="hover:bg-primary hover:text-primary-foreground justify-start gap-2"
+                              className={`justify-start gap-2 ${
+                                selectedMethods.includes(1)
+                                  ? "bg-primary dark:bg-primary text-primary-foreground hover:bg-primary/90"
+                                  : "hover:bg-input/50"
+                              }`}
+                              onClick={() => handleMethodToggle(1)}
                             >
                               <Badge
                                 variant="secondary"
@@ -1115,10 +1126,18 @@ export const Clarify: Story = {
                                 1
                               </Badge>
                               Method 1
+                              <Check
+                                className={`ml-auto h-4 w-4 ${selectedMethods.includes(1) ? "" : "invisible"}`}
+                              />
                             </Button>
                             <Button
                               variant="outline"
-                              className="hover:bg-primary hover:text-primary-foreground justify-start gap-2"
+                              className={`justify-start gap-2 ${
+                                selectedMethods.includes(2)
+                                  ? "bg-primary dark:bg-primary text-primary-foreground hover:bg-primary/90"
+                                  : "hover:bg-input/50"
+                              }`}
+                              onClick={() => handleMethodToggle(2)}
                             >
                               <Badge
                                 variant="secondary"
@@ -1127,10 +1146,18 @@ export const Clarify: Story = {
                                 2
                               </Badge>
                               Method 2
+                              <Check
+                                className={`ml-auto h-4 w-4 ${selectedMethods.includes(2) ? "" : "invisible"}`}
+                              />
                             </Button>
                             <Button
                               variant="outline"
-                              className="hover:bg-primary hover:text-primary-foreground justify-start gap-2"
+                              className={`justify-start gap-2 ${
+                                selectedMethods.includes(3)
+                                  ? "bg-primary dark:bg-primary text-primary-foreground hover:bg-primary/90"
+                                  : "hover:bg-input/50"
+                              }`}
+                              onClick={() => handleMethodToggle(3)}
                             >
                               <Badge
                                 variant="secondary"
@@ -1139,10 +1166,18 @@ export const Clarify: Story = {
                                 3
                               </Badge>
                               Method 3
+                              <Check
+                                className={`ml-auto h-4 w-4 ${selectedMethods.includes(3) ? "" : "invisible"}`}
+                              />
                             </Button>
                             <Button
                               variant="outline"
-                              className="hover:bg-primary hover:text-primary-foreground justify-start gap-2"
+                              className={`justify-start gap-2 ${
+                                selectedMethods.includes(4)
+                                  ? "bg-primary dark:bg-primary text-primary-foreground hover:bg-primary/90"
+                                  : "hover:bg-input/50"
+                              }`}
+                              onClick={() => handleMethodToggle(4)}
                             >
                               <Badge
                                 variant="secondary"
@@ -1150,9 +1185,34 @@ export const Clarify: Story = {
                               >
                                 4
                               </Badge>
-                              Method 4
+                              Typing
+                              <Check
+                                className={`ml-auto h-4 w-4 ${selectedMethods.includes(4) ? "" : "invisible"}`}
+                              />
                             </Button>
                           </ButtonGroup>
+
+                          {/* 🎯 목적: Method 4(Typing) 선택 시 표시되는 Textarea */}
+                          {selectedMethods.includes(4) && (
+                            <Textarea
+                              placeholder="추가 정보를 입력해 주세요..."
+                              className="-mt-0.5 h-16 resize-y"
+                              rows={3}
+                            />
+                          )}
+
+                          {/* 🎯 목적: Proceed 버튼 (우측 하단 정렬) */}
+                          <div className="flex w-full justify-end">
+                            <Button
+                              size="sm"
+                              variant="default"
+                              disabled={selectedMethods.length === 0}
+                              className="gap-2 px-3"
+                            >
+                              Proceed
+                              <ArrowRight className="h-4 w-4" />
+                            </Button>
+                          </div>
                         </div>
                       </div>
                     </div>
