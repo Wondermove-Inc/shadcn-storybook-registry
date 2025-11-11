@@ -35,6 +35,13 @@ import {
   EllipsisVertical,
   CircleHelp,
 } from "lucide-react";
+import { Bar, BarChart, XAxis, YAxis } from "recharts";
+import {
+  ChartConfig,
+  ChartContainer,
+  ChartTooltip,
+  ChartTooltipContent,
+} from "@/components/ui/chart";
 
 /**
  * Welcome 콘텐츠 컴포넌트 - Kubernetes IDE 환경의 웰컴 페이지
@@ -183,6 +190,12 @@ interface ClusterRowData {
   name: string;
   version: string;
   provider: string;
+  podStatus: {
+    running: number;
+    pending: number;
+    succeeded: number;
+    unknown: number;
+  };
 }
 
 /**
@@ -192,22 +205,42 @@ interface ClusterRowData {
  */
 export const Home: Story = {
   render: () => {
-    // 🎯 목적: 클러스터 테이블 데이터 관리 (프로바이더 정보 포함)
+    // 🎯 목적: 클러스터 테이블 데이터 관리 (프로바이더 정보 및 Pod Status 포함)
     const clusters: ClusterRowData[] = [
-      { id: "1", name: "AzurProd", version: "1.01", provider: "azure" },
-      { id: "2", name: "GcloudStage", version: "1.01", provider: "gcp" },
-      { id: "3", name: "OpenShift", version: "1.01", provider: "openshift" },
+      {
+        id: "1",
+        name: "AzurProd",
+        version: "1.01",
+        provider: "azure",
+        podStatus: { running: 45, pending: 3, succeeded: 12, unknown: 1 },
+      },
+      {
+        id: "2",
+        name: "GcloudStage",
+        version: "1.01",
+        provider: "gcp",
+        podStatus: { running: 32, pending: 5, succeeded: 8, unknown: 2 },
+      },
+      {
+        id: "3",
+        name: "OpenShift",
+        version: "1.01",
+        provider: "openshift",
+        podStatus: { running: 28, pending: 2, succeeded: 15, unknown: 0 },
+      },
       {
         id: "4",
         name: "DigitalOceanddlMetrics Co",
         version: "1.01",
         provider: "digitalocean",
+        podStatus: { running: 18, pending: 8, succeeded: 6, unknown: 3 },
       },
       {
         id: "5",
         name: "IBM Cloud Development",
         version: "1.01",
         provider: "ibm",
+        podStatus: { running: 52, pending: 1, succeeded: 20, unknown: 1 },
       },
     ];
 
@@ -246,6 +279,103 @@ export const Home: Story = {
           ) : (
             <span className="text-foreground text-xs font-bold">?</span>
           )}
+        </div>
+      );
+    };
+
+    // 🎯 목적: Pod Status를 가로 stacked bar chart로 시각화 (ChartContainer 기반)
+    const PodStatusChart = ({
+      podStatus,
+    }: {
+      podStatus: ClusterRowData["podStatus"];
+    }) => {
+      // 🎯 목적: 차트 데이터 (실제 Pod 수 저장, stackOffset="expand"로 비율 렌더링)
+      const chartData = [
+        {
+          pods: "status",
+          running: podStatus.running,
+          pending: podStatus.pending,
+          succeeded: podStatus.succeeded,
+          unknown: podStatus.unknown,
+        },
+      ];
+
+      // 🎯 목적: 전체 Pod 수 계산 (오른쪽 표시용)
+      const total =
+        podStatus.running +
+        podStatus.pending +
+        podStatus.succeeded +
+        podStatus.unknown;
+
+      // 🎯 목적: Chart 색상 설정 (Storybook chart CSS 변수 사용 - 역순)
+      const chartConfig = {
+        running: {
+          label: "Running",
+          color: "var(--chart-4)", // Chart color 4 - Pod 실행 중
+        },
+        pending: {
+          label: "Pending",
+          color: "var(--chart-3)", // Chart color 3 - Pod 대기 중
+        },
+        succeeded: {
+          label: "Succeeded",
+          color: "var(--chart-2)", // Chart color 2 - Pod 성공 완료
+        },
+        unknown: {
+          label: "Unknown",
+          color: "var(--chart-1)", // Chart color 1 - Pod 상태 알 수 없음
+        },
+      } satisfies ChartConfig;
+
+      return (
+        <div className="flex h-8 w-full items-center gap-2">
+          {/* 가로 Stacked Bar Chart */}
+          <div className="h-full flex-1">
+            <ChartContainer config={chartConfig} className="h-full w-full">
+              <BarChart
+                data={chartData}
+                layout="vertical"
+                margin={{ top: 0, right: 0, bottom: 0, left: 0 }}
+                barSize={20}
+                stackOffset="expand"
+              >
+                <XAxis type="number" hide />
+                <YAxis type="category" dataKey="pods" hide />
+                <ChartTooltip
+                  content={<ChartTooltipContent hideLabel />}
+                  cursor={false}
+                  wrapperStyle={{ zIndex: 9999 }}
+                />
+                <Bar
+                  dataKey="running"
+                  stackId="stack"
+                  fill="var(--color-running)"
+                  radius={[4, 0, 0, 4]}
+                />
+                <Bar
+                  dataKey="pending"
+                  stackId="stack"
+                  fill="var(--color-pending)"
+                />
+                <Bar
+                  dataKey="succeeded"
+                  stackId="stack"
+                  fill="var(--color-succeeded)"
+                />
+                <Bar
+                  dataKey="unknown"
+                  stackId="stack"
+                  fill="var(--color-unknown)"
+                  radius={[0, 4, 4, 0]}
+                />
+              </BarChart>
+            </ChartContainer>
+          </div>
+
+          {/* 전체 Pod 수 표시 */}
+          <span className="text-muted-foreground text-xs font-medium">
+            {total}
+          </span>
         </div>
       );
     };
@@ -359,45 +489,48 @@ export const Home: Story = {
                 <Table>
                   <TableHeader>
                     <TableRow className="border-b">
-                      <TableHead className="text-foreground text-left text-sm font-medium">
+                      <TableHead className="text-foreground w-[60px] text-left text-sm font-medium">
                         Clusters
                       </TableHead>
-                      <TableHead className="text-foreground text-left text-sm font-medium">
+                      <TableHead className="text-foreground w-[150px] text-left text-sm font-medium">
                         Display Name
                       </TableHead>
-                      <TableHead className="text-foreground text-left text-sm font-medium">
+                      <TableHead className="text-foreground w-[80px] text-left text-sm font-medium">
                         Version
                       </TableHead>
-                      <TableHead className="text-foreground text-left text-sm font-medium">
+                      <TableHead className="text-foreground w-[200px] text-left text-sm font-medium">
                         Nodes CPU/MEM
                       </TableHead>
-                      <TableHead className="text-foreground text-left text-sm font-medium">
+                      <TableHead className="text-foreground w-[200px] text-left text-sm font-medium">
                         Pods Status
                       </TableHead>
-                      <TableHead className="text-foreground text-right text-sm font-medium">
+                      <TableHead className="text-foreground w-[80px] text-right text-sm font-medium">
                         Setting
                       </TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
                     {clusters.map((cluster) => (
-                      <TableRow key={cluster.id} className="border-b">
-                        <TableCell className="text-foreground">
+                      <TableRow
+                        key={cluster.id}
+                        className="border-b hover:relative hover:z-[100]"
+                      >
+                        <TableCell className="text-foreground w-[60px]">
                           {getProviderLogo(cluster.provider)}
                         </TableCell>
-                        <TableCell className="text-foreground">
+                        <TableCell className="text-foreground w-[150px]">
                           <div className="text-sm">{cluster.name}</div>
                         </TableCell>
-                        <TableCell className="text-foreground">
+                        <TableCell className="text-foreground w-[80px]">
                           <div className="text-sm">{cluster.version}</div>
                         </TableCell>
-                        <TableCell className="text-foreground">
+                        <TableCell className="text-foreground w-[200px]">
                           <div className="text-sm">Table Cell Text</div>
                         </TableCell>
-                        <TableCell className="text-foreground">
-                          <div className="text-sm">Table Cell Text</div>
+                        <TableCell className="text-foreground relative z-50 w-[200px]">
+                          <PodStatusChart podStatus={cluster.podStatus} />
                         </TableCell>
-                        <TableCell className="text-foreground text-right">
+                        <TableCell className="text-foreground w-[80px] text-right">
                           <DropdownMenu>
                             <DropdownMenuTrigger asChild>
                               <Button
