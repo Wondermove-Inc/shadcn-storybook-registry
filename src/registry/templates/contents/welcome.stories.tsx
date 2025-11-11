@@ -34,14 +34,23 @@ import {
   RefreshCcw,
   EllipsisVertical,
   CircleHelp,
+  ArrowUpDown,
 } from "lucide-react";
-import { Bar, BarChart, XAxis, YAxis } from "recharts";
+import { Area, AreaChart, Bar, BarChart, XAxis, YAxis } from "recharts";
 import {
   ChartConfig,
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart";
+import {
+  useReactTable,
+  getCoreRowModel,
+  getSortedRowModel,
+  flexRender,
+  type ColumnDef,
+  type SortingState,
+} from "@tanstack/react-table";
 
 /**
  * Welcome 콘텐츠 컴포넌트 - Kubernetes IDE 환경의 웰컴 페이지
@@ -196,6 +205,8 @@ interface ClusterRowData {
     succeeded: number;
     unknown: number;
   };
+  cpuUsage: Array<{ time: string; usage: number }>;
+  memoryUsage: Array<{ time: string; usage: number }>;
 }
 
 /**
@@ -205,47 +216,130 @@ interface ClusterRowData {
  */
 export const Home: Story = {
   render: () => {
-    // 🎯 목적: 클러스터 테이블 데이터 관리 (프로바이더 정보 및 Pod Status 포함)
+    // 🎯 목적: 클러스터 테이블 데이터 관리 (프로바이더 정보, Pod Status, CPU/Memory 시계열 포함)
     const clusters: ClusterRowData[] = [
       {
         id: "1",
         name: "AzurProd",
-        version: "1.01",
+        version: "1.28",
         provider: "azure",
         podStatus: { running: 45, pending: 3, succeeded: 12, unknown: 1 },
+        cpuUsage: [
+          { time: "00:00", usage: 45 },
+          { time: "04:00", usage: 52 },
+          { time: "08:00", usage: 48 },
+          { time: "12:00", usage: 65 },
+          { time: "16:00", usage: 58 },
+          { time: "20:00", usage: 62 },
+        ],
+        memoryUsage: [
+          { time: "00:00", usage: 72 },
+          { time: "04:00", usage: 75 },
+          { time: "08:00", usage: 78 },
+          { time: "12:00", usage: 82 },
+          { time: "16:00", usage: 79 },
+          { time: "20:00", usage: 76 },
+        ],
       },
       {
         id: "2",
         name: "GcloudStage",
-        version: "1.01",
+        version: "1.27",
         provider: "gcp",
         podStatus: { running: 32, pending: 5, succeeded: 8, unknown: 2 },
+        cpuUsage: [
+          { time: "00:00", usage: 35 },
+          { time: "04:00", usage: 42 },
+          { time: "08:00", usage: 38 },
+          { time: "12:00", usage: 55 },
+          { time: "16:00", usage: 48 },
+          { time: "20:00", usage: 45 },
+        ],
+        memoryUsage: [
+          { time: "00:00", usage: 62 },
+          { time: "04:00", usage: 65 },
+          { time: "08:00", usage: 68 },
+          { time: "12:00", usage: 72 },
+          { time: "16:00", usage: 69 },
+          { time: "20:00", usage: 66 },
+        ],
       },
       {
         id: "3",
         name: "OpenShift",
-        version: "1.01",
+        version: "1.26",
         provider: "openshift",
         podStatus: { running: 28, pending: 2, succeeded: 15, unknown: 0 },
+        cpuUsage: [
+          { time: "00:00", usage: 25 },
+          { time: "04:00", usage: 32 },
+          { time: "08:00", usage: 28 },
+          { time: "12:00", usage: 45 },
+          { time: "16:00", usage: 38 },
+          { time: "20:00", usage: 35 },
+        ],
+        memoryUsage: [
+          { time: "00:00", usage: 52 },
+          { time: "04:00", usage: 55 },
+          { time: "08:00", usage: 58 },
+          { time: "12:00", usage: 62 },
+          { time: "16:00", usage: 59 },
+          { time: "20:00", usage: 56 },
+        ],
       },
       {
         id: "4",
         name: "DigitalOceanddlMetrics Co",
-        version: "1.01",
+        version: "1.25",
         provider: "digitalocean",
         podStatus: { running: 18, pending: 8, succeeded: 6, unknown: 3 },
+        cpuUsage: [
+          { time: "00:00", usage: 55 },
+          { time: "04:00", usage: 62 },
+          { time: "08:00", usage: 58 },
+          { time: "12:00", usage: 75 },
+          { time: "16:00", usage: 68 },
+          { time: "20:00", usage: 65 },
+        ],
+        memoryUsage: [
+          { time: "00:00", usage: 82 },
+          { time: "04:00", usage: 85 },
+          { time: "08:00", usage: 88 },
+          { time: "12:00", usage: 92 },
+          { time: "16:00", usage: 89 },
+          { time: "20:00", usage: 86 },
+        ],
       },
       {
         id: "5",
         name: "IBM Cloud Development",
-        version: "1.01",
+        version: "1.29",
         provider: "ibm",
         podStatus: { running: 52, pending: 1, succeeded: 20, unknown: 1 },
+        cpuUsage: [
+          { time: "00:00", usage: 65 },
+          { time: "04:00", usage: 72 },
+          { time: "08:00", usage: 68 },
+          { time: "12:00", usage: 85 },
+          { time: "16:00", usage: 78 },
+          { time: "20:00", usage: 75 },
+        ],
+        memoryUsage: [
+          { time: "00:00", usage: 88 },
+          { time: "04:00", usage: 92 },
+          { time: "08:00", usage: 90 },
+          { time: "12:00", usage: 95 },
+          { time: "16:00", usage: 93 },
+          { time: "20:00", usage: 91 },
+        ],
       },
     ];
 
+    // 🎯 목적: TanStack Table 정렬 상태 관리
+    const [sorting, setSorting] = React.useState<SortingState>([]);
+
     // 🎯 목적: 각 클라우드 프로바이더별 로고 이미지 렌더링
-    const getProviderLogo = (provider: string) => {
+    const getProviderLogo = React.useCallback((provider: string) => {
       const logoConfig: Record<string, { image: string; alt: string }> = {
         azure: { image: "/images/apps/azure.png", alt: "Microsoft Azure" },
         gcp: {
@@ -281,7 +375,139 @@ export const Home: Story = {
           )}
         </div>
       );
-    };
+    }, []);
+
+    // 🎯 목적: TanStack Table 컬럼 정의 (정렬 가능한 컬럼 포함)
+    const columns = React.useMemo<ColumnDef<ClusterRowData>[]>(
+      () => [
+        {
+          id: "provider",
+          accessorKey: "provider",
+          header: "Clusters",
+          cell: ({ row }) => getProviderLogo(row.original.provider),
+          enableSorting: false,
+        },
+        {
+          id: "name",
+          accessorKey: "name",
+          header: "Display Name",
+          cell: ({ row }) => <div className="text-sm">{row.original.name}</div>,
+          enableSorting: false,
+        },
+        {
+          id: "version",
+          accessorKey: "version",
+          header: ({ column }) => (
+            <Button
+              variant="ghost"
+              className="px-2"
+              onClick={() =>
+                column.toggleSorting(column.getIsSorted() === "asc")
+              }
+            >
+              Version
+              <ArrowUpDown />
+            </Button>
+          ),
+          cell: ({ row }) => (
+            <div className="px-3 text-sm">{row.original.version}</div>
+          ),
+        },
+        {
+          id: "cpuUsage",
+          accessorFn: (row) =>
+            row.cpuUsage[row.cpuUsage.length - 1]?.usage || 0,
+          header: ({ column }) => (
+            <Button
+              variant="ghost"
+              className="px-2"
+              onClick={() =>
+                column.toggleSorting(column.getIsSorted() === "asc")
+              }
+            >
+              CPU Usg.
+              <ArrowUpDown />
+            </Button>
+          ),
+          cell: ({ row }) => (
+            <div className="px-3">
+              <CPUUsageChart data={row.original.cpuUsage} />
+            </div>
+          ),
+        },
+        {
+          id: "memoryUsage",
+          accessorFn: (row) =>
+            row.memoryUsage[row.memoryUsage.length - 1]?.usage || 0,
+          header: ({ column }) => (
+            <Button
+              variant="ghost"
+              className="px-2"
+              onClick={() =>
+                column.toggleSorting(column.getIsSorted() === "asc")
+              }
+            >
+              Mem Usg.
+              <ArrowUpDown />
+            </Button>
+          ),
+          cell: ({ row }) => (
+            <div className="px-3">
+              <MemoryUsageChart data={row.original.memoryUsage} />
+            </div>
+          ),
+        },
+        {
+          id: "podStatus",
+          accessorFn: (row) =>
+            row.podStatus.running +
+            row.podStatus.pending +
+            row.podStatus.succeeded +
+            row.podStatus.unknown,
+          header: "Pods Status",
+          cell: ({ row }) => (
+            <PodStatusChart podStatus={row.original.podStatus} />
+          ),
+          enableSorting: false,
+        },
+        {
+          id: "setting",
+          header: () => <div className="text-right"></div>,
+          cell: () => (
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="h-9 w-9 rounded-lg p-2"
+                >
+                  <EllipsisVertical className="h-4 w-4" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                <DropdownMenuItem>Edit</DropdownMenuItem>
+                <DropdownMenuItem>Delete</DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          ),
+          enableSorting: false,
+        },
+      ],
+      [getProviderLogo],
+    );
+
+    // 🎯 목적: TanStack Table 인스턴스 생성
+    const table = useReactTable({
+      data: clusters,
+      columns,
+      state: {
+        sorting,
+      },
+      onSortingChange: setSorting,
+      getCoreRowModel: getCoreRowModel(),
+      getSortedRowModel: getSortedRowModel(),
+      autoResetPageIndex: false,
+    });
 
     // 🎯 목적: Pod Status를 가로 stacked bar chart로 시각화 (ChartContainer 기반)
     const PodStatusChart = ({
@@ -376,6 +602,102 @@ export const Home: Story = {
           <span className="text-muted-foreground text-xs font-medium">
             {total}
           </span>
+        </div>
+      );
+    };
+
+    // 🎯 목적: CPU 사용량을 Area chart gradient로 시각화
+    const CPUUsageChart = ({
+      data,
+    }: {
+      data: Array<{ time: string; usage: number }>;
+    }) => {
+      const chartConfig = {
+        usage: {
+          label: "CPU",
+          color: "var(--chart-1)",
+        },
+      } satisfies ChartConfig;
+
+      return (
+        <div className="h-8 w-full">
+          <ChartContainer config={chartConfig} className="h-full w-full">
+            <AreaChart
+              data={data}
+              margin={{ top: 0, right: 0, bottom: 0, left: 0 }}
+            >
+              <defs>
+                <linearGradient id="fillCPU" x1="0" y1="0" x2="0" y2="1">
+                  <stop
+                    offset="5%"
+                    stopColor="var(--color-usage)"
+                    stopOpacity={0.8}
+                  />
+                  <stop
+                    offset="95%"
+                    stopColor="var(--color-usage)"
+                    stopOpacity={0.1}
+                  />
+                </linearGradient>
+              </defs>
+              <Area
+                dataKey="usage"
+                type="natural"
+                fill="url(#fillCPU)"
+                fillOpacity={0.4}
+                stroke="var(--color-usage)"
+                strokeWidth={2}
+              />
+            </AreaChart>
+          </ChartContainer>
+        </div>
+      );
+    };
+
+    // 🎯 목적: Memory 사용량을 Area chart gradient로 시각화
+    const MemoryUsageChart = ({
+      data,
+    }: {
+      data: Array<{ time: string; usage: number }>;
+    }) => {
+      const chartConfig = {
+        usage: {
+          label: "Memory",
+          color: "var(--chart-2)",
+        },
+      } satisfies ChartConfig;
+
+      return (
+        <div className="h-8 w-full">
+          <ChartContainer config={chartConfig} className="h-full w-full">
+            <AreaChart
+              data={data}
+              margin={{ top: 0, right: 0, bottom: 0, left: 0 }}
+            >
+              <defs>
+                <linearGradient id="fillMemory" x1="0" y1="0" x2="0" y2="1">
+                  <stop
+                    offset="5%"
+                    stopColor="var(--color-usage)"
+                    stopOpacity={0.8}
+                  />
+                  <stop
+                    offset="95%"
+                    stopColor="var(--color-usage)"
+                    stopOpacity={0.1}
+                  />
+                </linearGradient>
+              </defs>
+              <Area
+                dataKey="usage"
+                type="natural"
+                fill="url(#fillMemory)"
+                fillOpacity={0.4}
+                stroke="var(--color-usage)"
+                strokeWidth={2}
+              />
+            </AreaChart>
+          </ChartContainer>
         </div>
       );
     };
@@ -484,69 +806,77 @@ export const Home: Story = {
                 Clusters Management
               </span>
 
-              {/* 클러스터 테이블 - 간단한 정적 테이블 */}
+              {/* 클러스터 테이블 - TanStack Table 정렬 기능 적용 */}
               <div className="w-full">
-                <Table>
+                <Table className="table-fixed">
                   <TableHeader>
-                    <TableRow className="border-b">
-                      <TableHead className="text-foreground w-[60px] text-left text-sm font-medium">
-                        Clusters
-                      </TableHead>
-                      <TableHead className="text-foreground w-[150px] text-left text-sm font-medium">
-                        Display Name
-                      </TableHead>
-                      <TableHead className="text-foreground w-[80px] text-left text-sm font-medium">
-                        Version
-                      </TableHead>
-                      <TableHead className="text-foreground w-[200px] text-left text-sm font-medium">
-                        Nodes CPU/MEM
-                      </TableHead>
-                      <TableHead className="text-foreground w-[200px] text-left text-sm font-medium">
-                        Pods Status
-                      </TableHead>
-                      <TableHead className="text-foreground w-[80px] text-right text-sm font-medium">
-                        Setting
-                      </TableHead>
-                    </TableRow>
+                    {table.getHeaderGroups().map((headerGroup) => (
+                      <TableRow key={headerGroup.id} className="border-b">
+                        {headerGroup.headers.map((header) => (
+                          <TableHead
+                            key={header.id}
+                            className={`text-foreground ${
+                              header.column.id === "provider"
+                                ? "w-[60px]"
+                                : header.column.id === "name"
+                                  ? "w-[200px]"
+                                  : header.column.id === "version"
+                                    ? "w-[60px]"
+                                    : header.column.id === "cpuUsage"
+                                      ? "w-[100px]"
+                                      : header.column.id === "memoryUsage"
+                                        ? "w-[100px]"
+                                        : header.column.id === "podStatus"
+                                          ? "w-[180px]"
+                                          : header.column.id === "setting"
+                                            ? "w-[60px] text-right"
+                                            : ""
+                            } text-sm font-medium`}
+                          >
+                            {header.isPlaceholder
+                              ? null
+                              : flexRender(
+                                  header.column.columnDef.header,
+                                  header.getContext(),
+                                )}
+                          </TableHead>
+                        ))}
+                      </TableRow>
+                    ))}
                   </TableHeader>
                   <TableBody>
-                    {clusters.map((cluster) => (
+                    {table.getRowModel().rows.map((row) => (
                       <TableRow
-                        key={cluster.id}
+                        key={row.id}
                         className="border-b hover:relative hover:z-[100]"
                       >
-                        <TableCell className="text-foreground w-[60px]">
-                          {getProviderLogo(cluster.provider)}
-                        </TableCell>
-                        <TableCell className="text-foreground w-[150px]">
-                          <div className="text-sm">{cluster.name}</div>
-                        </TableCell>
-                        <TableCell className="text-foreground w-[80px]">
-                          <div className="text-sm">{cluster.version}</div>
-                        </TableCell>
-                        <TableCell className="text-foreground w-[200px]">
-                          <div className="text-sm">Table Cell Text</div>
-                        </TableCell>
-                        <TableCell className="text-foreground relative z-50 w-[200px]">
-                          <PodStatusChart podStatus={cluster.podStatus} />
-                        </TableCell>
-                        <TableCell className="text-foreground w-[80px] text-right">
-                          <DropdownMenu>
-                            <DropdownMenuTrigger asChild>
-                              <Button
-                                variant="ghost"
-                                size="icon"
-                                className="h-9 w-9 rounded-lg p-2"
-                              >
-                                <EllipsisVertical className="h-4 w-4" />
-                              </Button>
-                            </DropdownMenuTrigger>
-                            <DropdownMenuContent align="end">
-                              <DropdownMenuItem>Edit</DropdownMenuItem>
-                              <DropdownMenuItem>Delete</DropdownMenuItem>
-                            </DropdownMenuContent>
-                          </DropdownMenu>
-                        </TableCell>
+                        {row.getVisibleCells().map((cell) => (
+                          <TableCell
+                            key={cell.id}
+                            className={`text-foreground ${
+                              cell.column.id === "provider"
+                                ? "w-[60px]"
+                                : cell.column.id === "name"
+                                  ? "w-[200px]"
+                                  : cell.column.id === "version"
+                                    ? "w-[60px]"
+                                    : cell.column.id === "cpuUsage"
+                                      ? "w-[100px]"
+                                      : cell.column.id === "memoryUsage"
+                                        ? "w-[100px]"
+                                        : cell.column.id === "podStatus"
+                                          ? "relative z-50 w-[180px]"
+                                          : cell.column.id === "setting"
+                                            ? "w-[60px] text-right"
+                                            : ""
+                            }`}
+                          >
+                            {flexRender(
+                              cell.column.columnDef.cell,
+                              cell.getContext(),
+                            )}
+                          </TableCell>
+                        ))}
                       </TableRow>
                     ))}
                   </TableBody>
