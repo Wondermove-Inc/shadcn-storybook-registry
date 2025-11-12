@@ -43,6 +43,7 @@ import {
   CircleHelp,
   ArrowUpDown,
   Megaphone,
+  Info,
 } from "lucide-react";
 import { Area, AreaChart, Bar, BarChart, XAxis, YAxis } from "recharts";
 import {
@@ -1254,61 +1255,6 @@ export const HomeNodata: Story = {
     });
 
     const tableContainerRef = React.useRef<HTMLDivElement | null>(null);
-    const cpuHeaderRef = React.useRef<HTMLTableCellElement | null>(null);
-    const memoryHeaderRef = React.useRef<HTMLTableCellElement | null>(null);
-    const [overlayPosition, setOverlayPosition] = React.useState<{
-      left: number;
-      width: number;
-      top: number;
-      height: number;
-    }>({
-      left: 0,
-      width: 0,
-      top: 0,
-      height: 0,
-    });
-
-    React.useLayoutEffect(() => {
-      const updateOverlayPosition = () => {
-        const container = tableContainerRef.current;
-        const cpuHeader = cpuHeaderRef.current;
-        const memHeader = memoryHeaderRef.current;
-
-        if (!container || !cpuHeader || !memHeader) {
-          return;
-        }
-
-        const containerRect = container.getBoundingClientRect();
-        const cpuRect = cpuHeader.getBoundingClientRect();
-        const memRect = memHeader.getBoundingClientRect();
-
-        const tbody = container.querySelector("tbody");
-        const tbodyRect = tbody?.getBoundingClientRect();
-
-        const left = cpuRect.left - containerRect.left;
-        const width = memRect.right - cpuRect.left;
-        const top = tbodyRect
-          ? tbodyRect.top - containerRect.top
-          : cpuRect.bottom - containerRect.top;
-        const height = tbodyRect
-          ? tbodyRect.height
-          : containerRect.height - top;
-
-        setOverlayPosition({
-          left,
-          width,
-          top,
-          height,
-        });
-      };
-
-      updateOverlayPosition();
-      window.addEventListener("resize", updateOverlayPosition);
-
-      return () => {
-        window.removeEventListener("resize", updateOverlayPosition);
-      };
-    }, []);
 
     // 🎯 목적: Pod Status를 가로 stacked bar chart로 시각화 (ChartContainer 기반)
     const PodStatusChart = ({
@@ -1644,13 +1590,6 @@ export const HomeNodata: Story = {
                                             ? "w-[60px] text-right"
                                             : ""
                             } text-sm font-medium`}
-                            ref={
-                              header.column.id === "cpuUsage"
-                                ? cpuHeaderRef
-                                : header.column.id === "memoryUsage"
-                                  ? memoryHeaderRef
-                                  : undefined
-                            }
                           >
                             {header.isPlaceholder
                               ? null
@@ -1666,12 +1605,16 @@ export const HomeNodata: Story = {
                   <TableBody>
                     {table.getRowModel().rows.length === 0 ? (
                       <TableRow>
-                        <TableCell colSpan={7} className="h-[400px]">
+                        <TableCell colSpan={7} className="h-[280px]">
                           <Empty className="border-0">
                             <EmptyHeader>
-                              <EmptyTitle>No clusters</EmptyTitle>
+                              <EmptyMedia variant="icon">
+                                <Info className="h-5 w-5" />
+                              </EmptyMedia>
+                              <EmptyTitle>No cluster</EmptyTitle>
                               <EmptyDescription>
-                                There are no clusters registered yet
+                                Add cluster from kubeconfig or sync with
+                                kubeconfig to add cluster
                               </EmptyDescription>
                             </EmptyHeader>
                           </Empty>
@@ -1715,33 +1658,6 @@ export const HomeNodata: Story = {
                     )}
                   </TableBody>
                 </Table>
-
-                {/* 🎯 목적: CPU/Memory 차트 준비 중 안내 메시지 - CPU Usg와 Mem Usg 컬럼 그룹 중앙에 오버레이 (모든 행에 걸쳐) */}
-                {overlayPosition.width > 0 && overlayPosition.height > 0 && (
-                  <div
-                    className="pointer-events-none absolute z-10 flex items-center justify-center"
-                    style={{
-                      left: overlayPosition.left,
-                      width: overlayPosition.width,
-                      top: overlayPosition.top,
-                      height: overlayPosition.height,
-                    }}
-                  >
-                    <Empty className="border-0 p-4 pt-2">
-                      <EmptyHeader>
-                        {clusters.length > 2 && (
-                          <EmptyMedia variant="icon">
-                            <Megaphone className="h-5 w-5" />
-                          </EmptyMedia>
-                        )}
-                        <EmptyTitle>Updated soon</EmptyTitle>
-                        <EmptyDescription>
-                          Ability to check Usage will be updated soon
-                        </EmptyDescription>
-                      </EmptyHeader>
-                    </Empty>
-                  </div>
-                )}
               </div>
             </div>
           </div>
