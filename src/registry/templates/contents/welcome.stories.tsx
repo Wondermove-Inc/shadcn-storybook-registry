@@ -960,40 +960,55 @@ export const Home: Story = {
                     ))}
                   </TableHeader>
                   <TableBody>
-                    {table.getRowModel().rows.map((row) => (
-                      <TableRow
-                        key={row.id}
-                        className="group border-b hover:relative"
-                      >
-                        {row.getVisibleCells().map((cell) => (
-                          <TableCell
-                            key={cell.id}
-                            className={`text-foreground ${
-                              cell.column.id === "provider"
-                                ? "w-[60px]"
-                                : cell.column.id === "name"
-                                  ? "w-[200px]"
-                                  : cell.column.id === "version"
-                                    ? "w-[60px]"
-                                    : cell.column.id === "cpuUsage"
-                                      ? "w-[100px]"
-                                      : cell.column.id === "memoryUsage"
-                                        ? "w-[100px]"
-                                        : cell.column.id === "podStatus"
-                                          ? "relative z-50 w-[180px]"
-                                          : cell.column.id === "setting"
-                                            ? "w-[60px] text-right"
-                                            : ""
-                            } group-hover:relative group-hover:z-[100]`}
-                          >
-                            {flexRender(
-                              cell.column.columnDef.cell,
-                              cell.getContext(),
-                            )}
-                          </TableCell>
-                        ))}
+                    {table.getRowModel().rows.length === 0 ? (
+                      <TableRow>
+                        <TableCell colSpan={7} className="h-[400px]">
+                          <Empty className="border-0">
+                            <EmptyHeader>
+                              <EmptyTitle>No clusters</EmptyTitle>
+                              <EmptyDescription>
+                                There are no clusters registered yet
+                              </EmptyDescription>
+                            </EmptyHeader>
+                          </Empty>
+                        </TableCell>
                       </TableRow>
-                    ))}
+                    ) : (
+                      table.getRowModel().rows.map((row) => (
+                        <TableRow
+                          key={row.id}
+                          className="group border-b hover:relative"
+                        >
+                          {row.getVisibleCells().map((cell) => (
+                            <TableCell
+                              key={cell.id}
+                              className={`text-foreground ${
+                                cell.column.id === "provider"
+                                  ? "w-[60px]"
+                                  : cell.column.id === "name"
+                                    ? "w-[200px]"
+                                    : cell.column.id === "version"
+                                      ? "w-[60px]"
+                                      : cell.column.id === "cpuUsage"
+                                        ? "w-[100px]"
+                                        : cell.column.id === "memoryUsage"
+                                          ? "w-[100px]"
+                                          : cell.column.id === "podStatus"
+                                            ? "relative z-50 w-[180px]"
+                                            : cell.column.id === "setting"
+                                              ? "w-[60px] text-right"
+                                              : ""
+                              } group-hover:relative group-hover:z-[100]`}
+                            >
+                              {flexRender(
+                                cell.column.columnDef.cell,
+                                cell.getContext(),
+                              )}
+                            </TableCell>
+                          ))}
+                        </TableRow>
+                      ))
+                    )}
                   </TableBody>
                 </Table>
 
@@ -1054,160 +1069,14 @@ export const Home: Story = {
 };
 
 /**
- * HomeNoData 페이지 - 데이터 없는 상태의 Skuber+ AI Assistant 대시보드
+ * HomeNodata 페이지 - 데이터 없는 상태의 Skuber+ AI Assistant 대시보드
  *
  * Home 스토리의 복제본으로, 독립적으로 수정 가능합니다.
  */
-export const HomeNoData: Story = {
+export const HomeNodata: Story = {
   render: () => {
-    // 🎯 목적: 클러스터 테이블 데이터 관리 (프로바이더 정보, Pod Status, CPU/Memory 시계열 포함)
-    const clusters: ClusterRowData[] = [
-      {
-        id: "1",
-        name: "AzurProd",
-        version: "1.28",
-        provider: "azure",
-        podStatus: {
-          running: 45,
-          pending: 3,
-          succeeded: 12,
-          failed: 2,
-          unknown: 1,
-        },
-        cpuUsage: [
-          { time: "00:00", usage: 45 },
-          { time: "04:00", usage: 52 },
-          { time: "08:00", usage: 48 },
-          { time: "12:00", usage: 65 },
-          { time: "16:00", usage: 58 },
-          { time: "20:00", usage: 62 },
-        ],
-        memoryUsage: [
-          { time: "00:00", usage: 72 },
-          { time: "04:00", usage: 75 },
-          { time: "08:00", usage: 78 },
-          { time: "12:00", usage: 82 },
-          { time: "16:00", usage: 79 },
-          { time: "20:00", usage: 76 },
-        ],
-      },
-      {
-        id: "2",
-        name: "GcloudStage",
-        version: "1.27",
-        provider: "gcp",
-        podStatus: {
-          running: 32,
-          pending: 5,
-          succeeded: 8,
-          failed: 1,
-          unknown: 2,
-        },
-        cpuUsage: [
-          { time: "00:00", usage: 35 },
-          { time: "04:00", usage: 42 },
-          { time: "08:00", usage: 38 },
-          { time: "12:00", usage: 55 },
-          { time: "16:00", usage: 48 },
-          { time: "20:00", usage: 45 },
-        ],
-        memoryUsage: [
-          { time: "00:00", usage: 62 },
-          { time: "04:00", usage: 65 },
-          { time: "08:00", usage: 68 },
-          { time: "12:00", usage: 72 },
-          { time: "16:00", usage: 69 },
-          { time: "20:00", usage: 66 },
-        ],
-      },
-      {
-        id: "3",
-        name: "OpenShift",
-        version: "1.26",
-        provider: "openshift",
-        podStatus: {
-          running: 28,
-          pending: 2,
-          succeeded: 15,
-          failed: 0,
-          unknown: 0,
-        },
-        cpuUsage: [
-          { time: "00:00", usage: 25 },
-          { time: "04:00", usage: 32 },
-          { time: "08:00", usage: 28 },
-          { time: "12:00", usage: 45 },
-          { time: "16:00", usage: 38 },
-          { time: "20:00", usage: 35 },
-        ],
-        memoryUsage: [
-          { time: "00:00", usage: 52 },
-          { time: "04:00", usage: 55 },
-          { time: "08:00", usage: 58 },
-          { time: "12:00", usage: 62 },
-          { time: "16:00", usage: 59 },
-          { time: "20:00", usage: 56 },
-        ],
-      },
-      {
-        id: "4",
-        name: "DigitalOceanddlMetrics Co",
-        version: "1.25",
-        provider: "digitalocean",
-        podStatus: {
-          running: 18,
-          pending: 8,
-          succeeded: 6,
-          failed: 2,
-          unknown: 3,
-        },
-        cpuUsage: [
-          { time: "00:00", usage: 55 },
-          { time: "04:00", usage: 62 },
-          { time: "08:00", usage: 58 },
-          { time: "12:00", usage: 75 },
-          { time: "16:00", usage: 68 },
-          { time: "20:00", usage: 65 },
-        ],
-        memoryUsage: [
-          { time: "00:00", usage: 82 },
-          { time: "04:00", usage: 85 },
-          { time: "08:00", usage: 88 },
-          { time: "12:00", usage: 92 },
-          { time: "16:00", usage: 89 },
-          { time: "20:00", usage: 86 },
-        ],
-      },
-      {
-        id: "5",
-        name: "IBM Cloud Development",
-        version: "1.29",
-        provider: "ibm",
-        podStatus: {
-          running: 52,
-          pending: 1,
-          succeeded: 20,
-          failed: 0,
-          unknown: 1,
-        },
-        cpuUsage: [
-          { time: "00:00", usage: 65 },
-          { time: "04:00", usage: 72 },
-          { time: "08:00", usage: 68 },
-          { time: "12:00", usage: 85 },
-          { time: "16:00", usage: 78 },
-          { time: "20:00", usage: 75 },
-        ],
-        memoryUsage: [
-          { time: "00:00", usage: 88 },
-          { time: "04:00", usage: 92 },
-          { time: "08:00", usage: 90 },
-          { time: "12:00", usage: 95 },
-          { time: "16:00", usage: 93 },
-          { time: "20:00", usage: 91 },
-        ],
-      },
-    ];
+    // 🎯 목적: 클러스터 테이블 데이터 관리 (데이터 없는 상태)
+    const clusters: ClusterRowData[] = [];
 
     // 🎯 목적: TanStack Table 정렬 상태 관리
     const [sorting, setSorting] = React.useState<SortingState>([]);
@@ -1795,40 +1664,55 @@ export const HomeNoData: Story = {
                     ))}
                   </TableHeader>
                   <TableBody>
-                    {table.getRowModel().rows.map((row) => (
-                      <TableRow
-                        key={row.id}
-                        className="group border-b hover:relative"
-                      >
-                        {row.getVisibleCells().map((cell) => (
-                          <TableCell
-                            key={cell.id}
-                            className={`text-foreground ${
-                              cell.column.id === "provider"
-                                ? "w-[60px]"
-                                : cell.column.id === "name"
-                                  ? "w-[200px]"
-                                  : cell.column.id === "version"
-                                    ? "w-[60px]"
-                                    : cell.column.id === "cpuUsage"
-                                      ? "w-[100px]"
-                                      : cell.column.id === "memoryUsage"
-                                        ? "w-[100px]"
-                                        : cell.column.id === "podStatus"
-                                          ? "relative z-50 w-[180px]"
-                                          : cell.column.id === "setting"
-                                            ? "w-[60px] text-right"
-                                            : ""
-                            } group-hover:relative group-hover:z-[100]`}
-                          >
-                            {flexRender(
-                              cell.column.columnDef.cell,
-                              cell.getContext(),
-                            )}
-                          </TableCell>
-                        ))}
+                    {table.getRowModel().rows.length === 0 ? (
+                      <TableRow>
+                        <TableCell colSpan={7} className="h-[400px]">
+                          <Empty className="border-0">
+                            <EmptyHeader>
+                              <EmptyTitle>No clusters</EmptyTitle>
+                              <EmptyDescription>
+                                There are no clusters registered yet
+                              </EmptyDescription>
+                            </EmptyHeader>
+                          </Empty>
+                        </TableCell>
                       </TableRow>
-                    ))}
+                    ) : (
+                      table.getRowModel().rows.map((row) => (
+                        <TableRow
+                          key={row.id}
+                          className="group border-b hover:relative"
+                        >
+                          {row.getVisibleCells().map((cell) => (
+                            <TableCell
+                              key={cell.id}
+                              className={`text-foreground ${
+                                cell.column.id === "provider"
+                                  ? "w-[60px]"
+                                  : cell.column.id === "name"
+                                    ? "w-[200px]"
+                                    : cell.column.id === "version"
+                                      ? "w-[60px]"
+                                      : cell.column.id === "cpuUsage"
+                                        ? "w-[100px]"
+                                        : cell.column.id === "memoryUsage"
+                                          ? "w-[100px]"
+                                          : cell.column.id === "podStatus"
+                                            ? "relative z-50 w-[180px]"
+                                            : cell.column.id === "setting"
+                                              ? "w-[60px] text-right"
+                                              : ""
+                              } group-hover:relative group-hover:z-[100]`}
+                            >
+                              {flexRender(
+                                cell.column.columnDef.cell,
+                                cell.getContext(),
+                              )}
+                            </TableCell>
+                          ))}
+                        </TableRow>
+                      ))
+                    )}
                   </TableBody>
                 </Table>
 
