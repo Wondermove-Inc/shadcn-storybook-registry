@@ -58,7 +58,7 @@ export function LoginForm({
             <GalleryVerticalEnd className="size-4" />
           </AvatarFallback>
         </Avatar>
-        <span className="text-sm leading-none font-semibold">Skuber+</span>
+        <span className="text-lg leading-normal font-semibold">Skuber+</span>
       </a>
       <Card>
         <div
@@ -147,7 +147,7 @@ export function FindingPasswordForm({
             <GalleryVerticalEnd className="size-4" />
           </AvatarFallback>
         </Avatar>
-        <span className="text-sm leading-none font-semibold">Skuber+</span>
+        <span className="text-lg leading-normal font-semibold">Skuber+</span>
       </a>
       <Card>
         <div
@@ -208,7 +208,7 @@ export function EmailAuthenticationForm({
             <GalleryVerticalEnd className="size-4" />
           </AvatarFallback>
         </Avatar>
-        <span className="text-sm leading-none font-semibold">Skuber+</span>
+        <span className="text-lg leading-normal font-semibold">Skuber+</span>
       </a>
       <Card className="w-80">
         <CardHeader className="gap-1.5 text-center">
@@ -294,7 +294,7 @@ export function SignupForm({
             <GalleryVerticalEnd className="size-4" />
           </AvatarFallback>
         </Avatar>
-        <span className="text-sm leading-none font-semibold">Skuber+</span>
+        <span className="text-lg leading-normal font-semibold">Skuber+</span>
       </a>
       <Card>
         <div
