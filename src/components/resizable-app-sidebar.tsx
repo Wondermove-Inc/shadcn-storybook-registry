@@ -1,15 +1,7 @@
 "use client";
 
 import * as React from "react";
-import {
-  ChevronRight,
-  ArrowRight,
-  File,
-  Folder,
-  FolderOpen,
-  Plus,
-  BadgeAlert,
-} from "lucide-react";
+import { ChevronRight, File, Folder, FolderOpen } from "lucide-react";
 
 import {
   Collapsible,
@@ -17,13 +9,6 @@ import {
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
 import { Button } from "@/components/ui/button";
-import {
-  Item,
-  ItemContent,
-  ItemTitle,
-  ItemDescription,
-  ItemActions,
-} from "@/components/ui/item";
 
 // 🎯 목적: 파일 트리 항목의 타입 정의
 interface FileTreeItem {
@@ -191,35 +176,8 @@ export function ResizableAppSidebar({
     <div
       className={`bg-sidebar flex h-full w-full flex-col ${className || ""}`}
     >
-      {/* 🎯 목적: App 업데이트 알림 */}
-      <div className="px-4 pt-4 pb-2">
-        <Item
-          variant="outline"
-          size="sm"
-          asChild
-          className="w-full cursor-pointer"
-        >
-          <button
-            onClick={() => {
-              // 🎯 목적: 업그레이드 클릭 이벤트 (실제 구현에서는 업그레이드 페이지로 이동)
-              console.log("Upgrade to 1.5 clicked");
-            }}
-          >
-            <ItemContent className="items-start text-left">
-              <ItemTitle>Upgrade Now</ItemTitle>
-              <ItemDescription>to 1.5 version</ItemDescription>
-            </ItemContent>
-            <ItemActions>
-              <Button variant="secondary" size="icon" className="h-8 w-8">
-                <ArrowRight className="h-4 w-4" />
-              </Button>
-            </ItemActions>
-          </button>
-        </Item>
-      </div>
-
       {/* 🎯 목적: 콘텐츠 영역 */}
-      <div className="flex min-h-0 flex-1 flex-col gap-0 overflow-auto">
+      <div className="flex min-h-0 flex-1 flex-col gap-0 overflow-auto pt-4">
         {/* Your Clusters 그룹 */}
         <div className="flex w-full min-w-0 flex-col px-2">
           <div className="flex h-8 items-center rounded-md px-2">
