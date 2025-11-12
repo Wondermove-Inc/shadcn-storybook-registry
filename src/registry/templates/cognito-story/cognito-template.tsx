@@ -61,6 +61,15 @@ export function LoginForm({
         <span className="text-3xl leading-none font-medium">Skuber+</span>
       </a>
       <Card>
+        <div
+          className="px-0 pb-0 text-center"
+          style={{ paddingBottom: "0", marginBottom: "0" }}
+        >
+          <h1 className="mb-1.5 text-xl leading-none font-semibold">
+            Welcome back
+          </h1>
+          <CardDescription>Login with your Email account</CardDescription>
+        </div>
         <CardContent>
           <form>
             <FieldGroup className="gap-6">
