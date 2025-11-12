@@ -178,11 +178,11 @@ export function ResizableAppSidebar({
     >
       {/* 🎯 목적: 콘텐츠 영역 */}
       <div className="flex min-h-0 flex-1 flex-col gap-0 overflow-auto pt-3">
-        {/* Your Clusters 그룹 */}
+        {/* Clusters 그룹 */}
         <div className="flex w-full min-w-0 flex-col px-2">
           <div className="flex h-8 items-center rounded-md px-2">
             <span className="text-sidebar-foreground/70 text-xs font-medium">
-              Your Clusters
+              Clusters
             </span>
           </div>
           <div className="w-full text-xs">
