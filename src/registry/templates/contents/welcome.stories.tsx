@@ -26,6 +26,13 @@ import {
   ItemActions,
 } from "@/components/ui/item";
 import {
+  Empty,
+  EmptyHeader,
+  EmptyMedia,
+  EmptyTitle,
+  EmptyDescription,
+} from "@/components/ui/empty";
+import {
   X,
   FileText,
   FileJson,
@@ -35,6 +42,7 @@ import {
   EllipsisVertical,
   CircleHelp,
   ArrowUpDown,
+  Info,
 } from "lucide-react";
 import { Area, AreaChart, Bar, BarChart, XAxis, YAxis } from "recharts";
 import {
@@ -509,6 +517,63 @@ export const Home: Story = {
       autoResetPageIndex: false,
     });
 
+    const tableContainerRef = React.useRef<HTMLDivElement | null>(null);
+    const cpuHeaderRef = React.useRef<HTMLTableCellElement | null>(null);
+    const memoryHeaderRef = React.useRef<HTMLTableCellElement | null>(null);
+    const [overlayPosition, setOverlayPosition] = React.useState<{
+      left: number;
+      width: number;
+      top: number;
+      height: number;
+    }>({
+      left: 0,
+      width: 0,
+      top: 0,
+      height: 0,
+    });
+
+    React.useLayoutEffect(() => {
+      const updateOverlayPosition = () => {
+        const container = tableContainerRef.current;
+        const cpuHeader = cpuHeaderRef.current;
+        const memHeader = memoryHeaderRef.current;
+
+        if (!container || !cpuHeader || !memHeader) {
+          return;
+        }
+
+        const containerRect = container.getBoundingClientRect();
+        const cpuRect = cpuHeader.getBoundingClientRect();
+        const memRect = memHeader.getBoundingClientRect();
+
+        const tbody = container.querySelector("tbody");
+        const tbodyRect = tbody?.getBoundingClientRect();
+
+        const left = cpuRect.left - containerRect.left;
+        const width = memRect.right - cpuRect.left;
+        const top = tbodyRect
+          ? tbodyRect.top - containerRect.top
+          : cpuRect.bottom - containerRect.top;
+        const height = tbodyRect
+          ? tbodyRect.height
+          : containerRect.height - top;
+
+        setOverlayPosition({
+          left,
+          width,
+          top,
+          height,
+        });
+      };
+
+      updateOverlayPosition();
+      window.addEventListener("resize", updateOverlayPosition);
+
+      return () => {
+        window.removeEventListener("resize", updateOverlayPosition);
+      };
+    }, []);
+
     // 🎯 목적: Pod Status를 가로 stacked bar chart로 시각화 (ChartContainer 기반)
     const PodStatusChart = ({
       podStatus,
@@ -606,7 +671,7 @@ export const Home: Story = {
       );
     };
 
-    // 🎯 목적: CPU 사용량을 Area chart gradient로 시각화
+    // 🎯 목적: CPU 사용량을 Area chart gradient로 시각화 (dimmed - 준비 중)
     const CPUUsageChart = ({
       data,
     }: {
@@ -620,7 +685,7 @@ export const Home: Story = {
       } satisfies ChartConfig;
 
       return (
-        <div className="h-8 w-full">
+        <div className="h-8 w-full opacity-40">
           <ChartContainer config={chartConfig} className="h-full w-full">
             <AreaChart
               data={data}
@@ -631,12 +696,12 @@ export const Home: Story = {
                   <stop
                     offset="5%"
                     stopColor="var(--color-usage)"
-                    stopOpacity={0.8}
+                    stopOpacity={0.5}
                   />
                   <stop
                     offset="95%"
                     stopColor="var(--color-usage)"
-                    stopOpacity={0.1}
+                    stopOpacity={0.05}
                   />
                 </linearGradient>
               </defs>
@@ -644,9 +709,9 @@ export const Home: Story = {
                 dataKey="usage"
                 type="natural"
                 fill="url(#fillCPU)"
-                fillOpacity={0.4}
+                fillOpacity={0.2}
                 stroke="var(--color-usage)"
-                strokeWidth={2}
+                strokeWidth={1}
               />
             </AreaChart>
           </ChartContainer>
@@ -654,7 +719,7 @@ export const Home: Story = {
       );
     };
 
-    // 🎯 목적: Memory 사용량을 Area chart gradient로 시각화
+    // 🎯 목적: Memory 사용량을 Area chart gradient로 시각화 (dimmed - 준비 중)
     const MemoryUsageChart = ({
       data,
     }: {
@@ -668,7 +733,7 @@ export const Home: Story = {
       } satisfies ChartConfig;
 
       return (
-        <div className="h-8 w-full">
+        <div className="h-8 w-full opacity-40">
           <ChartContainer config={chartConfig} className="h-full w-full">
             <AreaChart
               data={data}
@@ -679,12 +744,12 @@ export const Home: Story = {
                   <stop
                     offset="5%"
                     stopColor="var(--color-usage)"
-                    stopOpacity={0.8}
+                    stopOpacity={0.5}
                   />
                   <stop
                     offset="95%"
                     stopColor="var(--color-usage)"
-                    stopOpacity={0.1}
+                    stopOpacity={0.05}
                   />
                 </linearGradient>
               </defs>
@@ -692,9 +757,9 @@ export const Home: Story = {
                 dataKey="usage"
                 type="natural"
                 fill="url(#fillMemory)"
-                fillOpacity={0.4}
+                fillOpacity={0.2}
                 stroke="var(--color-usage)"
-                strokeWidth={2}
+                strokeWidth={1}
               />
             </AreaChart>
           </ChartContainer>
@@ -807,7 +872,7 @@ export const Home: Story = {
               </span>
 
               {/* 클러스터 테이블 - TanStack Table 정렬 기능 적용 */}
-              <div className="w-full">
+              <div className="relative w-full" ref={tableContainerRef}>
                 <Table className="table-fixed">
                   <TableHeader>
                     {table.getHeaderGroups().map((headerGroup) => (
@@ -832,6 +897,13 @@ export const Home: Story = {
                                             ? "w-[60px] text-right"
                                             : ""
                             } text-sm font-medium`}
+                            ref={
+                              header.column.id === "cpuUsage"
+                                ? cpuHeaderRef
+                                : header.column.id === "memoryUsage"
+                                  ? memoryHeaderRef
+                                  : undefined
+                            }
                           >
                             {header.isPlaceholder
                               ? null
@@ -848,7 +920,7 @@ export const Home: Story = {
                     {table.getRowModel().rows.map((row) => (
                       <TableRow
                         key={row.id}
-                        className="border-b hover:relative hover:z-[100]"
+                        className="group border-b hover:relative"
                       >
                         {row.getVisibleCells().map((cell) => (
                           <TableCell
@@ -869,7 +941,7 @@ export const Home: Story = {
                                           : cell.column.id === "setting"
                                             ? "w-[60px] text-right"
                                             : ""
-                            }`}
+                            } group-hover:relative group-hover:z-[100]`}
                           >
                             {flexRender(
                               cell.column.columnDef.cell,
@@ -881,6 +953,31 @@ export const Home: Story = {
                     ))}
                   </TableBody>
                 </Table>
+
+                {/* 🎯 목적: CPU/Memory 차트 준비 중 안내 메시지 - CPU Usg와 Mem Usg 컬럼 그룹 중앙에 오버레이 (모든 행에 걸쳐) */}
+                {overlayPosition.width > 0 && overlayPosition.height > 0 && (
+                  <div
+                    className="pointer-events-none absolute z-10 flex items-center justify-center"
+                    style={{
+                      left: overlayPosition.left,
+                      width: overlayPosition.width,
+                      top: overlayPosition.top,
+                      height: overlayPosition.height,
+                    }}
+                  >
+                    <Empty className="border-0 p-4 pt-2">
+                      <EmptyHeader>
+                        <EmptyMedia variant="icon">
+                          <Info className="h-5 w-5" />
+                        </EmptyMedia>
+                        <EmptyTitle>Comming Soon</EmptyTitle>
+                        <EmptyDescription>
+                          Ability to check Usage will be updated soon
+                        </EmptyDescription>
+                      </EmptyHeader>
+                    </Empty>
+                  </div>
+                )}
               </div>
             </div>
           </div>
