@@ -177,7 +177,7 @@ export function ResizableAppSidebar({
       className={`bg-sidebar flex h-full w-full flex-col ${className || ""}`}
     >
       {/* 🎯 목적: 콘텐츠 영역 */}
-      <div className="flex min-h-0 flex-1 flex-col gap-0 overflow-auto pt-4">
+      <div className="flex min-h-0 flex-1 flex-col gap-0 overflow-auto pt-3">
         {/* Your Clusters 그룹 */}
         <div className="flex w-full min-w-0 flex-col px-2">
           <div className="flex h-8 items-center rounded-md px-2">
