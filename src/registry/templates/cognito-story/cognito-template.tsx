@@ -48,11 +48,11 @@ export function LoginForm({
 
   return (
     <div
-      className={cn("flex w-full max-w-sm flex-col gap-6", className)}
+      className={cn("flex w-full max-w-sm flex-col gap-4", className)}
       {...props}
     >
       <a href="#" className="flex items-center gap-1 self-center font-medium">
-        <Avatar className="size-10 rounded-md">
+        <Avatar className="size-8 rounded-md">
           <AvatarImage src="/images/apps/skuber.svg" alt="Skuber+ Logo" />
           <AvatarFallback className="bg-primary text-primary-foreground rounded-md">
             <GalleryVerticalEnd className="size-4" />
@@ -137,11 +137,11 @@ export function FindingPasswordForm({
 }: React.ComponentProps<"div">) {
   return (
     <div
-      className={cn("flex w-full max-w-sm flex-col gap-6", className)}
+      className={cn("flex w-full max-w-sm flex-col gap-4", className)}
       {...props}
     >
       <a href="#" className="flex items-center gap-1 self-center font-medium">
-        <Avatar className="size-10 rounded-md">
+        <Avatar className="size-8 rounded-md">
           <AvatarImage src="/images/apps/skuber.svg" alt="Skuber+ Logo" />
           <AvatarFallback className="bg-primary text-primary-foreground rounded-md">
             <GalleryVerticalEnd className="size-4" />
@@ -202,7 +202,7 @@ export function EmailAuthenticationForm({
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
       <a href="#" className="flex items-center gap-1 self-center font-medium">
-        <Avatar className="size-10 rounded-md">
+        <Avatar className="size-8 rounded-md">
           <AvatarImage src="/images/apps/skuber.svg" alt="Skuber+ Logo" />
           <AvatarFallback className="bg-primary text-primary-foreground rounded-md">
             <GalleryVerticalEnd className="size-4" />
@@ -288,7 +288,7 @@ export function SignupForm({
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
       <a href="#" className="flex items-center gap-1 self-center font-medium">
-        <Avatar className="size-10 rounded-md">
+        <Avatar className="size-8 rounded-md">
           <AvatarImage src="/images/apps/skuber.svg" alt="Skuber+ Logo" />
           <AvatarFallback className="bg-primary text-primary-foreground rounded-md">
             <GalleryVerticalEnd className="size-4" />
@@ -848,7 +848,7 @@ export function CognitoTemplate({
 
   return (
     <div
-      className={cn("flex w-full max-w-sm flex-col gap-6", className)}
+      className={cn("flex w-full max-w-sm flex-col gap-4", className)}
       {...props}
     >
       {renderCurrentView()}
