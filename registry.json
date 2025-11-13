@@ -2606,6 +2606,33 @@
       ]
     },
     {
+      "name": "update-banner-story",
+      "type": "registry:component",
+      "title": "UpdateBanner Story",
+      "description": "Interactive Storybook story for update notification banner with gradient background, avatar icon, version info, and action buttons",
+      "categories": [
+        "templates",
+        "storybook",
+        "update-banner",
+        "contents"
+      ],
+      "author": "Lloyd Richards <lloyd.d.richards@gmail.com>",
+      "registryDependencies": [
+        "button",
+        "card",
+        "avatar"
+      ],
+      "dependencies": [
+        "lucide-react"
+      ],
+      "files": [
+        {
+          "path": "src/registry/templates/contents/update-banner.stories.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
       "name": "ai-assistant-story",
       "type": "registry:component",
       "title": "AI Assistant Story",

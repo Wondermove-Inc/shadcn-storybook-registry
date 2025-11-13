@@ -8,6 +8,7 @@ import {
   Layers,
   BarChart3,
   Hexagon,
+  RefreshCw,
 } from "lucide-react";
 import {
   Breadcrumb,
@@ -17,6 +18,7 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -59,63 +61,120 @@ const clusterMenuData = {
 };
 
 // 🎯 목적: General 메뉴 콘텐츠 - 클러스터 일반 설정
+// ✨ 기능: Avatar, Button 클릭 시 OS 파일 선택 창 호출
 function GeneralContent() {
-  return (
-    <>
-      <div className="flex w-full flex-col gap-3">
-        <Label
-          htmlFor="cluster-name"
-          className="text-foreground text-sm font-medium"
-        >
-          Cluster Name
-        </Label>
-        <Input
-          id="cluster-name"
-          type="text"
-          placeholder="Enter cluster name"
-          className="bg-input/30 border-border"
-        />
-      </div>
+  const fileInputRef = React.useRef<HTMLInputElement>(null);
+  const kubeconfigInputRef = React.useRef<HTMLInputElement>(null);
 
-      <div className="flex items-start gap-3">
-        <div className="flex flex-1 flex-col gap-2">
-          <div className="flex items-center gap-3">
-            <Label
-              htmlFor="auto-refresh"
-              className="text-foreground flex-1 text-sm font-medium"
-            >
-              Auto Refresh
-            </Label>
-            <Switch id="auto-refresh" />
-          </div>
-          <p className="text-muted-foreground text-sm">
-            Automatically refresh cluster resources
-          </p>
+  // Avatar 클릭: 이미지 파일 선택 (OS 파일 탐색기 호출)
+  const handleAvatarClick = () => {
+    fileInputRef.current?.click();
+  };
+
+  // Avatar 이미지 파일 선택 처리
+  const handleAvatarChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      console.log("Selected avatar image:", file.name);
+      // 실제 구현: 이미지 업로드 및 프리뷰 처리
+    }
+  };
+
+  // Kubeconfig Button 클릭: kubeconfig 파일 선택 (OS 파일 탐색기 호출)
+  const handleKubeconfigClick = () => {
+    kubeconfigInputRef.current?.click();
+  };
+
+  // Kubeconfig 파일 선택 처리
+  const handleKubeconfigChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      console.log("Selected kubeconfig:", file.name);
+      // 실제 구현: kubeconfig 파일 경로 업데이트
+    }
+  };
+
+  return (
+    <div className="flex flex-col gap-6">
+      {/* Cluster profile 섹션: Avatar 클릭 시 이미지 파일 선택 */}
+      <div className="flex flex-col gap-3">
+        <Label className="text-foreground text-sm font-medium">
+          Cluster profile
+        </Label>
+        <div className="flex items-center gap-2.5">
+          {/* Avatar 클릭: OS 파일 선택 창 호출 (이미지 파일) */}
+          <Avatar
+            className="h-8 w-8 cursor-pointer hover:opacity-80"
+            onClick={handleAvatarClick}
+          >
+            <AvatarImage src="https://github.com/shadcn.png" alt="Cluster" />
+            <AvatarFallback>CP</AvatarFallback>
+          </Avatar>
+          <input
+            ref={fileInputRef}
+            type="file"
+            accept="image/*"
+            className="hidden"
+            onChange={handleAvatarChange}
+          />
+          <Input
+            type="text"
+            placeholder="Placeholder"
+            className="border-border bg-input/30 flex-1"
+          />
         </div>
       </div>
-    </>
+
+      {/* Kubeconfig 섹션: Button 클릭 시 kubeconfig 파일 선택 */}
+      <div className="flex flex-col gap-3">
+        <Label className="text-foreground text-sm font-medium">
+          Kubeconfig
+        </Label>
+        {/* Button 클릭: OS 파일 선택 창 호출 (kubeconfig 파일) */}
+        <Button
+          variant="secondary"
+          className="bg-secondary hover:bg-secondary/80 justify-between"
+          onClick={handleKubeconfigClick}
+        >
+          <span className="flex-1 truncate text-left">
+            /Users/mihyeon/Library/Application
+            Support/DAIVE/kubeconfigs/13a662d5-95ac-4d8a-a60d-8ae65ea7b3a2
+          </span>
+          <RefreshCw className="h-4 w-4 flex-shrink-0" />
+        </Button>
+        <input
+          ref={kubeconfigInputRef}
+          type="file"
+          className="hidden"
+          onChange={handleKubeconfigChange}
+        />
+      </div>
+    </div>
   );
 }
 
 // 🎯 목적: Proxy 메뉴 콘텐츠 - 클러스터 프록시 설정
+// ✨ 구조: Field (Label + Input + Description)
 function ClusterProxyContent() {
   return (
-    <>
-      <div className="flex w-full flex-col gap-3">
-        <Label
-          htmlFor="cluster-proxy"
-          className="text-foreground text-sm font-medium"
-        >
-          Cluster Proxy
-        </Label>
-        <Input
-          id="cluster-proxy"
-          type="text"
-          placeholder="Type proxy url"
-          className="bg-input/30 border-border"
-        />
-      </div>
-    </>
+    <div className="flex w-full flex-col gap-3">
+      {/* HTTP proxy Field: Label + Input + Description */}
+      <Label
+        htmlFor="http-proxy"
+        className="text-foreground text-sm font-medium"
+      >
+        HTTP proxy
+      </Label>
+      <Input
+        id="http-proxy"
+        type="text"
+        placeholder="http://<address>:<port>"
+        className="border-border bg-input/30"
+      />
+      <p className="text-muted-foreground text-sm">
+        HTTP Proxy server. Used for communicating with Kubernetes API.
+      </p>
+    </div>
   );
 }
 
