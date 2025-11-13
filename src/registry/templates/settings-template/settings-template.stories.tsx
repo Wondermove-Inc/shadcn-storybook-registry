@@ -10,6 +10,9 @@ import {
   Hexagon,
   RefreshCw,
   FolderSearch,
+  RotateCcw,
+  ChevronDown,
+  X,
 } from "lucide-react";
 import {
   Breadcrumb,
@@ -21,9 +24,35 @@ import {
 } from "@/components/ui/breadcrumb";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
+import { Field, FieldDescription } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
+import {
+  InputGroup,
+  InputGroupAddon,
+  InputGroupButton,
+  InputGroupInput,
+} from "@/components/ui/input-group";
+import {
+  Item,
+  ItemContent,
+  ItemTitle,
+  ItemActions,
+} from "@/components/ui/item";
 import { Label } from "@/components/ui/label";
-import { Switch } from "@/components/ui/switch";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuCheckboxItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Separator } from "@/components/ui/separator";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import {
   Dialog,
   DialogContent,
@@ -174,25 +203,54 @@ function ClusterProxyContent() {
 
 // 🎯 목적: Terminal 메뉴 콘텐츠 - 클러스터 터미널 설정
 function ClusterTerminalContent() {
+  const fileInputRef = React.useRef<HTMLInputElement>(null);
+
+  // Working directory 버튼 클릭: 디렉토리 선택 (OS 파일 탐색기 호출)
+  const handleDirectoryClick = () => {
+    fileInputRef.current?.click();
+  };
+
+  // 디렉토리 선택 처리
+  const handleDirectoryChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      console.log("Selected directory:", file.name);
+      // 실제 구현: 디렉토리 경로 업데이트
+    }
+  };
+
   return (
     <div className="flex w-full flex-col gap-6">
       {/* Working directory Field */}
       <div className="flex w-full flex-col gap-3">
-        <Label className="text-foreground text-sm font-medium">
+        <Label
+          htmlFor="working-directory"
+          className="text-foreground text-sm font-medium"
+        >
           Working directory
         </Label>
-        <div className="bg-input/30 border-border flex items-center gap-2 self-stretch rounded-lg border px-3 py-1 shadow-sm">
-          <span className="text-muted-foreground flex-1 text-sm leading-5">
-            $HOME
-          </span>
-          <Button
-            variant="ghost"
-            size="icon"
-            className="bg-secondary hover:bg-secondary/80 h-6 w-6 shrink-0"
-          >
-            <FolderSearch className="h-4 w-4" />
-          </Button>
-        </div>
+        <InputGroup>
+          <InputGroupInput
+            id="working-directory"
+            type="text"
+            defaultValue="$HOME"
+          />
+          <InputGroupAddon align="inline-end">
+            <InputGroupButton
+              variant="default"
+              size="icon-xs"
+              onClick={handleDirectoryClick}
+            >
+              <FolderSearch className="h-4 w-4" />
+            </InputGroupButton>
+          </InputGroupAddon>
+        </InputGroup>
+        <input
+          ref={fileInputRef}
+          type="file"
+          className="hidden"
+          onChange={handleDirectoryChange}
+        />
         <p className="text-muted-foreground text-sm leading-5">
           An explicit start path where the terminal will be launched, this is
           used as the current working directory (cwd) for the shell process.
@@ -224,70 +282,242 @@ function ClusterTerminalContent() {
 // 🎯 목적: Namespace 메뉴 콘텐츠 - 네임스페이스 설정
 function NamespaceContent() {
   return (
-    <>
-      <div className="flex w-full flex-col gap-3">
-        <Label
-          htmlFor="default-namespace"
-          className="text-foreground text-sm font-medium"
-        >
-          Default Namespace
-        </Label>
-        <Input
-          id="default-namespace"
-          type="text"
-          placeholder="default"
-          className="bg-input/30 border-border"
-        />
-      </div>
-    </>
+    <Field>
+      <Label
+        htmlFor="accessible-namespaces"
+        className="text-foreground text-sm font-medium"
+      >
+        Accessible namespaces
+      </Label>
+      <Input
+        id="accessible-namespaces"
+        type="text"
+        placeholder="Add new namespaces (comma-separated)..."
+        className="bg-input/30 border-border"
+      />
+      <FieldDescription>
+        This setting is useful for manually specifying which namespaces you have
+        access to. This is useful when you do not have permissions to list
+        namespaces.
+      </FieldDescription>
+    </Field>
   );
 }
 
 // 🎯 목적: Metrics 메뉴 콘텐츠 - 메트릭 수집 설정
 function MetricsContent() {
+  // 선택된 메트릭 상태 관리
+  const [selectedMetrics, setSelectedMetrics] = React.useState<string[]>([]);
+
+  // 체크박스 토글 핸들러
+  const handleMetricToggle = (
+    metric: string,
+    checked: boolean | "indeterminate",
+  ) => {
+    if (checked === true) {
+      setSelectedMetrics([...selectedMetrics, metric]);
+    } else {
+      setSelectedMetrics(selectedMetrics.filter((m) => m !== metric));
+    }
+  };
+
+  // 메트릭 제거 핸들러
+  const handleRemoveMetric = (metric: string) => {
+    setSelectedMetrics(selectedMetrics.filter((m) => m !== metric));
+  };
+
   return (
-    <>
-      <div className="flex items-start gap-3">
-        <div className="flex flex-1 flex-col gap-2">
-          <div className="flex items-center gap-3">
-            <Label
-              htmlFor="enable-metrics"
-              className="text-foreground flex-1 text-sm font-medium"
+    <div className="flex w-full flex-col gap-6">
+      {/* Metric Collection Method Field */}
+      <Field>
+        <Label
+          htmlFor="metric-collection-method"
+          className="text-foreground text-sm font-medium"
+        >
+          Metric Collection Method
+        </Label>
+        <Select defaultValue="auto-detect">
+          <SelectTrigger
+            id="metric-collection-method"
+            className="bg-input/30 border-border w-full"
+          >
+            <SelectValue />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="auto-detect">Auto detect</SelectItem>
+          </SelectContent>
+        </Select>
+      </Field>
+
+      {/* Filesystem mountpoints Field */}
+      <Field>
+        <Label
+          htmlFor="filesystem-mountpoints"
+          className="text-foreground text-sm font-medium"
+        >
+          Filesystem mountpoints
+        </Label>
+        <Input
+          id="filesystem-mountpoints"
+          type="text"
+          placeholder="/I/local"
+          className="bg-input/30 border-border"
+        />
+        <FieldDescription>
+          A regexp for the label with the filesystem mountpoints that will
+          create a graph for disk usage. For the root disk only use "/" and for
+          all disks use ".*".
+        </FieldDescription>
+      </Field>
+
+      {/* Separator */}
+      <Separator />
+
+      {/* Hide metrics from the UI */}
+      <div className="flex items-end gap-2 self-stretch">
+        <Field className="flex-1">
+          <Label className="text-foreground text-sm font-medium">
+            Hide metrics from the UI
+          </Label>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button
+                variant="outline"
+                className="bg-input/30 border-border w-full justify-between"
+              >
+                <span className="text-muted-foreground">
+                  {selectedMetrics.length > 0
+                    ? `${selectedMetrics.length} metrics selected`
+                    : "Select metrics to hide..."}
+                </span>
+                <ChevronDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent
+              className="z-[100] w-[--radix-dropdown-menu-trigger-width]"
+              align="start"
             >
-              Enable Metrics Collection
-            </Label>
-            <Switch id="enable-metrics" />
-          </div>
-          <p className="text-muted-foreground text-sm">
-            Collect and display cluster metrics
-          </p>
-        </div>
+              <DropdownMenuCheckboxItem
+                checked={selectedMetrics.includes("Repositories")}
+                onCheckedChange={(checked) =>
+                  handleMetricToggle("Repositories", checked)
+                }
+              >
+                Repositories
+              </DropdownMenuCheckboxItem>
+              <DropdownMenuCheckboxItem
+                checked={selectedMetrics.includes("CPU")}
+                onCheckedChange={(checked) =>
+                  handleMetricToggle("CPU", checked)
+                }
+              >
+                CPU
+              </DropdownMenuCheckboxItem>
+              <DropdownMenuCheckboxItem
+                checked={selectedMetrics.includes("Memory")}
+                onCheckedChange={(checked) =>
+                  handleMetricToggle("Memory", checked)
+                }
+              >
+                Memory
+              </DropdownMenuCheckboxItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+
+          {/* 선택된 메트릭 리스트 표시 */}
+          {selectedMetrics.length > 0 && (
+            <div className="mt-3 space-y-2">
+              {selectedMetrics.map((metric) => (
+                <Item key={metric} variant="outline" size="sm">
+                  <ItemContent>
+                    <ItemTitle>{metric}</ItemTitle>
+                  </ItemContent>
+                  <ItemActions>
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="h-6 w-6"
+                      onClick={() => handleRemoveMetric(metric)}
+                    >
+                      <X className="h-4 w-4" />
+                    </Button>
+                  </ItemActions>
+                </Item>
+              ))}
+            </div>
+          )}
+        </Field>
+        <Button>Hide all metics</Button>
+        <Button variant="secondary" size="icon">
+          <RotateCcw className="h-4 w-4" />
+        </Button>
       </div>
-    </>
+    </div>
   );
 }
 
 // 🎯 목적: Node Shell 메뉴 콘텐츠 - 노드 셸 접근 설정
 function NodeShellContent() {
   return (
-    <>
-      <div className="flex items-start gap-3">
-        <div className="flex flex-1 flex-col gap-2">
-          <div className="flex items-center gap-3">
-            <Label
-              htmlFor="enable-node-shell"
-              className="text-foreground flex-1 text-sm font-medium"
-            >
-              Enable Node Shell Access
-            </Label>
-            <Switch id="enable-node-shell" />
-          </div>
-          <p className="text-muted-foreground text-sm">
-            Allow direct shell access to cluster nodes
-          </p>
-        </div>
-      </div>
-    </>
+    <div className="flex w-full flex-col gap-6">
+      {/* Node shell image for Linux Field */}
+      <Field>
+        <Label
+          htmlFor="node-shell-linux"
+          className="text-foreground text-sm font-medium"
+        >
+          Node shell image for Linux
+        </Label>
+        <Input
+          id="node-shell-linux"
+          type="text"
+          placeholder="Default image: {}"
+          className="bg-input/30 border-border"
+        />
+        <FieldDescription>
+          Node shell image. Used for creating node shell pod on Linux nodes.
+        </FieldDescription>
+      </Field>
+
+      {/* Node shell image for Windows Field */}
+      <Field>
+        <Label
+          htmlFor="node-shell-windows"
+          className="text-foreground text-sm font-medium"
+        >
+          Node shell image for Windows
+        </Label>
+        <Input
+          id="node-shell-windows"
+          type="text"
+          placeholder="Default image: {}"
+          className="bg-input/30 border-border"
+        />
+        <FieldDescription>
+          Node shell image. Used for creating node shell pod on Windows nodes.
+        </FieldDescription>
+      </Field>
+
+      {/* Image pull secret Field */}
+      <Field>
+        <Label
+          htmlFor="image-pull-secret"
+          className="text-foreground text-sm font-medium"
+        >
+          Image pull secret
+        </Label>
+        <Input
+          id="image-pull-secret"
+          type="text"
+          placeholder="Specify a secret name..."
+          className="bg-input/30 border-border"
+        />
+        <FieldDescription>
+          Name of a pre-existing secret in the kube-system namespace. An
+          optional setting. Used for pulling image from a private registry.
+        </FieldDescription>
+      </Field>
+    </div>
   );
 }
 
