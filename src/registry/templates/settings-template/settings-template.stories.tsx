@@ -9,6 +9,7 @@ import {
   BarChart3,
   Hexagon,
   RefreshCw,
+  FolderSearch,
 } from "lucide-react";
 import {
   Breadcrumb,
@@ -23,13 +24,6 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import {
   Dialog,
   DialogContent,
@@ -181,25 +175,49 @@ function ClusterProxyContent() {
 // 🎯 목적: Terminal 메뉴 콘텐츠 - 클러스터 터미널 설정
 function ClusterTerminalContent() {
   return (
-    <>
+    <div className="flex w-full flex-col gap-6">
+      {/* Working directory Field */}
+      <div className="flex w-full flex-col gap-3">
+        <Label className="text-foreground text-sm font-medium">
+          Working directory
+        </Label>
+        <div className="bg-input/30 border-border flex items-center gap-2 self-stretch rounded-lg border px-3 py-1 shadow-sm">
+          <span className="text-muted-foreground flex-1 text-sm leading-5">
+            $HOME
+          </span>
+          <Button
+            variant="ghost"
+            size="icon"
+            className="bg-secondary hover:bg-secondary/80 h-6 w-6 shrink-0"
+          >
+            <FolderSearch className="h-4 w-4" />
+          </Button>
+        </div>
+        <p className="text-muted-foreground text-sm leading-5">
+          An explicit start path where the terminal will be launched, this is
+          used as the current working directory (cwd) for the shell process.
+        </p>
+      </div>
+
+      {/* Default namespace Field */}
       <div className="flex w-full flex-col gap-3">
         <Label
-          htmlFor="terminal-theme"
+          htmlFor="default-namespace"
           className="text-foreground text-sm font-medium"
         >
-          Terminal Theme
+          Default namespace
         </Label>
-        <Select defaultValue="dark">
-          <SelectTrigger className="bg-input/30 border-border w-full">
-            <SelectValue />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="light">Light</SelectItem>
-            <SelectItem value="dark">Dark</SelectItem>
-          </SelectContent>
-        </Select>
+        <Input
+          id="default-namespace"
+          type="text"
+          placeholder="default"
+          className="bg-input/30 border-border"
+        />
+        <p className="text-muted-foreground text-sm leading-5">
+          Default namespace used for kubectl.
+        </p>
       </div>
-    </>
+    </div>
   );
 }
 
