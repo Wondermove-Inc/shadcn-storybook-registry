@@ -121,7 +121,7 @@ const tableData: TableRowData[] = [
   },
   {
     id: "2",
-    checked: true,
+    checked: false,
     column2: "Cell Text",
     column3: "Cell Text",
     column4: { text: "Link Button", href: "#" },
@@ -141,7 +141,7 @@ const tableData: TableRowData[] = [
   },
   {
     id: "4",
-    checked: true,
+    checked: false,
     column2: "Cell Text",
     column3: "Cell Text",
     column4: { text: "Link Button", href: "#" },
@@ -215,7 +215,7 @@ export function CommonTable({
   // 🎯 목적: 페이지네이션 관련 상태
   const [pagination, setPagination] = React.useState({
     pageIndex: 0,
-    pageSize: 10, // 기본 rows per page
+    pageSize: 40, // 기본 rows per page
   });
 
   // 🎯 목적: 차트 관련 상태 (showChart가 true일 때만 사용)
@@ -448,15 +448,105 @@ export function CommonTable({
       header: () => <div className="text-right"></div>,
       cell: ({ row }) =>
         row.original.column7 && (
-          <div className="text-right">
-            <Button
-              variant="ghost"
-              size="sm"
-              aria-label="행 옵션"
-              onClick={(e) => e.stopPropagation()}
-            >
-              <EllipsisVertical className="h-4 w-4" />
-            </Button>
+          <div className="text-right" onClick={(e) => e.stopPropagation()}>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" size="sm" aria-label="행 옵션">
+                  <EllipsisVertical className="h-4 w-4" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent className="w-[150px]" align="end">
+                <DropdownMenuItem
+                  onClick={() =>
+                    console.log("Edit clicked for row", row.original.id)
+                  }
+                  className="relative pl-8"
+                >
+                  <Pen className="absolute top-1/2 left-2 h-4 w-4 -translate-y-1/2" />
+                  Edit
+                </DropdownMenuItem>
+                <DropdownMenuItem
+                  onClick={() => console.log("Attach to Pod clicked")}
+                  className="relative pl-8"
+                >
+                  <FolderSearch className="absolute top-1/2 left-2 h-4 w-4 -translate-y-1/2" />
+                  Attach to Pod
+                </DropdownMenuItem>
+                <DropdownMenuItem
+                  onClick={() => console.log("Pod Shell clicked")}
+                  className="relative pl-8"
+                >
+                  <SquareTerminal className="absolute top-1/2 left-2 h-4 w-4 -translate-y-1/2" />
+                  Pod Shell
+                </DropdownMenuItem>
+                <DropdownMenuItem
+                  onClick={() => console.log("Pod Log clicked")}
+                  className="relative pl-8"
+                >
+                  <History className="absolute top-1/2 left-2 h-4 w-4 -translate-y-1/2" />
+                  Pod Log
+                </DropdownMenuItem>
+                <DropdownMenuItem
+                  onClick={() => console.log("Set as Default clicked")}
+                  className="relative pl-8"
+                >
+                  <Box className="absolute top-1/2 left-2 h-4 w-4 -translate-y-1/2" />
+                  Set as Default
+                </DropdownMenuItem>
+                <DropdownMenuItem
+                  onClick={() => console.log("Kubeconfig File clicked")}
+                  className="relative pl-8"
+                >
+                  <File className="absolute top-1/2 left-2 h-4 w-4 -translate-y-1/2" />
+                  Kubeconfig File
+                </DropdownMenuItem>
+                <DropdownMenuItem
+                  onClick={() => console.log("Restart clicked")}
+                  className="relative pl-8"
+                >
+                  <RefreshCw className="absolute top-1/2 left-2 h-4 w-4 -translate-y-1/2" />
+                  Restart
+                </DropdownMenuItem>
+                <DropdownMenuItem
+                  onClick={() => console.log("Trigger clicked")}
+                  className="relative pl-8"
+                >
+                  <Play className="absolute top-1/2 left-2 h-4 w-4 -translate-y-1/2" />
+                  Trigger
+                </DropdownMenuItem>
+                <DropdownMenuItem
+                  onClick={() => console.log("Scale clicked")}
+                  className="relative pl-8"
+                >
+                  <Ruler className="absolute top-1/2 left-2 h-4 w-4 -translate-y-1/2" />
+                  Scale
+                </DropdownMenuItem>
+                <DropdownMenuItem
+                  onClick={() => console.log("Upgrade clicked")}
+                  className="relative pl-8"
+                >
+                  <ArrowUpToLine className="absolute top-1/2 left-2 h-4 w-4 -translate-y-1/2" />
+                  Upgrade
+                </DropdownMenuItem>
+                <DropdownMenuItem
+                  onClick={() => console.log("Suspend clicked")}
+                  className="relative pl-8"
+                >
+                  <OctagonPause className="absolute top-1/2 left-2 h-4 w-4 -translate-y-1/2" />
+                  Suspend
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem
+                  onClick={() =>
+                    console.log("Delete clicked for row", row.original.id)
+                  }
+                  className="text-destructive relative pl-8"
+                >
+                  <Trash2 className="text-destructive absolute top-1/2 left-2 h-4 w-4 -translate-y-1/2" />
+                  Delete
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
           </div>
         ),
       enableSorting: false,
@@ -699,7 +789,7 @@ export function CommonTable({
             </div>
 
             {/* 오른쪽: 네임스페이스 드롭다운과 검색 */}
-            <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
+            <div className="flex min-w-0 flex-col gap-2 sm:flex-row sm:flex-wrap sm:items-center">
               {/* 네임스페이스 드롭다운 */}
               <DropdownMenu>
                 <DropdownMenuTrigger>
@@ -760,21 +850,32 @@ export function CommonTable({
               </DropdownMenu>
 
               {/* 검색 입력 */}
-              <div className="relative">
+              <div className="relative min-w-0 flex-1 sm:w-[360px] sm:flex-none">
                 <Search className="text-muted-foreground absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 transform" />
                 <Input
                   placeholder="Search..."
                   value={searchValue}
                   onChange={(e) => setSearchValue(e.target.value)}
-                  className="w-full max-w-none min-w-[180px] pl-9 sm:w-[373px]"
+                  className="w-full min-w-[180px] pl-9"
                 />
               </div>
 
               {/* Add 버튼 */}
-              <Button>
+              <Button className="gap-2 !px-4">
                 <Plus className="h-4 w-4" />
                 Add
               </Button>
+
+              {/* Delete 버튼 - 체크된 row가 있을 때만 표시 */}
+              {selectedCount > 0 && (
+                <Button
+                  variant="secondary"
+                  className="text-destructive gap-2 !px-4"
+                >
+                  <Trash2 className="text-destructive h-4 w-4" />
+                  Delete ({selectedCount})
+                </Button>
+              )}
             </div>
           </div>
 

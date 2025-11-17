@@ -1,8 +1,8 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
-/* Tailwind dark mode variant: .dark 클래스를 가진 요소와 그 자식 모두에 적용 */
-@custom-variant dark (&:where(.dark, .dark *));
+/* Tailwind dark mode variant: .dark 또는 .theme-default-dark 클래스를 가진 요소와 그 자식 모두에 적용 */
+@custom-variant dark (&:where(.dark, .dark *, .theme-default-dark, .theme-default-dark *));
 
 /* 🎯 목적: 기본 테마 변수 정의 (:root 레벨)
  * 📝 주의: @theme inline에서 var() 참조가 작동하려면 :root에 원본 변수 필요
