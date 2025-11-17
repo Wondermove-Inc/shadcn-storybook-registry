@@ -1094,28 +1094,28 @@ export const Home: Story = {
                 )}
               </div>
             </div>
-          </div>
 
-          {/* 도움말 섹션 */}
-          <Item variant="outline" className="w-full">
-            <ItemMedia variant="icon">
-              <CircleHelp className="h-4 w-4" />
-            </ItemMedia>
-            <ItemContent>
-              <ItemTitle>Need Help?</ItemTitle>
-              <ItemDescription>
-                New login detected from unknown device.
-              </ItemDescription>
-            </ItemContent>
-            <ItemActions>
-              <Button
-                variant="outline"
-                className="h-9 rounded-lg px-4 py-2 text-sm"
-              >
-                Get help
-              </Button>
-            </ItemActions>
-          </Item>
+            {/* 도움말 섹션 */}
+            <Item variant="outline" className="w-full">
+              <ItemMedia variant="icon">
+                <CircleHelp className="h-4 w-4" />
+              </ItemMedia>
+              <ItemContent>
+                <ItemTitle>Need Help?</ItemTitle>
+                <ItemDescription>
+                  New login detected from unknown device.
+                </ItemDescription>
+              </ItemContent>
+              <ItemActions>
+                <Button
+                  variant="outline"
+                  className="h-9 rounded-lg px-4 py-2 text-sm"
+                >
+                  Get help
+                </Button>
+              </ItemActions>
+            </Item>
+          </div>
         </div>
       </div>
     );
@@ -1759,28 +1759,28 @@ export const HomeNodata: Story = {
                 </div>
               </div>
             </div>
-          </div>
 
-          {/* 도움말 섹션 */}
-          <Item variant="outline" className="w-full">
-            <ItemMedia variant="icon">
-              <CircleHelp className="h-4 w-4" />
-            </ItemMedia>
-            <ItemContent>
-              <ItemTitle>Need Help?</ItemTitle>
-              <ItemDescription>
-                New login detected from unknown device.
-              </ItemDescription>
-            </ItemContent>
-            <ItemActions>
-              <Button
-                variant="outline"
-                className="h-9 rounded-lg px-4 py-2 text-sm"
-              >
-                Get help
-              </Button>
-            </ItemActions>
-          </Item>
+            {/* 도움말 섹션 */}
+            <Item variant="outline" className="w-full">
+              <ItemMedia variant="icon">
+                <CircleHelp className="h-4 w-4" />
+              </ItemMedia>
+              <ItemContent>
+                <ItemTitle>Need Help?</ItemTitle>
+                <ItemDescription>
+                  New login detected from unknown device.
+                </ItemDescription>
+              </ItemContent>
+              <ItemActions>
+                <Button
+                  variant="outline"
+                  className="h-9 rounded-lg px-4 py-2 text-sm"
+                >
+                  Get help
+                </Button>
+              </ItemActions>
+            </Item>
+          </div>
         </div>
       </div>
     );
