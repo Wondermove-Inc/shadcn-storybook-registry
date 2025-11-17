@@ -45,6 +45,19 @@ import {
   DropdownMenuCheckboxItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandItem,
+  CommandList,
+} from "@/components/ui/command";
+import { Checkbox } from "@/components/ui/checkbox";
 import { Separator } from "@/components/ui/separator";
 import {
   Select,
@@ -374,83 +387,109 @@ function MetricsContent() {
       <Separator />
 
       {/* Hide metrics from the UI */}
-      <div className="flex items-end gap-2 self-stretch">
-        <Field className="flex-1">
-          <Label className="text-foreground text-sm font-medium">
-            Hide metrics from the UI
-          </Label>
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button
-                variant="outline"
-                className="bg-input/30 border-border w-full justify-between"
+      <div className="flex flex-col gap-3">
+        <div className="flex items-end gap-2 self-stretch">
+          <Field className="flex-1">
+            <Label className="text-foreground text-sm font-medium">
+              Hide metrics from the UI
+            </Label>
+            <Popover modal={false}>
+              <PopoverTrigger asChild>
+                <Button
+                  variant="outline"
+                  role="combobox"
+                  className="bg-input/30 border-border w-full justify-between"
+                  onClick={() => console.log("Button clicked!")}
+                >
+                  <span className="text-muted-foreground">
+                    {selectedMetrics.length > 0
+                      ? `${selectedMetrics.length} metrics selected`
+                      : "Select metrics to hide..."}
+                  </span>
+                  <ChevronDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent
+                className="min-w-[var(--radix-popover-trigger-width)] p-0"
+                align="start"
+                sideOffset={4}
               >
-                <span className="text-muted-foreground">
-                  {selectedMetrics.length > 0
-                    ? `${selectedMetrics.length} metrics selected`
-                    : "Select metrics to hide..."}
-                </span>
-                <ChevronDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent
-              className="z-[100] w-[--radix-dropdown-menu-trigger-width]"
-              align="start"
-            >
-              <DropdownMenuCheckboxItem
-                checked={selectedMetrics.includes("Repositories")}
-                onCheckedChange={(checked) =>
-                  handleMetricToggle("Repositories", checked)
-                }
-              >
-                Repositories
-              </DropdownMenuCheckboxItem>
-              <DropdownMenuCheckboxItem
-                checked={selectedMetrics.includes("CPU")}
-                onCheckedChange={(checked) =>
-                  handleMetricToggle("CPU", checked)
-                }
-              >
-                CPU
-              </DropdownMenuCheckboxItem>
-              <DropdownMenuCheckboxItem
-                checked={selectedMetrics.includes("Memory")}
-                onCheckedChange={(checked) =>
-                  handleMetricToggle("Memory", checked)
-                }
-              >
-                Memory
-              </DropdownMenuCheckboxItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
+                <Command>
+                  <CommandList>
+                    <CommandEmpty>No metrics found.</CommandEmpty>
+                    <CommandGroup>
+                      <CommandItem
+                        onSelect={() =>
+                          handleMetricToggle(
+                            "Repositories",
+                            !selectedMetrics.includes("Repositories"),
+                          )
+                        }
+                      >
+                        <Checkbox
+                          checked={selectedMetrics.includes("Repositories")}
+                          className="pointer-events-none"
+                        />
+                        <span>Repositories</span>
+                      </CommandItem>
+                      <CommandItem
+                        onSelect={() =>
+                          handleMetricToggle(
+                            "CPU",
+                            !selectedMetrics.includes("CPU"),
+                          )
+                        }
+                      >
+                        <Checkbox
+                          checked={selectedMetrics.includes("CPU")}
+                          className="pointer-events-none"
+                        />
+                        <span>CPU</span>
+                      </CommandItem>
+                      <CommandItem
+                        onSelect={() =>
+                          handleMetricToggle(
+                            "Memory",
+                            !selectedMetrics.includes("Memory"),
+                          )
+                        }
+                      >
+                        <Checkbox
+                          checked={selectedMetrics.includes("Memory")}
+                          className="pointer-events-none"
+                        />
+                        <span>Memory</span>
+                      </CommandItem>
+                    </CommandGroup>
+                  </CommandList>
+                </Command>
+              </PopoverContent>
+            </Popover>
+          </Field>
+          <Button>Hide all metics</Button>
+          <Button variant="secondary" size="icon">
+            <RotateCcw className="h-4 w-4" />
+          </Button>
+        </div>
 
-          {/* 선택된 메트릭 리스트 표시 */}
-          {selectedMetrics.length > 0 && (
-            <div className="mt-3 space-y-2">
-              {selectedMetrics.map((metric) => (
-                <Item key={metric} variant="outline" size="sm">
-                  <ItemContent>
-                    <ItemTitle>{metric}</ItemTitle>
-                  </ItemContent>
-                  <ItemActions>
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      className="h-6 w-6"
-                      onClick={() => handleRemoveMetric(metric)}
-                    >
-                      <X className="h-4 w-4" />
-                    </Button>
-                  </ItemActions>
-                </Item>
-              ))}
-            </div>
-          )}
-        </Field>
-        <Button>Hide all metics</Button>
-        <Button variant="secondary" size="icon">
-          <RotateCcw className="h-4 w-4" />
-        </Button>
+        {/* 선택된 메트릭 리스트 표시 */}
+        {selectedMetrics.length > 0 && (
+          <div className="space-y-2">
+            {selectedMetrics.map((metric) => (
+              <Item key={metric} variant="outline" size="sm">
+                <ItemContent>
+                  <ItemTitle>{metric}</ItemTitle>
+                </ItemContent>
+                <ItemActions>
+                  <X
+                    className="h-4 w-4 cursor-pointer"
+                    onClick={() => handleRemoveMetric(metric)}
+                  />
+                </ItemActions>
+              </Item>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );
