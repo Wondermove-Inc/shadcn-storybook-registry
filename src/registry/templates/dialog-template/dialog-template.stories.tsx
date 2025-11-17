@@ -1,8 +1,18 @@
 import React, { useState } from "react";
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { X } from "lucide-react";
+import { ChevronDown, ChevronUp, FolderSearch, Plus, X } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Field, FieldLabel } from "@/components/ui/field";
+import { Input } from "@/components/ui/input";
+import {
+  InputGroup,
+  InputGroupAddon,
+  InputGroupButton,
+  InputGroupInput,
+} from "@/components/ui/input-group";
+import { Label } from "@/components/ui/label";
 import {
   Dialog,
   DialogClose,
@@ -181,6 +191,226 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const Default: Story = {
+export const AddClusters: Story = {
   render: () => <KubeconfigDialog />,
+};
+
+/**
+ * 🎯 목적: Custom Helm Repo 추가 Dialog
+ *
+ * Helm repository 이름과 URL을 입력받는 간단한 Dialog 템플릿입니다.
+ * Field 컴포넌트를 활용한 폼 구성 예시를 보여줍니다.
+ */
+function HelmRepoDialog() {
+  const [isOpen, setIsOpen] = useState(false);
+  const [isExpanded, setIsExpanded] = useState(false);
+  const [repoName, setRepoName] = useState("");
+  const [repoUrl, setRepoUrl] = useState("");
+  const [skipTls, setSkipTls] = useState(false);
+  const [keyFile, setKeyFile] = useState("");
+  const [caFile, setCaFile] = useState("");
+  const [certFile, setCertFile] = useState("");
+
+  // 🎯 목적: 파일 입력 참조를 위한 ref
+  const keyFileRef = React.useRef<HTMLInputElement>(null);
+  const caFileRef = React.useRef<HTMLInputElement>(null);
+  const certFileRef = React.useRef<HTMLInputElement>(null);
+
+  const handleAddRepo = () => {
+    // 🎯 목적: Helm repo 추가 로직 시뮬레이션
+    console.log("Adding Helm repo:", { name: repoName, url: repoUrl });
+    setIsOpen(false);
+    setRepoName("");
+    setRepoUrl("");
+  };
+
+  return (
+    <Dialog open={isOpen} onOpenChange={setIsOpen}>
+      <DialogTrigger asChild>
+        <Button variant="outline">Add Helm Repo</Button>
+      </DialogTrigger>
+      <DialogContent className="sm:max-w-[425px]">
+        {/* Dialog Header */}
+        <DialogHeader>
+          <DialogTitle>Add custom Helm Repo</DialogTitle>
+          <DialogDescription>Please add a helm repo.</DialogDescription>
+        </DialogHeader>
+
+        {/* Dialog Content - Form Fields */}
+        <div className="flex flex-col gap-4">
+          <Field>
+            <FieldLabel>Helm repo name</FieldLabel>
+            <Input
+              type="text"
+              placeholder="Enter a name"
+              value={repoName}
+              onChange={(e) => setRepoName(e.target.value)}
+            />
+          </Field>
+
+          <Field>
+            <FieldLabel>URL</FieldLabel>
+            <Input
+              type="text"
+              placeholder="Enter a url"
+              value={repoUrl}
+              onChange={(e) => setRepoUrl(e.target.value)}
+            />
+          </Field>
+
+          {/* 🎯 목적: 축소 상태일 때 Expand 버튼 표시 */}
+          {!isExpanded && (
+            <Button
+              variant="ghost"
+              size="sm"
+              className="w-fit gap-2 self-start"
+              onClick={() => setIsExpanded(true)}
+            >
+              Expand
+              <ChevronDown className="h-4 w-4" />
+            </Button>
+          )}
+
+          {/* 🎯 목적: 확장 시 추가 보안 설정 필드 표시 */}
+          {isExpanded && (
+            <>
+              <div className="flex flex-col gap-2.5">
+                {/* Security settings 섹션 */}
+                <Field>
+                  <FieldLabel>Security settings</FieldLabel>
+                  <InputGroup>
+                    <InputGroupInput
+                      placeholder="Key file"
+                      value={keyFile}
+                      readOnly
+                    />
+                    <InputGroupAddon align="inline-end">
+                      <InputGroupButton
+                        size="icon-xs"
+                        variant="default"
+                        onClick={() => keyFileRef.current?.click()}
+                      >
+                        <FolderSearch className="h-4 w-4" />
+                      </InputGroupButton>
+                    </InputGroupAddon>
+                  </InputGroup>
+                  <input
+                    type="file"
+                    ref={keyFileRef}
+                    className="hidden"
+                    onChange={(e) =>
+                      setKeyFile(e.target.files?.[0]?.name || "")
+                    }
+                  />
+                </Field>
+
+                <InputGroup>
+                  <InputGroupInput
+                    placeholder="Ca file"
+                    value={caFile}
+                    readOnly
+                  />
+                  <InputGroupAddon align="inline-end">
+                    <InputGroupButton
+                      size="icon-xs"
+                      variant="default"
+                      onClick={() => caFileRef.current?.click()}
+                    >
+                      <FolderSearch className="h-4 w-4" />
+                    </InputGroupButton>
+                  </InputGroupAddon>
+                </InputGroup>
+                <input
+                  type="file"
+                  ref={caFileRef}
+                  className="hidden"
+                  onChange={(e) => setCaFile(e.target.files?.[0]?.name || "")}
+                />
+
+                <InputGroup>
+                  <InputGroupInput
+                    placeholder="Certificate file"
+                    value={certFile}
+                    readOnly
+                  />
+                  <InputGroupAddon align="inline-end">
+                    <InputGroupButton
+                      size="icon-xs"
+                      variant="default"
+                      onClick={() => certFileRef.current?.click()}
+                    >
+                      <FolderSearch className="h-4 w-4" />
+                    </InputGroupButton>
+                  </InputGroupAddon>
+                </InputGroup>
+                <input
+                  type="file"
+                  ref={certFileRef}
+                  className="hidden"
+                  onChange={(e) => setCertFile(e.target.files?.[0]?.name || "")}
+                />
+
+                <div className="flex items-center gap-2">
+                  <Checkbox
+                    id="skip-tls"
+                    checked={skipTls}
+                    onCheckedChange={(checked) => setSkipTls(checked === true)}
+                  />
+                  <Label
+                    htmlFor="skip-tls"
+                    className="text-muted-foreground text-sm font-light"
+                  >
+                    Skip TLS certificate checks for the repository
+                  </Label>
+                </div>
+
+                {/* Chart Repository Credentials 섹션 */}
+                <Field className="mt-1.5">
+                  <FieldLabel>Chart Repository Credentials</FieldLabel>
+                  <Input type="text" placeholder="Username" />
+                </Field>
+
+                <Input type="password" placeholder="Password" />
+              </div>
+
+              {/* 🎯 목적: 확장 상태일 때 Collapse 버튼을 하단에 표시 */}
+              <Button
+                variant="ghost"
+                size="sm"
+                className="w-fit gap-2 self-start"
+                onClick={() => setIsExpanded(false)}
+              >
+                Collapse
+                <ChevronUp className="h-4 w-4" />
+              </Button>
+            </>
+          )}
+        </div>
+
+        {/* Dialog Footer */}
+        <DialogFooter>
+          <DialogClose asChild>
+            <Button variant="ghost">Cancel</Button>
+          </DialogClose>
+          <Button onClick={handleAddRepo} className="gap-2 !px-4">
+            <Plus className="h-4 w-4" />
+            Add
+          </Button>
+        </DialogFooter>
+
+        {/* Custom Close Icon */}
+        <DialogClose className="ring-offset-background focus:ring-ring data-[state=open]:bg-accent data-[state=open]:text-muted-foreground absolute top-4 right-4 rounded-sm opacity-70 transition-opacity hover:opacity-100 focus:ring-2 focus:ring-offset-2 focus:outline-none disabled:pointer-events-none">
+          <X className="h-4 w-4" />
+          <span className="sr-only">Close</span>
+        </DialogClose>
+      </DialogContent>
+    </Dialog>
+  );
+}
+
+/**
+ * Custom Helm Repo 추가를 위한 간단한 폼 Dialog 예시입니다.
+ */
+export const HelmRepo: Story = {
+  render: () => <HelmRepoDialog />,
 };
