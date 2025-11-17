@@ -27,6 +27,7 @@ import {
   ColumnDef,
   flexRender,
   getCoreRowModel,
+  getPaginationRowModel,
   getSortedRowModel,
   SortingState,
   useReactTable,
@@ -210,6 +211,12 @@ export function CommonTable({
   // 🎯 목적: 테이블 정렬 상태 관리
   const [sorting, setSorting] = React.useState<SortingState>([]);
 
+  // 🎯 목적: 페이지네이션 관련 상태
+  const [pagination, setPagination] = React.useState({
+    pageIndex: 0,
+    pageSize: 10, // 기본 rows per page
+  });
+
   // 🎯 목적: 차트 관련 상태 (showChart가 true일 때만 사용)
   const [selectedMetric, setSelectedMetric] = React.useState("cpu");
 
@@ -287,21 +294,25 @@ export function CommonTable({
     {
       id: "select",
       header: () => (
-        <Checkbox
-          checked={isIndeterminate ? "indeterminate" : isAllSelected}
-          onCheckedChange={handleSelectAll}
-          aria-label="전체 선택"
-        />
+        <div className="flex items-center justify-center">
+          <Checkbox
+            checked={isIndeterminate ? "indeterminate" : isAllSelected}
+            onCheckedChange={handleSelectAll}
+            aria-label="전체 선택"
+          />
+        </div>
       ),
       cell: ({ row }) => (
-        <Checkbox
-          checked={row.original.checked}
-          onCheckedChange={(checked) =>
-            handleRowCheckChange(row.original.id, !!checked)
-          }
-          aria-label={`행 ${row.original.id} 선택`}
-          onClick={(e) => e.stopPropagation()}
-        />
+        <div className="flex items-center justify-center">
+          <Checkbox
+            checked={row.original.checked}
+            onCheckedChange={(checked) =>
+              handleRowCheckChange(row.original.id, !!checked)
+            }
+            aria-label={`행 ${row.original.id} 선택`}
+            onClick={(e) => e.stopPropagation()}
+          />
+        </div>
       ),
       enableSorting: false,
       enableResizing: false,
@@ -456,18 +467,21 @@ export function CommonTable({
   ];
 
   /**
-   * 🎯 목적: TanStack Table 인스턴스 생성 - 정렬 및 리사이징 기능 포함
+   * 🎯 목적: TanStack Table 인스턴스 생성 - 정렬, 리사이징, 페이징 기능 포함
    */
   const table = useReactTable({
     data,
     columns,
     onSortingChange: setSorting,
+    onPaginationChange: setPagination,
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
+    getPaginationRowModel: getPaginationRowModel(),
     enableColumnResizing: true,
     columnResizeMode: "onChange",
     state: {
       sorting,
+      pagination,
     },
   });
 
@@ -758,88 +772,130 @@ export function CommonTable({
           </div>
 
           {/* 테이블 섹션 - TanStack Table 기반 정렬 가능한 테이블 */}
-          <Table>
-            <TableHeader>
-              {table.getHeaderGroups().map((headerGroup) => (
-                <TableRow key={headerGroup.id}>
-                  {headerGroup.headers.map((header) => (
-                    <TableHead
-                      key={header.id}
-                      className={
-                        header.id === "select"
-                          ? "w-12"
-                          : header.id === "actions"
-                            ? "text-right"
-                            : ""
-                      }
-                      style={{
-                        width: header.getSize(),
-                      }}
-                    >
-                      <div className="relative">
-                        {header.isPlaceholder
-                          ? null
-                          : flexRender(
-                              header.column.columnDef.header,
-                              header.getContext(),
-                            )}
-                        {header.column.getCanResize() && (
-                          <div
-                            onMouseDown={header.getResizeHandler()}
-                            onTouchStart={header.getResizeHandler()}
-                            className="border-border hover:border-primary absolute top-0 right-0 h-full w-1 cursor-col-resize touch-none border-r select-none"
-                            style={{
-                              transform: header.column.getIsResizing()
-                                ? "translateX(0.5px)"
-                                : "",
-                            }}
-                          />
-                        )}
-                      </div>
-                    </TableHead>
-                  ))}
-                </TableRow>
-              ))}
-            </TableHeader>
-            <TableBody>
-              {table.getRowModel().rows?.length ? (
-                table.getRowModel().rows.map((row) => {
-                  const isSelected = selectedRowId === row.original.id;
-                  return (
-                    <TableRow
-                      key={row.id}
-                      data-table-row
-                      data-state={row.getIsSelected() ? "selected" : undefined}
-                      className={`cursor-pointer border-l-2 transition-colors ${
-                        isSelected
-                          ? "bg-muted/50 border-l-primary"
-                          : "hover:bg-muted/50 border-l-transparent"
-                      }`}
-                      onClick={(e) => handleRowClick(e, row.original)}
-                    >
-                      {row.getVisibleCells().map((cell) => (
-                        <TableCell key={cell.id}>
-                          {flexRender(
-                            cell.column.columnDef.cell,
-                            cell.getContext(),
-                          )}
-                        </TableCell>
-                      ))}
-                    </TableRow>
-                  );
-                })
-              ) : (
-                <TableRow>
-                  <TableCell
-                    colSpan={columns.length}
-                    className="h-24 text-center"
+          <div className="relative w-full overflow-hidden rounded-md border">
+            <table className="w-full caption-bottom border-collapse text-sm">
+              <TableHeader className="bg-muted [&_tr]:border-b-0">
+                {table.getHeaderGroups().map((headerGroup) => (
+                  <TableRow
+                    key={headerGroup.id}
+                    className="hover:bg-muted border-b"
                   >
-                    No results.
-                  </TableCell>
-                </TableRow>
-              )}
-            </TableBody>
-          </Table>
+                    {headerGroup.headers.map((header) => (
+                      <TableHead
+                        key={header.id}
+                        className={
+                          header.id === "select"
+                            ? "w-12"
+                            : header.id === "actions"
+                              ? "text-right"
+                              : ""
+                        }
+                        style={{
+                          width: header.getSize(),
+                        }}
+                      >
+                        <div className="relative">
+                          {header.isPlaceholder
+                            ? null
+                            : flexRender(
+                                header.column.columnDef.header,
+                                header.getContext(),
+                              )}
+                          {header.column.getCanResize() && (
+                            <div
+                              onMouseDown={header.getResizeHandler()}
+                              onTouchStart={header.getResizeHandler()}
+                              className="border-border hover:border-primary absolute top-0 right-0 h-full w-1 cursor-col-resize touch-none border-r select-none"
+                              style={{
+                                transform: header.column.getIsResizing()
+                                  ? "translateX(0.5px)"
+                                  : "",
+                              }}
+                            />
+                          )}
+                        </div>
+                      </TableHead>
+                    ))}
+                  </TableRow>
+                ))}
+              </TableHeader>
+              <TableBody>
+                {table.getRowModel().rows?.length ? (
+                  table.getRowModel().rows.map((row) => {
+                    const isSelected = selectedRowId === row.original.id;
+                    return (
+                      <TableRow
+                        key={row.id}
+                        data-table-row
+                        data-state={
+                          row.getIsSelected() ? "selected" : undefined
+                        }
+                        className={`cursor-pointer transition-colors ${
+                          isSelected ? "bg-muted/50" : "hover:bg-muted/50"
+                        }`}
+                        onClick={(e) => handleRowClick(e, row.original)}
+                      >
+                        {row.getVisibleCells().map((cell, cellIndex) => (
+                          <TableCell key={cell.id} className="relative">
+                            {/* 첫 번째 셀에 선택 표시 indicator 추가 */}
+                            {cellIndex === 0 && isSelected && (
+                              <div className="bg-primary absolute top-0 left-0 h-full w-0.5" />
+                            )}
+                            {flexRender(
+                              cell.column.columnDef.cell,
+                              cell.getContext(),
+                            )}
+                          </TableCell>
+                        ))}
+                      </TableRow>
+                    );
+                  })
+                ) : (
+                  <TableRow>
+                    <TableCell
+                      colSpan={columns.length}
+                      className="h-24 text-center"
+                    >
+                      No results.
+                    </TableCell>
+                  </TableRow>
+                )}
+              </TableBody>
+            </table>
+          </div>
+
+          {/* 페이지네이션 컨트롤 - DataTable 스타일 */}
+          <div className="flex items-center justify-between px-4">
+            <div className="text-muted-foreground flex-1 text-sm">
+              {selectedCount} of {table.getFilteredRowModel().rows.length}{" "}
+              row(s) selected.
+            </div>
+            <div className="flex items-center space-x-6 lg:space-x-8">
+              {/* Rows per page 선택 */}
+              <div className="flex items-center space-x-2">
+                <p className="text-sm font-medium">Rows per page</p>
+                <Select
+                  value={`${table.getState().pagination.pageSize}`}
+                  onValueChange={(value) => {
+                    table.setPageSize(Number(value));
+                  }}
+                >
+                  <SelectTrigger className="h-8 w-[70px]">
+                    <SelectValue
+                      placeholder={table.getState().pagination.pageSize}
+                    />
+                  </SelectTrigger>
+                  <SelectContent side="top">
+                    {[10, 20, 30, 40, 50].map((pageSize) => (
+                      <SelectItem key={pageSize} value={`${pageSize}`}>
+                        {pageSize}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 

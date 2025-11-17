@@ -810,7 +810,7 @@ export function ChartData({ className, variant = "default" }: ChartDataProps) {
 
   return (
     <div className={`bg-background min-h-screen w-full p-5 ${className || ""}`}>
-      <div className="mx-auto flex max-w-[1400px] flex-col gap-4">
+      <div className="mx-auto flex max-w-[1400px] flex-col gap-6">
         {/* 헤더와 차트 영역 */}
         <div className="flex flex-col gap-3">
           {/* 헤더 영역 */}
@@ -1502,7 +1502,7 @@ export function ChartData({ className, variant = "default" }: ChartDataProps) {
 
         {/* 경고 테이블 또는 Empty 상태 (overview에서는 숨김) */}
         {variant !== "overview" && (
-          <div className="flex flex-1 flex-col items-start gap-1 self-stretch">
+          <div className="flex flex-1 flex-col items-start gap-3 self-stretch">
             {variant === "no-data" ? (
               <Empty className="min-h-[300px] w-full">
                 <EmptyHeader>
@@ -1520,19 +1520,19 @@ export function ChartData({ className, variant = "default" }: ChartDataProps) {
                 {/* 헤더 */}
                 <div className="flex items-center gap-1">
                   <TriangleAlert className="h-4 w-4 text-amber-500" />
-                  <span className="text-lg leading-none font-normal text-amber-500">
+                  <span className="text-sm leading-none font-medium text-amber-500">
                     Warnings
                   </span>
-                  <span className="text-muted-foreground text-base leading-6 font-light">
-                    (3)
+                  <span className="text-sm leading-none font-medium text-amber-500">
+                    ({warningData.length})
                   </span>
                 </div>
 
-                {/* 테이블 */}
-                <div className="flex flex-col items-start self-stretch">
-                  <Table className="w-full table-fixed">
-                    <TableHeader>
-                      <TableRow className="border-border h-[40px]">
+                {/* 테이블 - DataTable 스타일 */}
+                <div className="overflow-hidden rounded-md border">
+                  <table className="w-full table-fixed border-collapse text-sm">
+                    <TableHeader className="bg-muted">
+                      <TableRow className="hover:bg-muted border-b">
                         <TableHead className="text-foreground w-1/5 text-sm leading-5 font-medium">
                           Head Text
                         </TableHead>
@@ -1584,14 +1584,7 @@ export function ChartData({ className, variant = "default" }: ChartDataProps) {
                         </TableRow>
                       ))}
                     </TableBody>
-                  </Table>
-                </div>
-
-                {/* Caption */}
-                <div className="flex flex-shrink-0 items-center justify-center gap-2.5 self-stretch pt-4">
-                  <span className="text-muted-foreground flex-1 text-center text-sm leading-5 font-normal">
-                    Caption text
-                  </span>
+                  </table>
                 </div>
               </>
             )}
