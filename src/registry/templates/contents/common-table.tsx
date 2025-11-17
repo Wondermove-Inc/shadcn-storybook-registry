@@ -22,6 +22,7 @@ import {
   Download,
   ArrowUpToLine,
   OctagonPause,
+  Plus,
 } from "lucide-react";
 import {
   ColumnDef,
@@ -768,6 +769,12 @@ export function CommonTable({
                   className="w-full max-w-none min-w-[180px] pl-9 sm:w-[373px]"
                 />
               </div>
+
+              {/* Add 버튼 */}
+              <Button>
+                <Plus className="h-4 w-4" />
+                Add
+              </Button>
             </div>
           </div>
 
