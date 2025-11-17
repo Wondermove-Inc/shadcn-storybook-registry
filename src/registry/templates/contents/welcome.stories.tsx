@@ -4,7 +4,6 @@ import { Welcome } from "./welcome";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import {
-  Table,
   TableBody,
   TableCell,
   TableHead,
@@ -56,10 +55,18 @@ import {
   useReactTable,
   getCoreRowModel,
   getSortedRowModel,
+  getPaginationRowModel,
   flexRender,
   type ColumnDef,
   type SortingState,
 } from "@tanstack/react-table";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 /**
  * Welcome 콘텐츠 컴포넌트 - Kubernetes IDE 환경의 웰컴 페이지
@@ -378,6 +385,12 @@ export const Home: Story = {
     // 🎯 목적: TanStack Table 정렬 상태 관리
     const [sorting, setSorting] = React.useState<SortingState>([]);
 
+    // 🎯 목적: 페이지네이션 상태 관리
+    const [pagination, setPagination] = React.useState({
+      pageIndex: 0,
+      pageSize: 10,
+    });
+
     // 🎯 목적: 각 클라우드 프로바이더별 로고 이미지 렌더링
     const getProviderLogo = React.useCallback((provider: string) => {
       const logoConfig: Record<string, { image: string; alt: string }> = {
@@ -401,7 +414,7 @@ export const Home: Story = {
 
       return (
         <div
-          className="flex h-10 w-10 items-center justify-center"
+          className="flex h-9 w-9 items-center justify-center"
           style={{ filter: "grayscale(100%)" }}
         >
           {config.image ? (
@@ -423,8 +436,14 @@ export const Home: Story = {
         {
           id: "provider",
           accessorKey: "provider",
-          header: "Clusters",
-          cell: ({ row }) => getProviderLogo(row.original.provider),
+          header: () => (
+            <div className="flex items-center justify-center">Clusters</div>
+          ),
+          cell: ({ row }) => (
+            <div className="flex items-center justify-center">
+              {getProviderLogo(row.original.provider)}
+            </div>
+          ),
           enableSorting: false,
         },
         {
@@ -543,10 +562,13 @@ export const Home: Story = {
       columns,
       state: {
         sorting,
+        pagination,
       },
       onSortingChange: setSorting,
+      onPaginationChange: setPagination,
       getCoreRowModel: getCoreRowModel(),
       getSortedRowModel: getSortedRowModel(),
+      getPaginationRowModel: getPaginationRowModel(),
       autoResetPageIndex: false,
     });
 
@@ -917,101 +939,132 @@ export const Home: Story = {
 
               {/* 클러스터 테이블 - TanStack Table 정렬 기능 적용 */}
               <div className="relative w-full" ref={tableContainerRef}>
-                <Table className="table-fixed">
-                  <TableHeader>
-                    {table.getHeaderGroups().map((headerGroup) => (
-                      <TableRow key={headerGroup.id} className="border-b">
-                        {headerGroup.headers.map((header) => (
-                          <TableHead
-                            key={header.id}
-                            className={`text-foreground ${
-                              header.column.id === "provider"
-                                ? "w-[60px]"
-                                : header.column.id === "name"
-                                  ? "w-[200px]"
-                                  : header.column.id === "version"
-                                    ? "w-[60px]"
-                                    : header.column.id === "cpuUsage"
-                                      ? "w-[100px]"
-                                      : header.column.id === "memoryUsage"
-                                        ? "w-[100px]"
-                                        : header.column.id === "podStatus"
-                                          ? "w-[180px]"
-                                          : header.column.id === "setting"
-                                            ? "w-[60px] text-right"
-                                            : ""
-                            } text-sm font-medium`}
-                            ref={
-                              header.column.id === "cpuUsage"
-                                ? cpuHeaderRef
-                                : header.column.id === "memoryUsage"
-                                  ? memoryHeaderRef
-                                  : undefined
-                            }
-                          >
-                            {header.isPlaceholder
-                              ? null
-                              : flexRender(
-                                  header.column.columnDef.header,
-                                  header.getContext(),
-                                )}
-                          </TableHead>
-                        ))}
-                      </TableRow>
-                    ))}
-                  </TableHeader>
-                  <TableBody>
-                    {table.getRowModel().rows.length === 0 ? (
-                      <TableRow>
-                        <TableCell colSpan={7} className="h-[400px]">
-                          <Empty className="border-0">
-                            <EmptyHeader>
-                              <EmptyTitle>No clusters</EmptyTitle>
-                              <EmptyDescription>
-                                There are no clusters registered yet
-                              </EmptyDescription>
-                            </EmptyHeader>
-                          </Empty>
-                        </TableCell>
-                      </TableRow>
-                    ) : (
-                      table.getRowModel().rows.map((row) => (
+                <div className="overflow-hidden rounded-md border">
+                  <table className="w-full table-fixed border-collapse text-sm">
+                    <TableHeader className="bg-muted [&_tr]:border-b-0">
+                      {table.getHeaderGroups().map((headerGroup) => (
                         <TableRow
-                          key={row.id}
-                          className="group border-b hover:relative"
+                          key={headerGroup.id}
+                          className="hover:bg-muted border-b"
                         >
-                          {row.getVisibleCells().map((cell) => (
-                            <TableCell
-                              key={cell.id}
+                          {headerGroup.headers.map((header) => (
+                            <TableHead
+                              key={header.id}
                               className={`text-foreground ${
-                                cell.column.id === "provider"
+                                header.column.id === "provider"
                                   ? "w-[60px]"
-                                  : cell.column.id === "name"
+                                  : header.column.id === "name"
                                     ? "w-[200px]"
-                                    : cell.column.id === "version"
+                                    : header.column.id === "version"
                                       ? "w-[60px]"
-                                      : cell.column.id === "cpuUsage"
+                                      : header.column.id === "cpuUsage"
                                         ? "w-[100px]"
-                                        : cell.column.id === "memoryUsage"
+                                        : header.column.id === "memoryUsage"
                                           ? "w-[100px]"
-                                          : cell.column.id === "podStatus"
-                                            ? "relative z-50 w-[180px]"
-                                            : cell.column.id === "setting"
+                                          : header.column.id === "podStatus"
+                                            ? "w-[180px]"
+                                            : header.column.id === "setting"
                                               ? "w-[60px] text-right"
                                               : ""
-                              } group-hover:relative group-hover:z-[100]`}
+                              } text-sm font-medium`}
+                              ref={
+                                header.column.id === "cpuUsage"
+                                  ? cpuHeaderRef
+                                  : header.column.id === "memoryUsage"
+                                    ? memoryHeaderRef
+                                    : undefined
+                              }
                             >
-                              {flexRender(
-                                cell.column.columnDef.cell,
-                                cell.getContext(),
-                              )}
-                            </TableCell>
+                              {header.isPlaceholder
+                                ? null
+                                : flexRender(
+                                    header.column.columnDef.header,
+                                    header.getContext(),
+                                  )}
+                            </TableHead>
                           ))}
                         </TableRow>
-                      ))
-                    )}
-                  </TableBody>
-                </Table>
+                      ))}
+                    </TableHeader>
+                    <TableBody>
+                      {table.getRowModel().rows.length === 0 ? (
+                        <TableRow>
+                          <TableCell colSpan={7} className="h-[400px]">
+                            <Empty className="border-0">
+                              <EmptyHeader>
+                                <EmptyTitle>No clusters</EmptyTitle>
+                                <EmptyDescription>
+                                  There are no clusters registered yet
+                                </EmptyDescription>
+                              </EmptyHeader>
+                            </Empty>
+                          </TableCell>
+                        </TableRow>
+                      ) : (
+                        table.getRowModel().rows.map((row) => (
+                          <TableRow
+                            key={row.id}
+                            className="hover:bg-muted/50 group border-b hover:relative"
+                          >
+                            {row.getVisibleCells().map((cell) => (
+                              <TableCell
+                                key={cell.id}
+                                className={`text-foreground ${
+                                  cell.column.id === "provider"
+                                    ? "w-[60px]"
+                                    : cell.column.id === "name"
+                                      ? "w-[200px]"
+                                      : cell.column.id === "version"
+                                        ? "w-[60px]"
+                                        : cell.column.id === "cpuUsage"
+                                          ? "w-[100px]"
+                                          : cell.column.id === "memoryUsage"
+                                            ? "w-[100px]"
+                                            : cell.column.id === "podStatus"
+                                              ? "relative z-50 w-[180px]"
+                                              : cell.column.id === "setting"
+                                                ? "w-[60px] text-right"
+                                                : ""
+                                } group-hover:relative group-hover:z-[100]`}
+                              >
+                                {flexRender(
+                                  cell.column.columnDef.cell,
+                                  cell.getContext(),
+                                )}
+                              </TableCell>
+                            ))}
+                          </TableRow>
+                        ))
+                      )}
+                    </TableBody>
+                  </table>
+                </div>
+
+                {/* 페이지네이션 컨트롤 - Rows per page */}
+                <div className="flex items-center justify-end px-4 pt-4">
+                  <div className="flex items-center space-x-2">
+                    <p className="text-sm font-medium">Rows per page</p>
+                    <Select
+                      value={`${table.getState().pagination.pageSize}`}
+                      onValueChange={(value) => {
+                        table.setPageSize(Number(value));
+                      }}
+                    >
+                      <SelectTrigger className="h-8 w-[70px]">
+                        <SelectValue
+                          placeholder={table.getState().pagination.pageSize}
+                        />
+                      </SelectTrigger>
+                      <SelectContent side="top">
+                        {[10, 20, 30, 40, 50].map((pageSize) => (
+                          <SelectItem key={pageSize} value={`${pageSize}`}>
+                            {pageSize}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                </div>
 
                 {/* 🎯 목적: CPU/Memory 차트 준비 중 안내 메시지 - CPU Usg와 Mem Usg 컬럼 그룹 중앙에 오버레이 (모든 행에 걸쳐) */}
                 {overlayPosition.width > 0 && overlayPosition.height > 0 && (
@@ -1082,6 +1135,12 @@ export const HomeNodata: Story = {
     // 🎯 목적: TanStack Table 정렬 상태 관리
     const [sorting, setSorting] = React.useState<SortingState>([]);
 
+    // 🎯 목적: 페이지네이션 상태 관리
+    const [pagination, setPagination] = React.useState({
+      pageIndex: 0,
+      pageSize: 10,
+    });
+
     // 🎯 목적: 각 클라우드 프로바이더별 로고 이미지 렌더링
     const getProviderLogo = React.useCallback((provider: string) => {
       const logoConfig: Record<string, { image: string; alt: string }> = {
@@ -1105,7 +1164,7 @@ export const HomeNodata: Story = {
 
       return (
         <div
-          className="flex h-10 w-10 items-center justify-center"
+          className="flex h-9 w-9 items-center justify-center"
           style={{ filter: "grayscale(100%)" }}
         >
           {config.image ? (
@@ -1127,8 +1186,14 @@ export const HomeNodata: Story = {
         {
           id: "provider",
           accessorKey: "provider",
-          header: "Clusters",
-          cell: ({ row }) => getProviderLogo(row.original.provider),
+          header: () => (
+            <div className="flex items-center justify-center">Clusters</div>
+          ),
+          cell: ({ row }) => (
+            <div className="flex items-center justify-center">
+              {getProviderLogo(row.original.provider)}
+            </div>
+          ),
           enableSorting: false,
         },
         {
@@ -1247,10 +1312,13 @@ export const HomeNodata: Story = {
       columns,
       state: {
         sorting,
+        pagination,
       },
       onSortingChange: setSorting,
+      onPaginationChange: setPagination,
       getCoreRowModel: getCoreRowModel(),
       getSortedRowModel: getSortedRowModel(),
+      getPaginationRowModel: getPaginationRowModel(),
       autoResetPageIndex: false,
     });
 
@@ -1566,98 +1634,129 @@ export const HomeNodata: Story = {
 
               {/* 클러스터 테이블 - TanStack Table 정렬 기능 적용 */}
               <div className="relative w-full" ref={tableContainerRef}>
-                <Table className="table-fixed">
-                  <TableHeader>
-                    {table.getHeaderGroups().map((headerGroup) => (
-                      <TableRow key={headerGroup.id} className="border-b">
-                        {headerGroup.headers.map((header) => (
-                          <TableHead
-                            key={header.id}
-                            className={`text-foreground ${
-                              header.column.id === "provider"
-                                ? "w-[60px]"
-                                : header.column.id === "name"
-                                  ? "w-[200px]"
-                                  : header.column.id === "version"
-                                    ? "w-[60px]"
-                                    : header.column.id === "cpuUsage"
-                                      ? "w-[100px]"
-                                      : header.column.id === "memoryUsage"
-                                        ? "w-[100px]"
-                                        : header.column.id === "podStatus"
-                                          ? "w-[180px]"
-                                          : header.column.id === "setting"
-                                            ? "w-[60px] text-right"
-                                            : ""
-                            } text-sm font-medium`}
-                          >
-                            {header.isPlaceholder
-                              ? null
-                              : flexRender(
-                                  header.column.columnDef.header,
-                                  header.getContext(),
-                                )}
-                          </TableHead>
-                        ))}
-                      </TableRow>
-                    ))}
-                  </TableHeader>
-                  <TableBody>
-                    {table.getRowModel().rows.length === 0 ? (
-                      <TableRow>
-                        <TableCell colSpan={7} className="h-[280px]">
-                          <Empty className="border-0">
-                            <EmptyHeader>
-                              <EmptyMedia variant="icon">
-                                <Info className="h-5 w-5" />
-                              </EmptyMedia>
-                              <EmptyTitle>No cluster</EmptyTitle>
-                              <EmptyDescription>
-                                Add cluster from kubeconfig or sync with
-                                kubeconfig to add cluster
-                              </EmptyDescription>
-                            </EmptyHeader>
-                          </Empty>
-                        </TableCell>
-                      </TableRow>
-                    ) : (
-                      table.getRowModel().rows.map((row) => (
+                <div className="overflow-hidden rounded-md border">
+                  <table className="w-full table-fixed border-collapse text-sm">
+                    <TableHeader className="bg-muted [&_tr]:border-b-0">
+                      {table.getHeaderGroups().map((headerGroup) => (
                         <TableRow
-                          key={row.id}
-                          className="group border-b hover:relative"
+                          key={headerGroup.id}
+                          className="hover:bg-muted border-b"
                         >
-                          {row.getVisibleCells().map((cell) => (
-                            <TableCell
-                              key={cell.id}
+                          {headerGroup.headers.map((header) => (
+                            <TableHead
+                              key={header.id}
                               className={`text-foreground ${
-                                cell.column.id === "provider"
+                                header.column.id === "provider"
                                   ? "w-[60px]"
-                                  : cell.column.id === "name"
+                                  : header.column.id === "name"
                                     ? "w-[200px]"
-                                    : cell.column.id === "version"
+                                    : header.column.id === "version"
                                       ? "w-[60px]"
-                                      : cell.column.id === "cpuUsage"
+                                      : header.column.id === "cpuUsage"
                                         ? "w-[100px]"
-                                        : cell.column.id === "memoryUsage"
+                                        : header.column.id === "memoryUsage"
                                           ? "w-[100px]"
-                                          : cell.column.id === "podStatus"
-                                            ? "relative z-50 w-[180px]"
-                                            : cell.column.id === "setting"
+                                          : header.column.id === "podStatus"
+                                            ? "w-[180px]"
+                                            : header.column.id === "setting"
                                               ? "w-[60px] text-right"
                                               : ""
-                              } group-hover:relative group-hover:z-[100]`}
+                              } text-sm font-medium`}
                             >
-                              {flexRender(
-                                cell.column.columnDef.cell,
-                                cell.getContext(),
-                              )}
-                            </TableCell>
+                              {header.isPlaceholder
+                                ? null
+                                : flexRender(
+                                    header.column.columnDef.header,
+                                    header.getContext(),
+                                  )}
+                            </TableHead>
                           ))}
                         </TableRow>
-                      ))
-                    )}
-                  </TableBody>
-                </Table>
+                      ))}
+                    </TableHeader>
+                    <TableBody>
+                      {table.getRowModel().rows.length === 0 ? (
+                        <TableRow>
+                          <TableCell colSpan={7} className="h-[280px]">
+                            <Empty className="border-0">
+                              <EmptyHeader>
+                                <EmptyMedia variant="icon">
+                                  <Info className="h-5 w-5" />
+                                </EmptyMedia>
+                                <EmptyTitle>No cluster</EmptyTitle>
+                                <EmptyDescription>
+                                  Add cluster from kubeconfig or sync with
+                                  kubeconfig to add cluster
+                                </EmptyDescription>
+                              </EmptyHeader>
+                            </Empty>
+                          </TableCell>
+                        </TableRow>
+                      ) : (
+                        table.getRowModel().rows.map((row) => (
+                          <TableRow
+                            key={row.id}
+                            className="hover:bg-muted/50 group border-b hover:relative"
+                          >
+                            {row.getVisibleCells().map((cell) => (
+                              <TableCell
+                                key={cell.id}
+                                className={`text-foreground ${
+                                  cell.column.id === "provider"
+                                    ? "w-[60px]"
+                                    : cell.column.id === "name"
+                                      ? "w-[200px]"
+                                      : cell.column.id === "version"
+                                        ? "w-[60px]"
+                                        : cell.column.id === "cpuUsage"
+                                          ? "w-[100px]"
+                                          : cell.column.id === "memoryUsage"
+                                            ? "w-[100px]"
+                                            : cell.column.id === "podStatus"
+                                              ? "relative z-50 w-[180px]"
+                                              : cell.column.id === "setting"
+                                                ? "w-[60px] text-right"
+                                                : ""
+                                } group-hover:relative group-hover:z-[100]`}
+                              >
+                                {flexRender(
+                                  cell.column.columnDef.cell,
+                                  cell.getContext(),
+                                )}
+                              </TableCell>
+                            ))}
+                          </TableRow>
+                        ))
+                      )}
+                    </TableBody>
+                  </table>
+                </div>
+
+                {/* 페이지네이션 컨트롤 - Rows per page */}
+                <div className="flex items-center justify-end px-4 pt-4">
+                  <div className="flex items-center space-x-2">
+                    <p className="text-sm font-medium">Rows per page</p>
+                    <Select
+                      value={`${table.getState().pagination.pageSize}`}
+                      onValueChange={(value) => {
+                        table.setPageSize(Number(value));
+                      }}
+                    >
+                      <SelectTrigger className="h-8 w-[70px]">
+                        <SelectValue
+                          placeholder={table.getState().pagination.pageSize}
+                        />
+                      </SelectTrigger>
+                      <SelectContent side="top">
+                        {[10, 20, 30, 40, 50].map((pageSize) => (
+                          <SelectItem key={pageSize} value={`${pageSize}`}>
+                            {pageSize}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
