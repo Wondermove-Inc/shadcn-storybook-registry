@@ -8,8 +8,21 @@ import { cn } from "@/lib/utils";
 /**
  * 🎯 목적: HoverCard Root 컴포넌트
  * 📝 주의사항: Radix UI HoverCard.Root primitive는 ref를 지원하지 않음
+ * 📝 기본값: openDelay=100ms, closeDelay=100ms
  */
-const HoverCard = HoverCardPrimitive.Root;
+const HoverCard = ({
+  openDelay = 100,
+  closeDelay = 100,
+  ...props
+}: React.ComponentProps<typeof HoverCardPrimitive.Root>) => {
+  return (
+    <HoverCardPrimitive.Root
+      openDelay={openDelay}
+      closeDelay={closeDelay}
+      {...props}
+    />
+  );
+};
 
 /**
  * 🎯 목적: HoverCardTrigger 컴포넌트에 forwardRef 적용
