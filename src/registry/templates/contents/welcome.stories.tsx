@@ -16,6 +16,16 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
+import {
   Item,
   ItemMedia,
   ItemContent,
@@ -38,6 +48,8 @@ import {
   ArrowUpDown,
   Megaphone,
   Info,
+  Settings,
+  Trash2,
 } from "lucide-react";
 import { Area, AreaChart, Bar, BarChart, XAxis, YAxis } from "recharts";
 import {
@@ -400,37 +412,79 @@ export const Home: Story = {
             row.podStatus.unknown,
           header: "Pods Status",
           cell: ({ row }) => (
-            <PodStatusChart podStatus={row.original.podStatus} />
+            <div className="relative overflow-visible">
+              <PodStatusChart podStatus={row.original.podStatus} />
+            </div>
           ),
           enableSorting: false,
         },
         {
           id: "setting",
           header: () => <div className="text-right"></div>,
-          cell: () => (
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className="h-9 w-9 rounded-lg p-2"
-                >
-                  <EllipsisVertical className="h-4 w-4" />
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end">
-                <DropdownMenuItem
-                  onClick={() => {
-                    window.top!.location.href =
-                      "/?path=/story/templates-settings--cluster-settings";
-                  }}
-                >
-                  Cluster Setting
-                </DropdownMenuItem>
-                <DropdownMenuItem>Delete</DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          ),
+          cell: () => {
+            // 🎯 목적: AlertDialog 상태 관리
+            const [alertOpen, setAlertOpen] = React.useState(false);
+
+            return (
+              <>
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="h-9 w-9 rounded-lg p-2"
+                    >
+                      <EllipsisVertical className="h-4 w-4" />
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end">
+                    <DropdownMenuItem
+                      onClick={() => {
+                        window.top!.location.href =
+                          "/?path=/story/templates-settings--cluster-settings";
+                      }}
+                    >
+                      <Settings className="h-4 w-4" />
+                      Cluster Setting
+                    </DropdownMenuItem>
+                    <DropdownMenuItem
+                      variant="destructive"
+                      onClick={() => setAlertOpen(true)}
+                    >
+                      <Trash2 className="h-4 w-4" />
+                      Delete
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+
+                <AlertDialog open={alertOpen} onOpenChange={setAlertOpen}>
+                  <AlertDialogContent>
+                    <AlertDialogHeader>
+                      <AlertDialogTitle>
+                        Are you sure you want to delete this cluster?
+                      </AlertDialogTitle>
+                      <AlertDialogDescription>
+                        This action cannot be undone. This will permanently
+                        delete the cluster and all related data.
+                      </AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter>
+                      <AlertDialogCancel>Cancel</AlertDialogCancel>
+                      <AlertDialogAction
+                        className="bg-destructive hover:bg-destructive/90 focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/40 dark:bg-destructive/60 text-white"
+                        onClick={() => {
+                          // 🎯 목적: 클러스터 삭제 로직 (실제 구현 시 추가)
+                          console.log("Cluster deleted");
+                        }}
+                      >
+                        Delete
+                      </AlertDialogAction>
+                    </AlertDialogFooter>
+                  </AlertDialogContent>
+                </AlertDialog>
+              </>
+            );
+          },
           enableSorting: false,
         },
       ],
@@ -536,15 +590,15 @@ export const Home: Story = {
         podStatus.failed +
         podStatus.unknown;
 
-      // 🎯 목적: Chart 색상 설정 (Storybook chart CSS 변수 사용 - 역순)
+      // 🎯 목적: Chart 색상 설정 (왼쪽부터 chart-5 > chart-4 > chart-3 > chart-2 > chart-1)
       const chartConfig = {
         running: {
           label: "Running",
-          color: "var(--chart-4)", // Chart color 4 - Pod 실행 중
+          color: "var(--chart-5)", // Chart color 5 - Pod 실행 중
         },
         succeeded: {
           label: "Succeeded",
-          color: "var(--chart-2)", // Chart color 2 - Pod 성공 완료
+          color: "var(--chart-4)", // Chart color 4 - Pod 성공 완료
         },
         pending: {
           label: "Pending",
@@ -552,7 +606,7 @@ export const Home: Story = {
         },
         failed: {
           label: "Failed",
-          color: "var(--chart-5)", // Chart color 5 - Pod 실패
+          color: "var(--chart-2)", // Chart color 2 - Pod 실패
         },
         unknown: {
           label: "Unknown",
@@ -563,7 +617,7 @@ export const Home: Story = {
       return (
         <div className="flex h-8 w-full items-center gap-2">
           {/* 가로 Stacked Bar Chart */}
-          <div className="h-full flex-1">
+          <div className="h-full flex-1 overflow-visible rounded">
             <ChartContainer config={chartConfig} className="h-full w-full">
               <BarChart
                 data={chartData}
@@ -575,9 +629,34 @@ export const Home: Story = {
                 <XAxis type="number" hide />
                 <YAxis type="category" dataKey="pods" hide />
                 <ChartTooltip
-                  content={<ChartTooltipContent hideLabel />}
+                  content={(props: any) => {
+                    // 🎯 목적: Tooltip 항목을 running > succeeded > pending > failed > unknown 순서로 정렬
+                    const order = [
+                      "running",
+                      "succeeded",
+                      "pending",
+                      "failed",
+                      "unknown",
+                    ];
+                    const sortedPayload = props.payload?.sort(
+                      (a: any, b: any) => {
+                        const aIndex = order.indexOf(a.dataKey as string);
+                        const bIndex = order.indexOf(b.dataKey as string);
+                        return aIndex - bIndex;
+                      },
+                    );
+                    return (
+                      <ChartTooltipContent
+                        {...props}
+                        payload={sortedPayload}
+                        hideLabel
+                      />
+                    );
+                  }}
                   cursor={false}
-                  wrapperStyle={{ zIndex: 9999 }}
+                  wrapperStyle={{
+                    zIndex: 10000,
+                  }}
                 />
                 <Bar
                   dataKey="running"
@@ -820,7 +899,7 @@ export const Home: Story = {
 
               {/* 클러스터 테이블 - TanStack Table 정렬 기능 적용 */}
               <div className="relative w-full" ref={tableContainerRef}>
-                <div className="overflow-hidden rounded-md border">
+                <div className="overflow-visible rounded-md border">
                   <table className="w-full table-fixed border-collapse text-sm">
                     <TableHeader className="bg-muted [&_tr]:border-b-0">
                       {table.getHeaderGroups().map((headerGroup) => (
@@ -1157,37 +1236,79 @@ export const HomeNodata: Story = {
             row.podStatus.unknown,
           header: "Pods Status",
           cell: ({ row }) => (
-            <PodStatusChart podStatus={row.original.podStatus} />
+            <div className="relative overflow-visible">
+              <PodStatusChart podStatus={row.original.podStatus} />
+            </div>
           ),
           enableSorting: false,
         },
         {
           id: "setting",
           header: () => <div className="text-right"></div>,
-          cell: () => (
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className="h-9 w-9 rounded-lg p-2"
-                >
-                  <EllipsisVertical className="h-4 w-4" />
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end">
-                <DropdownMenuItem
-                  onClick={() => {
-                    window.top!.location.href =
-                      "/?path=/story/templates-settings--cluster-settings";
-                  }}
-                >
-                  Cluster Setting
-                </DropdownMenuItem>
-                <DropdownMenuItem>Delete</DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          ),
+          cell: () => {
+            // 🎯 목적: AlertDialog 상태 관리
+            const [alertOpen, setAlertOpen] = React.useState(false);
+
+            return (
+              <>
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="h-9 w-9 rounded-lg p-2"
+                    >
+                      <EllipsisVertical className="h-4 w-4" />
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end">
+                    <DropdownMenuItem
+                      onClick={() => {
+                        window.top!.location.href =
+                          "/?path=/story/templates-settings--cluster-settings";
+                      }}
+                    >
+                      <Settings className="h-4 w-4" />
+                      Cluster Setting
+                    </DropdownMenuItem>
+                    <DropdownMenuItem
+                      variant="destructive"
+                      onClick={() => setAlertOpen(true)}
+                    >
+                      <Trash2 className="h-4 w-4" />
+                      Delete
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+
+                <AlertDialog open={alertOpen} onOpenChange={setAlertOpen}>
+                  <AlertDialogContent>
+                    <AlertDialogHeader>
+                      <AlertDialogTitle>
+                        Are you sure you want to delete this cluster?
+                      </AlertDialogTitle>
+                      <AlertDialogDescription>
+                        This action cannot be undone. This will permanently
+                        delete the cluster and all related data.
+                      </AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter>
+                      <AlertDialogCancel>Cancel</AlertDialogCancel>
+                      <AlertDialogAction
+                        className="bg-destructive hover:bg-destructive/90 focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/40 dark:bg-destructive/60 text-white"
+                        onClick={() => {
+                          // 🎯 목적: 클러스터 삭제 로직 (실제 구현 시 추가)
+                          console.log("Cluster deleted");
+                        }}
+                      >
+                        Delete
+                      </AlertDialogAction>
+                    </AlertDialogFooter>
+                  </AlertDialogContent>
+                </AlertDialog>
+              </>
+            );
+          },
           enableSorting: false,
         },
       ],
@@ -1238,15 +1359,15 @@ export const HomeNodata: Story = {
         podStatus.failed +
         podStatus.unknown;
 
-      // 🎯 목적: Chart 색상 설정 (Storybook chart CSS 변수 사용 - 역순)
+      // 🎯 목적: Chart 색상 설정 (왼쪽부터 chart-5 > chart-4 > chart-3 > chart-2 > chart-1)
       const chartConfig = {
         running: {
           label: "Running",
-          color: "var(--chart-4)", // Chart color 4 - Pod 실행 중
+          color: "var(--chart-5)", // Chart color 5 - Pod 실행 중
         },
         succeeded: {
           label: "Succeeded",
-          color: "var(--chart-2)", // Chart color 2 - Pod 성공 완료
+          color: "var(--chart-4)", // Chart color 4 - Pod 성공 완료
         },
         pending: {
           label: "Pending",
@@ -1254,7 +1375,7 @@ export const HomeNodata: Story = {
         },
         failed: {
           label: "Failed",
-          color: "var(--chart-5)", // Chart color 5 - Pod 실패
+          color: "var(--chart-2)", // Chart color 2 - Pod 실패
         },
         unknown: {
           label: "Unknown",
@@ -1265,7 +1386,7 @@ export const HomeNodata: Story = {
       return (
         <div className="flex h-8 w-full items-center gap-2">
           {/* 가로 Stacked Bar Chart */}
-          <div className="h-full flex-1">
+          <div className="h-full flex-1 overflow-visible rounded">
             <ChartContainer config={chartConfig} className="h-full w-full">
               <BarChart
                 data={chartData}
@@ -1277,9 +1398,34 @@ export const HomeNodata: Story = {
                 <XAxis type="number" hide />
                 <YAxis type="category" dataKey="pods" hide />
                 <ChartTooltip
-                  content={<ChartTooltipContent hideLabel />}
+                  content={(props: any) => {
+                    // 🎯 목적: Tooltip 항목을 running > succeeded > pending > failed > unknown 순서로 정렬
+                    const order = [
+                      "running",
+                      "succeeded",
+                      "pending",
+                      "failed",
+                      "unknown",
+                    ];
+                    const sortedPayload = props.payload?.sort(
+                      (a: any, b: any) => {
+                        const aIndex = order.indexOf(a.dataKey as string);
+                        const bIndex = order.indexOf(b.dataKey as string);
+                        return aIndex - bIndex;
+                      },
+                    );
+                    return (
+                      <ChartTooltipContent
+                        {...props}
+                        payload={sortedPayload}
+                        hideLabel
+                      />
+                    );
+                  }}
                   cursor={false}
-                  wrapperStyle={{ zIndex: 9999 }}
+                  wrapperStyle={{
+                    zIndex: 10000,
+                  }}
                 />
                 <Bar
                   dataKey="running"
@@ -1522,7 +1668,7 @@ export const HomeNodata: Story = {
 
               {/* 클러스터 테이블 - TanStack Table 정렬 기능 적용 */}
               <div className="relative w-full" ref={tableContainerRef}>
-                <div className="overflow-hidden rounded-md border">
+                <div className="overflow-visible rounded-md border">
                   <table className="w-full table-fixed border-collapse text-sm">
                     <TableHeader className="bg-muted [&_tr]:border-b-0">
                       {table.getHeaderGroups().map((headerGroup) => (
