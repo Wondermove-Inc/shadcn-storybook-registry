@@ -67,6 +67,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Link } from "react-router-dom";
 
 /**
  * Welcome 콘텐츠 컴포넌트 - Kubernetes IDE 환경의 웰컴 페이지
@@ -545,7 +546,11 @@ export const Home: Story = {
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
-                <DropdownMenuItem>Edit</DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link to="/templates-settings--cluster-settings">
+                    Cluster Setting
+                  </Link>
+                </DropdownMenuItem>
                 <DropdownMenuItem>Delete</DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
@@ -1295,7 +1300,11 @@ export const HomeNodata: Story = {
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
-                <DropdownMenuItem>Edit</DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link to="/templates-settings--cluster-settings">
+                    Cluster Setting
+                  </Link>
+                </DropdownMenuItem>
                 <DropdownMenuItem>Delete</DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
