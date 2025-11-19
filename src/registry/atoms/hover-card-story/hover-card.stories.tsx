@@ -33,8 +33,8 @@ const meta = {
     },
   },
   args: {
-    openDelay: 700,
-    closeDelay: 300,
+    openDelay: 100,
+    closeDelay: 100,
   },
   render: (args) => (
     <HoverCard openDelay={args.openDelay} closeDelay={args.closeDelay}>
