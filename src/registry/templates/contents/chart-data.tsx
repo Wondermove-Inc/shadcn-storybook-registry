@@ -815,7 +815,7 @@ export function ChartData({ className, variant = "default" }: ChartDataProps) {
         <div className="flex flex-col gap-3">
           {/* 헤더 영역 */}
           <div className="flex items-center justify-between">
-            <h1 className="text-foreground text-lg leading-none font-normal">
+            <h1 className="text-foreground text-lg leading-none font-semibold">
               {"{Menuname}"}
             </h1>
 
