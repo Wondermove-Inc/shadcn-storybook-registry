@@ -421,7 +421,7 @@ export const Home: Story = {
               <DropdownMenuContent align="end">
                 <DropdownMenuItem
                   onClick={() => {
-                    window.location.href =
+                    window.top!.location.href =
                       "/?path=/story/templates-settings--cluster-settings";
                   }}
                 >
@@ -1178,7 +1178,7 @@ export const HomeNodata: Story = {
               <DropdownMenuContent align="end">
                 <DropdownMenuItem
                   onClick={() => {
-                    window.location.href =
+                    window.top!.location.href =
                       "/?path=/story/templates-settings--cluster-settings";
                   }}
                 >
