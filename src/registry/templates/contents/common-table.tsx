@@ -317,9 +317,9 @@ export function CommonTable({
       ),
       enableSorting: false,
       enableResizing: false,
-      size: 50,
-      minSize: 50,
-      maxSize: 50,
+      size: 64,
+      minSize: 64,
+      maxSize: 64,
     },
     {
       accessorKey: "column2",
@@ -569,7 +569,8 @@ export function CommonTable({
     getSortedRowModel: getSortedRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
     enableColumnResizing: true,
-    columnResizeMode: "onChange",
+    columnResizeMode: "onEnd",
+    columnResizeDirection: "ltr",
     state: {
       sorting,
       pagination,
@@ -882,6 +883,11 @@ export function CommonTable({
           {/* 테이블 섹션 - TanStack Table 기반 정렬 가능한 테이블 */}
           <div className="relative w-full overflow-hidden rounded-md border">
             <table className="w-full caption-bottom border-collapse text-sm">
+              <colgroup>
+                <col
+                  style={{ width: "64px", minWidth: "64px", maxWidth: "64px" }}
+                />
+              </colgroup>
               <TableHeader className="bg-muted [&_tr]:border-b-0">
                 {table.getHeaderGroups().map((headerGroup) => (
                   <TableRow
@@ -891,16 +897,18 @@ export function CommonTable({
                     {headerGroup.headers.map((header) => (
                       <TableHead
                         key={header.id}
-                        className={
+                        className={header.id === "actions" ? "text-right" : ""}
+                        style={
                           header.id === "select"
-                            ? "w-12"
-                            : header.id === "actions"
-                              ? "text-right"
-                              : ""
+                            ? {
+                                width: "64px",
+                                minWidth: "64px",
+                                maxWidth: "64px",
+                              }
+                            : {
+                                width: header.getSize(),
+                              }
                         }
-                        style={{
-                          width: header.getSize(),
-                        }}
                       >
                         <div className="relative">
                           {header.isPlaceholder
@@ -944,7 +952,19 @@ export function CommonTable({
                         onClick={(e) => handleRowClick(e, row.original)}
                       >
                         {row.getVisibleCells().map((cell, cellIndex) => (
-                          <TableCell key={cell.id} className="relative">
+                          <TableCell
+                            key={cell.id}
+                            className="relative"
+                            style={
+                              cell.column.id === "select"
+                                ? {
+                                    width: "64px",
+                                    minWidth: "64px",
+                                    maxWidth: "64px",
+                                  }
+                                : undefined
+                            }
+                          >
                             {/* 첫 번째 셀에 선택 표시 indicator 추가 */}
                             {cellIndex === 0 && isSelected && (
                               <div className="bg-primary absolute top-0 left-0 h-full w-0.5" />
