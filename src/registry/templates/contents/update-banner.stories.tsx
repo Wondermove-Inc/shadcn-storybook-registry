@@ -41,7 +41,7 @@ function UpdateBanner() {
         className="absolute top-3 right-3 z-10 opacity-70 transition-opacity hover:opacity-100"
         aria-label="Close"
       >
-        <X className="h-4 w-4 text-white" />
+        <X className="h-4 w-4 text-slate-200" />
       </button>
 
       <div className="relative z-10 flex h-full flex-col p-3">
@@ -60,10 +60,10 @@ function UpdateBanner() {
 
           {/* 헤더 텍스트 */}
           <div className="space-y-1.5">
-            <h3 className="text-sm leading-none font-medium text-white">
+            <h3 className="text-sm leading-none font-medium text-slate-50">
               Update Ready
             </h3>
-            <p className="text-xs leading-none font-light text-white/90">
+            <p className="text-xs leading-none font-light text-slate-100">
               Version 1.0.2 is now available
             </p>
           </div>
@@ -73,10 +73,10 @@ function UpdateBanner() {
         <Button
           variant="secondary"
           size="sm"
-          className="mt-auto gap-2 self-end border border-white/20 bg-white/10 text-white hover:bg-white/20"
+          className="mt-auto gap-2 self-end border border-white/20 bg-white/10 text-slate-50 hover:bg-white/20"
         >
           Update
-          <ArrowUpRight className="h-4 w-4" />
+          <ArrowUpRight className="h-4 w-4 text-slate-50" />
         </Button>
       </div>
     </Card>
@@ -146,7 +146,7 @@ export const InteractionTest: Story = {
           onClick={() => setIsVisible(false)}
           aria-label="Close"
         >
-          <X className="h-4 w-4 text-white" />
+          <X className="h-4 w-4 text-slate-200" />
         </button>
 
         <div className="relative z-10 flex h-full flex-col p-3">
@@ -163,10 +163,10 @@ export const InteractionTest: Story = {
             </Avatar>
 
             <div className="space-y-1.5">
-              <h3 className="text-sm leading-none font-medium text-white">
+              <h3 className="text-sm leading-none font-medium text-slate-50">
                 Update Ready
               </h3>
-              <p className="text-xs leading-none font-light text-white/90">
+              <p className="text-xs leading-none font-light text-slate-100">
                 Version 1.0.2 is now available
               </p>
             </div>
@@ -176,11 +176,11 @@ export const InteractionTest: Story = {
           <Button
             variant="secondary"
             size="sm"
-            className="mt-auto gap-2 self-end border border-white/20 bg-white/10 text-white hover:bg-white/20"
+            className="mt-auto gap-2 self-end border border-white/20 bg-white/10 text-slate-50 hover:bg-white/20"
             onClick={() => alert("업데이트 시작!")}
           >
             Update
-            <ArrowUpRight className="h-4 w-4" />
+            <ArrowUpRight className="h-4 w-4 text-slate-50" />
           </Button>
         </div>
       </div>
