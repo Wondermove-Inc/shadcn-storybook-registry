@@ -50,6 +50,7 @@ import {
   Info,
   Settings,
   Trash2,
+  MousePointer,
 } from "lucide-react";
 import { Area, AreaChart, Bar, BarChart, XAxis, YAxis } from "recharts";
 import {
@@ -1820,6 +1821,31 @@ export const HomeNodata: Story = {
     );
   },
 };
+/**
+ * Cluster Home - 클러스터 리소스 선택 대기 상태
+ *
+ * Empty 컴포넌트를 활용한 간단한 안내 화면입니다.
+ * 사용자가 리소스를 선택하기 전의 초기 상태를 표시합니다.
+ */
+export const ClusterHome: Story = {
+  render: () => {
+    return (
+      <div className="bg-background flex min-h-screen w-full items-center justify-center p-5">
+        <Empty>
+          <EmptyHeader>
+            <EmptyMedia variant="icon">
+              <MousePointer />
+            </EmptyMedia>
+            <EmptyDescription>
+              Click the resource you want to check.
+            </EmptyDescription>
+          </EmptyHeader>
+        </Empty>
+      </div>
+    );
+  },
+};
+
 /**
  * 기본 Welcome 콘텐츠 - 완전한 웰컴 페이지 레이아웃
  */
