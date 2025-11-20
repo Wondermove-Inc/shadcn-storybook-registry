@@ -2,7 +2,7 @@
 
 > **Next-Generation UI Component System** - shadcn/ui 컴포넌트를 위한 대화형 Storybook 레지스트리
 
-shadcn/ui 스토리북 레지스트리는 67개의 UI 컴포넌트와 디자인 토큰을 문서화하고 배포하는 통합 시스템입니다.
+shadcn/ui 스토리북 레지스트리는 69개의 UI 컴포넌트와 디자인 토큰을 문서화하고 배포하는 통합 시스템입니다.
 
 ## 📚 프로젝트 개요
 
@@ -10,7 +10,7 @@ shadcn/ui 스토리북 레지스트리는 67개의 UI 컴포넌트와 디자인 
 **shadcn/ui + Storybook + Registry의 완벽한 통합**
 - Storybook 9로 구현된 컴포넌트 문서화 시스템
 - shadcn CLI를 통한 스토리 설치 지원
-- 100% 컴포넌트 커버리지 (67개 컴포넌트)
+- 100% 컴포넌트 커버리지 (69개 컴포넌트)
 - React 18.3.1/19.0.0 + TypeScript + Tailwind CSS v4 + Vite
 
 ### 사용 방법
@@ -27,10 +27,10 @@ npx shadcn@latest add http://localhost:3000/v2/r/button-story.json
 ### Atomic Design 기반 디렉토리 구조
 ```
 src/registry/
-├── atoms/          # UI 컴포넌트 (67개)
+├── atoms/          # UI 컴포넌트 (68개)
 ├── tokens/         # 디자인 토큰 (6개)
 ├── foundation/     # 기반 컴포넌트 (1개)
-└── templates/      # 템플릿 예제 (1개)
+└── templates/      # 템플릿 예제 (14개)
 ```
 
 ### Registry 시스템
@@ -86,7 +86,7 @@ src/registry/
 
 ## 🧩 UI 컴포넌트
 
-### 핵심 컴포넌트 (67개)
+### 핵심 컴포넌트 (69개)
 
 #### 레이아웃 & 컨테이너
 | 컴포넌트 | 설명 | 소스코드 | 주요 Props |
@@ -190,9 +190,35 @@ src/registry/
 
 ## 📋 템플릿
 
+### 구조 템플릿
 | 템플릿 | 설명 | 소스코드 | 포함 컴포넌트 |
 |--------|------|---------|---------------|
-| **[Dashboard Template](../../src/registry/templates/dashboard-template/dashboard-template.stories.tsx)** | 다양한 shadcn/ui 컴포넌트를 활용한 완전한 대시보드 템플릿 | [`dashboard-template.stories.tsx`](../../src/registry/templates/dashboard-template/dashboard-template.stories.tsx) | card, select, button, input, avatar, table, badge |
+| **[Base Structure Template](../../src/registry/templates/base-structure-template/base-structure-template.stories.tsx)** | 기본 레이아웃 구조 템플릿 | [`base-structure-template.stories.tsx`](../../src/registry/templates/base-structure-template/base-structure-template.stories.tsx) | resizable, sidebar, header |
+| **[Structure Hotbar Template](../../src/registry/templates/structure-hotbar-template/structure-hotbar-template.stories.tsx)** | 핫바를 포함한 구조 템플릿 | [`structure-hotbar-template.stories.tsx`](../../src/registry/templates/structure-hotbar-template/structure-hotbar-template.stories.tsx) | tooltip, button, separator |
+
+### UI 템플릿
+| 템플릿 | 설명 | 소스코드 | 포함 컴포넌트 |
+|--------|------|---------|---------------|
+| **[AI Assistant](../../src/registry/templates/ai-assistant/ai-assistant.stories.tsx)** | AI 어시스턴트 채팅 인터페이스 | [`ai-assistant.stories.tsx`](../../src/registry/templates/ai-assistant/ai-assistant.stories.tsx) | textarea, button, avatar, scroll-area |
+| **[Dialog Template](../../src/registry/templates/dialog-template/dialog-template.stories.tsx)** | 다이얼로그 템플릿 | [`dialog-template.stories.tsx`](../../src/registry/templates/dialog-template/dialog-template.stories.tsx) | dialog, button, input |
+| **[Loading Overlay Template](../../src/registry/templates/loading-overlay-template/loading-overlay-template.stories.tsx)** | 로딩 오버레이 템플릿 | [`loading-overlay-template.stories.tsx`](../../src/registry/templates/loading-overlay-template/loading-overlay-template.stories.tsx) | spinner, dialog |
+| **[Settings Template](../../src/registry/templates/settings-template/settings-template.stories.tsx)** | 설정 페이지 템플릿 | [`settings-template.stories.tsx`](../../src/registry/templates/settings-template/settings-template.stories.tsx) | tabs, switch, select, button |
+| **[Cognito](../../src/registry/templates/cognito-story/cognito.stories.tsx)** | AWS Cognito 인증 플로우 | [`cognito.stories.tsx`](../../src/registry/templates/cognito-story/cognito.stories.tsx) | form, input, button |
+
+### Contents 템플릿
+| 템플릿 | 설명 | 소스코드 | 포함 컴포넌트 |
+|--------|------|---------|---------------|
+| **[Chart Data](../../src/registry/templates/contents/chart-data.stories.tsx)** | 차트 데이터 시각화 | [`chart-data.stories.tsx`](../../src/registry/templates/contents/chart-data.stories.tsx) | chart, card, select |
+| **[Common Table](../../src/registry/templates/contents/common-table.stories.tsx)** | 공통 테이블 컴포넌트 | [`common-table.stories.tsx`](../../src/registry/templates/contents/common-table.stories.tsx) | table, checkbox, dropdown-menu |
+| **[Search Toolbar](../../src/registry/templates/contents/search-toolbar.stories.tsx)** | 검색 툴바 | [`search-toolbar.stories.tsx`](../../src/registry/templates/contents/search-toolbar.stories.tsx) | input, button, select |
+| **[Update Banner](../../src/registry/templates/contents/update-banner.stories.tsx)** | 업데이트 알림 배너 | [`update-banner.stories.tsx`](../../src/registry/templates/contents/update-banner.stories.tsx) | card, avatar, button |
+| **[Welcome](../../src/registry/templates/contents/welcome.stories.tsx)** | 환영 화면 | [`welcome.stories.tsx`](../../src/registry/templates/contents/welcome.stories.tsx) | card, button |
+
+### 테스트 템플릿
+| 템플릿 | 설명 | 소스코드 | 포함 컴포넌트 |
+|--------|------|---------|---------------|
+| **[Dashboard Template](../../src/registry/templates/Test/Dashboard/dashboard-template.stories.tsx)** | 다양한 shadcn/ui 컴포넌트를 활용한 완전한 대시보드 템플릿 | [`dashboard-template.stories.tsx`](../../src/registry/templates/Test/Dashboard/dashboard-template.stories.tsx) | card, select, button, input, avatar, table, badge |
+| **[Settings Notifications Template](../../src/registry/templates/Test/SettingsNotificationsTemplate/settings-notifications-template.stories.tsx)** | 설정 알림 템플릿 | [`settings-notifications-template.stories.tsx`](../../src/registry/templates/Test/SettingsNotificationsTemplate/settings-notifications-template.stories.tsx) | switch, label, separator |
 
 ## 🔧 기술 스택
 
@@ -219,18 +245,18 @@ src/registry/
 ## 📈 프로젝트 현황
 
 ### 구현 통계
-- **전체 레지스트리 항목**: 74개
-- **UI 컴포넌트**: 67개 (100% 커버리지)
+- **전체 레지스트리 항목**: 91개
+- **UI 컴포넌트**: 69개 (100% 커버리지)
 - **디자인 토큰**: 6개
-- **파운데이션**: 1개
-- **템플릿**: 1개
+- **파운데이션**: 7개
+- **템플릿**: 14개
 
 ### 카테고리별 분포
 ```
-atoms (UI)     ████████████████████████ 67
-tokens         ██ 6
-foundation     ▌ 1
-templates      ▌ 1
+atoms (UI)     ████████████████████████████████ 69
+templates      ████████ 14
+foundation     ████ 7
+tokens         ███ 6
 ```
 
 ### 최근 추가 컴포넌트
@@ -277,6 +303,6 @@ npm run test:storybook # Storybook 테스트
 
 *이 문서는 shadcn/ui Storybook Registry의 포괄적인 아키텍처 가이드입니다. 각 컴포넌트 링크를 통해 소스코드를 직접 확인할 수 있으며, LLM이 프로젝트 구조를 빠르게 이해하고 탐색할 수 있도록 설계되었습니다.*
 
-**📅 최종 업데이트**: 2025년 10월 15일  
-**📝 문서 버전**: v1.1  
+**📅 최종 업데이트**: 2025년 1월 20일
+**📝 문서 버전**: v1.2
 **🔄 다음 업데이트**: 신규 컴포넌트 추가 시
