@@ -1,45 +1,50 @@
 import React from "react";
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { LoadingOverlay } from "@/components/ui/loading-overlay";
+import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
+import { Spinner } from "@/components/ui/spinner";
 
 /**
- * LoadingOverlay 템플릿은 전체 화면 로딩 상태를 표시하는 데 사용됩니다.
- * shadcn/ui Spinner 컴포넌트와 심플한 배경 딤드를 활용한 심플하고 일관성 있는 디자인입니다.
+ * LoadingOverlay 템플릿은 클러스터 연결 등 로딩 상태를 표시하는 Alert 기반 컴포넌트입니다.
+ * shadcn/ui Alert와 Spinner 컴포넌트를 활용한 다크 테마 디자인입니다.
  */
-const meta: Meta<typeof LoadingOverlay> = {
+const meta: Meta = {
   title: "templates/LoadingOverlay",
-  component: LoadingOverlay,
   tags: ["autodocs"],
   parameters: {
     layout: "fullscreen",
     docs: {
       description: {
         component: `
-글로벌 로딩 상태 관리를 위한 LoadingOverlay 템플릿입니다. LoadingProvider와 useLoading 훅을 통해 애플리케이션 전체에서 일관된 로딩 상태를 제공합니다.
+클러스터 연결 등 로딩 상태를 표시하는 Alert 기반 템플릿입니다.
+Spinner와 상태 메시지를 통해 사용자에게 진행 상황을 알려줍니다.
         `,
       },
     },
   },
-} satisfies Meta<typeof LoadingOverlay>;
+} satisfies Meta;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
 /**
- * 기본 LoadingOverlay - 메시지 없이 스피너만 표시
+ * 기본 LoadingOverlay - 클러스터 연결 상태 표시
  */
 export const Default: Story = {
   render: () => (
-    <div className="relative h-screen w-full">
-      <div className="flex h-full items-center justify-center p-8">
-        <div className="text-center">
-          <h2 className="mb-2 text-lg font-semibold">페이지 콘텐츠</h2>
-          <p className="text-muted-foreground text-sm">
-            로딩 오버레이가 이 콘텐츠 위에 표시됩니다.
-          </p>
-        </div>
-      </div>
-      <LoadingOverlay isVisible={true} />
+    <div className="fixed inset-0 flex items-center justify-center bg-black/50">
+      <Alert className="bg-card max-w-[400px] rounded-[10px]">
+        <Spinner />
+        <AlertTitle>Connecting cluster-prod-01...</AlertTitle>
+        <AlertDescription>
+          Starting connection...
+          <br />
+          Authentication proxy started
+          <br />
+          Refreshing connection status...
+          <br />
+          Refreshing cluster accessibility...
+        </AlertDescription>
+      </Alert>
     </div>
   ),
 };
