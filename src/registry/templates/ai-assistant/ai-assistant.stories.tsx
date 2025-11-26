@@ -27,6 +27,15 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import {
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuCheckboxItem,
+  DropdownMenuSeparator,
+  DropdownMenuSub,
+  DropdownMenuSubTrigger,
+} from "@/components/ui/dropdown-menu";
+import {
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
@@ -45,9 +54,10 @@ import {
   X,
   Infinity,
   ChevronDown,
+  ChevronUp,
+  ChevronRight,
   ArrowUp,
   ArrowRight,
-  ChevronRight,
   Copy,
   MoreHorizontal,
   TrendingUp,
@@ -325,6 +335,14 @@ export const BeforeUtterance: Story = {
  * AI Assistant의 채팅 응답 후 상태입니다.
  * AI가 응답을 완료한 후의 인터페이스를 보여줍니다.
  */
+// 🎯 목적: 모델 옵션 목록
+const MODEL_OPTIONS = [
+  "Auto",
+  "claude-4-sonnet",
+  "claude-3-opus",
+  "claude-3-sonnet",
+] as const;
+
 export const AnswersText: Story = {
   render: () => {
     // 🎯 목적: 채팅 입력 상태 관리 (InputGroup용)
@@ -339,6 +357,9 @@ export const AnswersText: Story = {
     const [userMessageText, setUserMessageText] = React.useState(
       "최근 일주일 동안 생성되거나 변경된 IAM 사용자 내역을 알고싶어.",
     );
+
+    // 🎯 목적: 선택된 모델 상태 관리
+    const [selectedModel, setSelectedModel] = React.useState("Auto");
 
     return (
       <div className="bg-background h-screen w-full">
@@ -430,14 +451,46 @@ export const AnswersText: Story = {
                               >
                                 <Infinity className="h-4 w-4" />
                                 Agent
-                                <ChevronDown className="h-4 w-4" />
+                                <ChevronUp className="h-4 w-4" />
                               </InputGroupButton>
 
-                              {/* Auto InputGroupButton */}
-                              <InputGroupButton size="xs" variant="ghost">
-                                Auto
-                                <ChevronDown className="h-4 w-4" />
-                              </InputGroupButton>
+                              {/* Auto InputGroupButton with Dropdown */}
+                              <DropdownMenu>
+                                <DropdownMenuTrigger asChild>
+                                  <Button
+                                    variant="ghost"
+                                    className="flex h-6 max-w-[120px] items-center gap-1 rounded-[calc(var(--radius)-5px)] px-2 text-sm shadow-none"
+                                  >
+                                    <span className="truncate">
+                                      {selectedModel}
+                                    </span>
+                                    <ChevronUp className="h-3.5 w-3.5 shrink-0" />
+                                  </Button>
+                                </DropdownMenuTrigger>
+                                <DropdownMenuContent
+                                  side="top"
+                                  align="start"
+                                  className="w-[246px]"
+                                >
+                                  {MODEL_OPTIONS.map((model) => (
+                                    <DropdownMenuCheckboxItem
+                                      key={model}
+                                      checked={selectedModel === model}
+                                      onCheckedChange={() =>
+                                        setSelectedModel(model)
+                                      }
+                                    >
+                                      {model}
+                                    </DropdownMenuCheckboxItem>
+                                  ))}
+                                  <DropdownMenuSeparator />
+                                  <DropdownMenuSub>
+                                    <DropdownMenuSubTrigger>
+                                      Add Models
+                                    </DropdownMenuSubTrigger>
+                                  </DropdownMenuSub>
+                                </DropdownMenuContent>
+                              </DropdownMenu>
                             </div>
 
                             {/* 우측 전송 버튼 그룹 */}
@@ -564,14 +617,42 @@ export const AnswersText: Story = {
                     >
                       <Infinity className="h-4 w-4" />
                       Agent
-                      <ChevronDown className="h-4 w-4" />
+                      <ChevronUp className="h-4 w-4" />
                     </InputGroupButton>
 
-                    {/* Auto InputGroupButton */}
-                    <InputGroupButton size="xs" variant="ghost">
-                      Auto
-                      <ChevronDown className="h-4 w-4" />
-                    </InputGroupButton>
+                    {/* Auto InputGroupButton with Dropdown */}
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild>
+                        <Button
+                          variant="ghost"
+                          className="flex h-6 max-w-[120px] items-center gap-1 rounded-[calc(var(--radius)-5px)] px-2 text-sm shadow-none"
+                        >
+                          <span className="truncate">{selectedModel}</span>
+                          <ChevronUp className="h-3.5 w-3.5 shrink-0" />
+                        </Button>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent
+                        side="top"
+                        align="start"
+                        className="w-[246px]"
+                      >
+                        {MODEL_OPTIONS.map((model) => (
+                          <DropdownMenuCheckboxItem
+                            key={model}
+                            checked={selectedModel === model}
+                            onCheckedChange={() => setSelectedModel(model)}
+                          >
+                            {model}
+                          </DropdownMenuCheckboxItem>
+                        ))}
+                        <DropdownMenuSeparator />
+                        <DropdownMenuSub>
+                          <DropdownMenuSubTrigger>
+                            Add Models
+                          </DropdownMenuSubTrigger>
+                        </DropdownMenuSub>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
                   </div>
 
                   {/* 우측 전송 버튼 그룹 */}
@@ -1242,6 +1323,10 @@ export const AnswersChart: Story = {
       "최근 일주일 동안 생성되거나 변경된 IAM 사용자 내역을 알고싶어.",
     );
 
+    // 🎯 목적: 모델 선택 상태 관리
+    const [selectedModel, setSelectedModel] =
+      React.useState<(typeof MODEL_OPTIONS)[number]>("Auto");
+
     // 🎯 목적: 차트 Dialog 상태 관리
     const [openDialogs, setOpenDialogs] = React.useState({
       chart1: false,
@@ -1369,14 +1454,46 @@ export const AnswersChart: Story = {
                               >
                                 <Infinity className="h-4 w-4" />
                                 Agent
-                                <ChevronDown className="h-4 w-4" />
+                                <ChevronUp className="h-4 w-4" />
                               </InputGroupButton>
 
-                              {/* Auto InputGroupButton */}
-                              <InputGroupButton size="xs" variant="ghost">
-                                Auto
-                                <ChevronDown className="h-4 w-4" />
-                              </InputGroupButton>
+                              {/* Auto InputGroupButton with Dropdown */}
+                              <DropdownMenu>
+                                <DropdownMenuTrigger asChild>
+                                  <Button
+                                    variant="ghost"
+                                    className="flex h-6 max-w-[120px] items-center gap-1 rounded-[calc(var(--radius)-5px)] px-2 text-sm shadow-none"
+                                  >
+                                    <span className="truncate">
+                                      {selectedModel}
+                                    </span>
+                                    <ChevronUp className="h-3.5 w-3.5 shrink-0" />
+                                  </Button>
+                                </DropdownMenuTrigger>
+                                <DropdownMenuContent
+                                  side="top"
+                                  align="start"
+                                  className="w-[246px]"
+                                >
+                                  {MODEL_OPTIONS.map((model) => (
+                                    <DropdownMenuCheckboxItem
+                                      key={model}
+                                      checked={selectedModel === model}
+                                      onCheckedChange={() =>
+                                        setSelectedModel(model)
+                                      }
+                                    >
+                                      {model}
+                                    </DropdownMenuCheckboxItem>
+                                  ))}
+                                  <DropdownMenuSeparator />
+                                  <DropdownMenuSub>
+                                    <DropdownMenuSubTrigger>
+                                      Add Models
+                                    </DropdownMenuSubTrigger>
+                                  </DropdownMenuSub>
+                                </DropdownMenuContent>
+                              </DropdownMenu>
                             </div>
 
                             {/* 우측 전송 버튼 그룹 */}
@@ -2036,14 +2153,42 @@ export const AnswersChart: Story = {
                     >
                       <Infinity className="h-4 w-4" />
                       Agent
-                      <ChevronDown className="h-4 w-4" />
+                      <ChevronUp className="h-4 w-4" />
                     </InputGroupButton>
 
-                    {/* Auto InputGroupButton */}
-                    <InputGroupButton size="xs" variant="ghost">
-                      Auto
-                      <ChevronDown className="h-4 w-4" />
-                    </InputGroupButton>
+                    {/* Auto InputGroupButton with Dropdown */}
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild>
+                        <Button
+                          variant="ghost"
+                          className="flex h-6 max-w-[120px] items-center gap-1 rounded-[calc(var(--radius)-5px)] px-2 text-sm shadow-none"
+                        >
+                          <span className="truncate">{selectedModel}</span>
+                          <ChevronUp className="h-3.5 w-3.5 shrink-0" />
+                        </Button>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent
+                        side="top"
+                        align="start"
+                        className="w-[246px]"
+                      >
+                        {MODEL_OPTIONS.map((model) => (
+                          <DropdownMenuCheckboxItem
+                            key={model}
+                            checked={selectedModel === model}
+                            onCheckedChange={() => setSelectedModel(model)}
+                          >
+                            {model}
+                          </DropdownMenuCheckboxItem>
+                        ))}
+                        <DropdownMenuSeparator />
+                        <DropdownMenuSub>
+                          <DropdownMenuSubTrigger>
+                            Add Models
+                          </DropdownMenuSubTrigger>
+                        </DropdownMenuSub>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
                   </div>
 
                   {/* 우측 전송 버튼 그룹 */}
