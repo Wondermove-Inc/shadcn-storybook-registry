@@ -17,7 +17,8 @@ const eslintConfig = [{
     "build/**",
     "public/**",
     ".claude/**",
-    "next-env.d.ts"
+    "next-env.d.ts",
+    "storybook-static/**"
   ]
 }, ...compat.extends(
   "next/core-web-vitals",
