@@ -2818,6 +2818,25 @@
           "type": "registry:component"
         }
       ]
+    },
+    {
+      "name": "splash-modal-story",
+      "type": "registry:component",
+      "title": "Splash Modal Story",
+      "description": "앱 시작 시 브랜딩/로고를 표시하는 스플래시 모달 컴포넌트입니다. 로고, 브랜드명, 태그라인의 순차적 복합 애니메이션과 프로그레스 바를 지원하며, 로딩 완료 시 자동으로 페이드아웃됩니다.",
+      "categories": ["templates", "storybook", "splash", "modal", "branding"],
+      "registryDependencies": [],
+      "dependencies": ["lucide-react"],
+      "files": [
+        {
+          "path": "src/components/ui/splash-modal.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "src/registry/templates/splash-modal-story/splash-modal.stories.tsx",
+          "type": "registry:component"
+        }
+      ]
     }
   ]
 }
