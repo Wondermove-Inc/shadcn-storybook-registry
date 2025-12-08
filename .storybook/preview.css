@@ -1,49 +1,64 @@
 /* 스토리북 테마별 배경색 설정 */
+/* 초기 로딩 시 다크 모드 깜박임 방지 - 최우선 적용 */
+html,
+html:root {
+  background-color: #0a0a0a !important;
+  color: #fafafa !important;
+  color-scheme: dark !important;
+}
+
+body {
+  background-color: #0a0a0a !important;
+}
+
+/* Storybook 기본 영역 초기 스타일 */
 .sb-show-main,
-.sb-main-padded {
-  transition: background-color 0.2s ease, color 0.2s ease;
-}
-
-/* 라이트 모드 (기본) */
-html:not(.dark) .sb-show-main,
-html:not(.dark) .sb-main-padded {
-  background-color: var(--color-background);
-  color: var(--color-foreground);
-}
-
-/* 다크 모드 */
-html.dark .sb-show-main,
-html.dark .sb-main-padded {
-  background-color: var(--color-background);
-  color: var(--color-foreground);
-}
-
-/* 스토리북 프리뷰 영역 */
+.sb-main-padded,
+#storybook-root,
 #storybook-preview-wrapper {
-  transition: background-color 0.2s ease, color 0.2s ease;
+  background-color: #0a0a0a !important;
 }
 
-html:not(.dark) #storybook-preview-wrapper {
-  background-color: var(--color-background);
-  color: var(--color-foreground);
+/* 테마 클래스가 적용된 후 CSS 변수 사용 */
+html.theme-default-dark,
+html.theme-default-dark body {
+  background-color: var(--color-background, #0a0a0a) !important;
+  color: var(--color-foreground, #fafafa) !important;
 }
 
-html.dark #storybook-preview-wrapper {
-  background-color: var(--color-background);
-  color: var(--color-foreground);
+html.theme-default-dark .sb-show-main,
+html.theme-default-dark .sb-main-padded,
+html.theme-default-dark #storybook-root,
+html.theme-default-dark #storybook-preview-wrapper {
+  background-color: var(--color-background, #0a0a0a) !important;
+}
+
+/* 라이트 모드 테마 적용 시 */
+html.theme-default-light,
+html.theme-default-light body {
+  background-color: var(--color-background, #ffffff) !important;
+  color: var(--color-foreground, #0a0a0a) !important;
+  color-scheme: light !important;
+}
+
+html.theme-default-light .sb-show-main,
+html.theme-default-light .sb-main-padded,
+html.theme-default-light #storybook-root,
+html.theme-default-light #storybook-preview-wrapper {
+  background-color: var(--color-background, #ffffff) !important;
 }
 
 /* 도큐멘트 모드에서도 배경색 적용 */
 .docs-story {
-  transition: background-color 0.2s ease, color 0.2s ease;
+  background-color: #0a0a0a !important;
 }
 
-html:not(.dark) .docs-story {
-  background-color: var(--color-background);
+html.theme-default-light .docs-story {
+  background-color: var(--color-background, #ffffff) !important;
 }
 
-html.dark .docs-story {
-  background-color: var(--color-background);
+html.theme-default-dark .docs-story {
+  background-color: var(--color-background, #0a0a0a) !important;
 }
 
 /* 탭 컨테이너 스크롤바 스타일 - VS Code 스타일 참고 */

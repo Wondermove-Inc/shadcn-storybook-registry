@@ -2837,6 +2837,36 @@
           "type": "registry:component"
         }
       ]
+    },
+    {
+      "name": "chart-cluster-dashboard-story",
+      "type": "registry:component",
+      "title": "Chart Cluster Dashboard Story",
+      "description": "CAST AI 스타일의 클러스터 모니터링 대시보드입니다. CPU/Memory 오버프로비저닝 현황, 도넛 차트, 시계열 Area/Line 차트를 포함한 종합 리소스 모니터링 인터페이스를 제공합니다.",
+      "categories": ["templates", "storybook", "dashboard", "chart", "monitoring"],
+      "registryDependencies": [
+        "card",
+        "chart",
+        "select",
+        "tabs",
+        "progress",
+        "badge",
+        "tooltip"
+      ],
+      "dependencies": [
+        "recharts",
+        "lucide-react"
+      ],
+      "files": [
+        {
+          "path": "src/registry/templates/contents/chart-cluster-dashboard/chart-cluster-dashboard.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "src/registry/templates/contents/chart-cluster-dashboard/chart-cluster-dashboard.stories.tsx",
+          "type": "registry:component"
+        }
+      ]
     }
   ]
 }

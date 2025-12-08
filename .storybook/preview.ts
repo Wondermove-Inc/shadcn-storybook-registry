@@ -29,7 +29,7 @@ const preview: Preview = {
     },
     backgrounds: {
       disable: false,
-      default: "light",
+      default: "dark",
       values: [
         { name: "light", value: "#ffffff" },
         { name: "dark", value: "#0a0a0a" },
@@ -79,7 +79,7 @@ const preview: Preview = {
         "violet-light": "theme-default-light theme-violet-light",
         "violet-dark": "theme-default-dark theme-violet-dark",
       },
-      defaultTheme: "blue-dark",
+      defaultTheme: "default-dark",
       parentSelector: "html",
     }),
   ],
