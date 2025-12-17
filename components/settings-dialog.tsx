@@ -18,6 +18,8 @@ import {
   ChevronUp,
   ArrowRight,
   Check,
+  Blocks,
+  PieChart,
 } from "lucide-react";
 
 import {
@@ -84,6 +86,13 @@ import {
   SidebarMenuItem,
   SidebarProvider,
 } from "@/components/ui/sidebar";
+import {
+  Item,
+  ItemMedia,
+  ItemContent,
+  ItemTitle,
+  ItemDescription,
+} from "@/components/ui/item";
 
 const data = {
   nav: [
@@ -93,6 +102,7 @@ const data = {
     { name: "Editor", icon: Code },
     { name: "Terminal", icon: Terminal },
     { name: "LLM Models", icon: Bot },
+    { name: "Extension", icon: Blocks },
   ],
 };
 
@@ -1046,6 +1056,98 @@ function LLMModelsContent() {
   );
 }
 
+// 🎯 목적: Extension 메뉴의 콘텐츠 영역 - 확장 앱 추가 설정
+function ExtensionContent() {
+  const [extensionUrl, setExtensionUrl] = React.useState("");
+  const [urlError, setUrlError] = React.useState("");
+  const [extensionList, setExtensionList] = React.useState<string[]>([]);
+
+  // 🎯 목적: URL 유효성 검사 함수
+  const validateUrl = (url: string) => {
+    try {
+      new URL(url);
+      return true;
+    } catch {
+      return false;
+    }
+  };
+
+  // 🎯 목적: Add 버튼 클릭 시 URL 검증 및 리스트에 추가
+  const handleAddExtension = () => {
+    if (!validateUrl(extensionUrl)) {
+      setUrlError("Please enter a valid URL");
+      return;
+    }
+    // URL이 유효한 경우 리스트에 추가
+    setExtensionList([...extensionList, extensionUrl]);
+    setExtensionUrl("");
+    setUrlError("");
+  };
+
+  // 🎯 목적: 입력 시 에러 상태 초기화
+  const handleUrlChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setExtensionUrl(e.target.value);
+    if (urlError) {
+      setUrlError("");
+    }
+  };
+
+  return (
+    <div className="flex flex-col gap-6">
+      <Field>
+        <FieldLabel className="text-sm font-medium">Add app</FieldLabel>
+        <p className="text-muted-foreground text-sm">
+          Enter URL of the service you want to add as an extension app
+        </p>
+        <FieldContent>
+          <InputGroup>
+            <InputGroupInput
+              type="text"
+              placeholder="Enter URL you want to add..."
+              value={extensionUrl}
+              onChange={handleUrlChange}
+              aria-invalid={!!urlError}
+            />
+            <InputGroupAddon align="inline-end">
+              <InputGroupButton
+                variant="default"
+                size="xs"
+                disabled={extensionUrl.length === 0}
+                onClick={handleAddExtension}
+              >
+                <Plus className="h-4 w-4" />
+                Add
+              </InputGroupButton>
+            </InputGroupAddon>
+          </InputGroup>
+        </FieldContent>
+        {urlError && <FieldError>{urlError}</FieldError>}
+      </Field>
+
+      {/* 추가된 Extension URL 리스트 */}
+      {extensionList.length > 0 && (
+        <>
+          <Separator />
+          <div className="flex flex-col gap-3">
+            <Label className="text-sm font-medium">Added App</Label>
+            {extensionList.map((url) => (
+              <Item key={url} variant="outline" size="sm">
+                <ItemMedia>
+                  <PieChart className="h-5 w-5" />
+                </ItemMedia>
+                <ItemContent>
+                  <ItemTitle>Skuber+ Optimization</ItemTitle>
+                  <ItemDescription>{url}</ItemDescription>
+                </ItemContent>
+              </Item>
+            ))}
+          </div>
+        </>
+      )}
+    </div>
+  );
+}
+
 // 🎯 목적: Kubernetes 메뉴의 콘텐츠 영역 - 쿠버네티스 관련 설정
 function KubernetesContent() {
   const [kubectlBinaryDownload, setKubectlBinaryDownload] =
@@ -1337,6 +1439,7 @@ export function SettingsDialog() {
                 {activeMenu === "Editor" && <EditorContent />}
                 {activeMenu === "Terminal" && <TerminalContent />}
                 {activeMenu === "LLM Models" && <LLMModelsContent />}
+                {activeMenu === "Extension" && <ExtensionContent />}
               </div>
             </div>
           </main>
