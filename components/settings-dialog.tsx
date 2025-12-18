@@ -92,6 +92,7 @@ import {
   ItemContent,
   ItemTitle,
   ItemDescription,
+  ItemActions,
 } from "@/components/ui/item";
 
 const data = {
@@ -1097,7 +1098,9 @@ function ExtensionContent() {
       <Field>
         <FieldLabel className="text-sm font-medium">Add app</FieldLabel>
         <p className="text-muted-foreground text-sm">
-          Enter URL of the service you want to add as an extension app
+          Enter the app URL you want to add. If you want to add a new app,
+          <br />
+          please remove the one currently registered.
         </p>
         <FieldContent>
           <InputGroup>
@@ -1107,12 +1110,13 @@ function ExtensionContent() {
               value={extensionUrl}
               onChange={handleUrlChange}
               aria-invalid={!!urlError}
+              disabled={extensionList.length > 0}
             />
             <InputGroupAddon align="inline-end">
               <InputGroupButton
                 variant="default"
                 size="xs"
-                disabled={extensionUrl.length === 0}
+                disabled={extensionUrl.length === 0 || extensionList.length > 0}
                 onClick={handleAddExtension}
               >
                 <Plus className="h-4 w-4" />
@@ -1130,7 +1134,7 @@ function ExtensionContent() {
           <Separator />
           <div className="flex flex-col gap-3">
             <Label className="text-sm font-medium">Added App</Label>
-            {extensionList.map((url) => (
+            {extensionList.map((url, index) => (
               <Item key={url} variant="outline" size="sm">
                 <ItemMedia>
                   <PieChart className="h-5 w-5" />
@@ -1139,6 +1143,20 @@ function ExtensionContent() {
                   <ItemTitle>Skuber+ Optimization</ItemTitle>
                   <ItemDescription>{url}</ItemDescription>
                 </ItemContent>
+                <ItemActions>
+                  <Button
+                    variant="outline"
+                    size="icon-sm"
+                    onClick={() => {
+                      // 🎯 목적: 리스트에서 해당 URL 삭제
+                      setExtensionList(
+                        extensionList.filter((_, i) => i !== index),
+                      );
+                    }}
+                  >
+                    <Trash2 className="text-destructive h-4 w-4" />
+                  </Button>
+                </ItemActions>
               </Item>
             ))}
           </div>
