@@ -43,6 +43,8 @@ import {
   CircleGauge,
   FolderKanban,
   Server,
+  Files,
+  PieChart,
 } from "lucide-react";
 import {
   InputGroup,
@@ -162,6 +164,24 @@ export const Structure: Story = {
 
     // 🎯 목적: 핫바 활성 아이템 상태 관리 - 단일 활성 상태
     const [activeItem, setActiveItem] = React.useState("explorer");
+
+    // 🎯 목적: 커스텀 핫바 아이템 - Explorer, Skuber+ Observability만 표시
+    const customHotbarItems = [
+      {
+        id: "explorer",
+        icon: Files,
+        label: "Explorer",
+        isActive: true,
+      },
+      {
+        id: "skuber-observability",
+        icon: PieChart,
+        label: "Skuber+ Observability",
+        isActive: false,
+        badge: "!",
+        badgeVariant: "destructive" as const,
+      },
+    ];
 
     // 🎯 목적: 하단 패널 표시 상태 관리
     const [isPanelVisible, setIsPanelVisible] = React.useState(true);
@@ -309,6 +329,7 @@ export const Structure: Story = {
           {/* 핫바 영역 (고정 크기) - 모든 화면 크기에서 표시 */}
           <div className="w-[var(--sidebar-width-icon)] flex-shrink-0">
             <Hotbar
+              items={customHotbarItems}
               activeItem={activeItem}
               onItemClick={handleHotbarItemClick}
             />
@@ -1154,9 +1175,9 @@ export const StructureTab: Story = {
  * 🎯 목적: Hotbar 컴포넌트의 독립적인 사용법 데모
  * ✨ 특징:
  * - VS Code Activity Bar와 동일한 세로 아이콘 바
- * - Explorer, Search, Git, Extensions 등 주요 기능 아이콘
+ * - Explorer, Skuber+ Observability 메뉴만 표시
  * - 활성/비활성 상태 시각적 표시
- * - 하단에 Settings, Account 아이콘 배치
+ * - 하단에 Settings, User 아이콘 배치
  */
 export const StructureHotbar: Story = {
   decorators: [
@@ -1182,10 +1203,32 @@ export const StructureHotbar: Story = {
       setActiveItem(itemId);
     };
 
+    // 🎯 목적: 커스텀 핫바 아이템 - Explorer, Skuber+ Observability만 표시
+    const customHotbarItems = [
+      {
+        id: "explorer",
+        icon: Files,
+        label: "Explorer",
+        isActive: true,
+      },
+      {
+        id: "skuber-observability",
+        icon: PieChart,
+        label: "Skuber+ Observability",
+        isActive: false,
+        badge: "!",
+        badgeVariant: "destructive" as const,
+      },
+    ];
+
     return (
       <div className="bg-background flex h-screen w-full">
-        {/* VS Code Activity Bar 스타일 핫바 */}
-        <Hotbar activeItem={activeItem} onItemClick={handleItemClick} />
+        {/* VS Code Activity Bar 스타일 핫바 - 커스텀 아이템 적용 */}
+        <Hotbar
+          items={customHotbarItems}
+          activeItem={activeItem}
+          onItemClick={handleItemClick}
+        />
 
         {/* 메인 콘텐츠 영역 */}
         <div className="flex flex-1 items-center justify-center p-8">
