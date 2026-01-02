@@ -18,8 +18,9 @@ import {
   ChevronUp,
   ArrowRight,
   Check,
-  Blocks,
   PieChart,
+  Link,
+  Telescope,
 } from "lucide-react";
 
 import {
@@ -103,7 +104,7 @@ const data = {
     { name: "Editor", icon: Code },
     { name: "Terminal", icon: Terminal },
     { name: "LLM Models", icon: Bot },
-    { name: "Extension", icon: Blocks },
+    { name: "Skuber+ Observability", icon: Telescope },
   ],
 };
 
@@ -1094,19 +1095,19 @@ function ExtensionContent() {
   };
 
   return (
-    <div className="flex flex-col gap-6">
+    <div className="flex flex-col gap-4">
       <Field>
-        <FieldLabel className="text-sm font-medium">Add app</FieldLabel>
+        <FieldLabel className="text-sm font-medium">
+          Add Skuber+ Observability app
+        </FieldLabel>
         <p className="text-muted-foreground text-sm">
-          Enter the app URL you want to add. If you want to add a new app,
-          <br />
-          please remove the one currently registered.
+          Please enter Skuber+ Observability URL to add as an extension app.
         </p>
         <FieldContent>
           <InputGroup>
             <InputGroupInput
               type="text"
-              placeholder="Enter URL you want to add..."
+              placeholder="Enter URL..."
               value={extensionUrl}
               onChange={handleUrlChange}
               aria-invalid={!!urlError}
@@ -1131,33 +1132,36 @@ function ExtensionContent() {
       {/* 추가된 Extension URL 리스트 */}
       {extensionList.length > 0 && (
         <>
-          <Separator />
           <div className="flex flex-col gap-3">
-            <Label className="text-sm font-medium">Added App</Label>
             {extensionList.map((url, index) => (
-              <Item key={url} variant="outline" size="sm">
-                <ItemMedia>
-                  <PieChart className="h-5 w-5" />
-                </ItemMedia>
-                <ItemContent>
-                  <ItemTitle>Skuber+ Optimization</ItemTitle>
-                  <ItemDescription>{url}</ItemDescription>
-                </ItemContent>
-                <ItemActions>
-                  <Button
-                    variant="outline"
-                    size="icon-sm"
-                    onClick={() => {
-                      // 🎯 목적: 리스트에서 해당 URL 삭제
-                      setExtensionList(
-                        extensionList.filter((_, i) => i !== index),
-                      );
-                    }}
-                  >
-                    <Trash2 className="text-destructive h-4 w-4" />
-                  </Button>
-                </ItemActions>
-              </Item>
+              <div key={url} className="flex flex-col gap-2">
+                <Item variant="outline" size="sm">
+                  <ItemMedia>
+                    <Link className="h-5 w-5" />
+                  </ItemMedia>
+                  <ItemContent>
+                    <ItemDescription>{url}</ItemDescription>
+                  </ItemContent>
+                  <ItemActions>
+                    <Button
+                      variant="outline"
+                      size="icon-sm"
+                      onClick={() => {
+                        // 🎯 목적: 리스트에서 해당 URL 삭제
+                        setExtensionList(
+                          extensionList.filter((_, i) => i !== index),
+                        );
+                      }}
+                    >
+                      <Trash2 className="text-destructive h-4 w-4" />
+                    </Button>
+                  </ItemActions>
+                </Item>
+                <p className="text-muted-foreground text-xs leading-normal">
+                  If you want to change the link, please delete it and add it
+                  again.
+                </p>
+              </div>
             ))}
           </div>
         </>
@@ -1415,15 +1419,29 @@ export function SettingsDialog() {
                 <SidebarGroupContent>
                   <SidebarMenu>
                     {data.nav.map((item) => (
-                      <SidebarMenuItem key={item.name}>
-                        <SidebarMenuButton
-                          isActive={item.name === activeMenu}
-                          onClick={() => setActiveMenu(item.name)}
-                        >
-                          <item.icon />
-                          <span>{item.name}</span>
-                        </SidebarMenuButton>
-                      </SidebarMenuItem>
+                      <React.Fragment key={item.name}>
+                        {/* 🎯 목적: Skuber+ Observability 메뉴 위에 Extension 레이블 표시 */}
+                        {item.name === "Skuber+ Observability" && (
+                          <div className="px-3 pb-1">
+                            <span className="text-muted-foreground text-xs font-medium">
+                              Extension
+                            </span>
+                          </div>
+                        )}
+                        <SidebarMenuItem>
+                          <SidebarMenuButton
+                            isActive={item.name === activeMenu}
+                            onClick={() => setActiveMenu(item.name)}
+                          >
+                            <item.icon />
+                            <span>{item.name}</span>
+                          </SidebarMenuButton>
+                        </SidebarMenuItem>
+                        {/* 🎯 목적: LLM Models 메뉴 하단에 구분선 표시 */}
+                        {item.name === "LLM Models" && (
+                          <Separator className="my-2" />
+                        )}
+                      </React.Fragment>
                     ))}
                   </SidebarMenu>
                 </SidebarGroupContent>
@@ -1457,7 +1475,7 @@ export function SettingsDialog() {
                 {activeMenu === "Editor" && <EditorContent />}
                 {activeMenu === "Terminal" && <TerminalContent />}
                 {activeMenu === "LLM Models" && <LLMModelsContent />}
-                {activeMenu === "Extension" && <ExtensionContent />}
+                {activeMenu === "Skuber+ Observability" && <ExtensionContent />}
               </div>
             </div>
           </main>

@@ -45,6 +45,7 @@ import {
   Server,
   Files,
   PieChart,
+  Telescope,
 } from "lucide-react";
 import {
   InputGroup,
@@ -175,7 +176,7 @@ export const Structure: Story = {
       },
       {
         id: "skuber-observability",
-        icon: PieChart,
+        icon: Telescope,
         label: "Skuber+ Observability",
         isActive: false,
         badge: "!",
@@ -196,7 +197,7 @@ export const Structure: Story = {
         id: "skuber-observability",
         name: "Skuber+ Observability",
         description: "Real-time monitoring and system observability platform",
-        icon: CircleGauge,
+        icon: Telescope,
       },
       {
         id: "skuber-management",
@@ -836,7 +837,7 @@ export const StructureSidebarExtensions: Story = {
         id: "skuber-observability",
         name: "Skuber+ Observability",
         description: "Real-time monitoring and system observability platform",
-        icon: CircleGauge,
+        icon: Telescope,
       },
       {
         id: "skuber-management",
@@ -1213,7 +1214,7 @@ export const StructureHotbar: Story = {
       },
       {
         id: "skuber-observability",
-        icon: PieChart,
+        icon: Telescope,
         label: "Skuber+ Observability",
         isActive: false,
         badge: "!",

@@ -13,16 +13,16 @@ import { Input } from "@/components/ui/input";
 import { Link, Plus, Loader2 } from "lucide-react";
 
 /**
- * Observability 콘텐츠 컴포넌트 - URL 등록 화면
+ * Skuber+ Observability 콘텐츠 컴포넌트 - URL 등록 화면
  *
- * 🎯 목적: Observability 서비스 사용을 위한 URL 등록 인터페이스
+ * 🎯 목적: Skuber+ Observability 서비스 사용을 위한 URL 등록 인터페이스
  * ✨ 특징:
  * - Empty 상태 UI로 사용자에게 URL 등록 안내
  * - InputGroup을 통한 URL 입력 필드
  * - 비활성화된 Register 버튼 (URL 입력 전)
  */
 const meta: Meta = {
-  title: "templates/Contents/Observability",
+  title: "templates/Contents/Skuber+ Observability",
   parameters: {
     layout: "fullscreen",
   },
@@ -33,9 +33,9 @@ export default meta;
 type Story = StoryObj;
 
 /**
- * 🎯 목적: Observability URL 등록 화면 - Empty 상태
+ * 🎯 목적: Skuber+ Observability URL 등록 화면 - Empty 상태
  *
- * Observability 서비스를 사용하기 위해 URL을 등록하는 화면입니다.
+ * Skuber+ Observability 서비스를 사용하기 위해 URL을 등록하는 화면입니다.
  * URL이 입력되지 않은 초기 상태를 보여줍니다.
  */
 export const Default: Story = {
@@ -100,13 +100,12 @@ export const Default: Story = {
                 <div className="flex flex-col items-center gap-2">
                   {/* 제목 */}
                   <EmptyTitle className="text-foreground text-lg leading-7">
-                    Please register observability URL
+                    Please register Skuber+ Observability URL
                   </EmptyTitle>
 
                   {/* 설명 */}
                   <EmptyDescription className="text-muted-foreground text-center text-sm leading-[162.5%]">
-                    To use Observability service, you need to register a URL
-                    first.
+                    To use the service, you need to register a URL first.
                     <br />
                     Please copy and paste the service link.
                   </EmptyDescription>
@@ -117,7 +116,7 @@ export const Default: Story = {
               <EmptyContent className="w-[480px] max-w-none">
                 <div className="flex w-full flex-col items-start gap-2">
                   <Input
-                    placeholder="Enter observability URL..."
+                    placeholder="Enter Skuber+ Observability URL..."
                     value={url}
                     onChange={handleInputChange}
                     aria-invalid={hasError}
