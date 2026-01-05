@@ -100,14 +100,13 @@ export const Default: Story = {
                 <div className="flex flex-col items-center gap-2">
                   {/* 제목 */}
                   <EmptyTitle className="text-foreground text-lg leading-7">
-                    Please register Skuber+ Observability URL
+                    Connect Skuber+ Observability
                   </EmptyTitle>
 
                   {/* 설명 */}
                   <EmptyDescription className="text-muted-foreground text-center text-sm leading-[162.5%]">
-                    To use the service, you need to register a URL first.
-                    <br />
-                    Please copy and paste the service link.
+                    Enter the Observability server URL to enable monitoring and
+                    diagonstics.
                   </EmptyDescription>
                 </div>
               </EmptyHeader>
@@ -116,7 +115,7 @@ export const Default: Story = {
               <EmptyContent className="w-[480px] max-w-none">
                 <div className="flex w-full flex-col items-start gap-2">
                   <Input
-                    placeholder="Enter Skuber+ Observability URL..."
+                    placeholder="Enter Observability server URL..."
                     value={url}
                     onChange={handleInputChange}
                     aria-invalid={hasError}
@@ -133,7 +132,7 @@ export const Default: Story = {
             </Empty>
           </div>
 
-          {/* Register 버튼 */}
+          {/* Connect 버튼 */}
           <Button
             disabled={isButtonDisabled}
             className="h-9 gap-2 px-4 py-2"
@@ -142,12 +141,12 @@ export const Default: Story = {
             {isLoading ? (
               <>
                 <Loader2 className="h-4 w-4 animate-spin" />
-                <span>Register</span>
+                <span>Connect</span>
               </>
             ) : (
               <>
                 <Plus className="h-4 w-4" />
-                <span>Register</span>
+                <span>Connect</span>
               </>
             )}
           </Button>

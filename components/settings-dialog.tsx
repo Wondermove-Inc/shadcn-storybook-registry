@@ -104,7 +104,7 @@ const data = {
     { name: "Editor", icon: Code },
     { name: "Terminal", icon: Terminal },
     { name: "LLM Models", icon: Bot },
-    { name: "Skuber+ Observability", icon: Telescope },
+    { name: "Observability", icon: Telescope },
   ],
 };
 
@@ -1098,16 +1098,21 @@ function ExtensionContent() {
     <div className="flex flex-col gap-4">
       <Field>
         <FieldLabel className="text-sm font-medium">
-          Add Skuber+ Observability app
+          Connect Skuber+ Observability
         </FieldLabel>
         <p className="text-muted-foreground text-sm">
-          Please enter Skuber+ Observability URL to add as an extension app.
+          Enter the Observability server URL to enable moitoring and
+          diagnostics.
         </p>
         <FieldContent>
           <InputGroup>
             <InputGroupInput
               type="text"
-              placeholder="Enter URL..."
+              placeholder={
+                extensionList.length > 0
+                  ? "Remove the connected server to connect a new one"
+                  : "Enter Observability server URL..."
+              }
               value={extensionUrl}
               onChange={handleUrlChange}
               aria-invalid={!!urlError}
@@ -1121,7 +1126,7 @@ function ExtensionContent() {
                 onClick={handleAddExtension}
               >
                 <Plus className="h-4 w-4" />
-                Add
+                Connect
               </InputGroupButton>
             </InputGroupAddon>
           </InputGroup>
@@ -1158,8 +1163,7 @@ function ExtensionContent() {
                   </ItemActions>
                 </Item>
                 <p className="text-muted-foreground text-xs leading-normal">
-                  If you want to change the link, please delete it and add it
-                  again.
+                  To change the server, remove it and connect a new one.
                 </p>
               </div>
             ))}
@@ -1420,8 +1424,8 @@ export function SettingsDialog() {
                   <SidebarMenu>
                     {data.nav.map((item) => (
                       <React.Fragment key={item.name}>
-                        {/* 🎯 목적: Skuber+ Observability 메뉴 위에 Extension 레이블 표시 */}
-                        {item.name === "Skuber+ Observability" && (
+                        {/* 🎯 목적: Observability 메뉴 위에 Extension 레이블 표시 */}
+                        {item.name === "Observability" && (
                           <div className="px-3 pb-1">
                             <span className="text-muted-foreground text-xs font-medium">
                               Extension
@@ -1475,7 +1479,7 @@ export function SettingsDialog() {
                 {activeMenu === "Editor" && <EditorContent />}
                 {activeMenu === "Terminal" && <TerminalContent />}
                 {activeMenu === "LLM Models" && <LLMModelsContent />}
-                {activeMenu === "Skuber+ Observability" && <ExtensionContent />}
+                {activeMenu === "Observability" && <ExtensionContent />}
               </div>
             </div>
           </main>
